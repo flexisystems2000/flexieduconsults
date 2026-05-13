@@ -34,7 +34,18 @@
 
         /* PDF Section Styling */
         .pdf-section { margin-top: 25px; padding-top: 20px; border-top: 2px dashed #eee; }
-        .pdf-preview { width: 100%; height: 400px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; }
+        .pdf-preview { 
+            width: 100%; 
+            max-height: 550px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            margin-bottom: 12px; 
+            background: #f0f0f0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         
         .download-btn { 
             display: inline-flex; align-items: center; gap: 8px;
@@ -84,13 +95,12 @@
             <div id="pdf-container" class="pdf-section" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <h4 style="color: var(--blue); margin: 0;">📎 Attached Document</h4>
-                    <!-- Added download attribute as a backup -->
                     <a id="pdf-download-link" href="#" class="download-btn" download>
                         <svg viewBox="0 0 24 24"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg>
-                        Download
+                        Download Full PDF
                     </a>
                 </div>
-                <iframe id="pdf-iframe" class="pdf-preview" src=""></iframe>
+                <div id="pdf-viewer-container" class="pdf-preview"></div>
             </div>
         </div>
     </div>
@@ -160,22 +170,32 @@
                     tableCont.style.display = "block";
                 }
 
-                // PDF Logic (Updated for Cloudinary Download)
+                // PDF Logic (Fixed for Universal Compatibility)
                 const pdfCont = document.getElementById('pdf-container');
                 if (data.pdfUrl && data.pdfUrl.trim() !== "") {
-                    const pdfIframe = document.getElementById('pdf-iframe');
+                    const pdfViewerCont = document.getElementById('pdf-viewer-container');
                     const pdfLink = document.getElementById('pdf-download-link');
                     
-                    // 1. The Preview Link (Standard Google Viewer)
-                    pdfIframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(data.pdfUrl)}&embedded=true`;
-                    
-                    // 2. The Download Link (Modified for Cloudinary)
-                    let downloadUrl = data.pdfUrl;
-                    if (downloadUrl.includes("res.cloudinary.com")) {
-                        // Injects 'fl_attachment' to force a download instead of a preview
-                        downloadUrl = downloadUrl.replace('/upload/', '/upload/fl_attachment/');
+                    const originalUrl = data.pdfUrl;
+                    let downloadUrl = originalUrl;
+                    let previewImageUrl = originalUrl;
+
+                    if (originalUrl.includes("res.cloudinary.com")) {
+                        // 1. Force Download Link
+                        downloadUrl = originalUrl.replace('/upload/', '/upload/fl_attachment/');
+
+                        // 2. Generate Image Preview (Page 1)
+                        // This transforms the PDF first page into an auto-optimized JPG
+                        previewImageUrl = originalUrl.replace('/upload/', '/upload/w_800,c_limit,q_auto,f_jpg/pg_1/').replace('.pdf', '.jpg');
                     }
+
                     pdfLink.href = downloadUrl;
+
+                    // Inject Image-based Preview
+                    pdfViewerCont.innerHTML = `
+                        <img src="${previewImageUrl}" alt="Document Preview" style="width:100%; height:auto; display:block;">
+
+                    `;
                     
                     pdfCont.style.display = "block";
                 }
