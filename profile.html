@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Flexi Tutors</title>
+    <style>
+        :root { --blue: #003366; --green: #2E8B57; --bg: #f4f7f6; --white: #ffffff; --yellow: #FFD700; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+
+        header { 
+            background: var(--blue); color: white; height: 1cm; 
+            display: flex; align-items: center; padding: 0 15px; 
+            border-bottom: 4px solid var(--green);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .back-btn { color: white; text-decoration: none; font-size: 0.9rem; font-weight: bold; }
+
+        .profile-container { max-width: 600px; margin: 20px auto; width: 95%; padding-bottom: 40px; }
+        
+        /* PROFILE HEADER */
+        .profile-card { 
+            background: var(--white); border-radius: 15px; overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center;
+            padding-bottom: 20px; margin-bottom: 15px;
+        }
+        .profile-cover { height: 80px; background: linear-gradient(45deg, var(--blue), var(--green)); }
+        .avatar-container { margin-top: -40px; }
+        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; background: #eee; object-fit: cover; }
+        .user-name { margin: 10px 0 5px 0; color: var(--blue); font-size: 1.3rem; }
+        .user-email { color: #888; font-size: 0.85rem; margin-bottom: 15px; }
+
+        /* SECTION CARDS */
+        .section-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .section-title { font-size: 1rem; color: var(--blue); font-weight: bold; border-left: 4px solid var(--green); padding-left: 10px; margin-bottom: 15px; }
+
+        /* GROUPS JOINED STYLES (CLICKABLE) */
+        .group-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .group-tag { 
+            background: #eef2f7; color: var(--blue); padding: 8px 14px; 
+            border-radius: 20px; font-size: 0.8rem; font-weight: 600; 
+            border: 1px solid #d1d9e6; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .group-tag:hover { background: var(--green); color: white; border-color: var(--green); transform: translateY(-2px); }
+        .group-tag::after { content: '❯'; font-size: 0.6rem; opacity: 0.5; }
+
+        /* CBT PERFORMANCE STYLES */
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-box { background: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; border-bottom: 3px solid #eee; }
+        .stat-val { display: block; font-size: 1.4rem; font-weight: bold; color: var(--blue); }
+        .stat-lbl { font-size: 0.7rem; color: #999; text-transform: uppercase; }
+
+        .performance-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .performance-table th { text-align: left; color: #999; padding-bottom: 8px; font-weight: 500; }
+        .performance-table td { padding: 12px 0; border-top: 1px solid #f0f0f0; }
+        .score-high { color: var(--green); font-weight: bold; }
+
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    </style>
+</head>
+<body>
+
+<div id="loading-overlay">Loading Student Profile...</div>
+
+<header>
+    <a href="classroom.html" class="back-btn">❮ Back to Portal</a>
+</header>
+
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-cover"></div>
+        <div class="avatar-container">
+            <img id="display-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="profile-img">
+        </div>
+        <h2 id="display-name" class="user-name">---</h2>
+        <p id="display-email" class="user-email">---</p>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">My Classrooms (Click to chat)</div>
+        <div id="group-container" class="group-list">
+            <span style="color: #ccc; font-size: 0.8rem;">Searching joined groups...</span>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">CBT Performance Tracking</div>
+        <div class="stats-row">
+            <div class="stat-box" style="border-color: var(--green);">
+                <span id="avg-score" class="stat-val">0%</span>
+                <span class="stat-lbl">Average Score</span>
+            </div>
+            <div class="stat-box" style="border-color: var(--blue);">
+                <span id="exams-taken" class="stat-val">0</span>
+                <span class="stat-lbl">Tests Completed</span>
+            </div>
+        </div>
+
+        <table class="performance-table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="performance-body">
+                </tbody>
+        </table>
+    </div>
+</div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    // Change Firestore to Database
+    import { getDatabase, ref, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+        authDomain: "waec2026jamb2027.firebaseapp.com",
+        databaseURL: "https://waec2026jamb2027-default-rtdb.firebaseio.com",
+        projectId: "waec2026jamb2027",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app); // Switched to Realtime DB
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            document.getElementById('display-name').innerText = user.displayName || "Flexi Student";
+            document.getElementById('display-email').innerText = user.email;
+
+            // FETCH PERFORMANCE FROM REALTIME DATABASE
+            try {
+                // Look in 'leaderboard' for scores where 'name' matches the current user
+                // NOTE: For better accuracy, in your engine, you should save scores by UID 
+                // but for now, we'll match by the displayName used in the engine.
+                const leaderboardRef = query(
+                    ref(db, 'leaderboard'), 
+                    orderByChild('name'), 
+                    equalTo(user.displayName)
+                );
+                
+                const snapshot = await get(leaderboardRef);
+                const tbody = document.getElementById('performance-body');
+                tbody.innerHTML = "";
+                
+                let totalScore = 0;
+                let count = 0;
+
+                if (snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        const r = child.val();
+                        totalScore += r.score;
+                        count++;
+                        
+                        // Formatting the timestamp we saved in the engine
+                        const date = new Date(r.timestamp).toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+                        
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${r.exam || 'CBT Test'}</td>
+                                <td class="${r.score >= 50 ? 'score-high' : ''}">${r.score}%</td>
+                                <td>${date}</td>
+                            </tr>`;
+                    });
+                }
+
+                document.getElementById('exams-taken').innerText = count;
+                document.getElementById('avg-score').innerText = count > 0 ? Math.round(totalScore/count) + "%" : "0%";
+                
+                if(count === 0) {
+                    tbody.innerHTML = "<tr><td colspan='3' style='text-align:center; color:#999; padding-top:20px;'>No test records found.</td></tr>";
+                }
+            } catch (e) { console.error("Error fetching results:", e); }
+
+            document.getElementById('loading-overlay').style.display = "none";
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+</script>
+</body>
+</html>

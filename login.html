@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexi Tutors | Login & Sign Up</title>
+    <style>
+        :root { 
+            --blue: #003366; --green: #2E8B57; --white: #ffffff; 
+            --error-bg: #fdf2f2; --error-text: #d9534f; 
+            --success-bg: #e8f5e9; --success-text: #2e7d32; 
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; overflow-x: hidden; }
+
+        header { 
+            background: var(--blue); color: white; height: 1cm; 
+            display: flex; align-items: center; padding: 0 15px; 
+            border-bottom: 4px solid var(--green);
+        }
+        .brand { font-size: 0.85rem; font-weight: bold; letter-spacing: 1px; }
+
+        .auth-container { max-width: 400px; margin: 50px auto; width: 90%; }
+        .auth-card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: relative; }
+        
+        h2 { color: var(--blue); margin-top: 0; text-align: center; font-size: 1.4rem; }
+        
+        .input-group { margin-bottom: 15px; position: relative; }
+        label { display: block; font-size: 0.85rem; color: #666; margin-bottom: 5px; font-weight: 600; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 1rem; }
+        input:focus { border-color: var(--blue); }
+
+        /* EYE ICON STYLING */
+        .password-wrapper { position: relative; }
+        .toggle-password {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; color: #888; display: flex; align-items: center;
+        }
+        .toggle-password svg { width: 20px; height: 20px; }
+
+        /* PASSWORD STRENGTH STYLES */
+        .strength-container { margin-top: 8px; display: none; }
+        .strength-bar { height: 4px; width: 100%; background: #eee; border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+        .strength-fill { height: 100%; width: 0%; transition: 0.3s ease; }
+        .strength-text { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
+
+        /* STATUS CARD ANIMATION */
+        #status-box { 
+            font-size: 0.85rem; text-align: center; margin-top: 15px; 
+            display: none; padding: 12px; border-radius: 8px; 
+            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .shake { animation: shake 0.4s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        
+        .error { background: var(--error-bg); color: var(--error-text); border: 1px solid #f5c6cb; }
+        .success { background: var(--success-bg); color: var(--success-text); border: 1px solid #c8e6c9; }
+
+        .btn-auth { width: 100%; padding: 14px; background: var(--blue); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-auth:disabled { background: #ccc; cursor: not-allowed; }
+
+        .btn-google {
+            width: 100%; padding: 12px; background: white; color: #444; 
+            border: 1px solid #ddd; border-radius: 8px; font-weight: 600; 
+            cursor: pointer; margin-top: 15px; display: flex; align-items: center; justify-content: center;
+        }
+        .btn-google img { width: 18px; margin-right: 10px; }
+
+        .divider { text-align: center; margin: 20px 0; color: #aaa; font-size: 0.8rem; position: relative; }
+        .divider::before, .divider::after { content: ""; position: absolute; top: 50%; width: 35%; height: 1px; background: #eee; }
+        .divider::before { left: 0; } .divider::after { right: 0; }
+
+        .toggle-text { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #555; }
+        .toggle-text span { color: var(--green); cursor: pointer; font-weight: bold; }
+
+        #signup-fields { display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand">FLEXI EDUCATIONAL CONSULT</div>
+</header>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 id="auth-title">Welcome Back</h2>
+        
+        <div id="signup-fields">
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="auth-name" placeholder="Enter your name">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="auth-email" placeholder="student@example.com">
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="auth-pass" placeholder="••••••••">
+                <div class="toggle-password" id="eye-icon">
+                    <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </div>
+            </div>
+            <div id="strength-meter" class="strength-container">
+                <div class="strength-bar"><div id="strength-fill" class="strength-fill"></div></div>
+                <div id="strength-text" class="strength-text"></div>
+            </div>
+        </div>
+
+        <button class="btn-auth" id="main-auth-btn">LOGIN</button>
+
+        <div class="divider">OR</div>
+
+        <button class="btn-google" id="google-auth-btn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
+            Continue with Google
+        </button>
+
+        <div id="status-box"></div>
+
+        <p class="toggle-text" id="toggle-area">
+            Don't have an account? <span onclick="toggleAuth(true)">Sign Up</span>
+        </p>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { 
+        getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
+        updateProfile, GoogleAuthProvider, signInWithPopup 
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+        authDomain: "waec2026jamb2027.firebaseapp.com",
+        projectId: "waec2026jamb2027",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    const statusBox = document.getElementById('status-box');
+    const mainBtn = document.getElementById('main-auth-btn');
+    const passInput = document.getElementById('auth-pass');
+    const eyeBtn = document.getElementById('eye-icon');
+    let isSignUp = false;
+
+    // Password Toggle Logic
+    eyeBtn.onclick = () => {
+        const isPass = passInput.type === "password";
+        passInput.type = isPass ? "text" : "password";
+        eyeBtn.style.color = isPass ? "var(--green)" : "#888";
+    };
+
+    const showStatus = (msg, type) => {
+        statusBox.innerText = msg;
+        statusBox.className = type; 
+        statusBox.style.display = "block";
+        if(type === 'error') {
+            statusBox.classList.add('shake');
+            setTimeout(() => statusBox.classList.remove('shake'), 400);
+        }
+    };
+
+    // Strength Meter Logic
+    passInput.addEventListener('input', () => {
+        if (!isSignUp) return;
+        const val = passInput.value;
+        let score = 0;
+        if (val.length >= 6) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        document.getElementById('strength-meter').style.display = "block";
+        const colors = ["#eee", "#ff4d4d", "#ffd11a", "#2ecc71", "#2ecc71"];
+        const labels = ["", "Too Weak", "Medium", "Strong", "Very Strong"];
+        
+        document.getElementById('strength-fill').style.width = (score * 25) + "%";
+        document.getElementById('strength-fill').style.backgroundColor = colors[score];
+        document.getElementById('strength-text').innerText = labels[score];
+        document.getElementById('strength-text').style.color = colors[score];
+        
+        mainBtn.disabled = score < 2;
+    });
+
+    window.toggleAuth = (showSignUp) => {
+        isSignUp = showSignUp;
+        statusBox.style.display = "none";
+        document.getElementById('strength-meter').style.display = "none";
+        document.getElementById('signup-fields').style.display = isSignUp ? "block" : "none";
+        document.getElementById('auth-title').innerText = isSignUp ? "Create Account" : "Welcome Back";
+        mainBtn.innerText = isSignUp ? "SIGN UP" : "LOGIN";
+        mainBtn.disabled = false;
+        document.getElementById('toggle-area').innerHTML = isSignUp ? 
+            `Already have an account? <span onclick="toggleAuth(false)">Login</span>` : 
+            `Don't have an account? <span onclick="toggleAuth(true)">Sign Up</span>`;
+    };
+
+    mainBtn.onclick = async () => {
+        const email = document.getElementById('auth-email').value;
+        const pass = passInput.value;
+        const name = document.getElementById('auth-name').value;
+        
+        statusBox.style.display = "none";
+        if (!email || !pass) return showStatus("enter email and password", "error");
+
+        mainBtn.disabled = true;
+        mainBtn.innerText = "Processing...";
+
+        try {
+            if (isSignUp) {
+                const res = await createUserWithEmailAndPassword(auth, email, pass);
+                await updateProfile(res.user, { displayName: name });
+                showStatus("Account Created successfully", "success");
+            } else {
+                await signInWithEmailAndPassword(auth, email, pass);
+                showStatus("Login successful", "success");
+            }
+            setTimeout(() => window.location.href = "index.html", 1200);
+        } catch (error) {
+            mainBtn.disabled = false;
+            mainBtn.innerText = isSignUp ? "SIGN UP" : "LOGIN";
+            
+            let cleanMsg = error.code.replace('auth/', '').replace(/-/g, ' ');
+            if (error.code === 'auth/network-request-failed') {
+                cleanMsg = "failed to create account, please check your Internet connection";
+            }
+            showStatus(cleanMsg, "error");
+        }
+    };
+
+    document.getElementById('google-auth-btn').onclick = async () => {
+        try {
+            await signInWithPopup(auth, googleProvider);
+            showStatus("Google login successful", "success");
+            setTimeout(() => window.location.href = "groups.html", 1000);
+        } catch (error) {
+            const cleanMsg = error.code.replace('auth/', '').replace(/-/g, ' ');
+            showStatus(cleanMsg, "error");
+        }
+    };
+</script>
+</body>
+</html>

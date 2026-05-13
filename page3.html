@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flexi CBT | Formal Instructions</title>
+
+    <style>
+        :root {
+            --blue: #003366;
+            --green: #2E8B57;
+            --light: #f9f9f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            display: none;
+        }
+
+        header {
+            background: var(--blue);
+            color: white;
+            padding: 15px 10px;
+            border-bottom: 8px solid var(--green);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header h1 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+            padding: 20px 15px 40px;
+        }
+
+        .ad-banner {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            background: #f4f4f4;
+        }
+
+        .ad-banner img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .main-title {
+            color: var(--blue);
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 25px 0 20px;
+            text-transform: uppercase;
+        }
+
+        .info-summary {
+            background: var(--light);
+            border-left: 5px solid var(--green);
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .info-summary div {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--blue);
+        }
+
+        .subject-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: #eef4ff;
+            color: var(--blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 1px solid #c8dafc;
+        }
+
+        .rules-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .rules-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 0.92rem;
+        }
+
+        .rules-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--green);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .btn-start {
+            width: 100%;
+            border: none;
+            background: var(--green);
+            color: white;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.2s ease;
+            box-shadow: 0 4px 0 #1d5a39;
+        }
+
+        .btn-start:hover {
+            opacity: 0.95;
+        }
+
+        .btn-start:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .loading-screen {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--blue);
+            font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 0.9rem;
+            }
+
+            .main-title {
+                font-size: 1.15rem;
+            }
+
+            .btn-start {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading" class="loading-screen">
+        Verifying Candidate Access...
+    </div>
+
+    <div id="main-content" style="display:none;">
+
+        <header>
+            <div class="header-container">
+                <h1>FLEXI EDUCATIONAL CONSULT</h1>
+            </div>
+        </header>
+
+        <div class="container">
+
+            <div class="ad-banner">
+                <img src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg" alt="Advertisement Banner 1">
+            </div>
+
+            <div class="ad-banner">
+                <img src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg" alt="Advertisement Banner 2">
+            </div>
+
+            <div class="main-title">
+                Full Examination Instructions
+            </div>
+
+            <div class="info-summary">
+                <div>
+                    Exam Type:
+                    <span id="display-exam" class="highlight">Loading...</span>
+                </div>
+
+                <div>
+                    Selected Mode:
+                    <span id="display-mode" class="highlight">Loading...</span>
+                </div>
+
+                <div>
+                    Time Allotted:
+                    <span id="display-time" class="highlight">Loading...</span>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    Registered Subjects:
+                </div>
+
+                <div id="display-subjects" class="subject-tags"></div>
+            </div>
+
+            <ul class="rules-list">
+                <li>
+                    <b>Read Carefully:</b>
+                    Ensure you understand all questions before selecting an answer. You can skip questions and return to them later using the navigation panel.
+                </li>
+
+                <li>
+                    <b>Timing:</b>
+                    The countdown timer starts immediately after clicking the <b>Start Examination</b> button. The system will auto-submit once the allocated time expires.
+                </li>
+
+                <li>
+                    <b>Selection:</b>
+                    Only one answer is correct for each multiple-choice question. You may change your answer before final submission.
+                </li>
+
+                <li>
+                    <b>Technical Requirements:</b>
+                    Do not refresh the browser or press the back button during the examination to avoid losing progress.
+                </li>
+
+                <li>
+                    <b>Auto-Save:</b>
+                    Your answers are automatically saved locally on your device during the examination.
+                </li>
+
+                <li>
+                    <b>Submission:</b>
+                    Click the <b>Submit</b> button only when you are fully done. Submitted exams cannot be reopened.
+                </li>
+            </ul>
+
+            <button class="btn-start" onclick="startExam()">
+                Start Examination
+            </button>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import {
+            getAuth,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+            authDomain: "waec2026jamb2027.firebaseapp.com",
+            projectId: "waec2026jamb2027",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loadingScreen = document.getElementById("loading");
+        const mainContent = document.getElementById("main-content");
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loadingScreen.style.display = "none";
+                mainContent.style.display = "block";
+                document.body.style.display = "block";
+                loadSelectionData();
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        function loadSelectionData() {
+
+            // Exam Name
+            const displayName = localStorage.getItem("displayExamName") || "JAMB";
+            document.getElementById("display-exam").innerText = displayName;
+
+            // Subjects
+            const subjects = JSON.parse(localStorage.getItem("userSubjectKeys")) || ["English Language"];
+            const subjectContainer = document.getElementById("display-subjects");
+
+            subjectContainer.innerHTML = "";
+
+            subjects.forEach(subject => {
+                const tag = document.createElement("div");
+                tag.className = "tag";
+                tag.innerText = subject;
+                subjectContainer.appendChild(tag);
+            });
+
+            // Exam Mode
+            const mode = localStorage.getItem("examMode") || "Practice";
+            document.getElementById("display-mode").innerText = `${mode} Mode`;
+
+            // Time Logic
+            let timeDisplay = "50 Minutes";
+
+            if (mode.toLowerCase() === "full") {
+                timeDisplay = "2 Hours (120 Minutes)";
+            }
+
+            document.getElementById("display-time").innerText = timeDisplay;
+        }
+
+        window.startExam = function () {
+
+            // Optional Sound or Animation can be added here
+
+            window.location.href = "exam.html";
+        };
+    </script>
+
+</body>
+</html>

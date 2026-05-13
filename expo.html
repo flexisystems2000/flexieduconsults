@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flexi Tutors | Student Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v2/inline.js"></script>
+
+<style>
+:root { 
+    --blue: #003366; 
+    --green: #2E8B57; 
+    --light-bg: #f8fafc;
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--light-bg);
+    color: #1a202c;
+}
+
+header { 
+    background: var(--blue);
+    color: white;
+    height: 60px; 
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 4px solid var(--green);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.brand-name { font-weight: 800; font-size: 0.9rem; margin-left: 10px; }
+
+.container { max-width: 550px; margin: 20px auto; width: 92%; }
+.card { background: white; padding: 25px; border-radius: 16px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+.btn-blue { background: var(--blue); color: white; }
+.btn-green { background: var(--green); color: white; }
+
+.info-strip {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--blue);
+}
+.info-label { font-size: 0.75rem; font-weight: bold; color: #718096; text-transform: uppercase; }
+.info-value { font-weight: 800; color: var(--blue); font-size: 1.1rem; }
+
+.img-wrapper { position: relative; margin-bottom: 15px; }
+.img-actions { display: flex; gap: 8px; margin-top: 8px; }
+.action-btn {
+    background: #e7f3ef;
+    color: var(--green);
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-icon { height: 16px; width: 16px; }
+
+.ans-section {
+    border-left: 4px solid var(--green);
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    /* CRITICAL FOR SPACING */
+    white-space: pre-wrap; 
+    word-wrap: break-word;
+}
+.ans-num { font-weight: 800; color: var(--blue); margin-bottom: 5px; font-size: 0.9rem; }
+
+#lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.98);
+    z-index: 3000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#lightbox-img { max-width: 95%; max-height: 85%; object-fit: contain; }
+
+.lb-top-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.lb-btn {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lb-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 2.5rem;
+    border: none;
+    padding: 30px 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.lb-nav:disabled { opacity: 0.1; cursor: not-allowed; }
+.lb-prev { left: 0; border-radius: 0 15px 15px 0; }
+.lb-next { right: 0; border-radius: 15px 0 0 15px; }
+
+#expo-display { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f4f7f6; overflow-y: auto; z-index: 2000; }
+
+#question-area p {
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<div id="lightbox" onclick="closeOnBg(event)">
+    <div class="lb-top-bar">
+        <a class="lb-btn" id="lb-download" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" class="btn-icon" style="filter: invert(1);"> Download
+        </a>
+        <button class="lb-btn" id="lb-share">
+            <img src="https://cdn-icons-png.flaticon.com/512/1358/1358023.png" class="btn-icon" style="filter: invert(1);"> Share
+        </button>
+    </div>
+
+    <button class="lb-nav lb-prev" id="lb-prev-btn">&lt;</button>
+    <img id="lightbox-img" src="">
+    <button class="lb-nav lb-next" id="lb-next-btn">&gt;</button>
+</div>
+
+<div id="main-page">
+    <header>
+        <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" style="height:35px; border-radius:5px;">
+        <span class="brand-name">Flexi Educational Consult</span>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h3>🔑 Unlock Exam Portal</h3>
+            <input type="text" id="login-pin" maxlength="4" placeholder="ENTER PIN" style="text-align:center; letter-spacing:8px; font-weight:bold;">
+            <button class="btn btn-blue" id="unlock-btn">VIEW ANSWERS</button>
+        </div>
+
+        <div class="card">
+            <h3>🛒 Purchase Subject PIN</h3>
+            <input type="email" id="user-email" placeholder="Enter email" style="margin-bottom:10px;">
+            <select id="buy-subject">
+                <option>Account</option>
+                <option>Agricultural Science</option>
+                <option>Animal Husbandry</option>
+                <option>Arabic</option>
+                <option>Biology</option>
+                <option>Catering Craft Practice</option>
+                <option>Chemistry</option>
+                <option>Christian Religious Studies (CRS)</option>
+                <option>Book Keeping</option>
+                <option>Civic Education</option>
+                <option>Commerce</option>
+                <option>Computer Studies</option>
+                <option>Data Processing</option>
+                <option>Economics</option>
+                <option>Fine Arts</option>
+                <option>Food and Nutrition</option>
+                <option>French</option>
+                <option>Further Mathematics</option>
+                <option>Geography</option>
+                <option>Government</option>
+                <option>Hausa</option>
+                <option>History</option>
+                <option>Home Economics</option>
+                <option>Igbo</option>
+                <option>Insurance</option>
+                <option>Home Management</option>
+                <option>Islamic Religious Knowledge (IRK)</option>
+                <option>Literature In English</option>
+                <option>Livestock Management</option>
+                <option>Marketing</option>
+                <option>Mathematics</option>
+                <option>Music</option>
+                <option>Office Practice</option>
+                <option>Physical Education</option>
+                <option>Physics</option>
+                <option>Technical Drawing</option>
+                <option>Yoruba</option>
+            </select>
+            <button class="btn btn-green" id="pay-btn">PAY WITH PAYSTACK</button>
+        </div>
+    </div>
+</div>
+
+<div id="expo-display">
+    <header>
+        <span class="brand-name">EXAMINATION HUB</span>
+    </header>
+    
+    <div class="container">
+        <div class="info-strip">
+            <span class="info-label">Subject:</span><br>
+            <span class="info-value" id="display-subject-name">--</span><br><br>
+            <span class="info-label">Access PIN:</span><br>
+            <span class="info-value" id="display-active-pin" style="color:var(--green);">----</span>
+        </div>
+
+        <h4 style="margin-bottom:10px; color:var(--blue);">QUESTIONS</h4>
+        <div id="question-area"></div>
+
+        <h4 style="margin:25px 0 10px; color:var(--blue);">ANSWERS</h4>
+        <div id="answer-area"></div>
+    </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const app = initializeApp({ apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", projectId: "waec2026jamb2027" });
+const db = getFirestore(app);
+
+let allImageUrls = [];
+let currentImgIndex = 0;
+
+const cleanText = (str) => str ? str.replace(/\*/g, '') : "";
+
+/* --- PAYSTACK INTEGRATION (PIN-ONLY CHECK) --- */
+document.getElementById('pay-btn').onclick = async () => {
+    const email = document.getElementById('user-email').value;
+    const subject = document.getElementById('buy-subject').value;
+
+    if(!email) return alert("Please enter your email first.");
+
+    const btn = document.getElementById('pay-btn');
+    const originalText = btn.innerText;
+    
+    // UI Feedback
+    btn.innerText = "Checking PIN availability...";
+    btn.disabled = true;
+
+    try {
+        // Check if the PIN is actually set in the database
+        const pinRef = doc(db, "expo_pins", subject);
+        const pinSnap = await getDoc(pinRef);
+
+        if (!pinSnap.exists()) {
+            alert(`⚠️ Subject Not Ready: The Access PIN for ${subject} has not been set by the Admin yet. Please do not pay until it is available.`);
+            btn.innerText = originalText;
+            btn.disabled = false;
+            return; // Stops the Paystack window from opening
+        }
+
+        // If PIN exists, proceed to Paystack
+        const handler = PaystackPop.setup({
+            key: 'pk_live_bb0c7b83bfdbd0c9990e2c7f7fd73a86d4821a00', // REPLACE WITH YOUR LIVE KEY
+            email: email,
+            amount: 1000 * 100, 
+            currency: 'NGN',
+            callback: function(response) {
+                // Payment successful - show the PIN we already fetched
+                alert(`✅ Payment Successful!\n\nSubject: ${subject}\nYour Access PIN is: ${pinSnap.data().pinCode}\n\nPlease write this down immediately!`);
+            },
+            onClose: function() {
+                alert('Transaction cancelled.');
+            }
+        });
+        handler.openIframe();
+
+    } catch (error) {
+        console.error("Verification error:", error);
+        alert("Connection error. Could not verify PIN status.");
+    } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }
+};
+
+
+/* --- LIGHTBOX LOGIC --- */
+async function shareContent(url) {
+    if (navigator.share) {
+        try { await navigator.share({ title: 'Flexi Exam Hub', text: 'Exam Content', url: url }); } catch (err) {}
+    } else { alert("Sharing not supported on this browser."); }
+}
+
+function updateNavButtons() {
+    document.getElementById('lb-prev-btn').disabled = (currentImgIndex === 0);
+    document.getElementById('lb-next-btn').disabled = (currentImgIndex === allImageUrls.length - 1);
+}
+
+function openLightbox(index) {
+    currentImgIndex = index;
+    const url = allImageUrls[currentImgIndex];
+    document.getElementById('lightbox-img').src = url;
+    document.getElementById('lb-download').href = url;
+    document.getElementById('lightbox').style.display = 'flex';
+    updateNavButtons();
+}
+
+window.closeOnBg = (e) => { if(e.target.id === 'lightbox') document.getElementById('lightbox').style.display = 'none'; };
+
+document.getElementById('lb-prev-btn').onclick = () => { if(currentImgIndex > 0) { currentImgIndex--; openLightbox(currentImgIndex); } };
+document.getElementById('lb-next-btn').onclick = () => { if(currentImgIndex < allImageUrls.length - 1) { currentImgIndex++; openLightbox(currentImgIndex); } };
+document.getElementById('lb-share').onclick = () => shareContent(allImageUrls[currentImgIndex]);
+
+function createImgElement(url, index) {
+    const wrapper = document.createElement('div');
+    wrapper.className = "img-wrapper";
+    wrapper.innerHTML = `
+        <img src="${url}" style="width:100%; border-radius:12px; cursor:pointer;" onclick="openLightbox(${index})">
+        <div class="img-actions">
+            <a href="${url}" target="_blank" class="action-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" class="btn-icon"> Download
+            </a>
+            <button class="action-btn" id="share-btn-${index}">
+                <img src="https://cdn-icons-png.flaticon.com/512/1358/1358023.png" class="btn-icon"> Share
+            </button>
+        </div>
+    `;
+    setTimeout(() => { document.getElementById(`share-btn-${index}`).onclick = () => shareContent(url); }, 0);
+    return wrapper;
+}
+
+/* --- UNLOCK PORTAL --- */
+document.getElementById('unlock-btn').onclick = async () => {
+    const pin = document.getElementById('login-pin').value;
+    const q = query(collection(db,"expo_pins"), where("pinCode","==",pin));
+    const snap = await getDocs(q);
+
+    if(snap.empty) return alert("Invalid PIN");
+
+    const subject = snap.docs[0].data().subject;
+    const dataSnap = await getDoc(doc(db, "expo_data", subject));
+
+    if(dataSnap.exists()) {
+        const data = dataSnap.data();
+        document.getElementById('main-page').style.display = 'none';
+        document.getElementById('expo-display').style.display = 'block';
+        document.getElementById('display-subject-name').innerText = subject;
+        document.getElementById('display-active-pin').innerText = pin;
+
+        allImageUrls = [];
+        const qImgs = data.questionImages || data.questionImage;
+        if(qImgs) {
+            if(Array.isArray(qImgs)) allImageUrls.push(...qImgs);
+            else allImageUrls.push(qImgs);
+        }
+        for(let i=1; i<=20; i++) { if(data[`ansImg${i}`]) allImageUrls.push(data[`ansImg${i}`]); }
+
+        const qArea = document.getElementById('question-area');
+        qArea.innerHTML = "";
+        let imgIdx = 0;
+        
+        if(qImgs) {
+            if(Array.isArray(qImgs)) { qImgs.forEach(url => { qArea.appendChild(createImgElement(url, imgIdx)); imgIdx++; }); } 
+            else { qArea.appendChild(createImgElement(qImgs, imgIdx)); imgIdx++; }
+        }
+
+        const aArea = document.getElementById('answer-area');
+        aArea.innerHTML = "";
+        for(let i=1; i<=20; i++) {
+            const ansText = data[`ans${i}`];
+            const ansImg = data[`ansImg${i}`];
+            if(ansText || ansImg) {
+                const div = document.createElement('div');
+                div.className = "ans-section";
+                div.innerHTML = `<div class="ans-num">NUMBER ${i}</div>`;
+                if(ansText) {
+                    const txtSpan = document.createElement('div');
+                    txtSpan.textContent = cleanText(ansText); // PRESERVES SPACING
+                    div.appendChild(txtSpan);
+                }
+                if(ansImg) { div.appendChild(createImgElement(ansImg, imgIdx)); imgIdx++; }
+                aArea.appendChild(div);
+            }
+        }
+    } else {
+        alert("Exam data not yet available for this subject.");
+    }
+};
+
+window.openLightbox = openLightbox;
+</script>
+</body>
+</html>

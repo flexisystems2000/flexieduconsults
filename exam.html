@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flexi CBT | Simulator</title>
+    
+    <style>
+        :root { --j-green: #228B22; --j-red: #cc0000; --ui-dark: #1a1a1a; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: sans-serif; }
+        body { margin: 0; display: none; background: #fff; overflow-x: hidden; }
+
+        /* HEADER */
+        header { background: var(--j-green); color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .h-left { font-weight: bold; font-size: 0.8rem; line-height: 1.2; }
+        .h-right { display: flex; align-items: center; gap: 12px; }
+        #timer { font-size: 1.2rem; font-weight: bold; min-width: 80px; text-align: right; }
+        .calc-icon { width: 26px; height: 26px; cursor: pointer; filter: invert(1); }
+
+        /* HORIZONTAL BEAKER PROGRESS */
+        .beaker-wrap { width: 80px; height: 12px; display: flex; align-items: center; justify-content: flex-start; }
+        .beaker-dot { width: 10px; height: 10px; background: #ff0000; border-radius: 50%; z-index: 2; }
+        .beaker-liquid { height: 3px; background: #ff0000; transition: width 1s linear; margin-left: -2px; border-radius: 0 5px 5px 0; }
+
+        /* SUBJECT TABS */
+        .subject-nav { display: flex; overflow-x: auto; padding: 10px; gap: 8px; border-bottom: 1px solid #eee; background: #fff; position: sticky; top: 56px; z-index: 90; scrollbar-width: none; }
+        .subject-tab { padding: 6px 16px; font-size: 0.85rem; border-radius: 20px; border: 1px solid #ccc; white-space: nowrap; transition: 0.2s; }
+        .subject-tab.active { color: var(--j-red); border-color: var(--j-red); font-weight: bold; background: #fff5f5; }
+
+        /* MAIN SCROLL AREA */
+        .main-scroll { padding: 20px; padding-bottom: 120px; }
+        .q-text { font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px; font-weight: 500; min-height: 60px; color: #333; }
+        
+        .opt-row { display: flex; align-items: center; padding: 14px 0; cursor: pointer; border-bottom: 1px solid #f2f2f2; }
+        .custom-radio { width: 22px; height: 22px; border: 2px solid #555; border-radius: 50%; margin-right: 12px; position: relative; flex-shrink: 0; }
+        .custom-radio.checked { border-color: #007bff; }
+        .custom-radio.checked::after { content: ""; width: 12px; height: 12px; background: #007bff; border-radius: 50%; position: absolute; top: 3px; left: 3px; }
+
+        /* NAVIGATION BUTTONS */
+        .action-area { margin-top: 30px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-pills { display: flex; justify-content: space-between; gap: 10px; }
+        .btn-pill { flex: 1; padding: 14px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 0.9rem; cursor: pointer; }
+        .btn-prev { background: #666; }
+        .btn-next { background: var(--j-green); }
+        .btn-submit { background: var(--j-red); width: 100%; margin-top: 5px; }
+
+        /* GRID MAP */
+        .grid-container { margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; }
+        .num-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .num-box { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 1rem; font-weight: bold; color: #fff; cursor: pointer; transition: 0.2s; }
+        .num-box.untouched { background: #ddd; color: #777; }
+        .num-box.answered { background: var(--j-green); }
+        .num-box.current { border: 3px solid #000; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+
+        /* CALCULATOR */
+        #calc-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; }
+        .calc-card { background: #000; width: 90%; max-width: 340px; border-radius: 25px; overflow: hidden; padding-bottom: 10px; }
+        #cD { color: #fff; padding: 20px; text-align: right; font-size: 2.2rem; min-height: 70px; }
+        .calc-utility-bar { background: #1e5d2d; display: grid; grid-template-columns: repeat(5, 1fr); }
+        .calc-utility-bar button { background: none; border: none; color: #fff; font-size: 1.2rem; padding: 15px 0; font-weight: bold; }
+        .calc-grid { display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px; }
+        .calc-grid button { background: none; border: none; color: #fff; font-size: 1.6rem; padding: 18px 0; }
+        .close-btn { width: 100%; background: #222; border: none; color: #999; padding: 15px; font-size: 0.8rem; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="h-left">Flexi CBT<br><span id="display-name">...</span></div>
+    <div class="h-right">
+        <div class="beaker-wrap">
+            <div class="beaker-dot"></div>
+            <div id="beaker-liquid" class="beaker-liquid"></div>
+        </div>
+        <div id="timer">0:00:00</div>
+        <img src="https://i.postimg.cc/3rk3rtb6/Background-Eraser-20260213-084152616.png" class="calc-icon" onclick="toggleCalc()">
+    </div>
+</header>
+
+<div id="subject-tabs-container" class="subject-nav"></div>
+
+<main class="main-scroll">
+    <div id="question-area">
+        <div class="q-text"><span id="q-idx">1.</span> <span id="q-text">Loading question...</span></div>
+        <div id="options-list"></div>
+    </div>
+
+    <div class="action-area">
+        <div class="nav-pills">
+            <button class="btn-pill btn-prev" onclick="prevQuestion()">PREVIOUS</button>
+            <button class="btn-pill btn-next" onclick="nextQuestion()">NEXT</button>
+        </div>
+        <button class="btn-pill btn-submit" onclick="submitExam()">FINISH & SUBMIT</button>
+    </div>
+
+    <div class="grid-container">
+        <p style="font-weight: bold; font-size: 0.7rem; color: #999; margin-bottom: 12px; text-transform: uppercase;">Question Map</p>
+        <div id="num-grid" class="num-grid"></div>
+    </div>
+</main>
+
+<div id="calc-overlay">
+    <div class="calc-card">
+        <div id="cD">0</div>
+        <div class="calc-utility-bar">
+            <button onclick="pC('1')">1</button><button onclick="pC('2')">2</button><button onclick="pC('3')">3</button>
+            <button onclick="dC()">DEL</button><button onclick="cC()">AC</button>
+        </div>
+        <div class="calc-grid">
+            <button onclick="pC('4')">4</button><button onclick="pC('5')">5</button><button onclick="pC('6')">6</button><button onclick="pC('+')">+</button><button onclick="pC('-')">-</button>
+            <button onclick="pC('7')">7</button><button onclick="pC('8')">8</button><button onclick="pC('9')">9</button><button onclick="pC('*')">×</button><button onclick="pC('/')">÷</button>
+            <button style="grid-column: span 1"></button><button onclick="pC('0')">0</button><button onclick="pC('.')">.</button>
+            <button style="grid-column: span 1"></button><button onclick="sC()" style="font-size: 2rem; color: #2E8B57;">=</button>
+        </div>
+        <button class="close-btn" onclick="toggleCalc()">CLOSE CALCULATOR</button>
+    </div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getDatabase, ref, get, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = { 
+    apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", 
+    authDomain: "waec2026jamb2027.firebaseapp.com", 
+    databaseURL: "https://waec2026jamb2027-default-rtdb.firebaseio.com", 
+    projectId: "waec2026jamb2027" 
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+let examData = {}, userAnswers = {}, visitedQuestions = {};
+let currentSubject = "", currentQIndex = 0;
+let timerInterval; 
+const totalDuration = (localStorage.getItem("examMode") === "Full" ? 120 : 50) * 60;
+let timeLeft = totalDuration;
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        document.body.style.display = "block";
+        document.getElementById('display-name').innerText = user.displayName || "Candidate";
+        startEngine();
+    } else { window.location.href = "login.html"; }
+});
+
+async function startEngine() {
+    const subjects = JSON.parse(localStorage.getItem("userSubjectKeys")) || ["English Language"];
+    currentSubject = subjects[0];
+    renderSubjectTabs(subjects);
+
+    for (const sub of subjects) {
+        examData[sub] = await fetchQuestions(sub);
+        userAnswers[sub] = {};
+        visitedQuestions[sub] = new Set();
+    }
+    runTimer();
+    updateUI();
+}
+
+async function fetchQuestions(subjectName) {
+    const examType = localStorage.getItem("selectedExamType") || "JAMB";
+    // Dynamic year: uses the year chosen by the user, or defaults to 2026
+    const year = localStorage.getItem("selectedYear") || "2026"; 
+
+    try {
+        const examRef = ref(db, `exams/${examType}/${subjectName}/${year}`);
+        const snapshot = await get(examRef);
+        if (snapshot.exists()) {
+            let fetched = snapshot.val();
+            // Handle both Array and Object formats from Realtime DB
+            return Array.isArray(fetched) ? fetched : Object.values(fetched);
+        } else { 
+            return generatePlaceholders(subjectName, year); 
+        }
+    } catch (error) { 
+        return generatePlaceholders(subjectName, year); 
+    }
+}
+
+function generatePlaceholders(sub, yr) {
+    return Array.from({ length: 40 }, (_, i) => ({
+        question: `[Empty] Question ${i+1} for ${sub}. Admin has not uploaded ${sub} (${yr}) questions yet.`,
+        options: ["Option A", "Option B", "Option C", "Option D"],
+        answer: "A"
+    }));
+}
+
+function renderSubjectTabs(subjects) {
+    const container = document.getElementById('subject-tabs-container');
+    container.innerHTML = subjects.map(sub => `
+        <div class="subject-tab ${sub === currentSubject ? 'active' : ''}" onclick="switchSubject('${sub}')">${sub}</div>
+    `).join('');
+}
+
+function updateUI() {
+    visitedQuestions[currentSubject]?.add(currentQIndex);
+    renderQuestion();
+    renderGrid();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderQuestion() {
+    const q = examData[currentSubject][currentQIndex];
+    document.getElementById('q-idx').innerText = `${currentQIndex + 1}.`;
+    document.getElementById('q-text').innerHTML = q.question;
+    const letters = ['A','B','C','D'];
+    // Flexible option keys: checks 'options' array first, then individual keys
+    const optionsArray = q.options ? q.options : [q.optA, q.optB, q.optC, q.optD];
+    
+    document.getElementById('options-list').innerHTML = optionsArray.map((opt, i) => `
+        <div class="opt-row" onclick="selectOption('${letters[i]}')">
+            <div class="custom-radio ${userAnswers[currentSubject][currentQIndex] === letters[i] ? 'checked' : ''}"></div>
+            <span>${letters[i]}. ${opt}</span>
+        </div>
+    `).join('');
+}
+
+function renderGrid() {
+    const grid = document.getElementById('num-grid');
+    grid.innerHTML = examData[currentSubject].map((_, i) => {
+        let status = userAnswers[currentSubject][i] ? 'answered' : 'untouched';
+        let current = i === currentQIndex ? 'current' : '';
+        return `<div class="num-box ${status} ${current}" onclick="jumpTo(${i})">${i+1}</div>`;
+    }).join('');
+}
+
+function runTimer() {
+    const liquid = document.getElementById('beaker-liquid');
+    const timerDiv = document.getElementById('timer');
+    timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            submitExam(true); 
+        }
+        const h = Math.floor(timeLeft / 3600), m = Math.floor((timeLeft % 3600) / 60), s = timeLeft % 60;
+        timerDiv.innerText = `${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        if(liquid) liquid.style.width = `${(timeLeft / totalDuration) * 100}%`;
+        timeLeft--;
+    }, 1000);
+}
+
+window.nextQuestion = () => { if (currentQIndex < examData[currentSubject].length - 1) { currentQIndex++; updateUI(); } };
+window.prevQuestion = () => { if (currentQIndex > 0) { currentQIndex--; updateUI(); } };
+window.jumpTo = (i) => { currentQIndex = i; updateUI(); };
+window.switchSubject = (sub) => { 
+    currentSubject = sub; 
+    currentQIndex = 0; 
+    renderSubjectTabs(JSON.parse(localStorage.getItem("userSubjectKeys"))); 
+    updateUI(); 
+};
+window.selectOption = (l) => { userAnswers[currentSubject][currentQIndex] = l; updateUI(); };
+
+window.submitExam = async (auto = false) => { 
+    if (auto || confirm("Are you sure you want to submit your exam?")) {
+        clearInterval(timerInterval);
+        
+        let totalCorrect = 0, totalQ = 0;
+        Object.keys(examData).forEach(sub => {
+            examData[sub].forEach((q, i) => { if (userAnswers[sub][i] === q.answer) totalCorrect++; });
+            totalQ += examData[sub].length;
+        });
+        const finalPercent = Math.round((totalCorrect / totalQ) * 100);
+
+        // Saved with UID for accurate Profile Tracking
+        const scoreData = {
+            userId: auth.currentUser.uid,
+            name: auth.currentUser.displayName || "Anonymous Student",
+            score: finalPercent,
+            exam: localStorage.getItem("displayExamName") || "General Test",
+            timestamp: Date.now()
+        };
+        
+        try {
+            await push(ref(db, 'leaderboard'), scoreData);
+        } catch(e) { console.error("Ranking Sync Error:", e); }
+
+        localStorage.setItem("finalAnswers", JSON.stringify(userAnswers));
+        localStorage.setItem("examQuestions", JSON.stringify(examData));
+        window.location.href = "results.html"; 
+    }
+};
+
+// Calculator Logic
+let cV = "";
+window.toggleCalc = () => { const c = document.getElementById('calc-overlay'); c.style.display = (c.style.display === 'flex') ? 'none' : 'flex'; };
+window.pC = (v) => { cV += v; document.getElementById('cD').innerText = cV; };
+window.cC = () => { cV = ""; document.getElementById('cD').innerText = "0"; };
+window.dC = () => { cV = cV.slice(0, -1); document.getElementById('cD').innerText = cV || "0"; };
+window.sC = () => { try { cV = eval(cV.replace(/×/g, '*').replace(/÷/g, '/')).toString(); document.getElementById('cD').innerText = cV; } catch { cC(); } };
+</script>
+</body>
+</html>

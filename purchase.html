@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexi Tutors | Purchase Cards</title>
+    <script src="https://js.paystack.co/v2/inline.js"></script>
+    <style>
+        :root { --blue: #003366; --green: #2E8B57; --yellow: #FFD700; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        header { 
+            background: var(--blue); color: white; height: 1.2cm; 
+            display: flex; align-items: center; padding: 0 15px;
+            border-bottom: 3px solid var(--green); position: sticky; top: 0; z-index: 1000;
+        }
+        .back-btn { color: white; text-decoration: none; font-size: 22px; margin-right: 15px; }
+        .container { max-width: 500px; margin: 20px auto; width: 92%; padding-bottom: 50px; }
+        .product-card {
+            background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;
+            border: 1px solid #eee; text-align: center; padding: 20px;
+        }
+        .product-img { width: 100%; max-height: 160px; object-fit: contain; margin-bottom: 15px; border-radius: 10px; }
+        .product-name { font-size: 19px; font-weight: bold; color: var(--blue); margin-bottom: 5px; }
+        .product-desc { font-size: 13px; color: #666; margin-bottom: 15px; }
+        .product-price { font-size: 24px; font-weight: 800; color: var(--green); margin-bottom: 20px; }
+        .buy-btn {
+            background: var(--blue); color: white; border: none;
+            padding: 15px 30px; border-radius: 30px; font-size: 16px;
+            font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s ease;
+        }
+        .buy-btn:disabled { background: #888 !important; cursor: not-allowed; transform: none; }
+        .buy-btn:active:not(:disabled) { transform: scale(0.97); }
+        
+        #result-display {
+            background: white; padding: 30px; border-radius: 20px;
+            text-align: center; border: 2px solid var(--green); margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .pin-box { 
+            background: #f0f4f8; padding: 20px; border-radius: 12px; 
+            border: 2px dashed var(--blue); margin: 20px 0; font-family: monospace;
+            font-size: 1.1rem; line-height: 1.8;
+        }
+        footer { background: var(--blue); color: white; padding: 30px 15px; text-align: center; border-top: 5px solid var(--green); margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="back-btn">❮</a>
+    <span style="font-weight: bold; font-size: 16px;">Secure Checkout</span>
+</header>
+
+<div class="container" id="main-content">
+    <div class="product-card">
+        <img src="https://i.postimg.cc/tTvwhTSh/product3-2.jpg" class="product-img" alt="WAEC">
+        <div class="product-name">WAEC Scratch Card</div>
+        <div class="product-desc">Instant Result Checker & Registration PIN</div>
+        <div class="product-price">₦<span id="price-waec">...</span></div>
+        <button id="btn-WAEC" class="buy-btn" onclick="payWithPaystack('WAEC', 'price-waec')">Purchase WAEC Card</button>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.postimg.cc/hvS8PbbN/product28-2.jpg" class="product-img" alt="NECO">
+        <div class="product-name">NECO Token</div>
+        <div class="product-desc">Official NECO Result Checker Token</div>
+        <div class="product-price">₦<span id="price-neco">...</span></div>
+        <button id="btn-NECO" class="buy-btn" onclick="payWithPaystack('NECO', 'price-neco')">Purchase NECO Token</button>
+    </div>
+</div>
+
+<footer>
+    <div>&copy; <span id="current-year"></span> flexieduconsult</div>
+</footer>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, query, where, limit, getDocs, updateDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+        authDomain: "waec2026jamb2027.firebaseapp.com",
+        projectId: "waec2026jamb2027",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 1. Fetch Prices & Check Stock Immediately
+    async function initStore() {
+        try {
+            // Prices
+            const priceRef = doc(db, "store", "prices");
+            const priceSnap = await getDoc(priceRef);
+            if (priceSnap.exists()) {
+                document.getElementById('price-waec').innerText = priceSnap.data().waec || "5,500";
+                document.getElementById('price-neco').innerText = priceSnap.data().neco || "4,000";
+            }
+
+            // Stock Check (Auto-Disable Buttons)
+            const types = ['WAEC', 'NECO'];
+            for (const type of types) {
+                const q = query(collection(db, "pins"), where("examType", "==", type), where("status", "==", "available"), limit(1));
+                const snap = await getDocs(q);
+                if (snap.empty) {
+                    const btn = document.getElementById(`btn-${type}`);
+                    btn.innerText = "OUT OF STOCK";
+                    btn.disabled = true;
+                }
+            }
+        } catch (e) { console.error("Store Init Error:", e); }
+    }
+
+    // 2. Paystack v2 Handler
+    window.payWithPaystack = (type, priceId) => {
+        const priceText = document.getElementById(priceId).textContent;
+        const cleanAmount = parseInt(priceText.replace(/\D/g, ''));
+        
+        const paystack = new PaystackPop();
+        paystack.newTransaction({
+            key: 'pk_test_9408761e58ce1fe7a3a57c0df2422d887c3d4b35',
+            email: 'billing@flexitutors.com',
+            amount: cleanAmount * 100,
+            onSuccess: (transaction) => {
+                fetchPinFromVault(type, transaction.reference);
+            },
+            onCancel: () => { alert("Transaction Cancelled."); }
+        });
+    };
+
+    // 3. Vault Retrieval & Alert Trigger
+    async function fetchPinFromVault(type, payRef) {
+        const container = document.getElementById('main-content');
+        container.innerHTML = `<div style="text-align:center; padding:50px;"><h2>Validating Payment...</h2><p>Retrieving your PIN from the secure vault.</p></div>`;
+
+        try {
+            // Get all available to check total count for alert
+            const q = query(collection(db, "pins"), where("examType", "==", type), where("status", "==", "available"));
+            const snap = await getDocs(q);
+
+            if (!snap.empty) {
+                const pinDoc = snap.docs[0];
+                const data = pinDoc.data();
+                const stockRemaining = snap.size; 
+
+                // Mark card as sold
+                await updateDoc(doc(db, "pins", pinDoc.id), {
+                    status: "sold",
+                    soldAt: serverTimestamp(),
+                    paymentRef: payRef
+                });
+
+                // ALERT SYSTEM: If this was the last card, notify the admin panel
+                if (stockRemaining === 1) {
+                    await addDoc(collection(db, "restock_alerts"), {
+                        item: type,
+                        status: "unread",
+                        timestamp: serverTimestamp()
+                    });
+                }
+
+                // Success UI
+                container.innerHTML = `
+                    <div id="result-display">
+                        <h2 style="color:var(--green);">Payment Successful!</h2>
+                        <div class="pin-box">
+                            ${type === "WAEC" ? `<b>SERIAL:</b> ${data.serial}<br><b>PIN:</b> ${data.pinCode}` : `<b>TOKEN:</b> ${data.token}`}
+                        </div>
+                        <p style="font-size:12px; color:red; font-weight:bold;">Screenshot this now. It will not be shown again.</p>
+                        <button onclick="window.location.href='index.html'" class="buy-btn" style="background:var(--green); margin-top:15px;">Return Home</button>
+                    </div>`;
+            } else {
+                container.innerHTML = `<div id="result-display" style="border-color:red;"><h2>Stock Error</h2><p>Payment received (Ref: ${payRef}), but stock just ran out. Contact support for your PIN.</p></div>`;
+            }
+        } catch (e) { console.error("Vault Error:", e); }
+    }
+
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    initStore();
+</script>
+</body>
+</html>
