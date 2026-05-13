@@ -90,11 +90,19 @@ input, select {
     margin-bottom: 15px;
     border-radius: 0 12px 12px 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    /* CRITICAL FOR SPACING */
     white-space: pre-wrap; 
     word-wrap: break-word;
 }
 .ans-num { font-weight: 800; color: var(--blue); margin-bottom: 5px; font-size: 0.9rem; }
+
+/* NEW OBJECTIVE STYLING */
+.obj-container {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px dashed #cbd5e0;
+    margin-bottom: 25px;
+}
 
 #lightbox {
     display: none;
@@ -245,10 +253,17 @@ input, select {
             <span class="info-value" id="display-active-pin" style="color:var(--green);">----</span>
         </div>
 
+
         <h4 style="margin-bottom:10px; color:var(--blue);">QUESTIONS</h4>
         <div id="question-area"></div>
 
-        <h4 style="margin:25px 0 10px; color:var(--blue);">ANSWERS</h4>
+        <!-- OBJECTIVE SECTION -->
+        <h4 style="margin-bottom:10px; color:var(--blue);">OBJECTIVES</h4>
+        <div id="obj-area" class="obj-container">
+            <p style="color:#718096; font-style:italic;">Objective answers loading...</p>
+        </div>
+
+        <h4 style="margin:25px 0 10px; color:var(--blue);">THEORY ANSWERS</h4>
         <div id="answer-area"></div>
     </div>
 </div>
@@ -265,57 +280,43 @@ let currentImgIndex = 0;
 
 const cleanText = (str) => str ? str.replace(/\*/g, '') : "";
 
-/* --- PAYSTACK INTEGRATION (PIN-ONLY CHECK) --- */
+/* --- PAYSTACK INTEGRATION --- */
 document.getElementById('pay-btn').onclick = async () => {
     const email = document.getElementById('user-email').value;
     const subject = document.getElementById('buy-subject').value;
-
     if(!email) return alert("Please enter your email first.");
-
     const btn = document.getElementById('pay-btn');
     const originalText = btn.innerText;
-    
-    // UI Feedback
     btn.innerText = "Checking PIN availability...";
     btn.disabled = true;
 
     try {
-        // Check if the PIN is actually set in the database
         const pinRef = doc(db, "expo_pins", subject);
         const pinSnap = await getDoc(pinRef);
-
         if (!pinSnap.exists()) {
-            alert(`⚠️ Subject Not Ready: The Access PIN for ${subject} has not been set by the Admin yet. Please do not pay until it is available.`);
+            alert(`⚠️ Subject Not Ready: The Access PIN for ${subject} has not been set yet.`);
             btn.innerText = originalText;
             btn.disabled = false;
-            return; // Stops the Paystack window from opening
+            return;
         }
-
-        // If PIN exists, proceed to Paystack
         const handler = PaystackPop.setup({
-            key: 'pk_live_bb0c7b83bfdbd0c9990e2c7f7fd73a86d4821a00', // REPLACE WITH YOUR LIVE KEY
+            key: 'pk_live_bb0c7b83bfdbd0c9990e2c7f7fd73a86d4821a00',
             email: email,
             amount: 1000 * 100, 
             currency: 'NGN',
             callback: function(response) {
-                // Payment successful - show the PIN we already fetched
-                alert(`✅ Payment Successful!\n\nSubject: ${subject}\nYour Access PIN is: ${pinSnap.data().pinCode}\n\nPlease write this down immediately!`);
+                alert(`✅ Payment Successful!\n\nSubject: ${subject}\nYour Access PIN is: ${pinSnap.data().pinCode}`);
             },
-            onClose: function() {
-                alert('Transaction cancelled.');
-            }
+            onClose: function() { alert('Transaction cancelled.'); }
         });
         handler.openIframe();
-
     } catch (error) {
-        console.error("Verification error:", error);
-        alert("Connection error. Could not verify PIN status.");
+        alert("Connection error.");
     } finally {
         btn.innerText = originalText;
         btn.disabled = false;
     }
 };
-
 
 /* --- LIGHTBOX LOGIC --- */
 async function shareContent(url) {
@@ -339,7 +340,6 @@ function openLightbox(index) {
 }
 
 window.closeOnBg = (e) => { if(e.target.id === 'lightbox') document.getElementById('lightbox').style.display = 'none'; };
-
 document.getElementById('lb-prev-btn').onclick = () => { if(currentImgIndex > 0) { currentImgIndex--; openLightbox(currentImgIndex); } };
 document.getElementById('lb-next-btn').onclick = () => { if(currentImgIndex < allImageUrls.length - 1) { currentImgIndex++; openLightbox(currentImgIndex); } };
 document.getElementById('lb-share').onclick = () => shareContent(allImageUrls[currentImgIndex]);
@@ -358,7 +358,10 @@ function createImgElement(url, index) {
             </button>
         </div>
     `;
-    setTimeout(() => { document.getElementById(`share-btn-${index}`).onclick = () => shareContent(url); }, 0);
+    setTimeout(() => { 
+        const sBtn = document.getElementById(`share-btn-${index}`);
+        if(sBtn) sBtn.onclick = () => shareContent(url); 
+    }, 0);
     return wrapper;
 }
 
@@ -381,22 +384,47 @@ document.getElementById('unlock-btn').onclick = async () => {
         document.getElementById('display-active-pin').innerText = pin;
 
         allImageUrls = [];
+        let imgIdx = 0;
+
+        // 1. COLLECT OBJECTIVE IMAGES FIRST
+        if(data.objectiveImg) allImageUrls.push(data.objectiveImg);
+
+        // 2. COLLECT QUESTION IMAGES
         const qImgs = data.questionImages || data.questionImage;
         if(qImgs) {
             if(Array.isArray(qImgs)) allImageUrls.push(...qImgs);
             else allImageUrls.push(qImgs);
         }
+
+        // 3. COLLECT THEORY IMAGES
         for(let i=1; i<=20; i++) { if(data[`ansImg${i}`]) allImageUrls.push(data[`ansImg${i}`]); }
 
+        // --- RENDER OBJECTIVES ---
+        const objArea = document.getElementById('obj-area');
+        objArea.innerHTML = "";
+        if(data.objectiveText) {
+            const txt = document.createElement('div');
+            txt.style.whiteSpace = "pre-wrap";
+            txt.style.fontWeight = "bold";
+            txt.style.color = "var(--green)";
+            txt.textContent = cleanText(data.objectiveText);
+            objArea.appendChild(txt);
+        } else if(data.objectiveImg) {
+            objArea.appendChild(createImgElement(data.objectiveImg, imgIdx));
+            imgIdx++;
+        } else {
+            objArea.innerHTML = "<p>No objective answers uploaded yet.</p>";
+        }
+
+        // --- RENDER QUESTIONS ---
         const qArea = document.getElementById('question-area');
         qArea.innerHTML = "";
-        let imgIdx = 0;
-        
         if(qImgs) {
             if(Array.isArray(qImgs)) { qImgs.forEach(url => { qArea.appendChild(createImgElement(url, imgIdx)); imgIdx++; }); } 
             else { qArea.appendChild(createImgElement(qImgs, imgIdx)); imgIdx++; }
         }
 
+        // --- RENDER THEORY ---
         const aArea = document.getElementById('answer-area');
         aArea.innerHTML = "";
         for(let i=1; i<=20; i++) {
@@ -408,7 +436,7 @@ document.getElementById('unlock-btn').onclick = async () => {
                 div.innerHTML = `<div class="ans-num">NUMBER ${i}</div>`;
                 if(ansText) {
                     const txtSpan = document.createElement('div');
-                    txtSpan.textContent = cleanText(ansText); // PRESERVES SPACING
+                    txtSpan.textContent = cleanText(ansText);
                     div.appendChild(txtSpan);
                 }
                 if(ansImg) { div.appendChild(createImgElement(ansImg, imgIdx)); imgIdx++; }
