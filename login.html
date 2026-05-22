@@ -241,7 +241,7 @@
         try {
             await signInWithPopup(auth, googleProvider);
             showStatus("Google login successful", "success");
-            setTimeout(() => window.location.href = "groups.html", 1000);
+            setTimeout(() => window.location.href = "index.html", 1000);
         } catch (error) {
             const cleanMsg = error.code.replace('auth/', '').replace(/-/g, ' ');
             showStatus(cleanMsg, "error");
