@@ -29,7 +29,6 @@
         input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 1rem; }
         input:focus { border-color: var(--blue); }
 
-        /* EYE ICON STYLING */
         .password-wrapper { position: relative; }
         .toggle-password {
             position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
@@ -37,22 +36,17 @@
         }
         .toggle-password svg { width: 20px; height: 20px; }
 
-        /* PASSWORD STRENGTH STYLES */
         .strength-container { margin-top: 8px; display: none; }
         .strength-bar { height: 4px; width: 100%; background: #eee; border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
         .strength-fill { height: 100%; width: 0%; transition: 0.3s ease; }
         .strength-text { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
 
-        /* STATUS CARD ANIMATION */
         #status-box { 
             font-size: 0.85rem; text-align: center; margin-top: 15px; 
             display: none; padding: 12px; border-radius: 8px; 
             animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .shake { animation: shake 0.4s ease-in-out; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-        
         .error { background: var(--error-bg); color: var(--error-text); border: 1px solid #f5c6cb; }
         .success { background: var(--success-bg); color: var(--success-text); border: 1px solid #c8e6c9; }
 
@@ -106,6 +100,9 @@
                     <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </div>
             </div>
+            <div style="text-align: right; margin-top: 5px;">
+                <span id="forgot-pass-link" style="font-size: 0.75rem; color: var(--blue); cursor: pointer; text-decoration: underline;">Forgot Password?</span>
+            </div>
             <div id="strength-meter" class="strength-container">
                 <div class="strength-bar"><div id="strength-fill" class="strength-fill"></div></div>
                 <div id="strength-text" class="strength-text"></div>
@@ -133,7 +130,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { 
         getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
-        updateProfile, GoogleAuthProvider, signInWithPopup 
+        updateProfile, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail 
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -156,49 +153,32 @@
     eyeBtn.onclick = () => {
         const isPass = passInput.type === "password";
         passInput.type = isPass ? "text" : "password";
-        eyeBtn.style.color = isPass ? "var(--green)" : "#888";
     };
 
     const showStatus = (msg, type) => {
         statusBox.innerText = msg;
         statusBox.className = type; 
         statusBox.style.display = "block";
-        if(type === 'error') {
-            statusBox.classList.add('shake');
-            setTimeout(() => statusBox.classList.remove('shake'), 400);
-        }
     };
 
-    // Strength Meter Logic
-    passInput.addEventListener('input', () => {
-        if (!isSignUp) return;
-        const val = passInput.value;
-        let score = 0;
-        if (val.length >= 6) score++;
-        if (/[A-Z]/.test(val)) score++;
-        if (/[0-9]/.test(val)) score++;
-        if (/[^A-Za-z0-9]/.test(val)) score++;
-
-        document.getElementById('strength-meter').style.display = "block";
-        const colors = ["#eee", "#ff4d4d", "#ffd11a", "#2ecc71", "#2ecc71"];
-        const labels = ["", "Too Weak", "Medium", "Strong", "Very Strong"];
-        
-        document.getElementById('strength-fill').style.width = (score * 25) + "%";
-        document.getElementById('strength-fill').style.backgroundColor = colors[score];
-        document.getElementById('strength-text').innerText = labels[score];
-        document.getElementById('strength-text').style.color = colors[score];
-        
-        mainBtn.disabled = score < 2;
-    });
+    // Forgot Password Logic
+    document.getElementById('forgot-pass-link').onclick = async () => {
+        const email = document.getElementById('auth-email').value;
+        if (!email) return showStatus("Enter your email address to reset", "error");
+        try {
+            await sendPasswordResetEmail(auth, email);
+            showStatus("Reset link sent to your email!", "success");
+        } catch (e) {
+            showStatus(e.message.replace('auth/', '').replace(/-/g, ' '), "error");
+        }
+    };
 
     window.toggleAuth = (showSignUp) => {
         isSignUp = showSignUp;
         statusBox.style.display = "none";
-        document.getElementById('strength-meter').style.display = "none";
         document.getElementById('signup-fields').style.display = isSignUp ? "block" : "none";
         document.getElementById('auth-title').innerText = isSignUp ? "Create Account" : "Welcome Back";
         mainBtn.innerText = isSignUp ? "SIGN UP" : "LOGIN";
-        mainBtn.disabled = false;
         document.getElementById('toggle-area').innerHTML = isSignUp ? 
             `Already have an account? <span onclick="toggleAuth(false)">Login</span>` : 
             `Don't have an account? <span onclick="toggleAuth(true)">Sign Up</span>`;
@@ -207,44 +187,26 @@
     mainBtn.onclick = async () => {
         const email = document.getElementById('auth-email').value;
         const pass = passInput.value;
-        const name = document.getElementById('auth-name').value;
-        
-        statusBox.style.display = "none";
-        if (!email || !pass) return showStatus("enter email and password", "error");
-
-        mainBtn.disabled = true;
-        mainBtn.innerText = "Processing...";
-
         try {
             if (isSignUp) {
                 const res = await createUserWithEmailAndPassword(auth, email, pass);
-                await updateProfile(res.user, { displayName: name });
-                showStatus("Account Created successfully", "success");
+                await updateProfile(res.user, { displayName: document.getElementById('auth-name').value });
+                showStatus("Account Created!", "success");
             } else {
                 await signInWithEmailAndPassword(auth, email, pass);
-                showStatus("Login successful", "success");
+                window.location.href = "index.html";
             }
-            setTimeout(() => window.location.href = "index.html", 1200);
-        } catch (error) {
-            mainBtn.disabled = false;
-            mainBtn.innerText = isSignUp ? "SIGN UP" : "LOGIN";
-            
-            let cleanMsg = error.code.replace('auth/', '').replace(/-/g, ' ');
-            if (error.code === 'auth/network-request-failed') {
-                cleanMsg = "failed to create account, please check your Internet connection";
-            }
-            showStatus(cleanMsg, "error");
+        } catch (e) {
+            showStatus(e.message.replace('auth/', '').replace(/-/g, ' '), "error");
         }
     };
 
     document.getElementById('google-auth-btn').onclick = async () => {
         try {
             await signInWithPopup(auth, googleProvider);
-            showStatus("Google login successful", "success");
-            setTimeout(() => window.location.href = "index.html", 1000);
-        } catch (error) {
-            const cleanMsg = error.code.replace('auth/', '').replace(/-/g, ' ');
-            showStatus(cleanMsg, "error");
+            window.location.href = "index.html";
+        } catch (e) {
+            showStatus(e.message.replace('auth/', '').replace(/-/g, ' '), "error");
         }
     };
 </script>
