@@ -88,10 +88,8 @@
             <div id="news-date" class="article-date"></div>
             <div id="news-content" class="article-text"></div>
 
-            <!-- TABLE -->
             <div id="table-container" class="data-table-container" style="display: none;"></div>
 
-            <!-- PDF Section -->
             <div id="pdf-container" class="pdf-section" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <h4 style="color: var(--blue); margin: 0;">📎 Attached Document</h4>
@@ -142,7 +140,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const articleId = urlParams.get('id');
 
-        async function loadPageData() {
+    async function loadPageData() {
         if (!articleId) return;
         
         try {
@@ -150,7 +148,6 @@
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 
-                // === PASTE THE SEO SNIPPET RIGHT HERE ===
                 // Set the browser title to the actual headline for Google Search Results
                 document.title = `${data.title} | Flexi Educational Consult`;
 
@@ -161,17 +158,68 @@
                     metaDesc.name = "description";
                     document.head.appendChild(metaDesc);
                 }
-                // Set description snippet to the headline using your 'data' object
                 metaDesc.content = `${data.title}. Get the full official schedule, registration requirements, and latest updates on Flexi Tutors.`;
-                // =======================================
 
                 document.getElementById('news-title').innerText = data.title || "";
                 document.getElementById('news-content').innerText = data.content || "";
                 
                 if(data.imageUrl) {
+                    document.getElementById('news-image').src = data.imageUrl;
+                    document.getElementById('news-image').style.display = "block";
+                } else {
+                    document.getElementById('news-image').style.display = "none";
+                }
 
+                if(data.timestamp) {
+                    document.getElementById('news-date').innerText = "Posted: " + data.timestamp.toDate().toDateString();
+                }
+
+                // Table Logic
+                const tableCont = document.getElementById('table-container');
+                if (data.tableData && data.tableData.trim() !== "") {
+                    tableCont.innerHTML = data.tableData;
+                    tableCont.style.display = "block";
+                } else {
+                    tableCont.style.display = "none";
+                }
+
+                // PDF Logic
+                const pdfCont = document.getElementById('pdf-container');
+                if (data.pdfUrl && data.pdfUrl.trim() !== "") {
+                    const pdfViewerCont = document.getElementById('pdf-viewer-container');
+                    const pdfLink = document.getElementById('pdf-download-link');
+                    
+                    const originalUrl = data.pdfUrl;
+                    let downloadUrl = originalUrl;
+                    let previewImageUrl = originalUrl;
+
+                    if (originalUrl.includes("res.cloudinary.com")) {
+                        downloadUrl = originalUrl.replace('/upload/', '/upload/fl_attachment/');
+                        previewImageUrl = originalUrl.replace('/upload/', '/upload/w_800,c_limit,q_auto,f_jpg/pg_1/').replace('.pdf', '.jpg');
+                    }
+
+                    pdfLink.href = downloadUrl;
+                    pdfViewerCont.innerHTML = `<img src="${previewImageUrl}" alt="Document Preview" style="width:100%; height:auto; display:block;">`;
+                    pdfCont.style.display = "block";
+                } else {
+                    pdfCont.style.display = "none";
+                }
+                
+                document.getElementById('loader').style.display = "none";
+                document.getElementById('article-container').style.display = "block";
+                
+                loadComments();
+            } else {
+                document.getElementById('loader').innerText = "Article not found.";
+            }
+        } catch (e) { 
+            console.error(e);
+            document.getElementById('loader').innerText = "Error loading article.";
+        }
+    }
 
     async function loadComments() {
+        if (!articleId) return;
         const cList = document.getElementById('comments-list');
         const q = query(collection(db, "news", articleId, "comments"), orderBy("timestamp", "desc"));
         const snap = await getDocs(q);
@@ -224,4 +272,3 @@
 </script>
 </body>
 </html>
-    
