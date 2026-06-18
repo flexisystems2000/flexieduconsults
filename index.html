@@ -799,44 +799,49 @@ let allNews = [];
 let currentPage = 1;
 const itemsPerPage = 5;
 
-/* UPDATED NEWS FETCH WITH AUTOMATED GOOGLE CRAWLER MAP */
+/* BULLETPROOF NEWS FETCH WITH ISOLATED SEO ENGINE */
 async function loadNews(){
-    try{
+    try {
         const q = query(
-            collection(db,"news"),
-            orderBy("timestamp","desc")
+            collection(db, "news"),
+            orderBy("timestamp", "desc")
         );
 
         const snap = await getDocs(q);
         allNews = [];
 
-        // Grab our hidden container for SEO links
-        const sepHolder = document.getElementById('seo-links-holder');
-        if(sepHolder) sepHolder.innerHTML = ""; 
-
+        // 1. Build the array for the news table first (Main priority)
         snap.forEach(doc => {
-            const data = doc.data();
-            const newsItem = {
+            allNews.push({
                 id: doc.id,
-                ...data
-            };
-            allNews.push(newsItem);
-
-            // Create a pure HTML anchor element for Google to follow
-            if(sepHolder) {
-                const seoAnchor = document.createElement('a');
-                seoAnchor.href = `news-view.html?id=${doc.id}`;
-                seoAnchor.innerText = `${data.title} - Flexi Educational Consult Updates`;
-                sepHolder.appendChild(seoAnchor);
-            }
+                ...doc.data()
+            });
         });
 
+        // 2. Render the visible UI table immediately
         renderTablePage(1);
 
-    }catch(e){
+        // 3. Isolated SEO Block: Handled safely so it never crashes the main UI
+        try {
+            const sepHolder = document.getElementById('seo-links-holder');
+            if (sepHolder) {
+                sepHolder.innerHTML = ""; 
+                allNews.forEach(item => {
+                    const seoAnchor = document.createElement('a');
+                    seoAnchor.href = `news-view.html?id=${item.id}`;
+                    seoAnchor.innerText = `${item.title || 'News'} - Flexi Educational Consult Updates`;
+                    sepHolder.appendChild(seoAnchor);
+                });
+            }
+        } catch (seoError) {
+            console.warn("SEO background map skipped:", seoError);
+        }
+
+    } catch(e) {
         console.error("Error loading news:", e);
     }
 }
+    
 
 /* NEWS RENDER */
 
