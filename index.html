@@ -914,4 +914,222 @@ function renderPaginationUI(){
     // Helper to build a standard numeric page button
     const createBtn = (pageNumber) => {
         const btn = document.createElement('button');
-        btn.className = `pg-btn ${pageNumber === currentPage ? 'pg-active' 
+        btn.className = `pg-btn ${pageNumber === currentPage ? 'pg-active' : ''}`;
+        btn.innerText = pageNumber;
+        btn.onclick = () => renderTablePage(pageNumber);
+        controls.appendChild(btn);
+    };
+
+    // 2. SMART CONDENSED NUMBER LOGIC
+    if (totalPages <= 3) {
+        // If there are 3 or fewer total pages, just list them all cleanly
+        for (let i = 1; i <= totalPages; i++) {
+            createBtn(i);
+        }
+    } else {
+        // High page count: Cap active internal range to prevent horizontal overflow
+        if (currentPage === 1) {
+            createBtn(1);
+            createBtn(2);
+            createBtn(3);
+        } else if (currentPage === totalPages) {
+            createBtn(totalPages - 2);
+            createBtn(totalPages - 1);
+            createBtn(totalPages);
+        } else {
+            createBtn(currentPage - 1);
+            createBtn(currentPage);
+            createBtn(currentPage + 1);
+        }
+    }
+
+    // 3. NEXT BUTTON (>)
+    const next = document.createElement('button');
+    next.className = 'pg-btn';
+    next.innerText = ">";
+    next.disabled = (currentPage === totalPages);
+    next.onclick = () => renderTablePage(currentPage + 1);
+    controls.appendChild(next);
+}
+
+
+/* CONTACT FORM */
+
+const contactForm =
+document.getElementById('contact-form');
+
+const submitBtn =
+document.getElementById('submit-btn');
+
+contactForm.addEventListener('submit', async (e) => {
+
+e.preventDefault();
+
+submitBtn.disabled = true;
+
+submitBtn.innerText = "Sending...";
+
+const formData =
+new FormData(contactForm);
+
+try{
+
+    const response =
+    await fetch(
+        "https://formspree.io/f/xojywaeg",
+        {
+            method:"POST",
+            body:formData,
+            headers:{
+                "Accept":"application/json"
+            }
+        }
+    );
+
+    if(response.ok){
+
+        Toastify({
+            text:"Inquiry sent successfully!",
+            duration:4000,
+            gravity:"top",
+            position:"right",
+            style:{
+                background:"#2E8B57"
+            }
+        }).showToast();
+
+        contactForm.reset();
+
+    }else{
+        throw new Error();
+    }
+
+}catch(error){
+
+    Toastify({
+        text:"Failed to send. Try again.",
+        duration:4000,
+        gravity:"top",
+        position:"right",
+        style:{
+            background:"#b22222"
+        }
+    }).showToast();
+
+}finally{
+
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Submit Inquiry";
+}
+
+});
+
+/* MENU TOGGLE */
+
+window.toggleMenu = () => {
+
+const m =
+document.getElementById('squareMenu');
+
+m.style.display =
+(m.style.display === "block")
+? "none"
+: "block";
+
+};
+
+document.addEventListener('click', (e) => {
+
+const m =
+document.getElementById('squareMenu');
+
+const b =
+document.querySelector('.menu-btn');
+
+if(m &&
+   m.style.display === "block" &&
+   !m.contains(e.target) &&
+   !b.contains(e.target)){
+
+    m.style.display = "none";
+}
+
+});
+
+/* SLIDER */
+
+const slides =
+document.querySelectorAll('.slider-slide');
+
+const dots =
+document.querySelectorAll('.dot');
+
+let currentSlide = 0;
+
+function showSlide(index){
+
+slides.forEach(s =>
+    s.classList.remove('active')
+);
+
+dots.forEach(d =>
+    d.classList.remove('active-dot')
+);
+
+slides[index].classList.add('active');
+dots[index].classList.add('active-dot');
+
+}
+
+setInterval(() => {
+
+currentSlide++;
+
+if(currentSlide >= slides.length){
+    currentSlide = 0;
+}
+
+showSlide(currentSlide);
+
+}, 5000);
+
+/* INIT */
+
+loadNews();
+
+document.getElementById('current-year')
+.textContent = new Date().getFullYear();
+
+/* UPDATED TESTIMONIALS SLIDER ENGINE */
+const tSlides = document.querySelectorAll('.testimonial-slide');
+let currentTSlide = 0;
+
+function showNextTestimonial() {
+    // 1. Identify current slide and mark it to slide out to the left
+    const oldSlide = tSlides[currentTSlide];
+    oldSlide.classList.remove('active');
+    oldSlide.classList.add('exit');
+
+    // 2. Move index to the next slide
+    currentTSlide = (currentTSlide + 1) % tSlides.length;
+
+    // 3. Prepare the upcoming slide (ensure it doesn't have old exit tracking code)
+    const nextSlide = tSlides[currentTSlide];
+    nextSlide.classList.remove('exit');
+    nextSlide.classList.add('active');
+
+    // 4. Clean up the exited slide after animation finishes so it resets to the right side
+    setTimeout(() => {
+        if (!oldSlide.classList.contains('active')) {
+            oldSlide.classList.remove('exit');
+        }
+    }, 600); // Matches the 0.6s CSS transition timing precisely
+}
+
+// Switches slides every 6 seconds
+setInterval(showNextTestimonial, 6000);
+
+
+</script>
+</body>
+</html>
