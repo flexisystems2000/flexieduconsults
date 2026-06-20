@@ -6,13 +6,42 @@
     <title>Flexi Customer Service</title>
 <style>
     :root { --navy-blue: #000080; --light-gray: #f4f4f4; }
-    /* Added overflow-x: hidden to prevent horizontal scrolling */
-    body { margin: 0; font-family: Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; overflow-x: hidden; }
+
+    /* Fix body to use dynamic viewport height for mobile browsers */
+    body { 
+        margin: 0; 
+        font-family: Arial, sans-serif; 
+        display: flex; 
+        flex-direction: column; 
+        height: 100dvh; 
+        overflow: hidden; 
+    }
     
-    .header { background-color: #fff; border-bottom: 1px solid #ddd; padding: 15px; display: flex; align-items: center; gap: 10px; }
+    .header { 
+        background-color: #fff; 
+        border-bottom: 1px solid #ddd; 
+        padding: 15px; 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+        flex-shrink: 0; 
+    }
+    
     .profile-pic { width: 40px; height: 40px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
     
-    .chat-area { flex: 1; overflow-y: auto; padding: 15px; background-color: #fff; width: 100%; box-sizing: border-box; }
+    /* min-height: 0 allows this element to shrink to fit the screen */
+    .chat-area { 
+        flex: 1; 
+        overflow-y: auto; 
+        padding: 15px; 
+        background-color: #fff; 
+        width: 100%; 
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        min-height: 0; 
+    }
+
     .message { padding: 10px 15px; border-radius: 10px; margin-bottom: 10px; max-width: 75%; word-wrap: break-word; font-size: 14px; }
     .bot-message { background-color: var(--light-gray); color: #333; }
     .user-message { background-color: var(--navy-blue); color: white; margin-left: auto; }
@@ -28,24 +57,30 @@
     .agent-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
     .agent-name { font-size: 0.75em; color: #555; font-weight: bold; margin-bottom: 2px; }
 
-    .input-area { padding: 8px; border-top: 1px solid #eee; display: flex; align-items: center; gap: 5px; background: #fff; width: 100%; box-sizing: border-box; }
+    /* Input area stays fixed at the bottom */
+    .input-area { 
+        padding: 8px; 
+        border-top: 1px solid #eee; 
+        display: flex; 
+        align-items: center; 
+        gap: 5px; 
+        background: #fff; 
+        width: 100%; 
+        box-sizing: border-box; 
+        flex-shrink: 0; 
+    }
+    
     input { flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 20px; outline: none; background: #f9f9f9; font-size: 14px; }
     .icon-btn { border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #555; padding: 4px; }
     .send-btn { background-color: var(--navy-blue); border-radius: 50%; padding: 7px; color: white; border: none; cursor: pointer; flex-shrink: 0; }
-    /* Ensure the preview container doesn't push the layout around unnecessarily */
-#preview-container {
-    transition: all 0.2s ease;
-}
-
-/* Force the chat container to take up all remaining available space */
-.chat-area {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-
+    
+    #preview-container {
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
 </style>
+
+
 </head>
 <body>
     <header class="header">
