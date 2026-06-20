@@ -672,14 +672,14 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
         &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
 </footer>
-
 <div id="support-widget" style="position:fixed; bottom:20px; right:20px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
     
-    <div id="support-tooltip" style="background:#003366; color:white; padding:10px 15px; border-radius:20px 20px 0px 20px; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); animation: fadeIn 0.5s;">
-        Need help with your admission? Chat with us!
+    <div id="support-tooltip" style="background:#003366; color:white; padding:10px 15px; border-radius:20px 20px 0px 20px; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); animation: fadeIn 0.5s; opacity: 1;">
+    Need help with your admission? Chat with us!
     </div>
+    
 
-    <button id="support-btn" onclick="window.location.href='contactsupport.html'" style="background:#2E8B57; border:none; width:60px; height:60px; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.3s;">
+    <button id="support-btn" onclick="window.location.href='Flow.html'" style="background:#2E8B57; border:none; width:60px; height:60px; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.3s;">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
         </svg>
@@ -1154,15 +1154,21 @@ function showNextTestimonial() {
 // Switches slides every 6 seconds
 setInterval(showNextTestimonial, 6000);
 
- // Hide the tooltip after 5 seconds
-    setTimeout(() => {
-        const tooltip = document.getElementById('support-tooltip');
-        if (tooltip) {
-            tooltip.style.transition = 'opacity 0.5s';
-            tooltip.style.opacity = '0';
-            setTimeout(() => tooltip.style.display = 'none', 500);
-        }
-    }, 5000);
+window.addEventListener('load', () => {
+        setTimeout(() => {
+            const tooltip = document.getElementById('support-tooltip');
+            if (tooltip) {
+                console.log("Hiding tooltip..."); // Check your Browser Console to see if this triggers
+                tooltip.style.transition = 'opacity 0.5s ease';
+                tooltip.style.opacity = '0';
+                
+                // Remove from flow after fade
+                setTimeout(() => {
+                    tooltip.style.display = 'none';
+                }, 500);
+            }
+        }, 5000); // 5 seconds
+    });
 </script>
 </body>
 </html>
