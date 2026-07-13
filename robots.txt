@@ -1,2 +1,5 @@
 User-agent: *
+
 Allow: /
+
+Sitemap: https://seo.flexieduconsult.com.ng/sitemap.xml
