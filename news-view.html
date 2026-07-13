@@ -150,18 +150,142 @@
             const docSnap = await getDoc(doc(db, "news", articleId));
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                
-                // Set the browser title to the actual headline for Google Search Results
-                document.title = `${data.title} | Flexi Educational Consult`;
+                // SEO Title
+document.title =
+`${data.seoTitle || data.title} | Flexi Educational Consult`;
 
-                // Update or create meta description tag dynamically for search snippet previews
-                let metaDesc = document.querySelector('meta[name="description"]');
-                if (!metaDesc) {
-                    metaDesc = document.createElement('meta');
-                    metaDesc.name = "description";
-                    document.head.appendChild(metaDesc);
-                }
-                metaDesc.content = `${data.title}. Get the full official schedule, registration requirements, and latest updates on Flexi Tutors.`;
+// Meta Description
+let metaDesc =
+document.querySelector('meta[name="description"]');
+
+if (!metaDesc) {
+    metaDesc = document.createElement("meta");
+    metaDesc.name = "description";
+    document.head.appendChild(metaDesc);
+}
+
+metaDesc.content =
+data.metaDescription ||
+`${data.title} | Read the latest educational update from Flexi Educational Consult.`;
+
+// Keywords
+let keywords =
+document.querySelector('meta[name="keywords"]');
+
+if (!keywords) {
+    keywords = document.createElement("meta");
+    keywords.name = "keywords";
+    document.head.appendChild(keywords);
+}
+
+keywords.content =
+data.focusKeyword ||
+"Flexi Educational Consult, Education News";
+
+// Canonical URL
+let canonical =
+document.querySelector("link[rel='canonical']");
+
+if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    document.head.appendChild(canonical);
+}
+
+// Always use the exact URL currently being viewed
+canonical.href = window.location.href;
+
+function setMeta(property, content, isProperty = true) {
+    let tag = document.querySelector(
+        `${isProperty ? "meta[property='" : "meta[name='"}${property}']`
+    );
+
+    if (!tag) {
+        tag = document.createElement("meta");
+
+        if (isProperty)
+            tag.setAttribute("property", property);
+        else
+            tag.setAttribute("name", property);
+
+        document.head.appendChild(tag);
+    }
+
+    tag.content = content;
+}
+
+setMeta("og:title",
+data.seoTitle || data.title);
+
+setMeta("og:description",
+data.metaDescription || "");
+
+setMeta("og:image",
+data.imageUrl || "");
+
+setMeta("og:url",
+canonical.href);
+
+setMeta("og:type",
+"article");
+
+setMeta("twitter:card", "summary_large_image", false);
+
+setMeta(
+    "twitter:title",
+    data.seoTitle || data.title,
+    false
+);
+
+setMeta(
+    "twitter:description",
+    data.metaDescription || "",
+    false
+);
+
+setMeta(
+    "twitter:image",
+    data.imageUrl || "",
+    false
+);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": data.seoTitle || data.title,
+  "description": data.metaDescription || "",
+  "image": [data.imageUrl || ""],
+  "datePublished": data.timestamp
+      ? data.timestamp.toDate().toISOString()
+      : new Date().toISOString(),
+  "author": {
+      "@type": "Organization",
+      "name": "Flexi Educational Consult"
+  },
+  "publisher": {
+      "@type": "Organization",
+      "name": "Flexi Educational Consult",
+      "logo": {
+          "@type": "ImageObject",
+          "url": "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg"
+      }
+  },
+"mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonical.href
+}
+};
+
+let script = document.getElementById("news-schema");
+
+if (!script) {
+    script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "news-schema";
+    document.head.appendChild(script);
+}
+
+script.text = JSON.stringify(schema);
 
                 document.getElementById('news-title').innerText = data.title || "";
                 document.getElementById('news-content').innerText = data.content || "";
