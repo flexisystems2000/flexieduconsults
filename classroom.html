@@ -2,60 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-<link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-<link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flexi Tutors | Group Hub</title>
+    <title>Flexi Tutors | Hub</title>
     <style>
         :root { --blue: #003366; --green: #2E8B57; --bg: #f4f7f6; --white: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
         
         header { 
             background: var(--blue); color: white; height: 1cm; 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 15px; border-bottom: 4px solid var(--green);
-            position: sticky; top: 0; z-index: 1000;
+            display: flex; align-items: center; padding: 0 15px; 
+            border-bottom: 4px solid var(--green); position: sticky; top: 0; z-index: 1000;
         }
         .header-logo { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: bold; }
         .header-logo img { height: 0.7cm; border-radius: 3px; }
 
         .container { max-width: 600px; margin: 20px auto; width: 92%; }
 
-        /* GROUP LIST STYLES */
-        .create-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        /* CREATION & TABS */
+        .create-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .btn-create { background: var(--blue); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
         
-        .group-list { display: flex; flex-direction: column; gap: 12px; }
-        .group-item { 
-            background: white; padding: 15px; border-radius: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #eee;
-        }
-        .group-name { color: var(--blue); font-weight: 700; font-size: 1rem; }
-        .group-meta { font-size: 0.75rem; color: #888; }
-        
-        .btn-action { 
-            border: none; padding: 8px 20px; border-radius: 20px; 
-            font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: 0.2s;
-        }
-        .btn-join { background: var(--green); color: white; }
-        .btn-enter { background: var(--blue); color: white; }
+        .nav-tabs { display: flex; gap: 10px; margin-top: 20px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; background: #e0e0e0; color: #555; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .tab-btn.active { background: var(--blue); color: white; }
 
-        /* CHAT ROOM STYLES */
+        /* LISTS */
+        .view-content { display: none; }
+        .view-content.active { display: block; }
+        .group-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .item { background: white; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
+        .item-name { color: var(--blue); font-weight: 700; font-size: 0.95rem; }
+        .btn-action { border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 0.75rem; cursor: pointer; background: var(--green); color: white; }
+
+        /* CHAT INTERFACE */
         #page-chat { display: none; background: white; min-height: 100vh; flex-direction: column; }
-        #comment-feed { flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 80px; }
-        .comment { display: flex; gap: 12px; animation: fadeIn 0.3s ease; }
-        .user-avatar { width: 35px; height: 35px; background: #eef2f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--blue); flex-shrink: 0; border: 1px solid #ddd; font-size: 0.8rem; }
-        .comment-content { flex: 1; background: #f8f9fa; padding: 10px 15px; border-radius: 0 15px 15px 15px; }
-        .comment-user { font-weight: bold; font-size: 0.75rem; color: var(--green); margin-bottom: 4px; }
-        .comment-text { font-size: 0.9rem; color: #333; line-height: 1.4; }
-        .comment-img { width: 100%; max-width: 300px; border-radius: 8px; margin-top: 8px; }
-        .comment-time { font-size: 0.65rem; color: #bbb; margin-top: 5px; display: block; text-align: right; }
-
-        .input-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #eee; padding: 10px 15px; display: flex; align-items: center; gap: 10px; box-sizing: border-box; }
-        .input-bar input[type="text"] { flex: 1; border: 1px solid #eee; background: #f8f8f8; padding: 12px 15px; border-radius: 20px; outline: none; }
-        .btn-post { background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        #comment-feed { flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 80px; }
+        .comment { display: flex; gap: 10px; }
+        .comment-content { background: #f0f2f5; padding: 10px 15px; border-radius: 15px; max-width: 80%; }
+        .comment-user { font-size: 0.7rem; font-weight: bold; color: var(--green); margin-bottom: 2px; }
+        .input-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #eee; padding: 10px; display: flex; gap: 10px; box-sizing: border-box; }
+        .input-bar input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 20px; outline: none; }
     </style>
 </head>
 <body>
@@ -70,14 +56,22 @@
 
     <div class="container">
         <div class="create-box">
-            <h3 style="margin: 0; color: var(--blue); font-size: 0.9rem;">Start a Discussion</h3>
-            <input type="text" id="new-group-name" placeholder="E.g. JAMB Maths 2026..." style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
+            <h3 style="margin: 0 0 10px 0; color: var(--blue); font-size: 0.9rem;">Start a Discussion</h3>
+            <input type="text" id="new-group-name" placeholder="E.g. JAMB Maths 2026..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
             <button class="btn-create" onclick="handleCreateGroup()">CREATE GROUP</button>
+
+            <div class="nav-tabs">
+                <button class="tab-btn active" id="btn-groups" onclick="switchTab('groups')">GROUPS</button>
+                <button class="tab-btn" id="btn-chats" onclick="switchTab('chats')">CHATS</button>
+            </div>
         </div>
 
-        <h3 style="color: var(--blue); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 15px;">Available Groups</h3>
-        <div id="group-list-container" class="group-list">
-            <p style="text-align: center; color: #999;">Loading classrooms...</p>
+        <div id="view-groups" class="view-content active">
+            <div id="group-list-container" class="group-list"></div>
+        </div>
+
+        <div id="view-chats" class="view-content">
+            <div id="user-list-container" class="group-list"></div>
         </div>
     </div>
 </div>
@@ -91,10 +85,8 @@
     </header>
     <div id="comment-feed"></div>
     <div class="input-bar">
-        <label for="chat-image-input" style="cursor:pointer; font-size: 1.4rem;">📷</label>
-        <input type="file" id="chat-image-input" hidden accept="image/*">
         <input type="text" id="chat-msg-input" placeholder="Type a message...">
-        <button class="btn-post" onclick="postComment()">SEND</button>
+        <button class="btn-post" onclick="postComment()" style="background:var(--blue); color:white; border:none; padding:0 20px; border-radius:20px; font-weight:bold; cursor:pointer;">SEND</button>
     </div>
 </div>
 
@@ -102,6 +94,8 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, setDoc, doc, getDocs, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    console.log("Script is running!");
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
@@ -113,76 +107,118 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    let currentGroupId = null;
+    let currentId = null;
+    let currentType = "groups";
     let unsubscribeMessages = null;
-    let joinedGroupIds = new Set(); // Store joined IDs here
+    let joinedGroupIds = new Set();
 
     const getUsername = () => auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email.split('@')[0]) : "Student";
 
-    // 1. Initial Load & Auth Check
+    // 1. Auth & Sync
     onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            // Fetch what the user has already joined
-            const q = query(collection(db, "user_groups"), where("userId", "==", user.uid));
-            const snap = await getDocs(q);
-            snap.forEach(d => joinedGroupIds.add(d.data().groupId));
+    if (user) {
+        // This acts as a "Check-in". It adds them to the list 
+        // the moment they open the app.
+        await setDoc(doc(db, "profiles", user.uid), { 
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            lastSeen: new Date() // Helpful for future features
+        }, { merge: true });
+        
+        loadAllGroups();
+        loadAllUsers();
+    }
+});
 
-            // URL Auto-Join check
-            const urlParams = new URLSearchParams(window.location.search);
-            const autoJoinId = urlParams.get('join');
-            if (autoJoinId) {
-                enterRoom(autoJoinId, "Joined Group");
-                window.history.replaceState({}, document.title, "groups.html");
-            }
-        }
-        loadAllGroups(); // Now load the visual list
-    });
 
-    // 2. Load the UI List
-    function loadAllGroups() {
+    // 2. Tab Navigation
+    window.switchTab = (tab) => {
+        document.getElementById('btn-groups').classList.toggle('active', tab === 'groups');
+        document.getElementById('btn-chats').classList.toggle('active', tab === 'chats');
+        document.getElementById('view-groups').classList.toggle('active', tab === 'groups');
+        document.getElementById('view-chats').classList.toggle('active', tab === 'chats');
+    };
+
+    // 3. Load Groups
+    window.loadAllGroups = () => {
         onSnapshot(query(collection(db, "groups"), orderBy("createdAt", "desc")), (snap) => {
             const container = document.getElementById('group-list-container');
             container.innerHTML = "";
             snap.forEach(docSnap => {
                 const g = docSnap.data();
-                const gId = docSnap.id;
-                const isMember = joinedGroupIds.has(gId);
-
                 container.innerHTML += `
-                    <div class="group-item">
+                    <div class="item">
                         <div>
-                            <div class="group-name">${g.name}</div>
-                            <div class="group-meta">Admin: ${g.creator}</div>
+                            <div class="item-name">${g.name}</div>
+                            <div style="font-size:0.7rem; color:#888;">Admin: ${g.creator}</div>
                         </div>
-                        ${isMember 
-                            ? `<button class="btn-action btn-enter" onclick="enterRoom('${gId}', '${g.name}')">ENTER</button>`
-                            : `<button class="btn-action btn-join" onclick="joinAndEnter('${gId}', '${g.name}')">JOIN</button>`
-                        }
+                        <button class="btn-action" onclick="enterRoom('${docSnap.id}', '${g.name}', 'groups')">ENTER</button>
                     </div>`;
             });
         });
-    }
-
-    window.joinAndEnter = async (groupId, groupName) => {
-        if (!auth.currentUser) return alert("Please login");
-        try {
-            await setDoc(doc(db, "user_groups", `${auth.currentUser.uid}_${groupId}`), {
-                userId: auth.currentUser.uid,
-                groupId: groupId,
-                groupName: groupName,
-                joinedAt: serverTimestamp()
-            });
-            joinedGroupIds.add(groupId); // Update local set immediately
-            enterRoom(groupId, groupName);
-        } catch (e) { enterRoom(groupId, groupName); }
     };
 
-    window.enterRoom = (id, name) => {
-        currentGroupId = id;
+    // 4. Load Users (Messenger List)
+    window.loadAllUsers = () => {
+    onSnapshot(collection(db, "profiles"), (snap) => {
+        const container = document.getElementById('user-list-container');
+        container.innerHTML = "";
+        
+        snap.forEach(doc => {
+            const u = doc.data();
+            // REMOVED the login safeguard: This will show everyone in the 'profiles' collection
+            container.innerHTML += `
+                <div class="item" style="cursor:pointer;" onclick="startDirectChat('${doc.id}', '${u.name}')">
+                    <span class="item-name">${u.name}</span>
+                    <span style="font-size:0.7rem; color:var(--green);">MESSAGE ❯</span>
+                </div>`;
+        });
+    });
+};
+
+
+    // 5. Chat Engine
+    window.enterRoom = (id, name, type) => {
+        currentId = id;
+        currentType = type;
         document.getElementById('page-groups').style.display = "none";
         document.getElementById('page-chat').style.display = "flex";
         document.getElementById('active-title').innerText = name;
-        loadComments(id);
+        
+        if (unsubscribeMessages) unsubscribeMessages();
+        unsubscribeMessages = onSnapshot(query(collection(db, currentType, currentId, "messages"), orderBy("timestamp", "asc")), (snap) => {
+            const feed = document.getElementById('comment-feed');
+            feed.innerHTML = "";
+            snap.forEach(d => {
+                const m = d.data();
+                feed.innerHTML += `<div class="comment"><div class="comment-content"><div class="comment-user">${m.sender}</div><div class="comment-text">${m.text}</div></div></div>`;
+            });
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    };
+
+    window.startDirectChat = (otherUid, name) => {
+        const chatId = [auth.currentUser.uid, otherUid].sort().join("_");
+        enterRoom(chatId, name, "direct_chats");
+    };
+
+    window.postComment = async () => {
+        if (!auth.currentUser) return window.location.href = "login.html";
+        const input = document.getElementById('chat-msg-input');
+        if (!input.value.trim()) return;
+        await addDoc(collection(db, currentType, currentId, "messages"), {
+            sender: getUsername(),
+            text: input.value.trim(),
+            timestamp: serverTimestamp()
+        });
+        input.value = "";
+    };
+
+    window.handleCreateGroup = async () => {
+        const name = document.getElementById('new-group-name').value;
+        if (!name) return;
+        await addDoc(collection(db, "groups"), { name, creator: getUsername(), createdAt: serverTimestamp() });
+        document.getElementById('new-group-name').value = "";
     };
 
     window.backToGroups = () => {
@@ -191,66 +227,9 @@
         document.getElementById('page-chat').style.display = "none";
     };
 
-    window.handleCreateGroup = async () => {
-        const nameInput = document.getElementById('new-group-name');
-        if (!nameInput.value.trim()) return;
-        await addDoc(collection(db, "groups"), {
-            name: nameInput.value.trim(),
-            creator: getUsername(),
-            createdAt: serverTimestamp()
-        });
-        nameInput.value = "";
-    };
-
-    function loadComments(groupId) {
-        if (unsubscribeMessages) unsubscribeMessages();
-        const q = query(collection(db, "groups", groupId, "messages"), orderBy("timestamp", "asc"));
-        unsubscribeMessages = onSnapshot(q, (snap) => {
-            const feed = document.getElementById('comment-feed');
-            feed.innerHTML = "";
-            snap.forEach(docSnap => {
-                const m = docSnap.data();
-                feed.innerHTML += `
-                    <div class="comment">
-                        <div class="user-avatar">${m.sender.charAt(0).toUpperCase()}</div>
-                        <div class="comment-content">
-                            <div class="comment-user">${m.sender}</div>
-                            <div class="comment-text">${m.text || ""}</div>
-                            ${m.imgUrl ? `<img src="${m.imgUrl}" class="comment-img" onclick="window.open('${m.imgUrl}')">` : ""}
-                            <span class="comment-time">${m.timestamp ? new Date(m.timestamp.seconds*1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '...'}</span>
-                        </div>
-                    </div>`;
-            });
-            window.scrollTo(0, document.body.scrollHeight);
-        });
-    }
-
-    window.postComment = async () => {
-        const textInput = document.getElementById('chat-msg-input');
-        const fileInput = document.getElementById('chat-image-input');
-        const text = textInput.value.trim();
-        const file = fileInput.files[0];
-        if (!text && !file) return;
-
-        let imgUrl = null;
-        if (file) {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", "my_preset_123"); 
-            const res = await fetch("https://api.cloudinary.com/v1_1/dwmbgd9jy/image/upload", { method: "POST", body: formData });
-            const data = await res.json();
-            imgUrl = data.secure_url;
-        }
-
-        await addDoc(collection(db, "groups", currentGroupId, "messages"), {
-            sender: getUsername(),
-            text: text,
-            imgUrl: imgUrl,
-            timestamp: serverTimestamp()
-        });
-        textInput.value = "";
-        fileInput.value = "";
-    };
+    // EXECUTE LOADERS
+    loadAllGroups();
+    loadAllUsers();
 </script>
 </body>
 </html>
