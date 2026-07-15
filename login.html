@@ -183,6 +183,22 @@
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get('redirect');
+        
+        if (redirect) {
+            // Decodes the URL and sends the user back to the exact page
+            window.location.replace(decodeURIComponent(redirect));
+        } else {
+            // If no redirect, just go to your main page
+            window.location.replace("index.html");
+        }
+    }
+});
+
+    
     // DOM References
     const statusBox = document.getElementById('status-box');
     const mainBtn = document.getElementById('main-auth-btn');
@@ -279,11 +295,6 @@
         statusBox.style.display = "block";
     };
 
-onAuthStateChanged(auth, (user) => {
-    if (user && window.location.pathname.includes("login.html")) {
-        window.location.replace("index.html");
-    }
-});
 
     document.getElementById('google-auth-btn').onclick = async () => {
     try {
