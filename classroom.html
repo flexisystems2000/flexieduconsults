@@ -89,7 +89,6 @@
         <button class="btn-post" onclick="postComment()" style="background:var(--blue); color:white; border:none; padding:0 20px; border-radius:20px; font-weight:bold; cursor:pointer;">SEND</button>
     </div>
 </div>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, setDoc, doc, getDocs, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -213,23 +212,131 @@
         });
         input.value = "";
     };
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    window.handleCreateGroup = async () => {
-        const name = document.getElementById('new-group-name').value;
-        if (!name) return;
-        await addDoc(collection(db, "groups"), { name, creator: getUsername(), createdAt: serverTimestamp() });
-        document.getElementById('new-group-name').value = "";
+    const firebaseConfig = {
+        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+        authDomain: "flexieduconsult.com.ng",
+        projectId: "waec2026jamb2027",
     };
 
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let currentId = null;
+    let currentType = "groups";
+    let unsubscribeMessages = null;
+    let joinedGroupIds = new Set();
+
+    const getUsername = () => auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email.split('@')[0]) : "Student";
+
+    // 1. AUTH & DATA SYNC
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            await setDoc(doc(db, "profiles", user.uid), { 
+                name: getUsername(), 
+                email: user.email 
+            }, { merge: true });
+            
+            const snapshot = await getDocs(collection(db, "user_groups"));
+            joinedGroupIds = new Set(); 
+            snapshot.forEach(d => {
+                if (d.id.startsWith(user.uid)) joinedGroupIds.add(d.data().groupId);
+            });
+        }
+        loadAllGroups();
+        loadAllUsers();
+    });
+
+    // 2. LOAD GROUPS (Using lowercase 'groups')
+    window.loadAllGroups = () => {
+        onSnapshot(query(collection(db, "groups"), orderBy("createdAt", "desc")), (snap) => {
+            const container = document.getElementById('group-list-container');
+            container.innerHTML = "";
+            snap.forEach(docSnap => {
+                const g = docSnap.data();
+                const isMember = joinedGroupIds.has(docSnap.id);
+                container.innerHTML += `
+                    <div class="item">
+                        <div><div class="item-name">${g.name}</div></div>
+                        ${isMember 
+                            ? `<button class="btn-action" onclick="enterRoom('${docSnap.id}', '${g.name}', 'groups')">ENTER</button>`
+                            : `<button class="btn-action" style="background:var(--green)" onclick="joinAndEnter('${docSnap.id}', '${g.name}')">JOIN</button>`
+                        }
+                    </div>`;
+            });
+        });
+    };
+
+    // 3. LOAD USERS
+    window.loadAllUsers = () => {
+        onSnapshot(collection(db, "profiles"), (snap) => {
+            const container = document.getElementById('user-list-container');
+            container.innerHTML = "";
+            snap.forEach(doc => {
+                if (auth.currentUser && doc.id === auth.currentUser.uid) return;
+                const u = doc.data();
+                container.innerHTML += `
+                    <div class="item" style="cursor:pointer;" onclick="startDirectChat('${doc.id}', '${u.name}')">
+                        <span class="item-name">${u.name}</span>
+                    </div>`;
+            });
+        });
+    };
+
+    // 4. ENTER ROOM
+    window.enterRoom = (id, name, type) => {
+        currentId = id;
+        currentType = type;
+        document.getElementById('page-groups').style.display = "none";
+        document.getElementById('page-chat').style.display = "flex";
+        document.getElementById('active-title').innerText = name;
+        
+        if (unsubscribeMessages) unsubscribeMessages();
+        
+        unsubscribeMessages = onSnapshot(query(collection(db, currentType, currentId, "messages"), orderBy("timestamp", "asc")), (snap) => {
+            const feed = document.getElementById('comment-feed');
+            feed.innerHTML = "";
+            snap.forEach(d => {
+                const m = d.data();
+                feed.innerHTML += `<div class="comment"><div class="comment-content"><div class="comment-user">${m.sender}</div><div class="comment-text">${m.text}</div></div></div>`;
+            });
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    };
+
+    window.joinAndEnter = async (id, name) => {
+        await setDoc(doc(db, "user_groups", `${auth.currentUser.uid}_${id}`), { groupId: id });
+        joinedGroupIds.add(id);
+        enterRoom(id, name, 'groups');
+    };
+
+    window.startDirectChat = (otherUid, name) => {
+        const chatId = [auth.currentUser.uid, otherUid].sort().join("_");
+        enterRoom(chatId, name, "direct_chats");
+    };
+
+    window.postComment = async () => {
+        if (!auth.currentUser) return;
+        const input = document.getElementById('chat-msg-input');
+        if (!input.value.trim()) return;
+        await addDoc(collection(db, currentType, currentId, "messages"), {
+            sender: getUsername(),
+            text: input.value.trim(),
+            timestamp: serverTimestamp()
+        });
+        input.value = "";
+    };
+    
     window.backToGroups = () => {
         if (unsubscribeMessages) unsubscribeMessages();
         document.getElementById('page-groups').style.display = "block";
         document.getElementById('page-chat').style.display = "none";
     };
-
-    // EXECUTE LOADERS
-    loadAllGroups();
-    loadAllUsers();
 </script>
 </body>
 </html>
