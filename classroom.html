@@ -161,9 +161,21 @@ onclick="backToGroups()">❮</span>
 <div id="comment-feed"></div>
 <div class="input-bar">
     <button class="icon-btn" onclick="document.getElementById('file-upload').click()">+</button>
-    <button class="icon-btn" onclick="openGifPicker()">GIF</button>
+    <!-- GIF Icon -->
+    <button class="icon-btn" onclick="openGifPicker()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <text x="7" y="16" font-size="10" font-weight="bold">GIF</text>
+        </svg>
+    </button>
     <input id="chat-msg-input" type="text" placeholder="Type your message...">
-    <button class="btn-post" onclick="postComment()">SEND</button>
+    <!-- Telegram-style Send Icon -->
+    <button class="btn-post" onclick="postComment()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+    </button>
 </div>
 </div>
 <!-- Hidden file input -->
@@ -334,6 +346,52 @@ window.openGifPicker = () => {
     // Later, you will trigger your GIF modal or search overlay here
 };
 
+/*=========================
+FIXED FUNCTIONS
+=========================*/
+
+window.handleCreateGroup = async () => {
+    const input = document.getElementById("new-group-name");
+    const name = input.value.trim();
+    if (!name) return;
+    
+    await addDoc(collection(db, "groups"), {
+        name: name,
+        creatorName: getUsername(),
+        createdAt: serverTimestamp()
+    });
+    input.value = "";
+    alert("Group created!");
+};
+
+window.switchTab = (tab) => {
+    // Update active button classes
+    document.getElementById("btn-groups").classList.toggle("active", tab === "groups");
+    document.getElementById("btn-chats").classList.toggle("active", tab === "chats");
+    
+    // Update view visibility
+    document.getElementById("view-groups").style.display = (tab === "groups") ? "block" : "none";
+    document.getElementById("view-chats").style.display = (tab === "chats") ? "block" : "none";
+};
+
+window.joinAndEnter = async (groupId, name) => {
+    if (!auth.currentUser) return;
+    // Add user to members collection
+    await setDoc(doc(db, "groups", groupId, "members", auth.currentUser.uid), {
+        uid: auth.currentUser.uid,
+        name: getUsername(),
+        joinedAt: serverTimestamp()
+    });
+    joinedGroupIds.add(groupId);
+    // Enter the room
+    enterRoom(groupId, name, "groups");
+};
+
+// You need this function defined for your page to load
+window.loadAllUsers = () => {
+    // Placeholder: Add your user loading logic here
+    console.log("Loading users...");
+};
 /*=========================
 END
 =========================*/
