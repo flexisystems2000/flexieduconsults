@@ -1,342 +1,565 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flexi Tutors | Hub</title>
-    <style>
-        :root { --blue: #003366; --green: #2E8B57; --bg: #f4f7f6; --white: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
-        
-        header { 
-            background: var(--blue); color: white; height: 1cm; 
-            display: flex; align-items: center; padding: 0 15px; 
-            border-bottom: 4px solid var(--green); position: sticky; top: 0; z-index: 1000;
-        }
-        .header-logo { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: bold; }
-        .header-logo img { height: 0.7cm; border-radius: 3px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .container { max-width: 600px; margin: 20px auto; width: 92%; }
+<title>Flexi Group Hub</title>
 
-        /* CREATION & TABS */
-        .create-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .btn-create { background: var(--blue); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
-        
-        .nav-tabs { display: flex; gap: 10px; margin-top: 20px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; background: #e0e0e0; color: #555; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .tab-btn.active { background: var(--blue); color: white; }
+<style>
+:root{
+    --blue:#003366;
+    --green:#2E8B57;
+    --bg:#f4f7f6;
+    --white:#ffffff;
+    --border:#e8e8e8;
+    --text:#222;
+    --muted:#777;
+}
+*{ margin:0;  padding:0;  box-sizing:border-box; }
+html{ scroll-behavior:smooth;}
+body{ font-family:'Segoe UI',sans-serif;
+ background:var(--bg); color:var(--text);
+    padding-bottom:70px; }
+header{ position:sticky; top:0; z-index:999; height:60px; background:var(--blue); border-bottom:4px solid var(--green); display:flex; align-items:center; justify-content:space-between;
+ padding:0 18px; }
+.header-logo{ display:flex; align-items:center; gap:10px; color:#fff; font-weight:700; font-size:.95rem;}
+.header-logo img{ width:38px; height:38px; border-radius:6px; object-fit:cover; }
+.container{ width:min(700px,94%); margin:18px auto;}
+.create-box{ background:#fff; border-radius:15px; padding:18px; box-shadow:
+ 0 5px 15px rgba(0,0,0,.06); }
+.create-box h3{ color:var(--blue); font-size:1rem; margin-bottom:12px; }
+#create-group-name { width: 100%; border: 1px solid #dcdcdc; border-radius: 10px; outline: none; padding: 14px 16px; font-size: 0.95rem; margin-bottom: 12px; background: #ffffff; transition: 0.2s; }
 
-        /* LISTS */
-        .view-content { display: none; }
-        .view-content.active { display: block; }
-        .group-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-        .item { background: white; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
-        .item-name { color: var(--blue); font-weight: 700; font-size: 0.95rem; }
-        .btn-action { border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 0.75rem; cursor: pointer; background: var(--green); color: white; }
-
-        /* CHAT INTERFACE */
-        #page-chat { display: none; background: white; min-height: 100vh; flex-direction: column; }
-        #comment-feed { flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 80px; }
-        .comment { display: flex; gap: 10px; }
-        .comment-content { background: #f0f2f5; padding: 10px 15px; border-radius: 15px; max-width: 80%; }
-        .comment-user { font-size: 0.7rem; font-weight: bold; color: var(--green); margin-bottom: 2px; }
-        .input-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #eee; padding: 10px; display: flex; gap: 10px; box-sizing: border-box; }
-        .input-bar input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 20px; outline: none; }
-    </style>
+#create-group-name:focus { border-color: var(--blue);
+}
+.btn-create{ width:100%; margin-top:14px;
+ background:var(--blue); color:#fff;
+ border:none; border-radius:10px; cursor:pointer; padding:13px; font-weight:700; transition:.25s;}
+.btn-create:hover{ transform:translateY(-2px); background:#002852; }
+.nav-tabs{ display:flex; gap:10px; margin-top:18px; }
+.tab-btn{ flex:1; border:none; cursor:pointer; border-radius:10px; background:#ececec; color:#666; padding:11px; font-weight:700; transition:.25s; }
+.tab-btn.active{ background:var(--blue); color:#fff;}
+.view-content{ display:none;}
+.view-content.active{ display:block;}
+.group-list{ background:#fff; margin-top:18px; border-radius:15px; overflow:hidden; box-shadow: 0 4px 15px rgba(0,0,0,.05); }
+.item{ display:flex; justify-content:space-between; align-items:center; gap:15px; padding:18px; border-bottom:1px solid var(--border); transition:.25s;
+}
+.item:last-child{ border-bottom:none; }
+.item:hover{ background:#fafafa; }
+.item-left{ display:flex; gap:14px; flex:1; align-items:flex-start;}
+.group-icon{ width:48px; height:48px; border-radius:50%; background:rgba(0,51,102,.08); display:flex; justify-content:center; align-items:center; font-size:1.3rem; flex-shrink:0; }
+.item-details{ flex:1;}
+.item-name{ font-size:.97rem; font-weight:700; color:var(--blue); line-height:1.3;}
+.item-admin{ margin-top:4px; font-size:.77rem; color:var(--muted);}
+.item-members{ margin-top:3px; font-size:.76rem; color:#999; }
+.btn-action{ border:none; cursor:pointer;
+ background:var(--green); color:#fff; padding:9px 18px; border-radius:40px;
+ font-size:.78rem; font-weight:700;
+ transition:.2s; white-space:nowrap; }
+.btn-action:hover{ transform:scale(1.04); }
+.btn-enter{ background:var(--blue);}
+.empty-state{ padding:35px; text-align:center; color:#999; font-size:.9rem;
+}
+#page-chat{ display:none; flex-direction:column; min-height:100vh; background:#fff; }
+.chat-header{ display:flex; align-items:center; gap:12px; }
+.back-btn{ font-size:1.3rem; cursor:pointer; color:#fff;}
+#active-title{ font-size:.95rem; font-weight:700;}
+#comment-feed{ flex:1; padding:18px; display:flex; flex-direction:column;  gap:15px; padding-bottom:90px;}
+.comment{ display:flex; gap:10px;}
+.comment-content{ background:#f1f3f5; border-radius:16px; padding:10px 14px;
+ max-width:82%;}
+.comment-user{ font-size:.72rem; font-weight:700; color:var(--green); margin-bottom:4px;}
+.comment-text{ font-size:.88rem; word-wrap:break-word;}
+.input-bar{ position:fixed; bottom:0; left:0; width:100%; background:#fff; border-top:1px solid var(--border); display:flex; gap:10px; padding:10px; }
+.input-bar input{ flex:1; border:1px solid #ddd; border-radius:25px; padding:12px 15px; outline:none; }
+.btn-post{ border:none; background:var(--blue); color:#fff; padding:0 22px; border-radius:25px; font-weight:700; cursor:pointer;}
+@media(max-width:600px){ .container{ width:96%;  margin:12px auto; }
+.create-box{ padding:15px; }
+.item{ padding:14px; gap:10px; }
+.group-icon{  width:42px; height:42px;  font-size:1.15rem; }
+.item-name{ font-size:.9rem; }
+.item-admin, .item-members{ font-size:.72rem; }
+.btn-action{  padding:8px 15px; font-size:.72rem; }
+}
+.modern-input{ width:100%; height:56px; padding:0 18px; border:2px solid #e5e7eb; border-radius:14px; background:#fff; outline:none; font-size:16px; color:#222; transition:all .25s ease; }
+.modern-input::placeholder{ color:#8b8b8b; font-size:16px;}
+.modern-input:focus{ border-color:#003366; box-shadow:0 0 0 4px rgba(0,51,102,.08);}
+@media(max-width:420px){ .item{ align-items:flex-start; }
+ .btn-action{ margin-top:4px; }
+  }
+</style>
 </head>
 <body>
-
 <div id="page-groups">
-    <header>
-        <div class="header-logo">
-            <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Logo">
-            <span>Flexi Group Hub</span>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="create-box">
-            <h3 style="margin: 0 0 10px 0; color: var(--blue); font-size: 0.9rem;">Start a Discussion</h3>
-            <input type="text" id="new-group-name" placeholder="E.g. JAMB Maths 2026..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
-            <button class="btn-create" onclick="handleCreateGroup()">CREATE GROUP</button>
-
-            <div class="nav-tabs">
-                <button class="tab-btn active" id="btn-groups" onclick="switchTab('groups')">GROUPS</button>
-                <button class="tab-btn" id="btn-chats" onclick="switchTab('chats')">CHATS</button>
-            </div>
-        </div>
-
-        <div id="view-groups" class="view-content active">
-            <div id="group-list-container" class="group-list"></div>
-        </div>
-
-        <div id="view-chats" class="view-content">
-            <div id="user-list-container" class="group-list"></div>
-        </div>
-    </div>
+<header>
+<div class="header-logo">
+<img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+<span>Flexi Group Hub</span>
 </div>
-
+</header>
+<div class="container">
+<div class="create-box">
+<h3>Start a Discussion</h3>
+<input
+    id="new-group-name"
+    type="text"
+    class="modern-input"
+    placeholder="E.g. JAMB Mathematics 2027...">
+<button
+class="btn-create"
+onclick="handleCreateGroup()">CREATE GROUP</button>
+<div class="nav-tabs">
+<button
+id="btn-groups"
+class="tab-btn active"
+onclick="switchTab('groups')">GROUPS</button>
+<button
+id="btn-chats"
+class="tab-btn"
+onclick="switchTab('chats')">CHAT</button></div>
+</div>
+<div
+id="view-groups"
+class="view-content active">
+<div
+id="group-list-container"
+class="group-list">
+<div class="empty-state">Loading groups...</div></div>
+</div>
+<div
+id="view-chats"
+class="view-content">
+<div
+id="user-list-container"
+class="group-list">
+<div class="empty-state">Loading chats...
+</div></div></div></div>
+</div>
 <div id="page-chat">
-    <header>
-        <div class="header-logo">
-            <span onclick="backToGroups()" style="cursor: pointer; font-size: 1.2rem; margin-right: 10px;">❮</span>
-            <span id="active-title">Discussion</span>
-        </div>
-    </header>
-    <div id="comment-feed"></div>
-    <div class="input-bar">
-        <input type="text" id="chat-msg-input" placeholder="Type a message...">
-        <button class="btn-post" onclick="postComment()" style="background:var(--blue); color:white; border:none; padding:0 20px; border-radius:20px; font-weight:bold; cursor:pointer;">SEND</button>
-    </div>
+<header>
+<div class="chat-header">
+<span
+class="back-btn"
+onclick="backToGroups()">❮</span>
+<span id="active-title">Discussion</span>
 </div>
+</header>
+<div id="comment-feed"></div>
+<div class="input-bar">
+<input
+id="chat-msg-input"
+type="text"
+placeholder="Type your message...">
+<button
+class="btn-post"
+onclick="postComment()">SEND</button>
+</div></div>
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, setDoc, doc, getDocs, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, setDoc, getDoc, getDocs, doc, query,
+ orderBy, onSnapshot, serverTimestamp, deleteDoc} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    console.log("Script is running!");
+const firebaseConfig = {
+apiKey:"AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+authDomain:"flexieduconsult.com.ng",
+projectId:"waec2026jamb2027"
+};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const auth=getAuth(app);
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
-        authDomain: "flexieduconsult.com.ng",
-        projectId: "waec2026jamb2027",
-    };
+let currentId=null;
+let currentType="groups";
+let unsubscribeMessages=null;
+let joinedGroupIds=new Set();
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+/*=========================
+CURRENT USERNAME
+=========================*/
+const getUsername=()=>{
+   if(!auth.currentUser) return "Student";
+    return auth.currentUser.displayName ||
+    auth.currentUser.email.split("@")[0];
+};
 
-    let currentId = null;
-    let currentType = "groups";
-    let unsubscribeMessages = null;
-    let joinedGroupIds = new Set();
+/*=========================
+AUTH
+=========================*/
 
-    const getUsername = () => auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email.split('@')[0]) : "Student";
+onAuthStateChanged(auth,async(user)=>{
+   if(!user){
+       window.location.href="login.html";
+       return;    }
+    await setDoc(
+        doc(db,"profiles",user.uid),
+       {
+            uid:user.uid,
+            name:getUsername(),
+            email:user.email,
+            lastSeen:serverTimestamp()
+       },
+        {merge:true}   
+        );
+   await loadJoinedGroups(user.uid);
+    loadAllGroups();
+    loadAllUsers();});
+/*=========================
+LOAD JOINED GROUPS
+=========================*/
+async function loadJoinedGroups(uid){
+    joinedGroupIds.clear();
+    const snap=await getDocs(
+        collection(db,"groups")
+    );
 
-    // 1. Auth & Sync
-    onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        // This acts as a "Check-in". It adds them to the list 
-        // the moment they open the app.
-        await setDoc(doc(db, "profiles", user.uid), { 
-            name: user.displayName || user.email.split('@')[0],
-            email: user.email,
-            lastSeen: new Date() // Helpful for future features
-        }, { merge: true });
-        
+    for(const g of snap.docs){
+        const memberDoc=await getDoc( doc( db, "groups", g.id,  "members", uid ));
+        if(memberDoc.exists()){ joinedGroupIds.add(g.id);}}
+}
+
+/*=========================
+CREATE GROUP
+=========================*/
+
+window.handleCreateGroup=async()=>{
+ if(!auth.currentUser) return;
+ const input=document.getElementById("new-group-name");
+ const name=input.value.trim();
+if(!name){
+       alert("Enter a group name.");
+        return;
+    }
+    const creatorName=getUsername();
+   const creatorUid=auth.currentUser.uid;
+   const groupRef=await addDoc(        collection(db,"groups"), {name, creatorUid, creatorName, createdAt:serverTimestamp() });
+ await setDoc( doc(db,"groups",groupRef.id,"members",creatorUid), {uid:creatorUid,joinedAt:serverTimestamp() }); joinedGroupIds.add(groupRef.id); input.value="";};
+
+/*=========================
+TAB SWITCHING
+=========================*/
+
+window.switchTab=(tab)=>{document.getElementById("btn-groups").classList.toggle("active",tab==="groups"); document.getElementById("btn-chats").classList.toggle("active",tab==="chats");
+       document.getElementById("view-groups")
+    .classList
+    .toggle("active",tab==="groups");
+       document.getElementById("view-chats").classList.toggle("active",tab==="chats");
+};
+/*=========================
+LOAD ALL GROUPS
+=========================*/
+
+window.loadAllGroups = () => {
+   const groupsRef = query(
+        collection(db, "groups"),
+        orderBy("createdAt", "desc")
+    );
+  onSnapshot(groupsRef, (snapshot) => { const container = document.getElementById("group-list-container");
+container.innerHTML = "";
+        if (snapshot.empty) {
+container.innerHTML = `
+                <div class="empty-state">
+                    No discussion groups yet.
+                </div>
+            `;
+            return;
+        }
+        snapshot.forEach((groupDoc) => {
+            const group = groupDoc.data();
+           const groupId = groupDoc.id;
+            /* Listen for live member count */
+            onSnapshot(
+                collection(db, "groups", groupId, "members"),
+                (memberSnap) => {
+                   const memberCount = memberSnap.size;
+                   const joined = joinedGroupIds.has(groupId);
+                    const button = joined
+                        ? `
+                        <button
+                            class="btn-action btn-enter"
+                            onclick="enterRoom('${groupId}','${group.name}','groups')">
+                            ENTER
+                        </button>
+                        `
+                       : `
+                        <button
+                            class="btn-action"
+                            onclick="joinAndEnter('${groupId}','${group.name}')">
+                            JOIN
+                        </button>
+                        `;
+
+                    let existing = document.getElementById("group-" + groupId);
+                    const html = `
+                    <div
+                        class="item"
+                        id="group-${groupId}">
+                        <div class="item-left">
+                            <div class="group-icon">
+                                👥
+                            </div>
+                            <div class="item-details">
+                                <div class="item-name">
+                                   ${group.name}
+                                </div>
+                                <div class="item-admin">
+                                    Admin:                                   ${group.creatorName || "Unknown"}
+                                </div>
+<div class="item-members">
+    ${memberCount} Member${memberCount === 1 ? "" : "s"}
+</div>
+
+                            </div>
+                        </div>
+                       ${button}
+                    </div>
+                   `;
+                    if(existing){
+                        existing.outerHTML = html;
+                    }else{
+                        container.insertAdjacentHTML(
+                            "beforeend",
+                            html
+                        );
+                    }
+                }
+            );
+            });
+    });
+};
+
+/*=========================
+JOIN GROUP
+=========================*/
+window.joinAndEnter = async(groupId,name)=>{
+   if(!auth.currentUser) return;
+    await setDoc(
+       doc(  db, "groups",  groupId, "members",  auth.currentUser.uid  ),
+       {  uid:auth.currentUser.uid, name:getUsername(),  joinedAt:serverTimestamp()  });
+    joinedGroupIds.add(groupId);
+   enterRoom( groupId, name, "groups" );
+};
+
+/*=========================
+LOAD USERS
+=========================*/
+window.loadAllUsers = ()=>{
+    onSnapshot(
+        collection(db,"profiles"),
+        (snapshot)=>{
+            const container =
+            document.getElementById(
+                "user-list-container"
+            );
+            container.innerHTML="";
+            snapshot.forEach((userDoc)=>{
+                if(
+                    auth.currentUser &&
+                    userDoc.id===auth.currentUser.uid
+                ) return;
+                const user=userDoc.data();
+                container.innerHTML+=`
+                <div
+                    class="item"
+                    onclick="startDirectChat('${userDoc.id}','${user.name}')"
+                    style="cursor:pointer;">
+                    <div class="item-left">
+                        <div class="group-icon">
+                            👤
+                        </div>
+                        <div class="item-details">
+                            <div class="item-name">
+                                ${user.name}
+                            </div>
+                            <div class="item-members">
+                                Tap to chat
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+        }
+    );
+};
+/*=========================
+ENTER ROOM
+=========================*/
+
+window.enterRoom = (roomId, title, type) => {
+
+    currentId = roomId;
+    currentType = type;
+
+    document.getElementById("page-groups").style.display = "none";
+    document.getElementById("page-chat").style.display = "flex";
+
+    document.getElementById("active-title").textContent = title;
+
+    if (unsubscribeMessages) unsubscribeMessages();
+
+    unsubscribeMessages = onSnapshot(
+
+        query(
+            collection(db, currentType, currentId, "messages"),
+            orderBy("timestamp", "asc")
+        ),
+
+        (snapshot) => {
+
+            const feed =
+            document.getElementById("comment-feed");
+
+            feed.innerHTML = "";
+
+            if(snapshot.empty){
+
+                feed.innerHTML=`
+
+                <div class="empty-state">
+
+                    No messages yet.<br>
+                    Be the first to start the discussion.
+
+                </div>
+
+                `;
+
+                return;
+
+            }
+           snapshot.forEach((docSnap)=>{
+
+                const msg = docSnap.data();
+
+                feed.innerHTML += `
+
+                <div class="comment">
+
+                    <div class="comment-content">
+
+                        <div class="comment-user">
+
+                            ${msg.sender}
+
+                        </div>
+
+                        <div class="comment-text">
+
+                            ${msg.text}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            });
+
+            setTimeout(()=>{
+
+                feed.scrollTop = feed.scrollHeight;
+
+                window.scrollTo({
+
+                    top:document.body.scrollHeight,
+
+                    behavior:"smooth"
+
+                });
+
+            },100);
+
+        }
+
+    );
+
+};
+
+/*=========================
+DIRECT CHAT
+=========================*/
+window.startDirectChat = (otherUid, otherName)=>{
+    const chatId = [
+        auth.currentUser.uid,
+        otherUid
+    ].sort().join("_");
+    enterRoom(
+        chatId,
+        otherName,
+        "direct_chats"
+    );
+};
+
+/*=========================
+SEND MESSAGE
+=========================*/
+window.postComment = async()=>{
+    if(!auth.currentUser) return;
+    const input = document.getElementById(
+        "chat-msg-input"
+    );
+    const message = input.value.trim();
+    if(!message) return;
+    await addDoc(
+        collection(
+            db,
+            currentType,
+            currentId,
+            "messages"
+        ),
+        {
+            sender:getUsername(),
+            senderUid:auth.currentUser.uid,
+            text:message,
+            timestamp:serverTimestamp()
+        }
+    );
+    input.value="";
+};
+
+/*=========================
+PRESS ENTER TO SEND
+=========================*/
+
+document.getElementById("chat-msg-input")
+.addEventListener("keydown",(e)=>{
+    if(e.key==="Enter"){
+        e.preventDefault();
+        postComment();
+    }
+});
+
+
+/*=========================
+BACK
+=========================*/
+window.backToGroups = ()=>{
+    if(unsubscribeMessages){
+        unsubscribeMessages();
+        unsubscribeMessages = null;
+    }
+    document.getElementById("page-chat").style.display="none";
+    document.getElementById("page-groups").style.display="block";
+};
+
+/*=========================
+AUTO REFRESH GROUPS
+=========================*/
+window.addEventListener("focus",()=>{
+    if(auth.currentUser){
         loadAllGroups();
         loadAllUsers();
     }
 });
 
+/*=========================
+END
+=========================*/
 
-    // 2. Tab Navigation
-    window.switchTab = (tab) => {
-        document.getElementById('btn-groups').classList.toggle('active', tab === 'groups');
-        document.getElementById('btn-chats').classList.toggle('active', tab === 'chats');
-        document.getElementById('view-groups').classList.toggle('active', tab === 'groups');
-        document.getElementById('view-chats').classList.toggle('active', tab === 'chats');
-    };
-
-    // 3. Load Groups
-    window.loadAllGroups = () => {
-        onSnapshot(query(collection(db, "groups"), orderBy("createdAt", "desc")), (snap) => {
-            const container = document.getElementById('group-list-container');
-            container.innerHTML = "";
-            snap.forEach(docSnap => {
-                const g = docSnap.data();
-                container.innerHTML += `
-                    <div class="item">
-                        <div>
-                            <div class="item-name">${g.name}</div>
-                            <div style="font-size:0.7rem; color:#888;">Admin: ${g.creator}</div>
-                        </div>
-                        <button class="btn-action" onclick="enterRoom('${docSnap.id}', '${g.name}', 'groups')">ENTER</button>
-                    </div>`;
-            });
-        });
-    };
-
-    // 4. Load Users (Messenger List)
-    window.loadAllUsers = () => {
-    onSnapshot(collection(db, "profiles"), (snap) => {
-        const container = document.getElementById('user-list-container');
-        container.innerHTML = "";
-        
-        snap.forEach(doc => {
-            const u = doc.data();
-            // REMOVED the login safeguard: This will show everyone in the 'profiles' collection
-            container.innerHTML += `
-                <div class="item" style="cursor:pointer;" onclick="startDirectChat('${doc.id}', '${u.name}')">
-                    <span class="item-name">${u.name}</span>
-                    <span style="font-size:0.7rem; color:var(--green);">MESSAGE ❯</span>
-                </div>`;
-        });
-    });
-};
-
-
-    // 5. Chat Engine
-    window.enterRoom = (id, name, type) => {
-        currentId = id;
-        currentType = type;
-        document.getElementById('page-groups').style.display = "none";
-        document.getElementById('page-chat').style.display = "flex";
-        document.getElementById('active-title').innerText = name;
-        
-        if (unsubscribeMessages) unsubscribeMessages();
-        unsubscribeMessages = onSnapshot(query(collection(db, currentType, currentId, "messages"), orderBy("timestamp", "asc")), (snap) => {
-            const feed = document.getElementById('comment-feed');
-            feed.innerHTML = "";
-            snap.forEach(d => {
-                const m = d.data();
-                feed.innerHTML += `<div class="comment"><div class="comment-content"><div class="comment-user">${m.sender}</div><div class="comment-text">${m.text}</div></div></div>`;
-            });
-            window.scrollTo(0, document.body.scrollHeight);
-        });
-    };
-
-    window.startDirectChat = (otherUid, name) => {
-        const chatId = [auth.currentUser.uid, otherUid].sort().join("_");
-        enterRoom(chatId, name, "direct_chats");
-    };
-
-    window.postComment = async () => {
-        if (!auth.currentUser) return window.location.href = "login.html";
-        const input = document.getElementById('chat-msg-input');
-        if (!input.value.trim()) return;
-        await addDoc(collection(db, currentType, currentId, "messages"), {
-            sender: getUsername(),
-            text: input.value.trim(),
-            timestamp: serverTimestamp()
-        });
-        input.value = "";
-    };
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
-        authDomain: "flexieduconsult.com.ng",
-        projectId: "waec2026jamb2027",
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    let currentId = null;
-    let currentType = "groups";
-    let unsubscribeMessages = null;
-    let joinedGroupIds = new Set();
-
-    const getUsername = () => auth.currentUser ? (auth.currentUser.displayName || auth.currentUser.email.split('@')[0]) : "Student";
-
-    // 1. AUTH & DATA SYNC
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            await setDoc(doc(db, "profiles", user.uid), { 
-                name: getUsername(), 
-                email: user.email 
-            }, { merge: true });
-            
-            const snapshot = await getDocs(collection(db, "user_groups"));
-            joinedGroupIds = new Set(); 
-            snapshot.forEach(d => {
-                if (d.id.startsWith(user.uid)) joinedGroupIds.add(d.data().groupId);
-            });
-        }
-        loadAllGroups();
-        loadAllUsers();
-    });
-
-    // 2. LOAD GROUPS (Using lowercase 'groups')
-    window.loadAllGroups = () => {
-        onSnapshot(query(collection(db, "groups"), orderBy("createdAt", "desc")), (snap) => {
-            const container = document.getElementById('group-list-container');
-            container.innerHTML = "";
-            snap.forEach(docSnap => {
-                const g = docSnap.data();
-                const isMember = joinedGroupIds.has(docSnap.id);
-                container.innerHTML += `
-                    <div class="item">
-                        <div><div class="item-name">${g.name}</div></div>
-                        ${isMember 
-                            ? `<button class="btn-action" onclick="enterRoom('${docSnap.id}', '${g.name}', 'groups')">ENTER</button>`
-                            : `<button class="btn-action" style="background:var(--green)" onclick="joinAndEnter('${docSnap.id}', '${g.name}')">JOIN</button>`
-                        }
-                    </div>`;
-            });
-        });
-    };
-
-    // 3. LOAD USERS
-    window.loadAllUsers = () => {
-        onSnapshot(collection(db, "profiles"), (snap) => {
-            const container = document.getElementById('user-list-container');
-            container.innerHTML = "";
-            snap.forEach(doc => {
-                if (auth.currentUser && doc.id === auth.currentUser.uid) return;
-                const u = doc.data();
-                container.innerHTML += `
-                    <div class="item" style="cursor:pointer;" onclick="startDirectChat('${doc.id}', '${u.name}')">
-                        <span class="item-name">${u.name}</span>
-                    </div>`;
-            });
-        });
-    };
-
-    // 4. ENTER ROOM
-    window.enterRoom = (id, name, type) => {
-        currentId = id;
-        currentType = type;
-        document.getElementById('page-groups').style.display = "none";
-        document.getElementById('page-chat').style.display = "flex";
-        document.getElementById('active-title').innerText = name;
-        
-        if (unsubscribeMessages) unsubscribeMessages();
-        
-        unsubscribeMessages = onSnapshot(query(collection(db, currentType, currentId, "messages"), orderBy("timestamp", "asc")), (snap) => {
-            const feed = document.getElementById('comment-feed');
-            feed.innerHTML = "";
-            snap.forEach(d => {
-                const m = d.data();
-                feed.innerHTML += `<div class="comment"><div class="comment-content"><div class="comment-user">${m.sender}</div><div class="comment-text">${m.text}</div></div></div>`;
-            });
-            window.scrollTo(0, document.body.scrollHeight);
-        });
-    };
-
-    window.joinAndEnter = async (id, name) => {
-        await setDoc(doc(db, "user_groups", `${auth.currentUser.uid}_${id}`), { groupId: id });
-        joinedGroupIds.add(id);
-        enterRoom(id, name, 'groups');
-    };
-
-    window.startDirectChat = (otherUid, name) => {
-        const chatId = [auth.currentUser.uid, otherUid].sort().join("_");
-        enterRoom(chatId, name, "direct_chats");
-    };
-
-    window.postComment = async () => {
-        if (!auth.currentUser) return;
-        const input = document.getElementById('chat-msg-input');
-        if (!input.value.trim()) return;
-        await addDoc(collection(db, currentType, currentId, "messages"), {
-            sender: getUsername(),
-            text: input.value.trim(),
-            timestamp: serverTimestamp()
-        });
-        input.value = "";
-    };
-    
-    window.backToGroups = () => {
-        if (unsubscribeMessages) unsubscribeMessages();
-        document.getElementById('page-groups').style.display = "block";
-        document.getElementById('page-chat').style.display = "none";
-    };
 </script>
 </body>
 </html>
