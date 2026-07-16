@@ -853,7 +853,9 @@ async function loadNews(){
                 sepHolder.innerHTML = ""; 
                 allNews.forEach(item => {
                     const seoAnchor = document.createElement('a');
-                    seoAnchor.href = `news-view.html?id=${item.id}`;
+                    seoAnchor.href = item.slug
+    ? `news-view.html?slug=${item.slug}`
+    : `news-view.html?id=${item.id}`;
                     seoAnchor.innerText = `${item.title || 'News'} - Flexi Educational Consult Updates`;
                     sepHolder.appendChild(seoAnchor);
                 });
@@ -890,9 +892,13 @@ items.forEach(item => {
     const row =
     document.createElement('tr');
 
-    row.onclick =
-    () => window.location.href =
-    `news-view.html?id=${item.id}`;
+    row.onclick = () => {
+    if (item.slug) {
+        window.location.href = `news-view.html?slug=${item.slug}`;
+    } else {
+        window.location.href = `news-view.html?id=${item.id}`;
+    }
+};
 
     row.innerHTML = `
         <td style="width:80px;">
