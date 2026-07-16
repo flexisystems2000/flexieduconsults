@@ -129,7 +129,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, addDoc, getDocs, query, where, limit, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
@@ -141,15 +141,39 @@
     const db = getFirestore(app);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const articleId = urlParams.get('id');
+
+const slug = urlParams.get("slug");
+const articleId = urlParams.get("id");
+
+let currentArticleId = articleId;
 
     async function loadPageData() {
-        if (!articleId) return;
-        
-        try {
+    if (!slug && !articleId) return;
+    try {
+       let data;
+       if (slug) {
+            const q = query(
+                collection(db, "news"),
+                where("slug", "==", slug),
+                limit(1)
+            );
+            const snap = await getDocs(q);
+            if (snap.empty) {
+                document.getElementById("loader").innerText = "Article not found.";
+                return;
+            }
+            const article = snap.docs[0];
+            data = article.data();
+            currentArticleId = article.id;
+        } else {
             const docSnap = await getDoc(doc(db, "news", articleId));
-            if (docSnap.exists()) {
-                const data = docSnap.data();
+            if (!docSnap.exists()) {
+                document.getElementById("loader").innerText = "Article not found.";
+                return;
+            }
+            data = docSnap.data();
+            currentArticleId = docSnap.id;
+       }
                 // SEO Title
 document.title =
 `${data.seoTitle || data.title} | Flexi Educational Consult`;
@@ -331,24 +355,23 @@ script.text = JSON.stringify(schema);
                 } else {
                     pdfCont.style.display = "none";
                 }
-                
+
                 document.getElementById('loader').style.display = "none";
-                document.getElementById('article-container').style.display = "block";
-                
-                loadComments();
-            } else {
-                document.getElementById('loader').innerText = "Article not found.";
-            }
-        } catch (e) { 
-            console.error(e);
-            document.getElementById('loader').innerText = "Error loading article.";
-        }
-    }
+document.getElementById('article-container').style.display = "block";
+
+loadComments();
+
+} catch (e) {
+    console.error(e);
+    document.getElementById('loader').innerText = "Error loading article.";
+}
+
+}
 
     async function loadComments() {
-        if (!articleId) return;
+        if (!currentArticleId) return;
         const cList = document.getElementById('comments-list');
-        const q = query(collection(db, "news", articleId, "comments"), orderBy("timestamp", "desc"));
+        const q = query(collection(db, "news", currentArticleId, "comments"), orderBy("timestamp", "desc"));
         const snap = await getDocs(q);
         
         if (!snap.empty) {
@@ -378,7 +401,7 @@ script.text = JSON.stringify(schema);
         btn.innerText = "Posting...";
 
         try {
-            await addDoc(collection(db, "news", articleId, "comments"), {
+            await addDoc(collection(db, "news", currentArticleId, "comments"), {
                 name: name,
                 text: text,
                 timestamp: serverTimestamp()
