@@ -352,14 +352,6 @@ window.enterRoom = (roomId, title, type) => {
 
 let selectedFiles = []; // Array to store multiple files
 
-document.getElementById('file-upload').addEventListener('change', (e) => {
-    selectedFiles = Array.from(e.target.files);
-    if (selectedFiles.length > 0) {
-        alert(`${selectedFiles.length} files selected. Click send to upload.`);
-        // Optional: Update your UI preview to show multiple images
-    }
-});
-
 window.postComment = async () => {
     const input = document.getElementById("chat-msg-input");
     const message = input.value.trim();
@@ -504,9 +496,11 @@ window.loadAllUsers = () => {
         }
 
         snapshot.forEach((userDoc) => {
+            // Don't show yourself in the list
             if (auth.currentUser && userDoc.id === auth.currentUser.uid) return;
 
             const user = userDoc.data();
+            
             // Check if profile picture exists, otherwise use default icon
             const avatarHTML = user.photoURL 
                 ? `<img src="${user.photoURL}" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">`
@@ -528,21 +522,67 @@ window.loadAllUsers = () => {
     });
 };
 
-document.getElementById('file-upload').addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file || !currentId) return;
-    alert("Uploading...");
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", CLOUDINARY_PRESET);
-    try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
-        const data = await res.json();
-        await addDoc(collection(db, currentType, currentId, "messages"), {
-            sender: getUsername(), senderUid: auth.currentUser.uid, imageUrl: data.secure_url, timestamp: serverTimestamp()
-        });
-    } catch (err) { alert("Upload failed."); }
+/*=========================
+FILE HANDLING
+=========================*/
+document.getElementById('file-upload').addEventListener('change', (e) => {
+    selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length > 0) {
+        // Show the container
+        const previewContainer = document.getElementById('file-preview-container');
+        previewContainer.style.display = 'block';
+        
+        // Simple preview (shows the first image selected)
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            document.getElementById('file-preview').src = event.target.result;
+        };
+        reader.readAsDataURL(selectedFiles[0]);
+    }
 });
+
+/*=========================
+PROFILE PAGE LOGIC
+=========================*/
+window.openProfile = async () => {
+    document.getElementById("page-chat").style.display = "none";
+    document.getElementById("page-profile").style.display = "block";
+    
+    const container = document.getElementById("profile-pic-container");
+    container.innerHTML = "Loading...";
+    
+    try {
+        const userDoc = await getDoc(doc(db, "profiles", currentId));
+        if (!userDoc.exists()) throw new Error("No profile");
+        
+        const userData = userDoc.data();
+        document.getElementById("profile-name").textContent = userData.name;
+        
+        container.innerHTML = userData.photoURL 
+            ? `<img src="${userData.photoURL}" style="width:120px; height:120px; border-radius:50%;">`
+            : `<div class="group-icon" style="width:120px; height:120px; font-size:3rem; margin:0 auto;">${userData.name.charAt(0).toUpperCase()}</div>`;
+            
+    } catch (error) {
+        document.getElementById("profile-content").style.display = "none";
+        document.getElementById("profile-error").style.display = "block";
+    }
+};
+
+window.backToChat = () => {
+    document.getElementById("page-profile").style.display = "none";
+    document.getElementById("page-chat").style.display = "flex";
+};
+
+window.retryProfileLoad = () => {
+    document.getElementById("profile-content").style.display = "block";
+    document.getElementById("profile-error").style.display = "none";
+    openProfile();
+};
+
+window.clearPreview = () => {
+    selectedFiles = [];
+    document.getElementById('file-preview-container').style.display = 'none';
+};
 /*=========================
 END
 =========================*/
