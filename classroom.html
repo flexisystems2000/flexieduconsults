@@ -87,9 +87,9 @@ header{ position:sticky; top:0; z-index:999; height:60px; background:var(--blue)
 .modern-input:focus{ border-color:#003366; box-shadow:0 0 0 4px rgba(0,51,102,.08);}
 /* Container for the whole feed */
 #comment-feed {  flex: 1;  padding: 18px;  display: flex;  flex-direction: column;  gap: 15px;  padding-bottom: 90px;}
-.msg-row { display: flex;  align-items: flex-end;  gap: 8px;  width: 100%;}
-.msg-row.sent {justify-content: flex-end; flex-direction: row; }
-.msg-row.received {  justify-content: flex-start;}
+.msg-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
+.msg-row.sent { justify-content: flex-end; flex-direction: row;}
+.msg-row.received { justify-content: flex-start; flex-direction: row;}
 .msg-bubble {  padding: 10px 14px;  border-radius: 16px;  max-width: 75%;  position: relative;}
 .sent .msg-bubble {  background: var(--blue);  color: #fff;  border-bottom-right-radius: 2px;}
 .received .msg-bubble {  background: #f1f3f5;  color: #222;  border-bottom-left-radius: 2px;}
@@ -154,14 +154,17 @@ class="group-list">
 </div>
 <div id="page-chat">
 <header>
-<div class="chat-header">
-<span
-class="back-btn"
-onclick="backToGroups()">❮</span>
-<span id="active-title">Discussion</span>
-</div>
+    <div class="chat-header">
+        <span class="back-btn" onclick="backToGroups()">❮</span>
+        <span id="active-title">Discussion Name</span> <!-- No onclick attribute -->
+    </div>
 </header>
 <div id="comment-feed"></div>
+<!-- Add this before the .input-bar -->
+<div id="file-preview-container" style="display:none; padding:10px;">
+    <img id="file-preview" style="max-width: 100px; border-radius: 8px;">
+    <button onclick="clearPreview()">X</button>
+</div>
 <div class="input-bar">
     <button class="icon-btn" onclick="document.getElementById('file-upload').click()">+</button>
     <input id="chat-msg-input" type="text" placeholder="Type your message...">
@@ -176,8 +179,35 @@ onclick="backToGroups()">❮</span>
 </div>
 </div>
 
-<!-- Hidden file input -->
-<input type="file" id="file-upload" accept="image/*" style="display:none">
+<div id="page-profile" style="display:none; min-height:100vh; background:#fff; padding:20px; text-align:center;">
+    <header style="text-align:left; margin-bottom:20px;">
+        <span class="back-btn" onclick="backToChat()" style="color:var(--blue); font-size:1.3rem; cursor:pointer;">❮ Back</span>
+    </header>
+    
+    <div id="profile-content">
+        <div id="profile-pic-container" style="margin-bottom: 20px;">
+            <!-- Image or Avatar will be injected here -->
+        </div>
+        <h2 id="profile-name">User Name</h2>
+    </div>
+
+<!-- Error State -->
+<div id="profile-error" style="display:none; padding:40px; text-align:center;">
+    <!-- The retry icon SVG -->
+    <button onclick="retryProfileLoad()" style="background:none; border:none; cursor:pointer;">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+        </svg>
+    </button>
+    <p style="margin-top: 15px; color: #555;">Sorry, we're unable to load this page at the moment, please try again later.</p>
+</div>
+</div>
+
+<!-- Add 'multiple' attribute here -->
+<input type="file" id="file-upload" accept="image/*" multiple style="display:none">
+
+
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -266,10 +296,25 @@ window.loadAllGroups = () => {
 };
 
 window.enterRoom = (roomId, title, type) => {
-    currentId = roomId; currentType = type;
+    currentId = roomId; 
+    currentType = type;
     document.getElementById("page-groups").style.display = "none";
     document.getElementById("page-chat").style.display = "flex";
-    document.getElementById("active-title").textContent = title;
+    
+    // Find the title element
+    const titleEl = document.getElementById("active-title");
+    titleEl.textContent = title;
+
+    // Dynamically assign the click behavior based on the type
+    if (type === 'chats') {
+        // Make it interactive for private chats
+        titleEl.style.cursor = "pointer";
+        titleEl.onclick = openProfile; 
+    } else {
+        // Remove interaction for group chats
+        titleEl.style.cursor = "default";
+        titleEl.onclick = null; 
+    }
 
     if (unsubscribeMessages) unsubscribeMessages();
     unsubscribeMessages = onSnapshot(query(collection(db, currentType, currentId, "messages"), orderBy("timestamp", "asc")), (snapshot) => {
@@ -278,43 +323,81 @@ window.enterRoom = (roomId, title, type) => {
         snapshot.forEach((docSnap) => {
             const msg = docSnap.data();
             const isSent = msg.senderUid === auth.currentUser.uid;
-            const content = msg.imageUrl ? `<img src="${msg.imageUrl}" style="width:100%; border-radius:10px;">` : `<div class="msg-text">${msg.text}</div>`;
             
+            // Handle multiple images (new format) and single images (old format)
+            let imageHTML = "";
+            if (msg.imageUrls && Array.isArray(msg.imageUrls)) {
+                msg.imageUrls.forEach(url => {
+                    imageHTML += `<img src="${url}" style="width:100%; border-radius:10px; margin-top:5px;">`;
+                });
+            } else if (msg.imageUrl) {
+                imageHTML = `<img src="${msg.imageUrl}" style="width:100%; border-radius:10px; margin-top:5px;">`;
+            }
+
+            // Construct the message bubble
             feed.innerHTML += `
                 <div class="msg-row ${isSent ? 'sent' : 'received'}">
-                    <div class="avatar">${msg.sender.charAt(0).toUpperCase()}</div>
+                    ${!isSent ? `<div class="avatar">${msg.sender.charAt(0).toUpperCase()}</div>` : ''}
                     <div class="msg-bubble">
-                        <div class="msg-name">${isSent ? 'You' : msg.sender}</div>
-                        ${content}
+                        ${!isSent ? `<div class="msg-name">${msg.sender}</div>` : ''}
+                        <div class="msg-text">${msg.text ? msg.text : ''}</div>
+                        ${imageHTML}
                     </div>
                 </div>
             `;
         });
     });
 };
-window.postComment = async()=>{
-    if(!auth.currentUser) return;
-    const input = document.getElementById(
-        "chat-msg-input"
-    );
+
+
+let selectedFiles = []; // Array to store multiple files
+
+document.getElementById('file-upload').addEventListener('change', (e) => {
+    selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length > 0) {
+        alert(`${selectedFiles.length} files selected. Click send to upload.`);
+        // Optional: Update your UI preview to show multiple images
+    }
+});
+
+window.postComment = async () => {
+    const input = document.getElementById("chat-msg-input");
     const message = input.value.trim();
-    if(!message) return;
-    await addDoc(
-        collection(
-            db,
-            currentType,
-            currentId,
-            "messages"
-        ),
-        {
-            sender:getUsername(),
-            senderUid:auth.currentUser.uid,
-            text:message,
-            timestamp:serverTimestamp()
-        }
-    );
-    input.value="";
+    if (!message && selectedFiles.length === 0) return;
+
+    let imageUrls = [];
+
+    // Upload all files to Cloudinary if they exist
+    if (selectedFiles.length > 0) {
+        const uploadPromises = selectedFiles.map(async (file) => {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", CLOUDINARY_PRESET);
+            
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { 
+                method: "POST", 
+                body: formData 
+            });
+            const data = await res.json();
+            return data.secure_url;
+        });
+        imageUrls = await Promise.all(uploadPromises);
+    }
+
+    // Post to Firestore
+    await addDoc(collection(db, currentType, currentId, "messages"), {
+        sender: getUsername(),
+        senderUid: auth.currentUser.uid,
+        text: message,
+        imageUrls: imageUrls, // Array of URLs
+        timestamp: serverTimestamp()
+    });
+
+    // Reset
+    input.value = "";
+    selectedFiles = [];
 };
+
 
 /*=========================
 PRESS ENTER TO SEND
@@ -416,53 +499,4 @@ window.loadAllUsers = () => {
         container.innerHTML = "";
 
         if (snapshot.empty) {
-            container.innerHTML = `<div class="empty-state">No other users found.</div>`;
-            return;
-        }
-
-        snapshot.forEach((userDoc) => {
-            if (auth.currentUser && userDoc.id === auth.currentUser.uid) return;
-
-            const user = userDoc.data();
-            // Check if profile picture exists, otherwise use default icon
-            const avatarHTML = user.photoURL 
-                ? `<img src="${user.photoURL}" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">`
-                : `<div class="group-icon">👤</div>`;
-
-            const userHTML = `
-                <div class="item" onclick="startDirectChat('${userDoc.id}', '${user.name}')" style="cursor:pointer;">
-                    <div class="item-left">
-                        ${avatarHTML}
-                        <div class="item-details">
-                            <div class="item-name">${user.name}</div>
-                            <div class="item-members">Tap to start a direct chat</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML("beforeend", userHTML);
-        });
-    });
-};
-
-document.getElementById('file-upload').addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file || !currentId) return;
-    alert("Uploading...");
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", CLOUDINARY_PRESET);
-    try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
-        const data = await res.json();
-        await addDoc(collection(db, currentType, currentId, "messages"), {
-            sender: getUsername(), senderUid: auth.currentUser.uid, imageUrl: data.secure_url, timestamp: serverTimestamp()
-        });
-    } catch (err) { alert("Upload failed."); }
-});
-/*=========================
-END
-=========================*/
-</script>
-</body>
-</html>
+            container.innerHTML = `<div class="empty
