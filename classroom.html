@@ -499,4 +499,53 @@ window.loadAllUsers = () => {
         container.innerHTML = "";
 
         if (snapshot.empty) {
-            container.innerHTML = `<div class="empty
+            container.innerHTML = `<div class="empty-state">No other users found.</div>`;
+            return;
+        }
+
+        snapshot.forEach((userDoc) => {
+            if (auth.currentUser && userDoc.id === auth.currentUser.uid) return;
+
+            const user = userDoc.data();
+            // Check if profile picture exists, otherwise use default icon
+            const avatarHTML = user.photoURL 
+                ? `<img src="${user.photoURL}" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">`
+                : `<div class="group-icon">👤</div>`;
+
+            const userHTML = `
+                <div class="item" onclick="startDirectChat('${userDoc.id}', '${user.name}')" style="cursor:pointer;">
+                    <div class="item-left">
+                        ${avatarHTML}
+                        <div class="item-details">
+                            <div class="item-name">${user.name}</div>
+                            <div class="item-members">Tap to start a direct chat</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML("beforeend", userHTML);
+        });
+    });
+};
+
+document.getElementById('file-upload').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file || !currentId) return;
+    alert("Uploading...");
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_PRESET);
+    try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
+        const data = await res.json();
+        await addDoc(collection(db, currentType, currentId, "messages"), {
+            sender: getUsername(), senderUid: auth.currentUser.uid, imageUrl: data.secure_url, timestamp: serverTimestamp()
+        });
+    } catch (err) { alert("Upload failed."); }
+});
+/*=========================
+END
+=========================*/
+</script>
+</body>
+</html>
