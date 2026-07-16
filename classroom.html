@@ -73,7 +73,7 @@ header{ position:sticky; top:0; z-index:999; height:60px; background:var(--blue)
 .comment-text{ font-size:.88rem; word-wrap:break-word;}
 .input-bar{ position:fixed; bottom:0; left:0; width:100%; background:#fff; border-top:1px solid var(--border); display:flex; gap:10px; padding:10px; }
 .input-bar input{ flex:1; border:1px solid #ddd; border-radius:25px; padding:12px 15px; outline:none; }
-.btn-post{ border:none; background:var(--blue); color:#fff; padding:0 22px; border-radius:25px; font-weight:700; cursor:pointer;}
+.btn-post { display: flex; align-items: center; justify-content: center; width: 48px;  height: 48px; border-radius: 50%; background: var(--blue); color: #fff; border: none; padding: 0;  cursor: pointer; flex-shrink: 0; }
 @media(max-width:600px){ .container{ width:96%;  margin:12px auto; }
 .create-box{ padding:15px; }
 .item{ padding:14px; gap:10px; }
@@ -95,9 +95,12 @@ header{ position:sticky; top:0; z-index:999; height:60px; background:var(--blue)
 .received .msg-bubble {  background: #f1f3f5;  color: #222;  border-bottom-left-radius: 2px;}
 .avatar {  width: 32px;  height: 32px;  border-radius: 50%;  background: #ddd;  display: flex;  align-items: center;  justify-content: center;  font-size: 0.75rem;  font-weight: bold; }
 .input-bar { display: flex; gap: 8px; padding: 10px;}
-.icon-btn { border: 1px solid #ddd; background: #f9f9f9; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-weight: bold; color: #555; transition: 0.2s;}
+.icon-btn { display: flex;  align-items: center;  justify-content: center;  background: #f0f0f0; border: none; cursor: pointer; padding: 0; width: 48px; height: 48px; border-radius: 50%; color: var(--blue); font-size: 24px; font-weight: bold; transition: background 0.2s; -webkit-tap-highlight-color: transparent;}
+.icon-btn:active { background: #dcdcdc;}
 .icon-btn:hover { background: #eee;}
 .msg-name {  font-size: 0.7rem; margin-bottom: 2px;  color: var(--muted);}
+.btn-post svg { stroke: #ffffff;}
+.icon-btn svg { stroke: currentColor;}
 @media(max-width:420px){ .item{ align-items:flex-start; }
  .btn-action{ margin-top:4px; }
   }
@@ -161,13 +164,6 @@ onclick="backToGroups()">❮</span>
 <div id="comment-feed"></div>
 <div class="input-bar">
     <button class="icon-btn" onclick="document.getElementById('file-upload').click()">+</button>
-    <!-- GIF Icon -->
-    <button class="icon-btn" onclick="openGifPicker()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <text x="7" y="16" font-size="10" font-weight="bold">GIF</text>
-        </svg>
-    </button>
     <input id="chat-msg-input" type="text" placeholder="Type your message...">
     <!-- Telegram-style Send Icon -->
     <button class="btn-post" onclick="postComment()">
@@ -178,6 +174,8 @@ onclick="backToGroups()">❮</span>
     </button>
 </div>
 </div>
+</div>
+
 <!-- Hidden file input -->
 <input type="file" id="file-upload" accept="image/*" style="display:none">
 
@@ -194,6 +192,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy"; 
+const CLOUDINARY_PRESET = "my_preset_123";
 
 let currentId = null;
 let currentType = "groups";
@@ -392,6 +393,22 @@ window.loadAllUsers = () => {
     // Placeholder: Add your user loading logic here
     console.log("Loading users...");
 };
+
+document.getElementById('file-upload').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file || !currentId) return;
+    alert("Uploading...");
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_PRESET);
+    try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
+        const data = await res.json();
+        await addDoc(collection(db, currentType, currentId, "messages"), {
+            sender: getUsername(), senderUid: auth.currentUser.uid, imageUrl: data.secure_url, timestamp: serverTimestamp()
+        });
+    } catch (err) { alert("Upload failed."); }
+});
 /*=========================
 END
 =========================*/
