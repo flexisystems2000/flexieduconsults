@@ -206,15 +206,23 @@ const getUsername = () => {
     return auth.currentUser.displayName || auth.currentUser.email.split("@")[0];
 };
 
-onAuthStateChanged(auth, async (user) => {
-    if (!user) { window.location.href = "login.html"; return; }
-    await setDoc(doc(db, "profiles", user.uid), {
-        uid: user.uid, name: getUsername(), email: user.email, lastSeen: serverTimestamp()
-    }, { merge: true });
-    await loadJoinedGroups(user.uid);
+onAuthStateChanged(auth,async(user)=>{
+   if(!user){
+       window.location.href="login.html";
+       return;    }
+    await setDoc(
+        doc(db,"profiles",user.uid),
+       {
+            uid:user.uid,
+            name:getUsername(),
+            email:user.email,
+            lastSeen:serverTimestamp()
+       },
+        {merge:true}   
+        );
+   await loadJoinedGroups(user.uid);
     loadAllGroups();
-    loadAllUsers();
-});
+    loadAllUsers();});
 
 async function loadJoinedGroups(uid) {
     joinedGroupIds.clear();
@@ -333,6 +341,15 @@ window.backToGroups = ()=>{
     document.getElementById("page-groups").style.display="block";
 };
 
+window.startDirectChat = (otherUid, otherName) => {
+    // Generate a unique ID for a 1-on-1 chat by sorting the two UIDs
+    const myUid = auth.currentUser.uid;
+    const chatId = [myUid, otherUid].sort().join('_');
+    
+    // Use the existing enterRoom function logic, but set type to "chats"
+    enterRoom(chatId, otherName, "chats");
+};
+
 /*=========================
 AUTO REFRESH GROUPS
 =========================*/
@@ -388,10 +405,44 @@ window.joinAndEnter = async (groupId, name) => {
     enterRoom(groupId, name, "groups");
 };
 
-// You need this function defined for your page to load
+/*=========================
+LOAD ALL USERS
+=========================*/
 window.loadAllUsers = () => {
-    // Placeholder: Add your user loading logic here
-    console.log("Loading users...");
+    const usersRef = collection(db, "profiles");
+
+    onSnapshot(usersRef, (snapshot) => {
+        const container = document.getElementById("user-list-container");
+        container.innerHTML = "";
+
+        if (snapshot.empty) {
+            container.innerHTML = `<div class="empty-state">No other users found.</div>`;
+            return;
+        }
+
+        snapshot.forEach((userDoc) => {
+            if (auth.currentUser && userDoc.id === auth.currentUser.uid) return;
+
+            const user = userDoc.data();
+            // Check if profile picture exists, otherwise use default icon
+            const avatarHTML = user.photoURL 
+                ? `<img src="${user.photoURL}" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">`
+                : `<div class="group-icon">👤</div>`;
+
+            const userHTML = `
+                <div class="item" onclick="startDirectChat('${userDoc.id}', '${user.name}')" style="cursor:pointer;">
+                    <div class="item-left">
+                        ${avatarHTML}
+                        <div class="item-details">
+                            <div class="item-name">${user.name}</div>
+                            <div class="item-members">Tap to start a direct chat</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML("beforeend", userHTML);
+        });
+    });
 };
 
 document.getElementById('file-upload').addEventListener('change', async (e) => {
@@ -414,4 +465,4 @@ END
 =========================*/
 </script>
 </body>
-</html>
+    </html>
