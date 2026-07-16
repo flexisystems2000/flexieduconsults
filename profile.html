@@ -2,12 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-<link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-<link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile | Flexi Tutors</title>
-    <style>
+   <style>
         :root { --blue: #003366; --green: #2E8B57; --bg: #f4f7f6; --white: #ffffff; --yellow: #FFD700; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
 
@@ -60,7 +56,7 @@
         .score-high { color: var(--green); font-weight: bold; }
 
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-    </style>
+</style>
 </head>
 <body>
 
@@ -74,13 +70,14 @@
     <div class="profile-card">
         <div class="profile-cover"></div>
         <div class="avatar-container">
-            <img id="display-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="profile-img">
+            <!-- This is the single, clickable avatar -->
+            <img id="display-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" 
+                 class="profile-img" style="cursor:pointer" onclick="document.getElementById('pic-upload').click()">
         </div>
         <h2 id="display-name" class="user-name">---</h2>
         <p id="display-email" class="user-email">---</p>
     </div>
-
-    <div class="section-card">
+        <div class="section-card">
         <div class="section-title">My Classrooms (Click to chat)</div>
         <div id="group-container" class="group-list">
             <span style="color: #ccc; font-size: 0.8rem;">Searching joined groups...</span>
@@ -112,77 +109,107 @@
                 </tbody>
         </table>
     </div>
+    <!-- ... [Rest of your HTML sections] ... -->
 </div>
+
+<input type="file" id="pic-upload" accept="image/*" style="display:none">
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    // Change Firestore to Database
-    import { getDatabase, ref, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
         authDomain: "flexieduconsult.com.ng",
-        databaseURL: "https://waec2026jamb2027-default-rtdb.firebaseio.com",
         projectId: "waec2026jamb2027",
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getDatabase(app); // Switched to Realtime DB
+    const db = getFirestore(app); 
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             document.getElementById('display-name').innerText = user.displayName || "Flexi Student";
             document.getElementById('display-email').innerText = user.email;
 
-            // FETCH PERFORMANCE FROM REALTIME DATABASE
+            // 1. Load saved profile pic
+            const userDoc = await getDoc(doc(db, "profiles", user.uid));
+            if (userDoc.exists() && userDoc.data().photoURL) {
+                document.getElementById('display-pic').src = userDoc.data().photoURL;
+            }
+
+            // 2. Fetch Performance from Firestore 'leaderboard'
             try {
-                // Look in 'leaderboard' for scores where 'name' matches the current user
-                // NOTE: For better accuracy, in your engine, you should save scores by UID 
-                // but for now, we'll match by the displayName used in the engine.
-                const leaderboardRef = query(
-                    ref(db, 'leaderboard'), 
-                    orderByChild('name'), 
-                    equalTo(user.displayName)
-                );
-                
-                const snapshot = await get(leaderboardRef);
+                const q = query(collection(db, "leaderboard"), where("name", "==", user.displayName));
+                const snapshot = await getDocs(q);
                 const tbody = document.getElementById('performance-body');
                 tbody.innerHTML = "";
                 
-                let totalScore = 0;
-                let count = 0;
-
-                if (snapshot.exists()) {
-                    snapshot.forEach(child => {
-                        const r = child.val();
-                        totalScore += r.score;
-                        count++;
-                        
-                        // Formatting the timestamp we saved in the engine
-                        const date = new Date(r.timestamp).toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
-                        
-                        tbody.innerHTML += `
-                            <tr>
-                                <td>${r.exam || 'CBT Test'}</td>
-                                <td class="${r.score >= 50 ? 'score-high' : ''}">${r.score}%</td>
-                                <td>${date}</td>
-                            </tr>`;
-                    });
-                }
+                let totalScore = 0, count = 0;
+                snapshot.forEach(doc => {
+                    const r = doc.data();
+                    totalScore += r.score; count++;
+                    // Use a fallback for date if timestamp is missing
+                    const date = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleDateString() : "N/A";
+                    tbody.innerHTML += `<tr><td>${r.exam || 'Test'}</td><td>${r.score}%</td><td>${date}</td></tr>`;
+                });
 
                 document.getElementById('exams-taken').innerText = count;
                 document.getElementById('avg-score').innerText = count > 0 ? Math.round(totalScore/count) + "%" : "0%";
+            } catch (e) { console.error("Performance load error:", e); }
+
+            // 3. Fetch Joined Groups
+            try {
+                const groupContainer = document.getElementById('group-container');
+                groupContainer.innerHTML = ""; // Clear loader
                 
-                if(count === 0) {
-                    tbody.innerHTML = "<tr><td colspan='3' style='text-align:center; color:#999; padding-top:20px;'>No test records found.</td></tr>";
+                const groupsSnap = await getDocs(collection(db, "groups"));
+                let found = false;
+
+                for (const gDoc of groupsSnap.docs) {
+                    const memberDoc = await getDoc(doc(db, "groups", gDoc.id, "members", user.uid));
+                    if (memberDoc.exists()) {
+                        found = true;
+                        groupContainer.innerHTML += `
+                            <div class="group-tag" onclick="window.location.href='classroom.html'">
+                                ${gDoc.data().name}
+                            </div>`;
+                    }
                 }
-            } catch (e) { console.error("Error fetching results:", e); }
+
+                if (!found) {
+                    groupContainer.innerHTML = `<span style="color: #ccc; font-size: 0.8rem;">No groups joined yet.</span>`;
+                }
+            } catch (e) { console.error("Groups load error:", e); }
 
             document.getElementById('loading-overlay').style.display = "none";
         } else {
             window.location.href = "login.html";
         }
+    });
+
+    // Image Upload Logic
+    document.getElementById('pic-upload').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const overlay = document.getElementById('loading-overlay');
+        overlay.style.display = "flex";
+        overlay.innerText = "Updating profile picture...";
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "my_preset_123");
+
+        try {
+            const res = await fetch(`https://api.cloudinary.com/v1_1/dwmbgd9jy/image/upload`, { method: "POST", body: formData });
+            const data = await res.json();
+            document.getElementById('display-pic').src = data.secure_url;
+            await setDoc(doc(db, "profiles", auth.currentUser.uid), { photoURL: data.secure_url }, { merge: true });
+            alert("Profile picture updated!");
+        } catch (err) { alert("Upload failed."); } finally { overlay.style.display = "none"; }
     });
 </script>
 </body>
