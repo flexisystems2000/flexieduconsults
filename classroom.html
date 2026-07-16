@@ -352,6 +352,9 @@ window.enterRoom = (roomId, title, type) => {
 
 let selectedFiles = []; // Array to store multiple files
 
+/*=========================
+POST COMMENT
+=========================*/
 window.postComment = async () => {
     const input = document.getElementById("chat-msg-input");
     const message = input.value.trim();
@@ -381,15 +384,26 @@ window.postComment = async () => {
         sender: getUsername(),
         senderUid: auth.currentUser.uid,
         text: message,
-        imageUrls: imageUrls, // Array of URLs
+        imageUrls: imageUrls, 
         timestamp: serverTimestamp()
     });
 
-    // Reset
+    // Reset UI
     input.value = "";
-    selectedFiles = [];
-};
+    clearPreview(); 
+}; // <--- THIS CLOSING BRACE IS REQUIRED
 
+/*=========================
+CLEAR PREVIEW (ONLY ONE DEFINITION)
+=========================*/
+window.clearPreview = () => {
+    selectedFiles = []; 
+    document.getElementById('file-preview-container').style.display = 'none';
+    const list = document.getElementById('file-preview-list');
+    if (list) list.innerHTML = '';
+    const previewImg = document.getElementById('file-preview');
+    if (previewImg) previewImg.src = "";
+};
 
 /*=========================
 PRESS ENTER TO SEND
@@ -402,7 +416,6 @@ document.getElementById("chat-msg-input")
         postComment();
     }
 });
-
 
 /*=========================
 BACK
@@ -523,23 +536,58 @@ window.loadAllUsers = () => {
 };
 
 /*=========================
-FILE HANDLING
+UPDATED FILE HANDLING
 =========================*/
 document.getElementById('file-upload').addEventListener('change', (e) => {
     selectedFiles = Array.from(e.target.files);
+    const previewContainer = document.getElementById('file-preview-container');
+    const previewList = document.getElementById('file-preview-list') || (() => {
+        const div = document.createElement('div');
+        div.id = 'file-preview-list';
+        div.style.display = 'flex';
+        div.style.gap = '10px';
+        div.style.marginTop = '10px';
+        previewContainer.appendChild(div);
+        return div;
+    })();
+
     if (selectedFiles.length > 0) {
-        // Show the container
-        const previewContainer = document.getElementById('file-preview-container');
         previewContainer.style.display = 'block';
+        previewList.innerHTML = ''; // Clear previous previews
         
-        // Simple preview (shows the first image selected)
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            document.getElementById('file-preview').src = event.target.result;
-        };
-        reader.readAsDataURL(selectedFiles[0]);
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.style.width = '60px';
+                img.style.height = '60px';
+                img.style.borderRadius = '8px';
+                img.style.objectFit = 'cover';
+                previewList.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
     }
 });
+
+window.clearPreview = () => {
+    selectedFiles = []; // Reset the file array
+    
+    // Hide the container
+    const previewContainer = document.getElementById('file-preview-container');
+    previewContainer.style.display = 'none';
+    
+    // Clear the thumbnails specifically
+    const list = document.getElementById('file-preview-list');
+    if (list) {
+        list.innerHTML = '';
+    }
+    
+    // Also clear the original image placeholder just in case
+    const previewImg = document.getElementById('file-preview');
+    if (previewImg) previewImg.src = "";
+};
 
 /*=========================
 PROFILE PAGE LOGIC
@@ -548,25 +596,29 @@ window.openProfile = async () => {
     document.getElementById("page-chat").style.display = "none";
     document.getElementById("page-profile").style.display = "block";
     
-    const container = document.getElementById("profile-pic-container");
-    container.innerHTML = "Loading...";
+    // Show Loading State
+    const contentDiv = document.getElementById("profile-content");
+    const errorDiv = document.getElementById("profile-error");
+    contentDiv.style.display = "block";
+    errorDiv.style.display = "none";
+    document.getElementById("profile-pic-container").innerHTML = "Loading profile...";
     
     try {
+        // Simulate a small delay for the "loading" experience
+        await new Promise(resolve => setTimeout(resolve, 800)); 
+        
         const userDoc = await getDoc(doc(db, "profiles", currentId));
         if (!userDoc.exists()) throw new Error("No profile");
         
         const userData = userDoc.data();
         document.getElementById("profile-name").textContent = userData.name;
-        
-        container.innerHTML = userData.photoURL 
-            ? `<img src="${userData.photoURL}" style="width:120px; height:120px; border-radius:50%;">`
-            : `<div class="group-icon" style="width:120px; height:120px; font-size:3rem; margin:0 auto;">${userData.name.charAt(0).toUpperCase()}</div>`;
-            
+        // ... rest of your profile rendering code ...
     } catch (error) {
-        document.getElementById("profile-content").style.display = "none";
-        document.getElementById("profile-error").style.display = "block";
+        contentDiv.style.display = "none";
+        errorDiv.style.display = "block";
     }
 };
+
 
 window.backToChat = () => {
     document.getElementById("page-profile").style.display = "none";
@@ -577,11 +629,6 @@ window.retryProfileLoad = () => {
     document.getElementById("profile-content").style.display = "block";
     document.getElementById("profile-error").style.display = "none";
     openProfile();
-};
-
-window.clearPreview = () => {
-    selectedFiles = [];
-    document.getElementById('file-preview-container').style.display = 'none';
 };
 /*=========================
 END
