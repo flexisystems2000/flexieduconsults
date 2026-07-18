@@ -118,11 +118,29 @@
     font-size: 13px;
     color: #718096;
 }
+
+#comments-modal {
+    display: none !important; /* The !important forces it to be hidden */
+}
+
   </style>
 </head>
 <body>
 
-<header>Flexi Edu Consult</header>
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 10px; height: 50px;">
+    <!-- Back Button -->
+    <a href="index.html" style="color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1);">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </a>
+   <div style="font-weight: bold; font-size: 0.75rem; white-space: nowrap; padding: 0 5px;">
+    FLEXI EDUCATIONAL CONSULT | VIDEOS
+</div>
+
+    <!-- Empty div for balance -->
+    <div style="width: 35px;"></div>
+</header>
 <div class="green-stripe"></div>
 
 <div id="mainVideoContainer"></div>
@@ -168,9 +186,28 @@
         &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
 </footer>
+<div id="comments-modal" style="display:none; position:fixed; bottom:0; left:0; width:100%; height:80vh; background:white; z-index:1000; border-top-left-radius:20px; border-top-right-radius:20px; box-shadow:0 -5px 15px rgba(0,0,0,0.2); flex-direction:column;">
+    <!-- Handle -->
+    <div style="text-align:center; padding:15px; cursor:pointer;" onclick="closeModal()">
+        <div style="width:40px; height:5px; background:#ccc; margin:auto; border-radius:5px;"></div>
+    </div>
+    
+    <!-- Comments List (scrollable) -->
+    <div id="modal-comments-list" style="padding: 20px; flex-grow:1; overflow-y:auto;"></div>
+    
+    <!-- Comment Input Bar -->
+    <div id="modal-input-container" style="padding: 15px; border-top: 1px solid #eee; background: white;">
+        <div class="comment-box" style="display:flex; gap:10px;">
+            <input type="text" class="comment-input" id="input-modal" placeholder="Write a comment..." style="flex:1; padding:10px; border:1px solid #ddd; border-radius:20px;">
+            <button type="button" class="post-btn" onclick="postModalComment()">Post</button>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore, collection, onSnapshot, query, orderBy, doc, increment, updateDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { getFirestore, collection, onSnapshot, query, orderBy, doc, increment, updateDoc, addDoc, serverTimestamp, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -179,36 +216,297 @@
     projectId: "waec2026jamb2027"
   };
 
-  // FIXED: Passed the actual firebaseConfig object here
   const app = initializeApp(firebaseConfig);
-  
   const db = getFirestore(app);
   const auth = getAuth(app);
-
+  
   let selectedVideo = null;
   let allVideos = [];
-  
-  // Reusable functions
-  window.updateCount = async (id, field) => await updateDoc(doc(db, "videos", id), { [field]: increment(1) });
-  
-  window.postComment = async (id) => {
-    if(!auth.currentUser) {
-        // This sends them to login and tells the app to come back here after they sign in
-        const currentUrl = encodeURIComponent(window.location.href);
+  let userInteractions = {};
+  let activeVideoUnsub = null; // Add this line
+
+
+    window.postComment = async (id) => {
+    if (!auth.currentUser) {
         alert("Sign in to comment!");
-        window.location.href = `login.html?redirect=${currentUrl}`;
+        window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`;
         return;
     }
-    // ... rest of your code
+    
+    const commentInput = document.getElementById(`input-${id}`);
+    const commentText = commentInput.value;
+    
+    if (commentText.trim() === "") return;
+    
+    try {
+        await addDoc(collection(db, "videos", id, "comments"), {
+            text: commentText,
+            userId: auth.currentUser.uid,
+            // Pulls the name set during your signup in login.html
+            userName: auth.currentUser.displayName || "Anonymous", 
+            createdAt: serverTimestamp()
+        });
+        
+        commentInput.value = "";
+        alert("Comment posted!");
+    } catch (e) {
+        console.error("Error adding comment: ", e);
+        alert("Failed to post comment. Please try again.");
+    }
+  };
+
+
+  window.toggleInteraction = async (type) => {
+    if(!auth.currentUser) return alert("Sign in to react!");
+    const userId = auth.currentUser.uid;
+    const videoId = selectedVideo.id;
+    const interactionRef = doc(db, "interactions", `${videoId}_${userId}`);
+    const videoRef = doc(db, "videos", videoId);
+    const docSnap = await getDoc(interactionRef);
+    
+    if (docSnap.exists() && docSnap.data().type === type) {
+        await deleteDoc(interactionRef);
+        await updateDoc(videoRef, { [type]: increment(-1) });
+    } else {
+        if (docSnap.exists()) await updateDoc(videoRef, { [docSnap.data().type]: increment(-1) });
+        await setDoc(interactionRef, { userId, videoId, type });
+        await updateDoc(videoRef, { [type]: increment(1) });
+    }
+  };
+
+window.reactToComment = async (commentId, type) => {
+    if (!auth.currentUser) return alert("Sign in to react!");
+    
+    const videoId = selectedVideo.id;
+    const commentRef = doc(db, "videos", videoId, "comments", commentId);
+    const interactionRef = doc(db, "videos", videoId, "comments", commentId, "interactions", auth.currentUser.uid);
+
+    try {
+        const snap = await getDoc(interactionRef);
+
+        if (snap.exists()) {
+            // User already reacted - check if it's the SAME type
+            if (snap.data().type === type) {
+                // TOGGLE OFF: Remove interaction and decrement
+                await deleteDoc(interactionRef);
+                await updateDoc(commentRef, { [type]: increment(-1) });
+            } else {
+                // SWITCHING: e.g., user clicked Like but already had Dislike
+                // 1. Remove old interaction and decrement old type
+                const oldType = snap.data().type;
+                await updateDoc(commentRef, { [oldType]: increment(-1) });
+                
+                // 2. Set new interaction and increment new type
+                await setDoc(interactionRef, { type: type });
+                await updateDoc(commentRef, { [type]: increment(1) });
+            }
+        } else {
+            // NEW REACTION: Add interaction and increment
+            await setDoc(interactionRef, { type: type });
+            await updateDoc(commentRef, { [type]: increment(1) });
+        }
+    } catch (e) {
+        console.error("Error reacting: ", e);
+    }
 };
+
+window.showReplyBox = (idWithSuffix) => {
+    // idWithSuffix is like "commentId" or "commentId-modal"
+    const targetBox = document.getElementById(`reply-box-${idWithSuffix}`);
+    
+    if (targetBox) {
+        // Toggle display
+        const isHidden = targetBox.style.display === "none";
+        targetBox.style.display = isHidden ? "flex" : "none";
+    }
+};
+
+window.postReply = async (commentId, suffix = "") => {
+    // suffix will be either "" (main page) or "-modal" (modal)
+    const input = document.getElementById(`reply-input-${commentId}${suffix}`);
+    const text = input.value;
+    if (!text.trim()) return;
+
+    try {
+        const videoId = selectedVideo.id;
+        await addDoc(collection(db, "videos", videoId, "comments", commentId, "replies"), {
+            text: text,
+            userName: auth.currentUser.displayName || "Anonymous",
+            createdAt: serverTimestamp()
+        });
+        
+        await updateDoc(doc(db, "videos", videoId, "comments", commentId), {
+            replyCount: increment(1)
+        });
+
+        input.value = "";
+        document.getElementById(`reply-box-${commentId}${suffix}`).style.display = "none";
+        alert("Reply posted!");
+    } catch (e) {
+        console.error("Error posting reply: ", e);
+    }
+};
+
+window.toggleReplies = (commentId, suffix = "") => {
+    const list = document.getElementById(`replies-list-${commentId}${suffix}`);
+    if (list.style.display === "none") {
+        list.style.display = "block";
+        const videoId = selectedVideo.id;
+        onSnapshot(query(collection(db, "videos", videoId, "comments", commentId, "replies"), orderBy("createdAt", "asc")), (snap) => {
+            list.innerHTML = "";
+            snap.forEach(r => {
+                const rData = r.data();
+                list.innerHTML += `<div style="margin-bottom:5px;"><strong style="font-size:11px;">${rData.userName}:</strong> <span style="font-size:12px;">${rData.text}</span></div>`;
+            });
+        });
+    } else {
+        list.style.display = "none";
+    }
+};
+
+window.openCommentsModal = (videoId) => {
+    const modal = document.getElementById('comments-modal');
+    modal.style.setProperty('display', 'flex', 'important');
+    const list = document.getElementById('modal-comments-list');
+    list.innerHTML = "<h4>All Comments</h4>";
+
+    // This listener correctly loads all comments into the modal
+    onSnapshot(query(collection(db, "videos", videoId, "comments"), orderBy("createdAt", "desc")), (snap) => {
+        list.innerHTML = "<h4>All Comments</h4>";
+        snap.forEach(doc => {
+            renderComment(doc, list);
+        });
+    });
+};
+
+window.postModalComment = async () => {
+    const input = document.getElementById('input-modal');
+    if (!input || !input.value.trim()) return;
+    
+    // We check if selectedVideo is available
+    if (selectedVideo) {
+        // We find the main page input to reuse your existing logic
+        const mainInput = document.getElementById(`input-${selectedVideo.id}`);
+        if (mainInput) {
+            mainInput.value = input.value;
+            await postComment(selectedVideo.id);
+            input.value = ""; // Clear the modal input
+        }
+    }
+};
+
+window.closeModal = () => {
+    document.getElementById('comments-modal').style.display = 'none';
+};
+
+// This helper function renders a comment inside the container passed to it
+const renderComment = (doc, container) => {
+    const data = doc.data();
+    const div = document.createElement('div');
+    div.style = "background: #f1f5f9; padding: 12px; border-radius: 12px; margin-top: 10px;";
+    
+    // Check if we are inside the modal by checking the container ID
+    const isModal = container.id === 'modal-comments-list';
+    const suffix = isModal ? '-modal' : '';
+    
+    div.innerHTML = `
+        <div style="font-weight: bold; font-size: 13px;">${data.userName || "Anonymous"}</div>
+        <div style="font-size: 14px; margin: 4px 0;">${data.text}</div>
+        <div style="font-size: 12px; display: flex; gap: 15px; color: #475569; font-weight: 600;">
+            <span style="cursor:pointer;" onclick="reactToComment('${doc.id}', 'likes')">Like (${data.likes || 0})</span>
+            <span style="cursor:pointer;" onclick="reactToComment('${doc.id}', 'dislikes')">Dislike (${data.dislikes || 0})</span>
+            <span style="cursor:pointer; color:#1e3a8a;" onclick="showReplyBox('${doc.id}${suffix}')">Reply</span>
+            <span style="cursor:pointer; color:#475569;" onclick="toggleReplies('${doc.id}', '${suffix}')">View Replies (${data.replyCount || 0})</span>
+        </div>
+        
+        <!-- Reply Box: Default display:none -->
+        <div id="reply-box-${doc.id}${suffix}" style="display:none; margin-top:10px; background:white; padding:5px; border-radius:20px; border:1px solid #d1d5db; align-items:center; width: 100%; box-sizing: border-box;">
+            <input type="text" id="reply-input-${doc.id}${suffix}" placeholder="Reply..." style="flex-grow:1; border:none; padding:8px 12px; outline:none; background:transparent; font-size:13px; width: 60%;">
+            <button onclick="postReply('${doc.id}', '${suffix}')" style="background:#003366; color:white; border:none; padding:6px 15px; border-radius:20px; cursor:pointer; font-size:11px; font-weight:bold;">Send</button>
+        </div>
+        
+        <div id="replies-list-${doc.id}${suffix}" style="display:none; margin-top:10px; margin-left:20px; border-left:2px solid #cbd5e1; padding-left:10px;"></div>
+    `;
+    container.appendChild(div);
+};
+
+    window.loadComments = (videoId) => {
+    const list = document.getElementById('comments-list');
+    if (!list) return;
+
+    onSnapshot(query(collection(db, "videos", videoId, "comments"), orderBy("createdAt", "desc")), (snap) => {
+        list.innerHTML = "<h4>Comments</h4>";
+        const docs = snap.docs;
+
+        // 1. Show only the first 3 comments
+        docs.slice(0, 3).forEach(doc => {
+            renderComment(doc, list);
+        });
+
+        // 2. Add "View more" button if there are more than 3 comments
+        if (docs.length > 3) {
+            list.innerHTML += `
+                <div style="cursor:pointer; color:#1e3a8a; font-weight:bold; margin-top:10px; font-size:14px;" 
+                     onclick="openCommentsModal('${videoId}')">
+                     View more comments (${docs.length})
+                </div>`;
+        }
+    });
+};
+
+   // Add this new helper function
+  const updateCounts = (vData, userChoice) => {
+    // Only update the numbers if they exist
+    const likesEl = document.getElementById('likes-count');
+    const dislikesEl = document.getElementById('dislikes-count');
+    const subsEl = document.getElementById('subs-count');
+    
+    if (likesEl) {
+        likesEl.innerText = vData.likes || 0;
+        likesEl.parentElement.style.color = userChoice === 'likes' ? '#1e3a8a' : 'inherit';
+    }
+    if (dislikesEl) {
+        dislikesEl.innerText = vData.dislikes || 0;
+        dislikesEl.parentElement.style.color = userChoice === 'dislikes' ? '#e11d48' : 'inherit';
+    }
+    if (subsEl) {
+        subsEl.innerText = vData.subs || 0;
+        subsEl.parentElement.style.color = userChoice === 'subs' ? '#22c55e' : 'inherit';
+    }
+  };
+    const listenToVideoUpdates = (videoId) => {
+    onSnapshot(doc(db, "videos", videoId), (doc) => {
+        if (doc.exists()) {
+            const data = doc.data();
+            const index = allVideos.findIndex(v => v.id === videoId);
+            if (index !== -1) {
+                allVideos[index] = { id: videoId, data: () => data };
+            }
+            updateCounts(data, userInteractions[videoId]);
+        }
+    });
+  };
 
   const render = () => {
     const container = document.getElementById('mainVideoContainer');
     if (!selectedVideo) return;
     
+    // Check if we are already rendering the same video (to prevent full refresh)
+    const isSameVideo = container.dataset.videoId === selectedVideo.id;
+    if (isSameVideo) {
+        updateCounts(selectedVideo.data(), userInteractions[selectedVideo.id]);
+        return;
+    }
+  
+  if (activeVideoUnsub) activeVideoUnsub();
+    activeVideoUnsub = listenToVideoUpdates(selectedVideo.id); 
+
     const v = selectedVideo.data();
     const id = v.link.includes("v=")? v.link.split("v=")[1].split("&")[0] : v.link.split("/").pop();
     const others = allVideos.filter(d => d.id !== selectedVideo.id);
+    const userChoice = userInteractions[selectedVideo.id];
+
+    container.dataset.videoId = selectedVideo.id; // Store current ID to avoid re-renders
 
     container.innerHTML = `
       <div class="card">
@@ -217,43 +515,45 @@
         <p>${v.desc || ''}</p>
         
         <div class="actions">
-          <div class="btn-icon" onclick="updateCount('${selectedVideo.id}', 'likes')"><svg><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 9H4v12h3M7 9V5"></path></svg> <span>${v.likes || 0}</span></div>
-          <div class="btn-icon" onclick="updateCount('${selectedVideo.id}', 'dislikes')"><svg><path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3zm7-6h3V3h-3M7 9V5"></path></svg> <span>${v.dislikes || 0}</span></div>
-          <div class="btn-icon" onclick="updateCount('${selectedVideo.id}', 'subs')"><svg><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg> <span>${v.subs || 0}</span></div>
+          <div class="btn-icon" style="color: ${userChoice === 'likes' ? '#1e3a8a' : 'inherit'}; cursor:pointer;" onclick="toggleInteraction('likes')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 9H4v12h3M7 9V5"></path></svg> 
+            <span id="likes-count">${v.likes || 0}</span>
+          </div>
+          
+          <div class="btn-icon" style="color: ${userChoice === 'dislikes' ? '#e11d48' : 'inherit'}; cursor:pointer;" onclick="toggleInteraction('dislikes')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3zm7-6h3V3h-3M7 9V5"></path></svg> 
+            <span id="dislikes-count">${v.dislikes || 0}</span>
+          </div>
+          
+          <div class="btn-icon" style="color: ${userChoice === 'subs' ? '#22c55e' : 'inherit'}; cursor:pointer;" onclick="toggleInteraction('subs')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg> 
+            <span id="subs-count">${v.subs || 0}</span>
+          </div>
         </div>
 
-        <div class="comment-box"><input type="text" class="comment-input" id="input-${selectedVideo.id}" placeholder="Comment..."><button class="post-btn" onclick="postComment('${selectedVideo.id}')">Post</button></div>
-        
+        <div id="comments-list" style="margin-top:20px;"></div>
+        <div class="comment-box">
+            <input type="text" class="comment-input" id="input-${selectedVideo.id}" placeholder="Comment...">
+            <button type="button" class="post-btn" onclick="postComment('${selectedVideo.id}')">Post</button>
+        </div>
         <div class="separator"></div>
         <h4>More Videos to Watch</h4>
         <div id="othersList"></div>
       </div>
     `;
+    
+    loadComments(selectedVideo.id);
 
     const list = document.getElementById('othersList');
-    if (others.length === 0) list.innerHTML = "<p>No other video has been uploaded yet.</p>";
-    else {
- 
-       others.forEach(doc => {
+    others.forEach(doc => {
         const ov = doc.data();
-        
-        // UNIVERSAL REGEX: Extracts the 11-character ID from any YouTube link format
         const match = ov.link.match(/(?:youtu\.be\/|youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=))([^"&?\/\s]{11})/);
         const videoId = match ? match[1] : null;
-
         const item = document.createElement('div');
         item.style = "display:flex; gap:12px; margin-bottom:15px; cursor:pointer; align-items:center;";
-        
-        // If videoId is found, display the thumbnail; otherwise show a fallback
         item.innerHTML = videoId ? `
           <div style="position:relative; width:120px; height:80px; flex-shrink:0;">
-            <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" 
-                 style="width:100%; height:100%; object-fit:cover; border-radius:6px; background:#e2e8f0;">
-            <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
-               <div style="background:rgba(0,0,0,0.5); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center;">
-                 <div style="border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:8px solid white; margin-left:3px;"></div>
-               </div>
-            </div>
+            <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" style="width:100%; height:100%; object-fit:cover; border-radius:6px; background:#e2e8f0;">
           </div>
           <strong style="font-size: 0.95rem; color: #1e293b; line-height: 1.3;">${ov.title}</strong>
         ` : `
@@ -263,21 +563,49 @@
           <strong style="font-size: 0.95rem; color: #1e293b; line-height: 1.3;">${ov.title}</strong>
         `;
         
-        item.onclick = () => { 
-          selectedVideo = doc; 
-          render(); 
-          window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        };
-        
+        item.onclick = () => { selectedVideo = doc; container.dataset.videoId = ''; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
         list.appendChild(item);
-      });
-    }
+    });
   };
 
   onSnapshot(query(collection(db, "videos"), orderBy("createdAt", "desc")), (snap) => {
     allVideos = snap.docs;
     if (!selectedVideo && allVideos.length > 0) selectedVideo = allVideos[0];
     render();
+  });
+
+      let activeInteractionUnsub = null; // To keep track of the listener
+
+  auth.onAuthStateChanged((user) => {
+    // 1. Clear interactions if user logs out
+    if (!user) {
+        userInteractions = {};
+    }
+
+    // 2. Setup interaction listener
+    // We use a variable to store the unsubscribe function so we can clean up if needed
+    if (activeInteractionUnsub) activeInteractionUnsub(); 
+    
+    activeInteractionUnsub = onSnapshot(collection(db, "interactions"), (snap) => {
+        userInteractions = {};
+        if (user) {
+            snap.docs.forEach(doc => { 
+                if (doc.data().userId === user.uid) {
+                    userInteractions[doc.data().videoId] = doc.data().type; 
+                }
+            });
+        }
+        
+        // Instead of a full render, we update the counts for the currently watched video
+        if (selectedVideo) {
+            const currentVideoId = selectedVideo.id;
+            // Fetch the latest data from our local allVideos or assume we have it
+            const videoData = allVideos.find(v => v.id === currentVideoId)?.data();
+            if (videoData) {
+                updateCounts(videoData, userInteractions[currentVideoId]);
+            }
+        }
+    });
   });
 </script>
 </body>
