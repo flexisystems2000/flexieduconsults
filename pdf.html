@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Library | Flexi Educational Consult</title>
+    <!-- Paystack Inline JS SDK -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    
+    <style>
+        /* Base Reset & Typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 1cm Dynamic Sticky Header Configuration */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        /* Top 1cm Blue Bar (Approx 38px) */
+        .header-blue-bar {
+            height: 38px;
+            background-color: #0B1B3D; /* Signature Navy Blue */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .header-title {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* Accent Green Stripe Beneath Blue (Approx 4px) */
+        .header-green-stripe {
+            height: 4px;
+            background-color: #00A859; /* Signature Green */
+            width: 100%;
+        }
+
+        /* Main Workspace & Filter Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 30px 20px;
+        }
+
+        /* Dynamic Filter Ribbon */
+        .filter-ribbon {
+            background: #ffffff;
+            border: 1px solid #eef2f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-wrapper {
+            flex: 2;
+            min-width: 250px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #dcdfe6;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-wrapper input:focus {
+            border-color: #0B1B3D;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 140px;
+            padding: 10px;
+            border: 1px solid #dcdfe6;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            border-color: #00A859;
+        }
+
+        /* Responsive Resource Grid */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        /* Modern Resource Card Styling */
+        .resource-card {
+            background: #ffffff;
+            border: 1px solid #eef2f5;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        /* Card Thumbnail Wrapper */
+        .card-thumbnail-box {
+            position: relative;
+            width: 100%;
+            padding-top: 75%; /* 4:3 Aspect Ratio */
+            background-color: #f7f9fa;
+            border-bottom: 1px solid #eef2f5;
+        }
+
+        .card-thumbnail-box img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .card-thumbnail-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 28px;
+            color: #dcdfe6;
+            background: #fcfdfe;
+        }
+
+        /* Taxonomy Badges */
+        .badge-container {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .badge-exam {
+            background-color: #0B1B3D;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-year {
+            background-color: #00A859;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        /* Card Text Mechanics */
+        .card-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-subject {
+            color: #00A859;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-title {
+            color: #0B1B3D;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Card Action Strip */
+        .card-footer {
+            border-top: 1px solid #f7f9fa;
+            padding-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .price-tag {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0B1B3D;
+        }
+
+        .status-free {
+            font-size: 12px;
+            font-weight: 600;
+            color: #00A859;
+            background-color: #e6f6ef;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn-download {
+            background-color: #0B1B3D;
+            color: #ffffff;
+        }
+
+        .btn-download:hover {
+            background-color: #122b5e;
+        }
+
+        .btn-unlock {
+            background-color: #00A859;
+            color: #ffffff;
+        }
+
+        .btn-unlock:hover {
+            background-color: #008f4c;
+        }
+
+        .btn-action:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Signature 1cm Navy Blue & Green Sticky Header Module -->
+    <header>
+        <div class="header-blue-bar">
+            <h1 class="header-title">Flexi Educational Consult Resource Library</h1>
+        </div>
+        <div class="header-green-stripe"></div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Live Engine Filter System -->
+        <div class="filter-ribbon">
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" placeholder="Search by title, subject or description...">
+            </div>
+            <select id="categoryFilter" class="filter-select">
+                <option value="">All Categories</option>
+                <option value="Textbooks">Textbooks</option>
+                <option value="Past Questions">Past Questions</option>
+                <option value="Lecture Notes">Lecture Notes</option>
+                <option value="Formula Sheets">Formula Sheets</option>
+            </select>
+            <select id="examFilter" class="filter-select">
+                <option value="">All Exams</option>
+                <option value="JAMB">JAMB</option>
+                <option value="WAEC">WAEC</option>
+                <option value="NECO">NECO</option>
+            </select>
+            <select id="typeFilter" class="filter-select">
+                <option value="">All Prices</option>
+                <option value="free">Free</option>
+                <option value="paid">Premium</option>
+            </select>
+        </div>
+
+        <!-- Target Destination Grid for Engine Injection -->
+        <div class="resource-grid" id="resourceGrid">
+            <!-- JavaScript populates individual structural items dynamically here -->
+        </div>
+    </div>
+
+    <!-- Firebase Integration Logic Core -->
+    <script type="module">
+        // Import raw modules natively without package builds
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Assign Configuration Variable Elements
+        const firebaseConfig = {
+        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+        authDomain: "waec2026jamb2027.firebaseapp.com",
+        projectId: "waec2026jamb2027",
+    };
+
+        // Initialize Firebase Scope Instance
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Core App Memory States
+        let masterResources = [];
+        let clearUserPurchases = new Set();
+        let activeUser = null;
+
+        // Listen for current active authentication state
+        onAuthStateChanged(auth, async (user) => {
+            activeUser = user;
+            if (user) {
+                await syncUserPurchases(user.uid);
+            }
+            fetchResourceMetadataCollection();
+        });
+
+        // Pull verified ownership ledger maps direct from Firestore
+        async function syncUserPurchases(uid) {
+            try {
+                const querySnapshot = await getDocs(collection(db, "purchases"));
+                querySnapshot.forEach((doc) => {
+                    if (doc.id.startsWith(uid + "_")) {
+                        const targetResourceId = doc.id.replace(uid + "_", "");
+                        clearUserPurchases.add(targetResourceId);
+                    }
+                });
+            } catch (error) {
+                console.error("Error mapping ownership details:", error);
+            }
+        }
+
+        // Fetch display data schema items mapping public resource cards
+        async function fetchResourceMetadataCollection() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "resources"));
+                masterResources = [];
+                querySnapshot.forEach((doc) => {
+                    masterResources.push({ id: doc.id, ...doc.data() });
+                });
+                applyActiveFiltersFilterPipeline();
+            } catch (error) {
+                console.error("Error collecting system catalog structures:", error);
+            }
+        }
+
+        // Stream and verify filter interface metrics array matching search conditions
+        function applyActiveFiltersFilterPipeline() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const catVal = document.getElementById('categoryFilter').value;
+            const examVal = document.getElementById('examFilter').value;
+            const typeVal = document.getElementById('typeFilter').value;
+
+            const trackingResults = masterResources.filter(res => {
+                const matchText = res.title?.toLowerCase().includes(searchVal) || 
+                                  res.subject?.toLowerCase().includes(searchVal) ||
+                                  res.description?.toLowerCase().includes(searchVal);
+                const matchCat = !catVal || res.category === catVal;
+                const matchExam = !examVal || res.examType === examVal;
+                const matchType = !typeVal || (typeVal === 'free' ? !res.isPremium : res.isPremium);
+
+                return matchText && matchCat && matchExam && matchType;
+            });
+
+            renderInterfaceGrid(trackingResults);
+        }
+
+        // Programmatic DOM construction matching the explicit design patterns
+        function renderInterfaceGrid(items) {
+            const grid = document.getElementById('resourceGrid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#909399;">No educational resources found matching your adjustments.</div>`;
+                return;
+            }
+
+            items.forEach(res => {
+                const isOwned = !res.isPremium || clearUserPurchases.has(res.id);
+                
+                const card = document.createElement('div');
+                card.className = 'resource-card';
+
+                // Setup asset elements or fallback structural parameters
+                const thumbnailElement = res.thumbnailUrl 
+                    ? `<img src="${res.thumbnailUrl}" alt="${res.title}">`
+                    : `<div class="card-thumbnail-placeholder">PDF</div>`;
+
+                // Handle string currency display configurations
+                const pricingDisplayHTML = res.isPremium && !isOwned
+                    ? `<span class="price-tag">₦${parseInt(res.priceNGN).toLocaleString()}</span>`
+                    : `<span class="status-free">${res.isPremium ? 'Unlocked' : 'Free'}</span>`;
+
+                // Choose primary call execution trigger structure
+                const executionBtnHTML = isOwned
+                    ? `<button class="btn-action btn-download" data-id="${res.id}" id="btn-${res.id}">Download</button>`
+                    : `<button class="btn-action btn-unlock" data-id="${res.id}" id="btn-${res.id}">Unlock</button>`;
+
+                card.innerHTML = `
+                    <div class="card-thumbnail-box">
+                        ${thumbnailElement}
+                        <div class="badge-container">
+                            <span class="badge-exam">${res.examType || 'Exam'}</span>
+                            <span class="badge-year">${res.year || 'General'}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-subject">${res.subject || 'General Studies'}</span>
+                        <h3 class="card-title">${res.title}</h3>
+                        <div class="card-footer">
+                            ${pricingDisplayHTML}
+                            ${executionBtnHTML}
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+
+                // Attach dynamic events cleanly inline post rendering tracking instance
+                const actionBtn = card.querySelector(`#btn-${res.id}`);
+                actionBtn.addEventListener('click', () => {
+                    if (isOwned) {
+                        executeBackgroundDropboxFetchStream(res.id, res.title);
+                    } else {
+                        triggerPaystackInlineGateway(res);
+                    }
+                });
+            });
+        }
+
+        // Strip the standard link format to deliver an isolated background byte stream
+        function normalizeDropboxStreamMapping(url) {
+            if (!url) return '';
+            return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').split('?')[0];
+        }
+
+        // Direct secure storage link mapping pull and hidden click stream trigger
+        async function executeBackgroundDropboxFetchStream(id, title) {
+            const targetBtn = document.getElementById(`btn-${id}`);
+            targetBtn.disabled = true;
+            targetBtn.innerText = "Streaming...";
+
+            try {
+                const targetRef = doc(db, "resource_links", id);
+                const querySnap = await getDoc(targetRef);
+
+                if (querySnap.exists()) {
+                    const rawUrl = querySnap.data().dropboxSecureUrl;
+                    const clearUrl = normalizeDropboxStreamMapping(rawUrl);
+
+                    // Dynamic element generation to shield user interface redirection
+                    const hiddenAnchor = document.createElement('a');
+                    hiddenAnchor.href = clearUrl;
+                    hiddenAnchor.setAttribute('download', `${title}.pdf`);
+                    document.body.appendChild(hiddenAnchor);
+                    hiddenAnchor.click();
+                    document.body.removeChild(hiddenAnchor);
+                } else {
+                    alert("Unauthorized or dynamic asset reference path dropped.");
+                }
+            } catch (err) {
+                console.error("Link translation failure encountered:", err);
+                alert("Could not initialize dynamic system stream engine.");
+            } finally {
+                targetBtn.disabled = false;
+                targetBtn.innerText = "Download";
+            }
+        }
+
+        // Paystack processing configuration workflow
+        function triggerPaystackInlineGateway(resource) {
+            if (!activeUser) {
+                alert("Please authenticate inside the Flexi student account dashboard to purchase items.");
+                return;
+            }
+
+            const targetBtn = document.getElementById(`btn-${resource.id}`);
+            targetBtn.disabled = true;
+            targetBtn.innerText = "Loading...";
+
+            const gatewayHandler = window.PaystackPop.setup({
+                key: 'pk_test_9408761e58ce1fe7a3a57c0df2422d887c3d4b35', // Swap context dynamically during builds
+                email: activeUser.email,
+                amount: parseInt(resource.priceNGN) * 100, // Process values explicitly inside kobo units
+                currency: 'NGN',
+                ref: `flexi_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+                callback: async function(response) {
+                    try {
+                        // Client-side execution parameters checking transaction validity natively
+                        const apiVerification = await fetch(`https://api.paystack.co/transaction/verify/${response.reference}`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': 'Bearer sk_live_YOUR_SECRET_KEY'
+                            }
+                        });
+
+                        const parsedPayload = await apiVerification.json();
+
+                        if (parsedPayload.status === true && parsedPayload.data.status === 'success') {
+                            const transactionTrackingKey = `${activeUser.uid}_${resource.id}`;
+                            
+                            // Write directly through validation rule maps
+                            await setDoc(doc(db, "purchases", transactionTrackingKey), {
+                                userId: activeUser.uid,
+                                resourceId: resource.id,
+                                referenceCode: response.reference,
+                                settledAt: new Date().toISOString()
+                            });
+
+                            clearUserPurchases.add(resource.id);
+                            alert("Resource catalog status authorized successfully!");
+                            applyActiveFiltersFilterPipeline();
+                        } else {
+                            alert("Verification sequence failed to confirm system transaction.");
+                        }
+                    } catch (err) {
+                        console.error("Internal processing fault engine record:", err);
+                        alert("Error generating direct database ledger state adjustments.");
+                    } finally {
+                        targetBtn.disabled = false;
+                    }
+                },
+                onClose: function() {
+                    targetBtn.disabled = false;
+                    targetBtn.innerText = "Unlock";
+                    alert("Checkout process suspended by context request.");
+                }
+            });
+
+            gatewayHandler.openIframe();
+        }
+
+        // Bind filter ribbon listener hooks globally
+        document.getElementById('searchInput').addEventListener('input', applyActiveFiltersFilterPipeline);
+        document.getElementById('categoryFilter').addEventListener('change', applyActiveFiltersFilterPipeline);
+        document.getElementById('examFilter').addEventListener('change', applyActiveFiltersFilterPipeline);
+        document.getElementById('typeFilter').addEventListener('change', applyActiveFiltersFilterPipeline);
+    </script>
+</body>
+</html>
