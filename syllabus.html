@@ -273,368 +273,371 @@ code {
     <!-- Main Syllabus View -->
     <div id="syllabus-app"></div>
   </div>
+<script>
+  let currentExam = 'jamb';
+  let activeSubjectMeta = null;
 
-  <script>
-    let currentExam = 'jamb';
-    let activeSubjectMeta = null;
+  // Registry for JAMB and WAEC Subjects
+  const subjectRegistry = {
+    jamb: [
+      { id: "accounts", name: "Principles of Accounts", desc: "Bookkeeping, financial statements, and auditing basics.", path: "data/accounts.json" },
+      { id: "arabic", name: "Arabic", desc: "Language studies and literary texts.", path: "data/arabic.json" },
+      { id: "biology", name: "Biology", desc: "Diversity of organisms, Ecology, Genetics, and Physiology.", path: "data/biology.json" },
+      { id: "chemistry", name: "Chemistry", desc: "Physical, Inorganic, and Organic Chemistry.", path: "data/chemistry.json" },
+      { id: "commerce", name: "Commerce", desc: "Trade, business organizations, and financial systems.", path: "data/commerce.json" },
+      { id: "computer", name: "Computer Studies", desc: "Computing systems, software development, and information networks.", path: "data/computer.json" },
+      { id: "crk", name: "CRK", desc: "Christian Religious Knowledge: Study of the Bible and Christian ethics.", path: "data/crk.json" },
+      { id: "economics", name: "Economics", desc: "Basic principles, consumer behavior, and national income.", path: "data/economics.json" },
+      { id: "english", name: "Use of English", desc: "Compulsory for all candidates. Covers comprehension and structure.", path: "data/english.json" },
+      { id: "art", name: "Art", desc: "History and theory of art, and design principles.", path: "data/art.json" },
+      { id: "french", name: "French", desc: "Language structure, comprehension, and expression.", path: "data/french.json" },
+      { id: "geography", name: "Geography", desc: "Physical geography, map reading, and economic geography.", path: "data/geography.json" },
+      { id: "government", name: "Government", desc: "Political concepts, systems, and Nigerian government history.", path: "data/government.json" },
+      { id: "hausa", name: "Hausa", desc: "Language study, literature, and culture.", path: "data/hausa.json" },
+      { id: "history", name: "History", desc: "World history and key events in Nigerian history.", path: "data/history.json" },
+      { id: "igbo", name: "Igbo", desc: "Language study, literature, and culture.", path: "data/igbo.json" },
+      { id: "home-economics", name: "Home Economics", desc: "Family ecology, nutrition, food science, and consumer resource management.", path: "data/home-economics.json" },
+      { id: "irk", name: "IRS", desc: "Islamic Religious Studies: Study of the Quran, Hadith, and jurisprudence.", path: "data/irk.json" },
+      { id: "lit", name: "Literature in English", desc: "Analysis of African and non-African prose, drama, and poetry.", path: "data/lit.json" },
+      { id: "math", name: "Mathematics", desc: "Algebra, Calculus, Geometry, Trigonometry, and Statistics.", path: "data/math.json" },
+      { id: "music", name: "Music", desc: "Theory, history, and practice of music.", path: "data/music.json" },
+      { id: "phe", name: "Physical and Health Education", desc: "Kinesiology, sports science, human anatomy, wellness, and community health systems.", path: "data/phe.json" },
+      { id: "physics", name: "Physics", desc: "Mechanics, Heat, Optics, Waves, and Electromagnetism.", path: "data/physics.json" },
+      { id: "yoruba", name: "Yoruba", desc: "Language study, literature, and culture.", path: "data/yoruba.json" }
+    ],
+    waec: [
+      { id: "english_language", name: "English Language", path: "data/waec/english_language.json" },
+      { id: "general_mathematics", name: "General Mathematics", path: "data/waec/general_mathematics.json" },
+      { id: "civic_education", name: "Civic Education", path: "data/waec/civic_education.json" },
+      { id: "biology", name: "Biology", path: "data/waec/biology.json" },
+      { id: "chemistry", name: "Chemistry", path: "data/waec/chemistry.json" },
+      { id: "physics", name: "Physics", path: "data/waec/physics.json" },
+      { id: "agricultural_science", name: "Agricultural Science", path: "data/waec/agricultural_science.json" },
+      { id: "further_mathematics", name: "Further Mathematics", path: "data/waec/further_mathematics.json" },
+      { id: "geography", name: "Geography", path: "data/waec/geography.json" },
+      { id: "health_education", name: "Health Education", path: "data/waec/health_education.json" },
+      { id: "physical_education", name: "Physical Education", path: "data/waec/physical_education.json" },
+      { id: "technical_drawing", name: "Technical Drawing", path: "data/waec/technical_drawing.json" },
+      { id: "financial_accounting", name: "Financial Accounting", path: "data/waec/financial_accounting.json" },
+      { id: "commerce", name: "Commerce", path: "data/waec/commerce.json" },
+      { id: "economics", name: "Economics", path: "data/waec/economics.json" },
+      { id: "marketing", name: "Marketing", path: "data/waec/marketing.json" },
+      { id: "literature_in_english", name: "Literature in English", path: "data/waec/literature_in_english.json" },
+      { id: "government", name: "Government", path: "data/waec/government.json" },
+      { id: "christian_religious_studies", name: "Christian Religious Studies (CRS)", path: "data/waec/christian_religious_studies.json" },
+      { id: "islamic_studies", name: "Islamic Studies (IRS)", path: "data/waec/islamic_studies.json" },
+      { id: "nigerian_history", name: "Nigerian History", path: "data/waec/nigerian_history.json" },
+      { id: "music", name: "Music", path: "data/waec/music.json" },
+      { id: "visual_art", name: "Visual Art", path: "data/waec/visual_art.json" },
+      { id: "french", name: "French", path: "data/waec/french.json" },
+      { id: "arabic", name: "Arabic", path: "data/waec/arabic.json" },
+      { id: "hausa", name: "Hausa", path: "data/waec/hausa.json" },
+      { id: "igbo", name: "Igbo", path: "data/waec/igbo.json" },
+      { id: "yoruba", name: "Yoruba", path: "data/waec/yoruba.json" },
+      { id: "foods_and_nutrition", name: "Foods and Nutrition", path: "data/waec/foods_and_nutrition.json" },
+      { id: "home_management", name: "Home Management", path: "data/waec/home_management.json" },
+      { id: "catering_craft_practice", name: "Catering Craft Practice", path: "data/waec/catering_craft_practice.json" },
+      { id: "fashion_design", name: "Fashion Design and Garment Making", path: "data/waec/fashion_design.json" },
+      { id: "beauty_and_cosmetology", name: "Beauty and Cosmetology", path: "data/waec/beauty_and_cosmetology.json" },
+      { id: "computer_repairs", name: "Computer Hardware and GSM Repairs", path: "data/waec/computer_repairs.json" },
+      { id: "solar_installation", name: "Solar Photovoltaic Installation and Maintenance", path: "data/waec/solar_installation.json" },
+      { id: "livestock_farming", name: "Livestock Farming", path: "data/waec/livestock_farming.json" },
+      { id: "horticulture", name: "Horticulture and Crop Production", path: "data/waec/horticulture.json" },
+      { id: "data_processing", name: "Data Processing / Computer Studies", path: "data/waec/data_processing.json" },
+      { id: "book_keeping", name: "Book Keeping", path: "data/waec/book_keeping.json" },
+      { id: "clerical_office_duties", name: "Office Practice", path: "data/waec/clerical_office_duties.json" },
+      { id: "insurance", name: "Insurance", path: "data/waec/insurance.json" },
+      { id: "store_management", name: "Store Management", path: "data/waec/store_management.json" },
+      { id: "salesmanship", name: "Salesmanship", path: "data/waec/salesmanship.json" },
+      { id: "fisheries", name: "Fisheries", path: "data/waec/fisheries.json" },
+      { id: "animal_husbandry", name: "Animal Husbandry", path: "data/waec/animal_husbandry.json" },
+      { id: "forestry", name: "Forestry", path: "data/waec/forestry.json" },
+      { id: "general_knowledge_art", name: "General Knowledge in Art", path: "data/waec/general_knowledge_art.json" },
+      { id: "clothing_and_textiles", name: "Clothing and Textiles", path: "data/waec/clothing_and_textiles.json" },
+      { id: "printing_craft_practice", name: "Printing Craft Practice", path: "data/waec/printing_craft_practice.json" },
+      { id: "building_construction", name: "Building Construction", path: "data/waec/building_construction.json" }
+    ]
+  };
 
-    // Registry for JAMB and WAEC Subjects
-    const subjectRegistry = {
-      jamb: [
-        { id: "accounts", name: "Principles of Accounts", desc: "Bookkeeping, financial statements, and auditing basics.", path: "data/accounts.json" },
-        { id: "arabic", name: "Arabic", desc: "Language studies and literary texts.", path: "data/arabic.json" },
-        { id: "biology", name: "Biology", desc: "Diversity of organisms, Ecology, Genetics, and Physiology.", path: "data/biology.json" },
-        { id: "chemistry", name: "Chemistry", desc: "Physical, Inorganic, and Organic Chemistry.", path: "data/chemistry.json" },
-        { id: "commerce", name: "Commerce", desc: "Trade, business organizations, and financial systems.", path: "data/commerce.json" },
-        { id: "computer", name: "Computer Studies", desc: "Computing systems, software development, and information networks.", path: "data/computer.json" },
-        { id: "crk", name: "CRK", desc: "Christian Religious Knowledge: Study of the Bible and Christian ethics.", path: "data/crk.json" },
-        { id: "economics", name: "Economics", desc: "Basic principles, consumer behavior, and national income.", path: "data/economics.json" },
-        { id: "english", name: "Use of English", desc: "Compulsory for all candidates. Covers comprehension and structure.", path: "data/english.json" },
-        { id: "art", name: "Art", desc: "History and theory of art, and design principles.", path: "data/art.json" },
-        { id: "french", name: "French", desc: "Language structure, comprehension, and expression.", path: "data/french.json" },
-        { id: "geography", name: "Geography", desc: "Physical geography, map reading, and economic geography.", path: "data/geography.json" },
-        { id: "government", name: "Government", desc: "Political concepts, systems, and Nigerian government history.", path: "data/government.json" },
-        { id: "hausa", name: "Hausa", desc: "Language study, literature, and culture.", path: "data/hausa.json" },
-        { id: "history", name: "History", desc: "World history and key events in Nigerian history.", path: "data/history.json" },
-        { id: "igbo", name: "Igbo", desc: "Language study, literature, and culture.", path: "data/igbo.json" },
-        { id: "home-economics", name: "Home Economics", desc: "Family ecology, nutrition, food science, and consumer resource management.", path: "data/home-economics.json" },
-        { id: "irk", name: "IRS", desc: "Islamic Religious Studies: Study of the Quran, Hadith, and jurisprudence.", path: "data/irk.json" },
-        { id: "lit", name: "Literature in English", desc: "Analysis of African and non-African prose, drama, and poetry.", path: "data/lit.json" },
-        { id: "math", name: "Mathematics", desc: "Algebra, Calculus, Geometry, Trigonometry, and Statistics.", path: "data/math.json" },
-        { id: "music", name: "Music", desc: "Theory, history, and practice of music.", path: "data/music.json" },
-        { id: "phe", name: "Physical and Health Education", desc: "Kinesiology, sports science, human anatomy, wellness, and community health systems.", path: "data/phe.json" },
-        { id: "physics", name: "Physics", desc: "Mechanics, Heat, Optics, Waves, and Electromagnetism.", path: "data/physics.json" },
-        { id: "yoruba", name: "Yoruba", desc: "Language study, literature, and culture.", path: "data/yoruba.json" }
-      ],
-      waec: [
-        { id: "english_language", name: "English Language", path: "data/waec/english_language.json" },
-        { id: "general_mathematics", name: "General Mathematics", path: "data/waec/general_mathematics.json" },
-        { id: "civic_education", name: "Civic Education", path: "data/waec/civic_education.json" },
-        { id: "biology", name: "Biology", path: "data/waec/biology.json" },
-        { id: "chemistry", name: "Chemistry", path: "data/waec/chemistry.json" },
-        { id: "physics", name: "Physics", path: "data/waec/physics.json" },
-        { id: "agricultural_science", name: "Agricultural Science", path: "data/waec/agricultural_science.json" },
-        { id: "further_mathematics", name: "Further Mathematics", path: "data/waec/further_mathematics.json" },
-        { id: "geography", name: "Geography", path: "data/waec/geography.json" },
-        { id: "health_education", name: "Health Education", path: "data/waec/health_education.json" },
-        { id: "physical_education", name: "Physical Education", path: "data/waec/physical_education.json" },
-        { id: "technical_drawing", name: "Technical Drawing", path: "data/waec/technical_drawing.json" },
-        { id: "financial_accounting", name: "Financial Accounting", path: "data/waec/financial_accounting.json" },
-        { id: "commerce", name: "Commerce", path: "data/waec/commerce.json" },
-        { id: "economics", name: "Economics", path: "data/waec/economics.json" },
-        { id: "marketing", name: "Marketing", path: "data/waec/marketing.json" },
-        { id: "literature_in_english", name: "Literature in English", path: "data/waec/literature_in_english.json" },
-        { id: "government", name: "Government", path: "data/waec/government.json" },
-        { id: "christian_religious_studies", name: "Christian Religious Studies (CRS)", path: "data/waec/christian_religious_studies.json" },
-        { id: "islamic_studies", name: "Islamic Studies (IRS)", path: "data/waec/islamic_studies.json" },
-        { id: "nigerian_history", name: "Nigerian History", path: "data/waec/nigerian_history.json" },
-        { id: "music", name: "Music", path: "data/waec/music.json" },
-        { id: "visual_art", name: "Visual Art", path: "data/waec/visual_art.json" },
-        { id: "french", name: "French", path: "data/waec/french.json" },
-        { id: "arabic", name: "Arabic", path: "data/waec/arabic.json" },
-        { id: "hausa", name: "Hausa", path: "data/waec/hausa.json" },
-        { id: "igbo", name: "Igbo", path: "data/waec/igbo.json" },
-        { id: "yoruba", name: "Yoruba", path: "data/waec/yoruba.json" },
-        { id: "foods_and_nutrition", name: "Foods and Nutrition", path: "data/waec/foods_and_nutrition.json" },
-        { id: "home_management", name: "Home Management", path: "data/waec/home_management.json" },
-        { id: "catering_craft_practice", name: "Catering Craft Practice", path: "data/waec/catering_craft_practice.json" },
-        { id: "fashion_design", name: "Fashion Design and Garment Making", path: "data/waec/fashion_design.json" },
-        { id: "beauty_and_cosmetology", name: "Beauty and Cosmetology", path: "data/waec/beauty_and_cosmetology.json" },
-        { id: "computer_repairs", name: "Computer Hardware and GSM Repairs", path: "data/waec/computer_repairs.json" },
-        { id: "solar_installation", name: "Solar Photovoltaic Installation and Maintenance", path: "data/waec/solar_installation.json" },
-        { id: "livestock_farming", name: "Livestock Farming", path: "data/waec/livestock_farming.json" },
-        { id: "horticulture", name: "Horticulture and Crop Production", path: "data/waec/horticulture.json" },
-        { id: "data_processing", name: "Data Processing / Computer Studies", path: "data/waec/data_processing.json" },
-        { id: "book_keeping", name: "Book Keeping", path: "data/waec/book_keeping.json" },
-        { id: "clerical_office_duties", name: "Office Practice", path: "data/waec/clerical_office_duties.json" },
-        { id: "insurance", name: "Insurance", path: "data/waec/insurance.json" },
-        { id: "store_management", name: "Store Management", path: "data/waec/store_management.json" },
-        { id: "salesmanship", name: "Salesmanship", path: "data/waec/salesmanship.json" },
-        { id: "fisheries", name: "Fisheries", path: "data/waec/fisheries.json" },
-        { id: "animal_husbandry", name: "Animal Husbandry", path: "data/waec/animal_husbandry.json" },
-        { id: "forestry", name: "Forestry", path: "data/waec/forestry.json" },
-        { id: "general_knowledge_art", name: "General Knowledge in Art", path: "data/waec/general_knowledge_art.json" },
-        { id: "clothing_and_textiles", name: "Clothing and Textiles", path: "data/waec/clothing_and_textiles.json" },
-        { id: "printing_craft_practice", name: "Printing Craft Practice", path: "data/waec/printing_craft_practice.json" },
-        { id: "building_construction", name: "Building Construction", path: "data/waec/building_construction.json" }
-      ]
-    };
+  // Parse URL Parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlSubject = urlParams.get('subject');
+  const urlExam = (urlParams.get('exam') || 'jamb').toLowerCase();
 
-    // Parse URL Parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlSubject = urlParams.get('subject');
-    const urlExam = (urlParams.get('exam') || 'jamb').toLowerCase();
+  function switchPortal(examType) {
+    currentExam = examType;
+    document.getElementById('btn-jamb').classList.toggle('active', examType === 'jamb');
+    document.getElementById('btn-waec').classList.toggle('active', examType === 'waec');
 
-    function switchPortal(examType) {
-      currentExam = examType;
-      document.getElementById('btn-jamb').classList.toggle('active', examType === 'jamb');
-      document.getElementById('btn-waec').classList.toggle('active', examType === 'waec');
+    const select = document.getElementById('subjectSelect');
+    select.innerHTML = '';
 
-      const select = document.getElementById('subjectSelect');
-      select.innerHTML = '';
+    const fileList = subjectRegistry[examType] || [];
+    fileList.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.path;
+      option.textContent = item.name;
+      select.appendChild(option);
+    });
 
-      const fileList = subjectRegistry[examType] || [];
-      fileList.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.path;
-        option.textContent = item.name;
-        select.appendChild(option);
-      });
+    if (fileList.length > 0) {
+      const match = fileList.find(f => f.id === urlSubject);
+      const targetItem = match || fileList[0];
+      select.value = targetItem.path;
+      activeSubjectMeta = targetItem;
+      loadSyllabus(targetItem.path);
+    } else {
+      document.getElementById('syllabus-app').innerHTML = `<p>No ${examType.toUpperCase()} syllabus files configured.</p>`;
+    }
+  }
 
-      if (fileList.length > 0) {
-        const match = fileList.find(f => f.id === urlSubject);
-        const targetItem = match || fileList[0];
-        select.value = targetItem.path;
-        activeSubjectMeta = targetItem;
-        loadSyllabus(targetItem.path);
+  function onSubjectChanged(filePath) {
+    const fileList = subjectRegistry[currentExam] || [];
+    activeSubjectMeta = fileList.find(f => f.path === filePath) || null;
+    loadSyllabus(filePath);
+  }
+
+  async function loadSyllabus(filePath) {
+    const app = document.getElementById('syllabus-app');
+    app.innerHTML = '<p>Loading syllabus data...</p>';
+
+    try {
+      const response = await fetch(filePath);
+      if (!response.ok) throw new Error("File not found");
+      
+      const rawData = await response.json();
+
+      if (currentExam === 'jamb') {
+        renderJAMBSyllabus(rawData);
       } else {
-        document.getElementById('syllabus-app').innerHTML = `<p>No ${examType.toUpperCase()} syllabus files configured.</p>`;
+        renderWAECSyllabus(rawData);
       }
-    }
-
-    function onSubjectChanged(filePath) {
-      const fileList = subjectRegistry[currentExam] || [];
-      activeSubjectMeta = fileList.find(f => f.path === filePath) || null;
-      loadSyllabus(filePath);
-    }
-
-    async function loadSyllabus(filePath) {
-      const app = document.getElementById('syllabus-app');
-      app.innerHTML = '<p>Loading syllabus data...</p>';
-
-      try {
-        const response = await fetch(filePath);
-        if (!response.ok) throw new Error("File not found");
-        
-        const fullData = await response.json();
-
-        if (currentExam === 'jamb') {
-          renderJAMBSyllabus(fullData);
-        } else {
-          renderWAECSyllabus(fullData);
-        }
-      } catch (err) {
-        console.error("Renderer Error:", err);
-        app.innerHTML = `
-          <div class="section-card" style="border-left: 4px solid #dc2626;">
-            <p style="color:#dc2626; font-weight:bold; margin:0;">Error: Could not load syllabus file (<code>${filePath}</code>).</p>
-          </div>
-        `;
-      }
-    }
-
-    // ============================================================
-    // 1. JAMB RENDERER
-    // ============================================================
-    function renderJAMBSyllabus(fullData) {
-      const data = fullData.syllabus || fullData;
-      const app = document.getElementById('syllabus-app');
-
-      let descHTML = activeSubjectMeta && activeSubjectMeta.desc 
-        ? `<p class="subject-desc">${activeSubjectMeta.desc}</p>` 
-        : '';
-
-      let html = `
-        <div class="subject-title-card">
-          <span class="badge-exam">JAMB / UTME</span>
-          <h2>${data.subject || (activeSubjectMeta ? activeSubjectMeta.name : 'Subject')} Syllabus</h2>
-          ${descHTML}
+    } catch (err) {
+      console.error("Renderer Error:", err);
+      app.innerHTML = `
+        <div class="section-card" style="border-left: 4px solid #dc2626;">
+          <p style="color:#dc2626; font-weight:bold; margin:0;">Error: Could not load syllabus file (<code>${filePath}</code>).</p>
         </div>
       `;
+    }
+  }
 
-      // 1. General Objectives
-      if (Array.isArray(data.general_objectives) && data.general_objectives.length) {
+  // ============================================================
+  // 1. JAMB RENDERER
+  // ============================================================
+  function renderJAMBSyllabus(fullData) {
+    // Automatically extract payload regardless of top-level "syllabus" wrapper
+    const data = fullData.syllabus ? fullData.syllabus : fullData;
+    const app = document.getElementById('syllabus-app');
+
+    let descHTML = activeSubjectMeta && activeSubjectMeta.desc 
+      ? `<p class="subject-desc">${activeSubjectMeta.desc}</p>` 
+      : '';
+
+    let html = `
+      <div class="subject-title-card">
+        <span class="badge-exam">JAMB / UTME</span>
+        <h2>${data.subject || (activeSubjectMeta ? activeSubjectMeta.name : 'Subject')} Syllabus</h2>
+        ${descHTML}
+      </div>
+    `;
+
+    // 1. General Objectives
+    if (Array.isArray(data.general_objectives) && data.general_objectives.length) {
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">General Objectives</h3>
+          <ul class="styled-list">
+            ${data.general_objectives.map(o => `<li>${o}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    // 2. Syllabus Structure
+    if (Array.isArray(data.structure) && data.structure.length) {
+      html += `<div class="section-card"><h3 class="section-title">Syllabus Structure</h3>`;
+      data.structure.forEach(s => {
         html += `
-          <div class="section-card">
-            <h3 class="section-title">General Objectives</h3>
-            <ul class="styled-list">
-              ${data.general_objectives.map(o => `<li>${o}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      }
-
-      // 2. Syllabus Structure
-      if (Array.isArray(data.structure) && data.structure.length) {
-        html += `<div class="section-card"><h3 class="section-title">Syllabus Structure</h3>`;
-        data.structure.forEach(s => {
-          html += `
-            <div style="margin-bottom:1.25rem;">
-              <h4 style="color:var(--flexi-blue); margin-bottom:0.2rem;">${s.section || "Section"}</h4>
-              ${s.contents_notes ? `<p style="margin-top:0.2rem;"><em>${s.contents_notes}</em></p>` : ''}
-              ${s.objectives && s.objectives.length ? `
+          <div style="margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border);">
+            <h4 style="color:var(--flexi-blue); margin-bottom:0.4rem; font-size:1.05rem;">${s.section || "Section"}</h4>
+            ${s.contents_notes ? `<p style="margin:0.4rem 0; color:#334155; font-size:0.95rem;"><strong>Contents & Notes:</strong> ${s.contents_notes}</p>` : ''}
+            ${s.objectives && s.objectives.length ? `
+              <div style="margin-top:0.6rem;">
                 <strong style="font-size:0.85rem; color:#475569;">Learning Objectives:</strong>
                 <ul class="styled-list">
                   ${s.objectives.map(o => `<li>${o}</li>`).join('')}
                 </ul>
-              ` : ''}
-            </div>
-          `;
-        });
-        html += `</div>`;
-      }
-
-      // 3. Selected Texts
-      if (data.selected_texts && typeof data.selected_texts === 'object') {
-        html += `<div class="section-card"><h3 class="section-title">Prescribed / Selected Texts</h3>`;
-        Object.keys(data.selected_texts).forEach(genre => {
-          html += `<h4 class="text-capitalize" style="color:var(--flexi-blue); margin-bottom:0.25rem;">${genre}</h4>`;
-          const categories = data.selected_texts[genre];
-          if (typeof categories === 'object') {
-            Object.keys(categories).forEach(cat => {
-              const books = categories[cat];
-              if (Array.isArray(books) && books.length) {
-                html += `
-                  <strong class="text-capitalize" style="font-size:0.85rem; color:#64748B;">${cat}:</strong>
-                  <ul class="styled-list">
-                    ${books.map(b => `<li>${b}</li>`).join('')}
-                  </ul>
-                `;
-              }
-            });
-          }
-        });
-        html += `</div>`;
-      }
-
-      // 4. Recommended Texts
-      if (data.recommended_texts) {
-        html += `
-          <div class="section-card">
-            <h3 class="section-title">Recommended Reading List</h3>
-            <ol class="styled-list">
-        `;
-
-        if (Array.isArray(data.recommended_texts)) {
-          html += data.recommended_texts.map(text => `<li>${text}</li>`).join('');
-        } else if (typeof data.recommended_texts === 'object') {
-          Object.values(data.recommended_texts).forEach(val => {
-            if (typeof val === 'object' && val !== null) {
-              Object.values(val).forEach(v => { html += `<li>${v}</li>`; });
-            } else {
-              html += `<li>${val}</li>`;
-            }
-          });
-        }
-
-        html += `</ol></div>`;
-      }
-
-      app.innerHTML = html;
-    }
-
-    // ============================================================
-    // 2. WAEC RENDERER
-    // ============================================================
-    function renderWAECSyllabus(data) {
-      const app = document.getElementById('syllabus-app');
-
-      let html = `
-        <div class="subject-title-card">
-          <span class="badge-exam">WAEC / WASSCE</span>
-          <h2>${data.subject || (activeSubjectMeta ? activeSubjectMeta.name : 'Subject Syllabus')}</h2>
-          ${data.preamble ? `<p style="margin-top:0.4rem;"><strong>Preamble:</strong> ${data.preamble}</p>` : ''}
-        </div>
-      `;
-
-      if (data.objectives && data.objectives.length) {
-        html += `
-          <div class="section-card">
-            <h3 class="section-title">Course Objectives</h3>
-            <ul class="styled-list">
-              ${data.objectives.map(obj => `<li>${obj}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      }
-
-      if (data.examination_scheme) {
-        const scheme = data.examination_scheme;
-        html += `
-          <div class="section-card">
-            <h3 class="section-title">Examination Scheme</h3>
-            ${scheme.summary ? `<p>${scheme.summary}</p>` : ''}
-            ${scheme.papers && scheme.papers.length ? `
-              <div style="overflow-x:auto;">
-                <table>
-                  <thead>
-                    <tr><th>Paper</th><th>Title</th><th>Duration</th><th>Marks</th><th>Details</th></tr>
-                  </thead>
-                  <tbody>
-                    ${scheme.papers.map(p => `
-                      <tr>
-                        <td><strong>${p.paper || ''}</strong></td>
-                        <td>${p.title || ''}</td>
-                        <td>${p.duration || ''}</td>
-                        <td>${p.marks || ''}</td>
-                        <td>${p.details || ''}</td>
-                      </tr>
-                    `).join('')}
-                  </tbody>
-                </table>
               </div>
             ` : ''}
           </div>
         `;
-      }
-
-      if (data.syllabus_content && data.syllabus_content.length) {
-        html += `<div class="section-card"><h3 class="section-title">Detailed Syllabus Content</h3>`;
-        
-        data.syllabus_content.forEach(sec => {
-          if (sec.section_title) html += `<h4 style="color:var(--flexi-blue);">${sec.section_title}</h4>`;
-          if (sec.topics) {
-            sec.topics.forEach(top => {
-              html += `
-                <details class="topic-block" open>
-                  <summary class="topic-header">
-                    ${top.topic_number ? `<span class="topic-number">Topic ${top.topic_number}</span>` : ''}
-                    ${top.title || ''}
-                  </summary>
-                  <div class="topic-body">
-                    ${top.details && top.details.length ? `
-                      <ul class="styled-list">
-                        ${top.details.map(d => `<li>${d}</li>`).join('')}
-                      </ul>
-                    ` : ''}
-                    ${top.subsections && top.subsections.length ? top.subsections.map(sub => `
-                      <div class="subsection">
-                        <div class="subsection-title">${sub.title || ''}</div>
-                        ${sub.details && sub.details.length ? `
-                          <ul class="styled-list">
-                            ${sub.details.map(sd => `<li>${sd}</li>`).join('')}
-                          </ul>
-                        ` : ''}
-                      </div>
-                    `).join('') : ''}
-                  </div>
-                </details>
-              `;
-            });
-          }
-        });
-
-        html += `</div>`;
-      }
-
-      if (data.reading_list && data.reading_list.length) {
-        html += `
-          <div class="section-card">
-            <h3 class="section-title">Recommended Reading List</h3>
-            <ol class="styled-list">
-              ${data.reading_list.map(book => `<li>${book}</li>`).join('')}
-            </ol>
-          </div>
-        `;
-      }
-
-      app.innerHTML = html;
+      });
+      html += `</div>`;
     }
 
-    // Boot system
-    document.addEventListener('DOMContentLoaded', () => {
-      switchPortal(urlExam);
-    });
-  </script>
+    // 3. Selected Texts
+    if (data.selected_texts && typeof data.selected_texts === 'object') {
+      html += `<div class="section-card"><h3 class="section-title">Prescribed / Selected Texts</h3>`;
+      Object.keys(data.selected_texts).forEach(genre => {
+        html += `<h4 class="text-capitalize" style="color:var(--flexi-blue); margin-bottom:0.25rem;">${genre}</h4>`;
+        const categories = data.selected_texts[genre];
+        if (typeof categories === 'object') {
+          Object.keys(categories).forEach(cat => {
+            const books = categories[cat];
+            if (Array.isArray(books) && books.length) {
+              html += `
+                <strong class="text-capitalize" style="font-size:0.85rem; color:#64748B;">${cat}:</strong>
+                <ul class="styled-list">
+                  ${books.map(b => `<li>${b}</li>`).join('')}
+                </ul>
+              `;
+            }
+          });
+        }
+      });
+      html += `</div>`;
+    }
+
+    // 4. Recommended Texts
+    if (data.recommended_texts) {
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">Recommended Reading List</h3>
+          <ol class="styled-list">
+      `;
+
+      if (Array.isArray(data.recommended_texts)) {
+        html += data.recommended_texts.map(text => `<li>${text}</li>`).join('');
+      } else if (typeof data.recommended_texts === 'object') {
+        Object.values(data.recommended_texts).forEach(val => {
+          if (typeof val === 'object' && val !== null) {
+            Object.values(val).forEach(v => { html += `<li>${v}</li>`; });
+          } else {
+            html += `<li>${val}</li>`;
+          }
+        });
+      }
+
+      html += `</ol></div>`;
+    }
+
+    app.innerHTML = html;
+  }
+
+  // ============================================================
+  // 2. WAEC RENDERER
+  // ============================================================
+  function renderWAECSyllabus(fullData) {
+    const data = fullData.syllabus ? fullData.syllabus : fullData;
+    const app = document.getElementById('syllabus-app');
+
+    let html = `
+      <div class="subject-title-card">
+        <span class="badge-exam">WAEC / WASSCE</span>
+        <h2>${data.subject || (activeSubjectMeta ? activeSubjectMeta.name : 'Subject Syllabus')}</h2>
+        ${data.preamble ? `<p style="margin-top:0.4rem;"><strong>Preamble:</strong> ${data.preamble}</p>` : ''}
+      </div>
+    `;
+
+    if (data.objectives && data.objectives.length) {
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">Course Objectives</h3>
+          <ul class="styled-list">
+            ${data.objectives.map(obj => `<li>${obj}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    if (data.examination_scheme) {
+      const scheme = data.examination_scheme;
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">Examination Scheme</h3>
+          ${scheme.summary ? `<p>${scheme.summary}</p>` : ''}
+          ${scheme.papers && scheme.papers.length ? `
+            <div style="overflow-x:auto;">
+              <table>
+                <thead>
+                  <tr><th>Paper</th><th>Title</th><th>Duration</th><th>Marks</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                  ${scheme.papers.map(p => `
+                    <tr>
+                      <td><strong>${p.paper || ''}</strong></td>
+                      <td>${p.title || ''}</td>
+                      <td>${p.duration || ''}</td>
+                      <td>${p.marks || ''}</td>
+                      <td>${p.details || ''}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    if (data.syllabus_content && data.syllabus_content.length) {
+      html += `<div class="section-card"><h3 class="section-title">Detailed Syllabus Content</h3>`;
+      
+      data.syllabus_content.forEach(sec => {
+        if (sec.section_title) html += `<h4 style="color:var(--flexi-blue);">${sec.section_title}</h4>`;
+        if (sec.topics) {
+          sec.topics.forEach(top => {
+            html += `
+              <details class="topic-block" open>
+                <summary class="topic-header">
+                  ${top.topic_number ? `<span class="topic-number">Topic ${top.topic_number}</span>` : ''}
+                  ${top.title || ''}
+                </summary>
+                <div class="topic-body">
+                  ${top.details && top.details.length ? `
+                    <ul class="styled-list">
+                      ${top.details.map(d => `<li>${d}</li>`).join('')}
+                    </ul>
+                  ` : ''}
+                  ${top.subsections && top.subsections.length ? top.subsections.map(sub => `
+                    <div class="subsection">
+                      <div class="subsection-title">${sub.title || ''}</div>
+                      ${sub.details && sub.details.length ? `
+                        <ul class="styled-list">
+                          ${sub.details.map(sd => `<li>${sd}</li>`).join('')}
+                        </ul>
+                      ` : ''}
+                    </div>
+                  `).join('') : ''}
+                </div>
+              </details>
+            `;
+          });
+        }
+      });
+
+      html += `</div>`;
+    }
+
+    if (data.reading_list && data.reading_list.length) {
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">Recommended Reading List</h3>
+          <ol class="styled-list">
+            ${data.reading_list.map(book => `<li>${book}</li>`).join('')}
+          </ol>
+        </div>
+      `;
+    }
+
+    app.innerHTML = html;
+  }
+
+  // Boot system
+  document.addEventListener('DOMContentLoaded', () => {
+    switchPortal(urlExam);
+  });
+</script>
 </body>
 </html>
