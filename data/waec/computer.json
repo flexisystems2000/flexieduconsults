@@ -1,0 +1,490 @@
+{
+  "subject": "COMPUTER STUDIES",
+  "preamble": "This examination syllabus is developed from the National Curriculum for Senior Secondary School Computer Studies. It highlights the scope of the course for Computer Studies examinations at this level. Its structuring revolves around conceptual approach. The major thematic areas considered in the entire syllabus include: 1. Computer fundamentals and evolution, 2. Computer hardware, 3. Computer Software, 4. Basic Computer Operations, 5. Computer Applications, 6. Managing Computer files, 7. Developing Problem-solving skills, 8. Information and Communication Technology, 9. Computer ethics and human issues. Each thematic area forms a concept which is further divided into sub-concepts. This examination syllabus is not a substitute for the teaching syllabus. Therefore, it does not replace the curriculum.",
+  "objectives": [
+    "Test candidates' understanding, knowledge and acquisition of basic concepts of computer and its operations.",
+    "Test candidates' manipulative, computational and problem-solving skills.",
+    "Test candidates' application of software packages.",
+    "Test candidates' operation of computer - related simple devices.",
+    "Test candidates' on-line skills and their applications.",
+    "Test candidates' safe attitudes and good practices on effective use of computer.",
+    "Test candidates' potential for higher studies in Computer related areas."
+  ],
+  "examination_scheme": {
+    "summary": "There will be three papers, Papers 1, 2 and 3, all of which must be taken. Papers 1 and 2 shall be a composite paper to be taken at one sitting.",
+    "papers": [
+      {
+        "paper": "Paper 1",
+        "title": "Multiple Choice Objective Test",
+        "duration": "1 hour",
+        "marks": "25 marks",
+        "details": "Will consist of 50 multiple-choice objective questions all which are to be answered in 1 hour for 25 marks."
+      },
+      {
+        "paper": "Paper 2",
+        "title": "Essay Paper",
+        "duration": "1 hour",
+        "marks": "30 marks",
+        "details": "Will consist of five essay questions. Candidates will be required to answer any three in 1 hour for 30 marks."
+      },
+      {
+        "paper": "Paper 3",
+        "title": "Practical Test",
+        "duration": "2 hours",
+        "marks": "45 marks",
+        "details": "Will test actual practical skills of school candidates and knowledge of practical work for private candidates. It will consist of three questions to be answered in 2 hours for 45 marks."
+      }
+    ]
+  },
+  "syllabus_content": [
+    {
+      "section_title": "DETAILED SYLLABUS",
+      "topics": [
+        {
+          "topic_number": 1,
+          "title": "COMPUTER EVOLUTION",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) Computing Devices I (Pre-computing age- 19th century)",
+              "details": [
+                "(i) Features, components and uses of early computing devices: Abacus, Slide Rule, Napier's bone, Pascal's calculator, Leibnitz multiplier, Jacquard loom, Charles Babbage's analytical engine, Hollerith Census Machine, Burrough's Machine.",
+                "(ii) Contribution of each of the founders of these devices to modern computers."
+              ]
+            },
+            {
+              "subtitle": "(b) Computing Devices II (20th century to date)",
+              "details": [
+                "(i) Features, components and uses of: ENIAC, EDVAC, UNIVAC 1, Desktop Personal Computers, Laptop and Notebook computers, Palmtop."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 2,
+          "title": "FUNDAMENTALS OF COMPUTING",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) Overview of Computing System",
+              "details": [
+                "(i) Definition of a Computer.",
+                "(ii) Two main constituents of a Computer: Computer hardware, Computer software.",
+                "(iii) Classification and examples of hardware and software.",
+                "(iv) Functional parts of a computer.",
+                "(v) Characteristics of Computers: Electronic in nature, Accuracy, Speed, Interactive etc."
+              ]
+            },
+            {
+              "subtitle": "(b) Data and Information",
+              "details": [
+                "(i) Definition and examples of data and information.",
+                "(ii) Differences between data and information."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 3,
+          "title": "COMPUTER ETHICS AND HUMAN ISSUES",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "Security and Ethics",
+              "details": [
+                "(i) Sources of security breaches: Virus, worms and Trojan horses; Poor implementation of network; Poor implementation or lack of ICT policies; Carelessness - giving out personal and vital information on the net without careful screening; Hackers, spammers etc.",
+                "(ii) Preventive measures: Use of antivirus software e.g. Norton, McAfee, Avast, etc.; Use of firewall; Exercising care in giving out vital and personal information; Encryption; Proper Network Implementation and Policies; Using sites with web certificates; Exercising care in opening e-mail attachments.",
+                "(iii) Legal Issues: Copyright (software copyright); Ownership right to text, images, audio, video; Privacy of audio and video software; Cyber crimes (identity theft, internet fraud, Hacking)."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 4,
+          "title": "COMPUTER HARDWARE",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) Input devices",
+              "details": [
+                "(i) Definition and examples of input devices.",
+                "(ii) The use of keyboard, mouse, scanner, joystick, light pen, etc.",
+                "(iii) Classification of keys on the keyboard into Function, Numeric, Alphabetic, Cursor keys.",
+                "(iv) Features, function and operation of the mouse.",
+                "(v) Differences in keyboard, mouse, light pen and scanner."
+              ]
+            },
+            {
+              "subtitle": "(b) Output Devices",
+              "details": [
+                "(i) Definition and examples.",
+                "(ii) Output devices: monitor, printer, speaker, plotter - Type, features and uses.",
+                "(iii) Differences between input and output devices.",
+                "(iv) Similarities and differences in inkjet, laser and line printer."
+              ]
+            },
+            {
+              "subtitle": "(c) Central Processing Unit",
+              "details": [
+                "(i) Components of C.P.U.: Arithmetic and logic unit, control unit.",
+                "(ii) Function of ALU and Control Unit."
+              ]
+            },
+            {
+              "subtitle": "(d) Memory Unit",
+              "details": [
+                "(i) Types of Memory Unit: Primary and Secondary memory.",
+                "(ii) Components of Primary memory unit: ROM and RAM.",
+                "(iii) Differences and uses of ROM and RAM.",
+                "(iv) Examples of Secondary memory devices: floppy disk, hard disk, compact disk (CD), flash disk, digital video disk (DVD).",
+                "(v) Unit of storage in memory devices: bits, nibble, bytes, kilobytes, megabytes, gigabytes, terabytes.",
+                "(vi) Interconversion of unit of storage.",
+                "(vii) Comparative study of auxiliary storage devices in respect of their size, speed and technology."
+              ]
+            },
+            {
+              "subtitle": "(e) Logic Circuits",
+              "details": [
+                "(i) Definition, types and uses of standard logic gate: AND, NOT, OR.",
+                "(ii) Symbols of AND, NOT, OR gates.",
+                "(iii) Construction of truth table for standard logic gates.",
+                "(iv) Differences between AND, NOT, OR gates.",
+                "(v) NAND and NOR as alternative logic gates.",
+                "(vi) Construction of Truth Table for NAND and NOR.",
+                "(vii) Construction of a simple comparator with XOR (Exclusive OR) and NOR gate."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 5,
+          "title": "COMPUTER SOFTWARE",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) System Software",
+              "details": [
+                "(i) Definition and types of software: System software, Application software.",
+                "(ii) System software and their examples.",
+                "(iii) Operating System e.g. MS Windows, Linux, UNIX, MS-DOS, etc.",
+                "(iv) Examples of Translators: Assemblers, Compilers, Interpreters.",
+                "(v) Examples of Utility Programs: Editor, Anti-virus, etc."
+              ]
+            },
+            {
+              "subtitle": "(b) Operating System",
+              "details": [
+                "(i) Definition, types, examples and function of Operating System.",
+                "(ii) Graphic User Interface (GUI): GUI (MS Windows, Linux, etc.), Command line (MS DOS, UNIX, etc.)."
+              ]
+            },
+            {
+              "subtitle": "(c) Application Software",
+              "details": [
+                "(i) Definition and types of application software.",
+                "(ii) Common Application Packages and their examples: Word processing (MS Word), Spreadsheet (MS Excel), Database (MS Access), Graphics.",
+                "(iii) Packages for spreadsheet purpose: Accounting software, Payroll program, Banking software, Education management software, Statistical packages, Hospital management software."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 6,
+          "title": "COMPUTER APPLICATION",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) Word Processing",
+              "details": [
+                "(i) Definition and examples of word processing and word processor: MS Word, Wordstar, WordPerfect.",
+                "(ii) Features of Word Processing programs in general.",
+                "(iii) Application areas of Word Processing programs: Office, Publishing, Journalism, Education, etc.",
+                "(iv) Features of MS Word.",
+                "(v) Steps in activating and exiting MS Word.",
+                "(vi) Basic operations in MS Word: Create, Edit, Save, Retrieve, Print, Close.",
+                "(vii) Further operations in MS Word: move, copy, cut, use of different types and sizes of fonts, formatting, justifying, search/explore, spell checking, file merging, etc."
+              ]
+            },
+            {
+              "subtitle": "(b) Spreadsheet",
+              "details": [
+                "(i) Definition and examples of spreadsheet program: VisiCALC, MS Excel, SuperCALC, Autocad, etc.",
+                "(ii) Features of spreadsheet program.",
+                "(iii) Application areas of Spreadsheet programs: Accounting, Statistical calculation, Student result, etc.",
+                "(iv) Features of MS Excel Environment: status bar, menu bar, formula bar, etc.",
+                "(v) Definition of basic terms in MS Excel: worksheet, workbook, cells, cell ranges.",
+                "(vi) Data types in Excel: Number, Labels, Formula.",
+                "(vii) Basic operations in Excel: Data Entry, Saving, Retrieve, Copy, Move.",
+                "(viii) Arithmetic calculations using formula and built-in function.",
+                "(ix) Additional operations in Excel: Editing, Formatting, Printing, Drawing charts (Pie chart, histogram, bar chart, etc.)."
+              ]
+            },
+            {
+              "subtitle": "(c) Database",
+              "details": [
+                "(i) Definition of database and database packages.",
+                "(ii) Examples of database packages: Dbase IV, Foxbase, MS Access, Oracle, etc.",
+                "(iii) Basic terms in Database: File, Record, Field, Key.",
+                "(iv) Types of database organization methods and their features: Hierarchical, Network, Relational.",
+                "(v) Features of database format: Files designed as tables, Tables comprise rows and columns, Row containing related information about a record, Column containing specific type of information about a field.",
+                "(vi) Steps in creating database: define the structure, indicate field type (numeric, character, date, text, etc.), enter data, save.",
+                "(vii) Basic operations on already created database: Database searching, modifying, sorting, reporting, selecting, inserting, etc."
+              ]
+            },
+            {
+              "subtitle": "(d) Graphics",
+              "details": [
+                "(i) Definition of Graphics.",
+                "(ii) Examples of Graphics packages: Paint, Harvard graphics, Photoshop, Coreldraw, etc.",
+                "(iii) Features in activating and exiting Coreldraw.",
+                "(iv) Simple design using Coreldraw: Business card, School logo, National flag, Invitation card, Certificate, etc."
+              ]
+            },
+            {
+              "subtitle": "(e) Presentation package",
+              "details": [
+                "(i) Definition of presentation package.",
+                "(ii) Examples of presentation package: MS PowerPoint, etc.",
+                "(iii) Features of PowerPoint environment.",
+                "(iv) Steps in activating and exiting PowerPoint.",
+                "(v) PowerPoint operations: create new presentation, insert pictures, text, graphs, animated contents, add new slide, save presentation, run slide show, print presentation, close presentation."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 7,
+          "title": "MANAGING COMPUTER FILES",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) Concept of Computer Files",
+              "details": [
+                "(i) Definition of some terms: computer file, record, field, data item.",
+                "(ii) Types of data item: numeric, alphabetic, alphanumeric.",
+                "(iii) File structure organization (Data item - record - file - database).",
+                "(iv) Types of file organization: serial, sequential, index, random.",
+                "(v) Methods of accessing files: serial, sequential, random.",
+                "(vi) File classification: master file, transaction file, reference file.",
+                "(vii) Criteria for classifying files: nature of content (program and data), organization method, storage medium."
+              ]
+            },
+            {
+              "subtitle": "(b) Handling Computer Files",
+              "details": [
+                "(i) Basic operation on computer files: file creation, delete, retrieve, insert, copy, view, update, open, close.",
+                "(ii) Effect of file insecurity: data loss, data corruption, data becomes unreliable.",
+                "(iii) Causes of data loss: over-writing, inadvertent deletion.",
+                "(iv) Methods of file security: use of backup, use of antivirus, password, proper labelling of storage devices, etc.",
+                "(v) Differences between computer files and manual files.",
+                "(vi) Advantages of computer files: more secure, fast to access, etc.",
+                "(vii) Disadvantages of computer files: expensive to set up, irregular supply of electricity."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 8,
+          "title": "BASIC COMPUTER OPERATIONS",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) Booting and shutting down process",
+              "details": [
+                "(i) Description and types of booting process.",
+                "(ii) Types of booting process: cold booting, warm booting.",
+                "(iii) Steps involved in booting a computer and shutting down a computer.",
+                "(iv) Identification of features on a desktop."
+              ]
+            },
+            {
+              "subtitle": "(b) Computer Data Conversion",
+              "details": [
+                "(i) Definition of registers, address, bus.",
+                "(ii) Types and functions of registers: MDR, CIR, SCR.",
+                "(iii) Differences between register and main memory.",
+                "(iv) Steps involved in how a computer converts data to required information (Input-Process-Output).",
+                "(v) Factors affecting speed of data transfer: bus speed, bus width."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 9,
+          "title": "INFORMATION AND COMMUNICATION TECHNOLOGY (ICT)",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) Communication Systems",
+              "details": [
+                "(i) What 'ICT' acronym stands for.",
+                "(ii) Types of ICT: Broadcasting, Telecommunication, Data Network, Information Systems, Satellite Communications.",
+                "(iii) Examples of Broadcasting: Radio broadcasting, Television broadcasting, Satellite system.",
+                "(iv) Examples of Telecommunication: Public Switched Telephone Network (PSTN) - Landline, Mobile phone systems, Circuit Switched Packet Telephone System (CSPT), Satellite telephone system, Fixed wireless telephone system.",
+                "(v) Examples of data networks: Personal Area Network (PAN), Local Area Network (LAN), Metropolitan Area Network (MAN), Wide Area Network (WAN), Internet.",
+                "(vi) Examples of Information Systems: Data Processing System, Global Positioning System (GPS)."
+              ]
+            },
+            {
+              "subtitle": "(b) Application areas of ICT",
+              "details": [
+                "(i) Application Areas of ICT include: Teleconferencing, Video conferencing, Telecommuting, Telecomputing, Messaging, Information search, retrieval and archival.",
+                "(ii) ICT based gadgets and their operations: Mobile phones, Computers, Fax machines, Automated Teller Machines (ATM), Dispensing machines, Point of Sale Machines, Automated Cash Register (ACR), Radio sets, Television sets, etc."
+              ]
+            },
+            {
+              "subtitle": "(c) Internet",
+              "details": [
+                "(i) Definition of Internet and some Internet terms: Homepage, Browse, Browser, Chatroom, Cybercafe, HTTP, HTML, ISP, Webpage, Website, etc.",
+                "(ii) Types of internet browsers: Internet Explorer, Netscape Navigator, Opera, Firefox, Cometbird, etc.",
+                "(iii) Features of Internet browsers: Title bar, Menu bar, Tool bar, Address bar, etc.",
+                "(iv) Types of Internet services: Electronic mail (e-mail), e-mail discussion group, Instant messaging, Telnet, Usenet, File Transfer Protocol (FTP), Worldwide web (www), Chatting, etc."
+              ]
+            },
+            {
+              "subtitle": "(d) Electronic Mail (e-mail) Services",
+              "details": [
+                "(i) Definition of electronic mail.",
+                "(ii) E-mail Services: sending/receiving e-mail, chatting, etc.",
+                "(iii) Steps involved in creating e-mail account.",
+                "(iv) Steps involved in opening mail box.",
+                "(v) Features in an e-mail address e.g. fmemail@fmegovng.org.",
+                "(vi) Definition and steps involved in chatting."
+              ]
+            },
+            {
+              "subtitle": "(e) Networking",
+              "details": [
+                "(i) Definition of a Computer Network.",
+                "(ii) Types of Network: PAN, LAN, WAN, MAN, Internet.",
+                "(iii) Network topology: Star, Bus, Ring.",
+                "(iv) Network devices: Hub, Modems, Switches, Routers, Network Interface Card (NIC).",
+                "(v) Advantages of Networking."
+              ]
+            },
+            {
+              "subtitle": "(f) Introduction to Worldwide Web (W.W.W.)",
+              "details": [
+                "(i) What the 'W.W.W.' acronym stands for.",
+                "(ii) Brief history of W.W.W.",
+                "(iii) Basic terminologies: W.W.W., website, webpage, homepage, protocol, etc.",
+                "(iv) Protocol: HTTP, HTML.",
+                "(v) Uses/benefits of www.",
+                "(vi) Navigating through websites: www.waeconline.org, www.itbeginswithu.org, www.servenigeria.com, www.phillipemeagwali.com, www.jambonline.org.",
+                "(vii) Difference between e-mail and website address features e.g. www.waeconline.org and waec@yahoo.com.",
+                "(viii) Software for web development: Frontpage, etc."
+              ]
+            },
+            {
+              "subtitle": "(g) Cables and Connectors",
+              "details": [
+                "(i) Types of Network Cables and Connectors: Cables (Twisted pair, coaxial, fibre optic, telephone), Connectors (RJ45, RJ11, T-connectors).",
+                "(ii) Types of Computer Cables and Connector: Cables (Power cables, Data cables - Printer Cable, universal serial bus (USB), monitor cable, serial cable), Connectors (Male and female)."
+              ]
+            }
+          ]
+        },
+        {
+          "topic_number": 10,
+          "title": "DEVELOPING PROBLEM-SOLVING SKILLS",
+          "details": [],
+          "subsections": [
+            {
+              "subtitle": "(a) Programming Language (PL)",
+              "details": [
+                "(i) Programming Language: Definition, examples, levels and features.",
+                "(ii) Levels and examples of programming language: Machine Language (ML) e.g. 100011001, Low Level Language (LLL) e.g. Assembly Language, High Level Language (HLL) e.g. BASIC, C++, FORTRAN, etc.",
+                "(iii) Comparison of ML, LLL, HLL.",
+                "(iv) Advantages and disadvantages of ML, LLL and HLL."
+              ]
+            },
+            {
+              "subtitle": "(b) High Level Languages",
+              "details": [
+                "(i) Definition and examples.",
+                "(ii) Classification of HLL as: Scientific, General-purpose, Business, AI, String processing language (SPL).",
+                "(iii) Features of BASIC, C, PASCAL, COBOL - Comparative study."
+              ]
+            },
+            {
+              "subtitle": "(c) Algorithm and Flowchart",
+              "details": [
+                "(i) Definition of Algorithm and Flowchart.",
+                "(ii) Functions of Algorithm.",
+                "(iii) Characteristics of Algorithm: Finite, Effective, Unambiguous.",
+                "(iv) Writing algorithm for: Computing average of a given set of numbers; Evaluation of equation: y = a(b-c)^2 / (d+2); Computing out the first ten odd numbers, etc.",
+                "(v) Flowchart symbols: I/O, Process, decisions, etc.",
+                "(vi) Use of each flowchart symbol.",
+                "(vii) Flowchart diagrams for given programming problem."
+              ]
+            },
+            {
+              "subtitle": "(d) BASIC Programming",
+              "details": [
+                "(i) What BASIC acronym stands for.",
+                "(ii) BASIC characteristics.",
+                "(iii) Types of data: variable, constant/literal, numeric, string/alphanumeric.",
+                "(iv) BASIC Statements: INPUT, PRINT, LPRINT, LET, END, REM, READ, DATA.",
+                "(v) Arithmetic operators (-, +, *, /).",
+                "(vi) Arithmetic Expressions.",
+                "(vii) Evaluation of Arithmetic expressions.",
+                "(viii) Simple BASIC Programs.",
+                "(ix) Running Simple Programs.",
+                "(x) Built-in functions in BASIC: SQR(X), INT(X), SIN(X), ABS(X), RND(X), COS(X), TAN(X), LOG(X), EXP(X).",
+                "(xi) BASIC Notation of algebraic expressions.",
+                "(xii) BASIC program to find square root, cosine, tangent, plot sine wave curve.",
+                "(xiii) Additional BASIC Statements: DIM Statement, FOR-NEXT statement, WHILE-END statement.",
+                "(xiv) Defining one-dimensional array using DIM statement.",
+                "(xv) Operating on Array elements: Input of array, Output of array, Arithmetic operations on array.",
+                "(xvi) Write BASIC program to store vector of 10 numbers, calculate mean of 100 numeric values, calculate area of 10 different rectangles, compute sum of first 100 integers."
+              ]
+            },
+            {
+              "subtitle": "(e) Program Development Cycle",
+              "details": [
+                "(i) Definition of program.",
+                "(ii) Characteristics of a good Program: Accuracy, Readability, Maintainability, Efficiency, Generality, Clarity.",
+                "(iii) Precautions in developing a program: Be stable, steady and patient; No step skipping; Follow order of execution.",
+                "(iv) Steps involved in program development: Problem definition, Problem analysis, Flowcharting, Desk checking, Program coding, Program compilation, Program testing/debugging, Program documentation.",
+                "(v) Description of each stage in program development.",
+                "(vi) Examples of Interpreted program (BASIC) and Compiled program (COBOL, FORTRAN)."
+              ]
+            },
+            {
+              "subtitle": "(f) Systems Development Cycle",
+              "details": [
+                "(i) Definition of system development cycle.",
+                "(ii) Description of system development cycle.",
+                "(iii) Stages in system development cycle: Preliminary, Feasibility, Investigative study, Analysis, Design, Implementation, Maintenance, Study review.",
+                "(iv) Description of each stage of system development cycle.",
+                "(v) Diagram of system development cycle."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "appendices": [
+    {
+      "title": "LIST OF FACILITIES AND MAJOR EQUIPMENT/MATERIALS REQUIRED",
+      "details": [
+        "(1) Computer set",
+        "(2) Laptops",
+        "(3) Scanners",
+        "(4) Printers",
+        "(5) Fax Machine",
+        "(6) GSM Phone",
+        "(7) Memory chips",
+        "(8) Hard disks",
+        "(9) Flash drives",
+        "(10) Internet connectivity",
+        "(11) DVD",
+        "(12) Compact disks",
+        "(13) Cables (power and data)",
+        "(14) Word processing packages, database package, BASIC program and CorelDraw"
+      ]
+    }
+  ],
+  "reading_list": []
+}

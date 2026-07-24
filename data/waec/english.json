@@ -1,0 +1,124 @@
+{
+  "subject": "English Language",
+  "preamble": "This examination sets out to test the different basic skills of communicating in English using the mediums of speech and writing. The examination will test the receptive and productive abilities of candidates through reading, comprehension, summary, vocabulary, lexis and structure, listening comprehension, and recognition of different aspects of spoken English.",
+  "aims_and_objectives": [
+    "Use correct English.",
+    "Write about incidents in English that are appropriate to specified audiences and situations.",
+    "Organize material in paragraphs that are chronologically, spatially and logically coherent.",
+    "Control sentence structures accurately.",
+    "Exhibit variety in the use of sentence patterns.",
+    "Comply with the rules of grammar.",
+    "Spell and punctuate correctly.",
+    "Comprehend written and spoken English.",
+    "Recognize implied meaning, tones and attitudes.",
+    "Use an acceptable pronunciation that can be comprehended by others.",
+    "Recognize the physical characteristics of English sounds and the letters that represent them.",
+    "Pick out and summarize relevant information from set passages."
+  ],
+  "scheme_of_examination": [
+    {
+      "paper": "Paper 1",
+      "description": "Eighty multiple choice questions (lexis and structure).",
+      "duration": "1 hour",
+      "marks": 40
+    },
+    {
+      "paper": "Paper 2",
+      "description": "Five essay topics, a comprehension passage, and a summary passage.",
+      "duration": "2 hours",
+      "marks": 100
+    },
+    {
+      "paper": "Paper 3",
+      "description": "Test of Orals (Nigeria/Liberia) or Listening Comprehension Test (Gambia/Sierra Leone/Ghana).",
+      "duration": "45 minutes",
+      "marks": 30
+    }
+  ],
+  "detailed_syllabus": {
+    "paper_one": {
+      "lexis_fields": [
+        "Building and Building Construction",
+        "Agriculture",
+        "Fishing",
+        "Stock exchange",
+        "Health",
+        "Environment",
+        "Culture, Institutions and Ceremonies",
+        "Law and Order",
+        "Motor Vehicles and Travelling",
+        "Government and Administration",
+        "Sports",
+        "Religion",
+        "Science and Technology",
+        "Animal husbandry",
+        "Advertising",
+        "Human Internal Body system and function"
+      ],
+      "structure_elements": [
+        "Patterns of changes in word-forms (number, tense, degree)",
+        "Combinations of word categories into groups and sentences",
+        "Use of structural words (conjunctions, determiners, prepositions)"
+      ]
+    },
+    "paper_two": {
+      "sections": [
+        {
+          "section": "Section A",
+          "title": "Essay Writing",
+          "marks": 50,
+          "duration_minutes": 50,
+          "min_words": 450,
+          "types": [
+            "letter",
+            "speech",
+            "narration",
+            "description",
+            "argument/debate",
+            "report",
+            "article",
+            "exposition",
+            "creative writing"
+          ]
+        },
+        {
+          "section": "Section B",
+          "title": "Comprehension",
+          "marks": 20,
+          "duration_minutes": 30
+        },
+        {
+          "section": "Section C",
+          "title": "Summary",
+          "marks": 30,
+          "duration_minutes": 40
+        }
+      ]
+    },
+    "paper_three_orals": {
+      "consonant_contrasts": [
+        { "initial_1": "they", "initial_2": "day", "medial_1": "buzzes", "medial_2": "buses", "final_1": "both", "final_2": "boat" },
+        { "initial_1": "ship", "initial_2": "chip", "medial_1": "parcel", "medial_2": "partial", "final_1": "breathe", "final_2": "breed" },
+        { "initial_1": "fan", "initial_2": "van", "medial_1": "sopping", "medial_2": "sobbing", "final_1": "wash", "final_2": "watch" },
+        { "initial_1": "pit", "initial_2": "fit", "medial_1": "written", "medial_2": "ridden", "final_1": "leaf", "final_2": "leave" },
+        { "initial_1": "bit", "initial_2": "pit", "medial_1": "anger", "medial_2": "anchor", "final_1": "cup", "final_2": "cub" },
+        { "initial_1": "tuck", "initial_2": "duck", "medial_1": "faces", "medial_2": "phrases", "final_1": "cart", "final_2": "card" },
+        { "initial_1": "card", "initial_2": "guard", "medial_1": "prices", "medial_2": "prizes", "final_1": "", "final_2": "" },
+        { "initial_1": "gear", "initial_2": "jeer", "medial_1": "", "medial_2": "", "final_1": "", "final_2": "" }
+      ],
+      "consonant_clusters": [
+        { "initial": "play - pray", "final": "rains - range" },
+        { "initial": "sting - string", "final": "felt - felled" },
+        { "initial": "scheme - scream", "final": "sent - send" },
+        { "initial": "crime - climb", "final": "nest - next" },
+        { "initial": "flee - free", "final": "ask - axe" },
+        { "initial": "three - tree", "final": "lift - lived" },
+        { "initial": "true - drew", "final": "missed - mixed" },
+        { "initial": "blight - bright", "final": "seats - seeds" },
+        { "initial": "tread - thread", "final": "hens - hence" },
+        { "initial": "drift - thrift", "final": "lisp - lips" },
+        { "initial": "glade - grade", "final": "coast - coats" }
+      ]
+    }
+  }
+}

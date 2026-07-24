@@ -1,0 +1,284 @@
+{
+  "subject": "CATERING CRAFT PRACTICE",
+  "preamble": "The general objectives of the catering craft syllabus are to test candidates' acquisition of necessary skills and knowledge required for professional catering, food preparation, service, and enterprise operations.",
+  "objectives": [
+    "Test candidates' level of development of professional attitude and skills.",
+    "Test candidates' understanding of all food commodities in terms of cost, quality and use.",
+    "Test candidates' understanding of the methods of cooking and ability to produce variety of dishes and drinks for various types of occasions, establishments and individuals.",
+    "Test candidates' understanding of dietary adequacies and procedure for producing dishes.",
+    "Test candidates' understanding and application of hygienic practices in handling food.",
+    "Test candidates' acquisition of necessary skills required for the production of pastry and confectionery products.",
+    "Test candidates' application of the methods of choosing, caring for and storing kitchen equipment.",
+    "Test candidates' knowledge of safety precautions in catering.",
+    "Test candidates' enterprise skills in menu costing and planning."
+  ],
+  "examination_scheme": {
+    "summary": "There will be three papers, Papers 1, 2, and 3. Papers 1 and 2 will be combined in a 1½ - hour composite paper.",
+    "papers": [
+      {
+        "paper": "Paper 1",
+        "title": "Multiple Choice Objectives",
+        "duration": "40 minutes",
+        "marks": "40 marks",
+        "details": "This will comprise forty multiple choice questions to be answered in 40 minutes for 40 marks."
+      },
+      {
+        "paper": "Paper 2",
+        "title": "Short Essay Questions",
+        "duration": "50 minutes",
+        "marks": "40 marks",
+        "details": "This will comprise six short essay questions out of which candidates will answer five within 50 minutes for 40 marks."
+      },
+      {
+        "paper": "Paper 3",
+        "title": "Alternative to Practical Test",
+        "duration": "40 minutes",
+        "marks": "40 marks",
+        "details": "This will be an alternative to practical test and will comprise five short structured questions. Candidates will be expected to answer all the questions in 40 minutes for 40 marks."
+      }
+    ]
+  },
+  "syllabus_content": [
+    {
+      "section_title": "I. THE CONCEPT OF CATERING",
+      "topics": [
+        {
+          "topic_number": 1,
+          "title": "Hospitality industry/catering",
+          "details": [
+            "Definitions: Hospitality and Catering.",
+            "Components of hospitality industry."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2,
+          "title": "Types of catering establishments",
+          "details": [
+            "Types of catering establishment e.g. hotel, restaurant, hospitality catering, outdoor catering, school, mobile catering etc.",
+            "Functions of catering establishments."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 3,
+          "title": "Culinary terms",
+          "details": [
+            "Culinary terms commonly used in catering.",
+            "Glossary of culinary terms."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 4,
+          "title": "Safety precaution in catering",
+          "details": [
+            "Types and causes of accidents.",
+            "Prevention/management.",
+            "First aid.",
+            "Fire fighting equipment."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 5,
+          "title": "Sanitation and Hygiene in catering",
+          "details": [
+            "Water sanitation.",
+            "Environmental sanitation.",
+            "Food safety practices.",
+            "Kitchen hygiene.",
+            "Personal hygiene."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "II. FOOD COMMODITIES AND METHODS OF FOOD PREPARATION",
+      "topics": [
+        {
+          "topic_number": 1,
+          "title": "Study of food commodities and principles of cooking methods",
+          "details": [
+            "Food commodities e.g. poultry, game, meat, fish, vegetables, fruits, dairy products, pulses, cereals, herbs, flavourings etc.",
+            "Methods of cooking: Boiling (e.g. stock, soups and sauces), Roasting (e.g. fish, beef and poultry), Grilling (e.g. fish, meat etc.), Baking (e.g. pastry and confectionery)."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2,
+          "title": "Principles of cooking and practical demonstrations",
+          "details": [
+            "Principles of cooking methods.",
+            "Preparation of the various food commodities.",
+            "Standard/local measurements."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "III. SERVICE OF FOODS AND DRINKS",
+      "topics": [
+        {
+          "topic_number": 1,
+          "title": "Food and beverage service personnel",
+          "details": [
+            "Personnel in the foods and beverage area.",
+            "Functions of food and beverage personnel."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2,
+          "title": "Types of food service and table laying/setting",
+          "details": [
+            "Different types of food service e.g. Guéridon, silver service, waiter service, vending, buffet and banquet service.",
+            "Types of covers.",
+            "Types of table laying/setting."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 3,
+          "title": "Types of alcoholic and non alcoholic drinks",
+          "details": [
+            "Bar.",
+            "Alcoholic beverages.",
+            "Non alcoholic beverages."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 4,
+          "title": "Costing and control in catering",
+          "details": [
+            "Cost/sales.",
+            "Dish costing.",
+            "Portion control."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "IV. KITCHEN EQUIPMENT AND THEIR USES",
+      "topics": [
+        {
+          "topic_number": 1,
+          "title": "Types of kitchen equipment and their uses",
+          "details": [
+            "Kitchen equipment.",
+            "Uses of kitchen equipment."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2,
+          "title": "Care and maintenance of kitchen equipment",
+          "details": [
+            "Care of various kitchen equipment.",
+            "Maintenance of kitchen equipment."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "V. MENU PLANNING",
+      "topics": [
+        {
+          "topic_number": 1,
+          "title": "Principles of menu planning",
+          "details": [
+            "Meaning and scope of menu.",
+            "Factors that affect menu planning."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2,
+          "title": "Types of menu and demonstrations",
+          "details": [
+            "Types of menu e.g. table d'hôte, à la carte, and special occasions.",
+            "Others: breakfast, tea, dinner, supper, luncheon, carte du jour, plat du jour etc."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 3,
+          "title": "Special menu and demonstrations",
+          "details": [
+            "Meals plan for vegetarians.",
+            "Meals plan for the vulnerable group.",
+            "Meals plan for manual, sedentary workers etc."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 4,
+          "title": "Accompaniments",
+          "details": [
+            "Food accompaniments.",
+            "Table accompaniments."
+          ],
+          "subsections": []
+        }
+      ]
+    }
+  ],
+  "appendices": [],
+  "reading_list": [
+    {
+      "author": "Doyin Akin-Bankole",
+      "title": "Restaurant and catering operations",
+      "publisher": "Diamond Publications Surulere, Lagos. Nigeria"
+    },
+    {
+      "author": "Mrs. Jessie Osei Kofi",
+      "title": "Basic Certificate Catering. A Hand book for basic schools",
+      "publisher": "Rainbow Publications Limited, Kumasi - Ghana"
+    },
+    {
+      "author": "Ceserani & Kinton",
+      "title": "The Theory of Catering",
+      "publisher": "Not specified"
+    },
+    {
+      "author": "Foskett, Ceserani & Kinton",
+      "title": "Practical Cookery",
+      "publisher": "Not specified"
+    },
+    {
+      "author": "Dennis Lillicrap and John Cousins",
+      "title": "Food and Beverage Service",
+      "publisher": "Not specified"
+    },
+    {
+      "author": "Angela Creese",
+      "title": "O-Level and CSE Cookery",
+      "publisher": "Not specified"
+    },
+    {
+      "author": "Dora Seton",
+      "title": "The Kingsway Book of Cookery",
+      "publisher": "Not specified"
+    },
+    {
+      "author": "Enid O'Reilly-Wright",
+      "title": "The Students Cookery Book",
+      "publisher": "Not specified"
+    },
+    {
+      "author": "Igboanbusi, J.N.",
+      "title": "Catering - A guide to Teachers and students",
+      "publisher": "Not specified"
+    },
+    {
+      "author": "Omozuwa O.",
+      "title": "Essentials of Catering Management",
+      "publisher": "Not specified"
+    }
+  ]
+}

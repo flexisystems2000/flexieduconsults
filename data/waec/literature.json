@@ -1,0 +1,41 @@
+{
+  "subject": "Literature-in-English (WASSCE 2026-2030)",
+  "document_title": "Harmonized List of Literature-in-English Texts for the West African Senior School Certificate Examination (WASSCE) 2026-2030",
+  "prescribed_texts": {
+    "shakespearean_text": [
+      "Antony and Cleopatra"
+    ],
+    "african_prose": [
+      "So the Path Does not Die by Pede Hollist",
+      "Redemption Road by Elma Shaw"
+    ],
+    "non_african_prose": [
+      "To Kill a Mocking Bird by Harper Lee",
+      "Path of Lucas: The Journey He Endured by Susanne Bellefeuille"
+    ],
+    "african_drama": [
+      "Once Upon an Elephant by Bosede Ademilua-Afolayan",
+      "The Marriage of Anansewa by Efua Sutherland"
+    ],
+    "non_african_drama": [
+      "An Inspector Calls by J. D. Priestley",
+      "A Man for all Seasons by Robert Bolt"
+    ],
+    "african_poetry": [
+      "Once Upon a Time by Gabriel Okara",
+      "New Tongue by Elizabeth L. A. Kamara",
+      "Night by Wole Soyinka",
+      "Not my Business by Niyi Osundare",
+      "Hearty Garlands by S.O.H. Afriyie-Vidza",
+      "The Breast of The Sea by Syl Cheney-Coker"
+    ],
+    "non_african_poetry": [
+      "She Walks in Beauty by Lord Byron",
+      "The Nun's Priest's Tale (shortened) by Geoffrey Chaucer",
+      "Digging by Seamus Heaney",
+      "Still I Rise by Maya Angelou",
+      "The Telephone Call by Fleur Adcock",
+      "The Stone by Wilfred Wilson Gipson"
+    ]
+  }
+}

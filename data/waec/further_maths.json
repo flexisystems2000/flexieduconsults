@@ -1,0 +1,177 @@
+{
+  "subject": "Further Mathematics / Mathematics (Elective)",
+  "aims_of_the_syllabus": [
+    "development of further conceptual and manipulative skills in Mathematics;",
+    "understanding of an intermediate course of study which bridges the gap between Elementary Mathematics and Higher Mathematics;",
+    "acquisition of aspects of Mathematics that can meet the needs of potential Mathematicians, Engineers, Scientists and other professionals.",
+    "ability to analyse data and draw valid conclusion",
+    "logical, abstract and precise reasoning skills."
+  ],
+  "examination_scheme": {
+    "paper_1": {
+      "description": "Will consist of forty multiple-choice objective questions, covering the entire syllabus. Candidates will be required to answer all questions in 1.5 hours for 40 marks.",
+      "distribution": {
+        "pure_mathematics": "30 questions",
+        "statistics_and_probability": "4 questions",
+        "vectors_and_mechanics": "6 questions"
+      }
+    },
+    "paper_2": {
+      "description": "Will consist of two sections, Sections A and B, to be answered in 2.5 hours for 100 marks.",
+      "section_a": {
+        "description": "Will consist of eight compulsory questions that are elementary in type for 48 marks.",
+        "distribution": {
+          "pure_mathematics": "4 questions",
+          "statistics_and_probability": "2 questions",
+          "vectors_and_mechanics": "2 questions"
+        }
+      },
+      "section_b": {
+        "description": "Will consist of seven questions of greater length and difficulty put into three parts. Candidates will be required to answer four questions with at least one from each part for 52 marks.",
+        "parts": {
+          "part_i_pure_mathematics": "3 questions",
+          "part_ii_statistics_and_probability": "2 questions",
+          "part_iii_vectors_and_mechanics": "2 questions"
+        }
+      }
+    }
+  },
+  "detailed_syllabus": [
+    {
+      "section": "I. Pure Mathematics",
+      "topics": [
+        {
+          "topic": "1. Sets",
+          "content": "Idea of a set defined by a property, Set notations and their meanings; Disjoint sets, Universal set and complement of set; Venn diagrams, Use of sets And Venn diagrams to solve problems; Commutative and Associative laws, Distributive properties over union and intersection."
+        },
+        {
+          "topic": "2. Surds",
+          "content": "Surds of the form a/sqrt(b), a*sqrt(b) and a+b*sqrt(n) where a is rational, b is a positive integer and n is not a perfect square."
+        },
+        {
+          "topic": "3. Binary Operations",
+          "content": "Properties: Closure, Commutativity, Associativity and Distributivity, Identity elements and inverses."
+        },
+        {
+          "topic": "4. Logical Reasoning",
+          "content": "Rule of syntax: true or false statements, rule of logic applied to arguments, implications and deductions; The truth table."
+        },
+        {
+          "topic": "5. Functions",
+          "content": "Domain and co-domain of a function; One-to-one, onto, identity and constant mapping; Inverse of a function; Composite of functions."
+        },
+        {
+          "topic": "6. Polynomial Functions",
+          "content": "Linear Functions, Equations and Inequality; Quadratic Functions, Equations and Inequalities; Cubic Functions and Equations."
+        },
+        {
+          "topic": "7. Rational Functions",
+          "content": "Rational functions of the form Q(x) = f(x)/g(x), g(x) != 0 where g(x) and f(x) are polynomials; Resolution of rational functions into partial fractions."
+        },
+        {
+          "topic": "8. Indices and Logarithmic Functions",
+          "content": "Indices; Logarithms."
+        },
+        {
+          "topic": "9. Permutation And Combinations",
+          "content": "Simple cases of arrangements; Simple cases of selection of objects."
+        },
+        {
+          "topic": "10. Binomial Theorem",
+          "content": "Expansion of (a+b)^n; Use of (1+x)^n approx 1+nx for any rational n, where x is sufficiently small."
+        },
+        {
+          "topic": "11. Sequences and Series",
+          "content": "Finite and Infinite sequences; Linear sequence/Arithmetic Progression (A.P.) and Exponential sequence/Geometric Progression (G.P.); Finite and Infinite series; Linear series and exponential series; Recurrence Series."
+        },
+        {
+          "topic": "12. Matrices and Linear Transformation",
+          "content": "Matrices; Determinants; Inverse of 2x2 Matrices; Linear Transformation."
+        },
+        {
+          "topic": "13. Trigonometry",
+          "content": "Trigonometric Ratios and Rules; Compound and Multiple Angles; Trigonometric Functions and Equations."
+        },
+        {
+          "topic": "14. Co-ordinate Geometry",
+          "content": "Straight Lines; Conic Sections."
+        },
+        {
+          "topic": "15. Differentiation",
+          "content": "The idea of a limit; The derivative of a function; Differentiation of polynomials; Differentiation of trigonometric Functions; Product and quotient rules, Differentiation of implicit functions; Differentiation of Transcendental Functions; Second order derivatives and Rates of change and small changes (dx), Concept of Maxima and Minima."
+        },
+        {
+          "topic": "16. Integration",
+          "content": "Indefinite Integral; Definite Integral; Applications of the Definite Integral."
+        }
+      ]
+    },
+    {
+      "section": "II. Statistics and Probability",
+      "topics": [
+        {
+          "topic": "17. Statistics",
+          "content": "Tabulation and Graphical representation of data; Measures of location; Measures of Dispersion; Correlation."
+        },
+        {
+          "topic": "18. Probability",
+          "content": "Meaning of probability; Relative frequency; Calculation of Probability using simple sample spaces; Addition and multiplication of probabilities; Probability distributions."
+        }
+      ]
+    },
+    {
+      "section": "III. Vectors and Mechanics",
+      "topics": [
+        {
+          "topic": "19. Vectors",
+          "content": "Definitions of scalar and vector Quantities; Representation of Vectors; Algebra of Vectors; Commutative, Associative and Distributive Properties; Unit vectors; Position Vectors; Resolution and Composition of Vectors; Scalar (dot) product and its application; Vector (cross) product and its application."
+        },
+        {
+          "topic": "20. Statics",
+          "content": "Definition of a force; Representation of forces; Composition and resolution of coplanar forces acting at a point; Composition and resolution of general coplanar forces on rigid bodies; Equilibrium of Bodies; Determination of Resultant; Moments of forces; Friction."
+        },
+        {
+          "topic": "21. Dynamics",
+          "content": "The concepts of motion; Equations of Motion; The impulse and momentum equations; Projectiles."
+        }
+      ]
+    }
+  ],
+  "units": [
+    {
+      "category": "Length",
+      "conversion": "1000 millimetres (mm) = 100 centimetres (cm) = 1 metre (m); 1000 metres = 1 kilometre (km)"
+    },
+    {
+      "category": "Area",
+      "conversion": "10,000 square metres (m^2) = 1 hectare (ha)"
+    },
+    {
+      "category": "Capacity",
+      "conversion": "1000 cubic centimeters (cm^3) = 1 litre (l)"
+    },
+    {
+      "category": "Mass",
+      "conversion": "1000 milligrammes (mg) = 1 gramme (g); 1000 grammes (g) = 1 kilogramme (kg); 1000 kilograms (kg) = 1 tonne"
+    },
+    {
+      "category": "Currencies",
+      "details": {
+        "The Gambia": "100 bututs (b) = 1 Dalasi (D)",
+        "Ghana": "100 Ghana pesewas (Gp) = 1 Ghana Cedi (GHce)",
+        "Liberia": "100 cents (c) = 1 Liberian Dollar (LD)",
+        "Nigeria": "100 kobo (k) = 1 Naira (N)",
+        "Sierra Leone": "100 cents (c) = 1 Leone (Le)",
+        "UK": "100 pence (p) = 1 pound (£)",
+        "USA": "100 cents (c) = 1 dollar ($)",
+        "French Speaking territories": "100 centimes (c) = 1 Franc (fr)"
+      }
+    }
+  ],
+  "other_important_information": {
+    "use_of_mathematical_and_statistical_tables": "Mathematics and Statistical tables, published or approved by WAEC may be used in the examination room.",
+    "use_of_calculators": "The use of non-programmable, silent and cordless calculators is allowed, subject to restrictions against printing, communication, or phone integration.",
+    "other_materials_required": "Candidates should bring rulers, pairs of compasses, protractors, set squares, etc.",
+    "disclaimer": "Some questions may prohibit the use of tables and/or calculators."
+  }
+}

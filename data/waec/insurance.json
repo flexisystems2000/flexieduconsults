@@ -1,0 +1,221 @@
+{
+  "subject": "INSURANCE",
+  "scheme_of_examination": {
+    "description": "There will be two Papers, Paper 1 and Paper 2, which will be a composite paper to be taken at one sitting.",
+    "paper_1": {
+      "details": "Will consist of 50 compulsory multiple choice questions which would last for fifty (50) minutes and carry fifty (50) marks."
+    },
+    "paper_2": {
+      "details": "Will consist of two Sections, Section A and Section B. Section A will consist of a compulsory case study and compulsory question on it while Section B will consist of Six essay questions, out of which candidates will be expected to answer four. The case study passage will be between 200 to 250 words and will carry 20 marks. Questions in section B will carry fifteen (15) marks each. The Paper will last for 2 hours and carry eighty (80) marks."
+    }
+  },
+  "detailed_syllabus": [
+    {
+      "id": 1,
+      "topic": "INTRODUCTION",
+      "subtopics": [
+        {
+          "title": "Meaning"
+        },
+        {
+          "title": "Historical development",
+          "details": "Pre and Post independence era and Legislations."
+        },
+        {
+          "title": "Insurance contracts",
+          "details": "Parties to Insurance contract; Essential features of Insurance contract."
+        },
+        {
+          "title": "Risks",
+          "details": "Meaning; Effect of risks on the society; Classification of risks; Insurable and un-insurable risk."
+        },
+        {
+          "title": "Hazards",
+          "details": "Meaning; types."
+        },
+        {
+          "title": "Functions of Insurance",
+          "details": "Primary functions; Secondary functions."
+        },
+        {
+          "title": "Benefits of Insurance"
+        },
+        {
+          "title": "Perils",
+          "details": "Meaning; Differences among perils, risks and hazards."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "topic": "PRINCIPLES OF INSURANCE",
+      "subtopics": [
+        {
+          "title": "Insurable Interest",
+          "details": "i. Meaning. ii. Essential features of insurable interest. iii. Application of insurable interest in life assurance and property insurance."
+        },
+        {
+          "title": "Utmost Good Faith",
+          "details": "i. Meaning. ii. Insured and insurer's duty of disclosure. iii. Breaches and effects."
+        },
+        {
+          "title": "Proximate Cause",
+          "details": "i. Meaning. ii. Application of proximate cause on claims."
+        },
+        {
+          "title": "Indemnity",
+          "details": "i. Meaning. ii. Methods of providing indemnity by insurer. iii. Application of indemnity in property and liability insurance."
+        },
+        {
+          "title": "Subrogation",
+          "details": "i. Meaning. ii. Insurer's right under Subrogation. iii. Insured's duty under Subrogation."
+        },
+        {
+          "title": "Contribution",
+          "details": "i. Meaning. ii. Application. iii. Conditions necessary for contribution."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "topic": "DOCUMENTS USED IN EFFECTING CONTRACT",
+      "subtopics": [
+        {
+          "title": "Proposal Forms",
+          "details": "i. Meaning. ii. Functions and uses. iii. Contracts where proposal forms are used."
+        },
+        {
+          "title": "Cover Notes",
+          "details": "i. Meaning. ii. Contents of Cover notes. iii. Functions and uses of Cover notes. iv. Contracts where Cover notes are issued."
+        },
+        {
+          "title": "Certificate Of Insurance",
+          "details": "i. Meaning. ii. Certificate of Insurance in Motor, Marine, and Employer's liability."
+        },
+        {
+          "title": "Policy",
+          "details": "i. Meaning. ii. Component parts of a policy. iii. Parties to a policy."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "topic": "INSURANCE PRACTICE",
+      "subtopics": [
+        {
+          "title": "Re-insurance",
+          "details": "i. Meaning. ii. Forms (Facultative and Treaty). iii. Functions. iv. Uses."
+        },
+        {
+          "title": "Insurance Renewals",
+          "details": "i. Meaning of renewal notice. ii. Renewal procedure. iii. Legal status of renewal notice. iv. No claim Discount (NCD) - meaning and uses. v. Long term Agreement (LTA) - meaning and uses."
+        },
+        {
+          "title": "Insurance Claims",
+          "details": "i. Meaning of claims. ii. Claim procedure: Notification, Documentation (Claim forms), Investigation, Discharge voucher, Payment. iii. Duties of the Insured and the underwriter in claims. iv. Functions of Loss Assessors and Loss Adjusters."
+        },
+        {
+          "title": "Insurance Premium",
+          "details": "i. Meaning. ii. Factors to be considered when determining a premium. iii. Factors responsible for loading premium. iv. Return premium: Partial and full return, Reasons for returning premium."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "topic": "NON-LIFE INSURANCE PRODUCT",
+      "subtopics": [
+        {
+          "title": "Motor Insurance",
+          "details": "i. Meaning. ii. Types of policies in Motor Insurance: Private car, Commercial vehicle, Motorcycle, Agricultural and Forestry vehicle, Special types (fork lifts, Tractors, caterpillars). iii. The scope of cover: Act only, Third party only, Third party, fire and theft, Comprehensive. iv. ECOWAS Brown Card (meaning and uses)."
+        },
+        {
+          "title": "Fire Insurance",
+          "details": "i. Meaning. ii. Standard fire policy cover. iii. Special perils (earthquake, flood, riot and strike). iv. Properties covered: Building and its contents, Machinery and plant, Stocks. v. Buyers of fire insurance: Individuals, Corporate bodies, Government agencies."
+        },
+        {
+          "title": "Theft Insurance and Burglary Insurance",
+          "details": "i. Meaning. ii. Properties covered: Household properties, Stocks, Machinery and Plants. iii. Theft insurance and Burglary Insurance in business and private premises. iv. Differences between Theft Insurance and Burglary Insurance."
+        },
+        {
+          "title": "Money Insurance",
+          "details": "i. Meaning. ii. What constitutes money (cash, cheque, postal order). iii. Types of cover available: In transit only, In safe or strong room after business hours, In custody of a staff e.g. cashier."
+        },
+        {
+          "title": "Fidelity Guarantee Insurance",
+          "details": "i. Meaning. ii. Types of policies in fidelity guarantee Insurance: Named policy, Position policy, Blanket policy. iii. Bond (meaning). iv. Differences between commercial guarantee and bonds."
+        },
+        {
+          "title": "Engineering Insurance",
+          "details": "i. Meaning. ii. Types of engineering Insurance: Boiler, Explosion, Computer all risks. iii. Scope of Engineering Insurance: Material damage, Liability cover."
+        },
+        {
+          "title": "Marine Insurance",
+          "details": "i. Meaning. ii. Marine perils. iii. Type of cover: Hull policy, Cargo policy, Freight policy."
+        },
+        {
+          "title": "Aviation Insurance",
+          "details": "i. Meaning. ii. Types of Aviation policy: Aviation hull policy, Cargo policy, Freight policy, Liability arising from aircraft operation, Liability to passengers and non-passengers. iii. Aviation risks. iv. Factors affecting. v. International regulations of Aviation Insurance: Montreal Convention, Hague Rule, Warsaw convention."
+        },
+        {
+          "title": "Employer's Liability",
+          "details": "i. Meaning. ii. Policy covered (employees compensation policy). iii. Level of benefits payable. iv. Perils covered."
+        },
+        {
+          "title": "Public Liability Insurance",
+          "details": "i. Meaning. ii. Types: Personal liability policy, Product liability policy."
+        },
+        {
+          "title": "Professional Indemnity",
+          "details": "i. Meaning. ii. Professionals that require professional indemnity (Doctors, Lawyers, Insurance brokers, Accountant, Architects)."
+        },
+        {
+          "title": "Business Interruption Insurance",
+          "details": "i. Meaning (consequential loss). ii. Causes of business interruption: Machinery breakdown, Fire Incident."
+        },
+        {
+          "title": "Personal Accident Insurance",
+          "details": "i. Meaning. ii. Risks covered: Death, Bodily injury, Permanent disability, Total temporary disability, Medical expenses. iii. Forms of personal Accident Insurance (personal and group). iv. Benefits (Death, Bodily Injury and medical expenses). v. Buyers of personal and group accident policy."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "topic": "INSURANCE MARKET (OPERATORS)",
+      "subtopics": [
+        {
+          "title": "Market Operators",
+          "details": "i. Meaning. ii. Market Operators: (a) Insurance Companies, (b) Reinsurance Companies, (c) Insurance Intermediaries (Brokers and Agents), (d) Insurance Buyers (Individual and private, Corporate and public institutions), (e) Insurance Sellers (Insurance Companies, Re-insurance Companies), (f) Supporting Services (Assessor and Loss Adjusters)."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "topic": "INSURANCE REGULATOR",
+      "subtopics": [
+        {
+          "title": "Regulating Bodies",
+          "details": "Covers (1) Nigerian Insurance Association (NIA), (2) Nigerian Council of Registered Insurance Brokers (NCRIB), (3) Institute of Loss Adjusters of Nigeria (ILAN), (4) National Insurance Commission (NAICOM), (5) Chartered Insurance Institute of Nigeria (CIIN). Details include: (i) Meaning, (ii) Role/Functions, (iii) Purpose, (iv) Membership."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "topic": "COMMON INSURANCE TERMINOLOGIES",
+      "subtopics": [
+        {
+          "title": "Key Terms Covered",
+          "details": "Meaning of: i. Hazards, ii. Perils, iii. Concealment, iv. Disclosure, v. Days of grace, vi. Ex-gratia payment, vii. Extra-premium, viii. Endorsement, ix. Excepted perils, x. Subject matter of Insurance, xi. Under Insurance, xii. Return Premium, xiv. Surrender Value, xv. Cover note."
+        }
+      ]
+    }
+  ],
+  "suggested_reading_list": [
+    "Insurance for Beginners By OLoyede, F. A. and Rauf-Lawal, S. A.",
+    "Introduction to Insurance By Robert Ngarakwe and Dr. Nwezeaku, N. C.",
+    "Principles and Practice of Insurance By Robert Ngarakwe and Dr. Nwezeaku, N. C.",
+    "Insurance Fundamentals By Adeola Banjo, K. (Mrs.)",
+    "Principles and Practice of Insurance By Adeola Banjo, K. (Mrs)",
+    "Introduction to Insurance - A Nigeria Perspective By Victor I. Okonkwo.",
+    "Insurance For Beginners By Rauf-Lawal, Semiu A. O"
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "subject": "Marketing",
+  "preamble": "The Marketing syllabus at the Senior Secondary School level in Nigeria is designed to assess the candidates' basic knowledge of marketing. It includes an overview of marketing, marketing concepts, marketing mix, consumer and organizational behaviour, marketing management and entrepreneurship.",
+  "aims_and_objectives": [
+    "Knowledge, skills, concepts needed to practice marketing as a career",
+    "Ability to set up and manage a market outlet",
+    "Understanding of the roles of marketing in the economy"
+  ],
+  "scheme_of_examination": {
+    "description": "There will be two papers, Papers 1 and 2, both of which will constitute a composite paper to be taken at one sitting.",
+    "paper_1": "Will consist of forty multiple-choice objective questions which will cover the entire syllabus. Candidates are expected to answer all the questions in 50 minutes for 40 marks.",
+    "paper_2": "Will be a 2-hour paper consisting of six essay questions, out of which candidates will be expected to answer any four for 80 marks."
+  },
+  "detailed_syllabus": [
+    {
+      "topic": "Introduction to Marketing",
+      "contents": "(a) Meaning; (b) Explanation of basic terms in marketing: needs, wants, demands, product, exchange, transactions, and markets; (c) Brief history of marketing in Nigeria; (d) Functions of marketing."
+    },
+    {
+      "topic": "Marketing Concepts",
+      "contents": "(a) Meaning; (b) Various marketing concepts (production, product, selling, marketing and societal marketing)."
+    },
+    {
+      "topic": "Marketing Mix and Marketing Environment",
+      "contents": "(a) Meaning; (b) Elements (4 Ps); (c) Explain Marketing Environment and factors affecting it: political, cultural, religious, economic, technological, social."
+    },
+    {
+      "topic": "Products",
+      "contents": "(a) Meaning; (b) Classification (Industrial goods, consumer goods, services, primary and secondary products and mineral products - oil and non-oil); (c) Distinctions between classes of products; (d) Product Design (Emphasis should be on practical)"
+    },
+    {
+      "topic": "Markets",
+      "contents": "(a) Meaning; (b) Classification: Consumer, Organization (industrial, reseller and government)"
+    },
+    {
+      "topic": "Consumer and Organizational Behaviour",
+      "contents": "(a) Meaning; (b) Influencing factors; (c) Decision process in logical order."
+    },
+    {
+      "topic": "Marketing Planning and Research",
+      "contents": "(a) Meaning, process, importance, elements, and information required for marketing planning; (b) Reasons for marketing planning and research; (c) Utilization of feedback."
+    },
+    {
+      "topic": "Pricing",
+      "contents": "(a) Meaning; (b) Strategies (haggling, cost-plus, demand and competition) and application of strategies; (c) Price determinants."
+    },
+    {
+      "topic": "Advertising",
+      "contents": "(a) Definition; (b) Functions; (c) Media (meaning, types, advantages and disadvantages); (d) Production of sample adverts (Emphasis should be on practical)"
+    },
+    {
+      "topic": "Sales Promotion",
+      "contents": "(a) Meaning and Functions; (b) Forms (price-off, coupons, salesmen competition, loyalty schemes, premium offers, trade-in-allowance, sampling, training schemes, and merchandising incentives)."
+    },
+    {
+      "topic": "Merchandising",
+      "contents": "(a) Meaning; (b) Elements (packaging, branding and labeling); (c) Influencing factors; (d) Functions."
+    },
+    {
+      "topic": "Distribution",
+      "contents": "(a) Definition; (b) Channels of distribution (definition and types); (c) Factors influencing choice of distribution channels; (d) Functions of channel members."
+    },
+    {
+      "topic": "Transportation",
+      "contents": "(a) Meaning, mode, choice and importance; (b) Documents used in transportation; (c) Factors affecting choice of transportation."
+    },
+    {
+      "topic": "Warehousing",
+      "contents": "(a) Meaning, types and functions; (b) Activities in the warehouse."
+    },
+    {
+      "topic": "Market Unions and Facilitators",
+      "contents": "(a) Market Unions (Meaning and types); (b) Roles of Market Unions in local markets; (c) Market Facilitators (meaning, types and roles)."
+    },
+    {
+      "topic": "International Marketing",
+      "contents": "(a) Meaning, importance/reasons and methods of engaging in international marketing; (b) Influencing factors; (c) Guiding rules and regulations."
+    },
+    {
+      "topic": "ICT in Marketing",
+      "contents": "(a) E-Marketing (electronic marketing) - meaning, importance, uses, ethics and abuses."
+    },
+    {
+      "topic": "Entrepreneurship in Marketing",
+      "contents": "(a) Meaning of entrepreneurship and entrepreneur; (b) Sources of funds; (c) Factors affecting location of a market outlet; (d) Management of market outlets - purchase and supply of goods and services; (e) Selling and bargaining skills."
+    }
+  ],
+  "suggested_reading_list": [
+    "Fundamentals of Marketing by O.O. Shokan - MAM Education Limited, Lagos.",
+    "Commerce Textbook by G.A. Saka and Nnabuko J.O. Emiola Publisher Ltd",
+    "Marketing in Nigeria: Concepts, Principles and Decisions, 2nd Edition by B.A. Agbonifoh, O.E Ogwo, D.A. Nnolim, and A.D. Nkamnebe, (2007) - Afritowers Limited Publisher."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "subject": "Office Practice",
+  "examination_scheme": {
+    "description": "There will be two papers, Paper 1 and Paper 2, which will constitute a composite paper and will be taken at a sitting.",
+    "paper_1": "Will consist of fifty multiple choice objective questions, all of which should be answered within one hour for 50 marks.",
+    "paper_2": "Will consist of a question on a simple case study and six other essay type questions. Candidates will be required to answer the question on the case study and any four of the other questions. The paper will carry 100 marks and last for 2 hours 10 minutes."
+  },
+  "detailed_syllabus": [
+    {
+      "topic": "The Office",
+      "contents": "Definition of the office. Functions of the office. Layout of the office. Principles of office organization: span of control, unity of control, unity of function, etc. Office procedures. Sections of the office."
+    },
+    {
+      "topic": "Departments in an Organization",
+      "contents": "List of departments in an organization. Functions of each department in an organization. Organizational chart."
+    },
+    {
+      "topic": "Office Equipment",
+      "contents": "Meaning of office equipment. Types of office equipment - Manual: Typewriter, Perforator, Stapling machine, Duplicating machine, etc.; Electrical: Typewriter, Photocopier, Shredding machine, Computer, Scanning machine, Facsimile machine, etc. Uses of office equipment. Care of office equipment."
+    },
+    {
+      "topic": "The Reception",
+      "contents": "Meaning of the reception. Duties of the receptionist. Documents handled by a receptionist. Qualities of a receptionist. Procedures for handling telephone calls."
+    },
+    {
+      "topic": "Office Documents",
+      "contents": "Meaning of office documents. Types of office documents: Administrative, Sales, Stores, Purchasing. Uses of office documents. Preparation of office documents."
+    },
+    {
+      "topic": "Office Correspondence",
+      "contents": "Meaning of office correspondence. Types of office correspondence: Memos, Business letters, Notice of meetings, Minutes of meetings, Reports, Circulars."
+    },
+    {
+      "topic": "Mail",
+      "contents": "Types of mail: Personal mail, Official mail, Urgent mail, Confidential mail. Classification of mail: Incoming mail, Outgoing mail. Procedures for handling incoming and outgoing mail."
+    },
+    {
+      "topic": "Filing",
+      "contents": "Definition of filing. Systems of filing: Vertical, Lateral, Electronic. Classifications of filing: Alphabetical, Chronological, Numerical, Geographical, Alpha-numerical, Subject. Purposes of filing. Steps involved in filing. Filing equipment."
+    },
+    {
+      "topic": "Communication",
+      "contents": "Definition of communication. Importance of communication. Types of communication - Verbal: Oral, Written; Non-verbal: Visual, Audio, Audio-visual. Methods/Media of communication - Print: newspapers, magazines, directories, handbills, flyers, etc.; Electronic: radio, television, audio and video conferencing, etc. Communication service providers: NIPOST, NITEL, Media houses, Satellite stations, The internet, Global System of Mobile Communication (GSM)."
+    },
+    {
+      "topic": "Meetings",
+      "contents": "Definition of meeting. Purpose of meeting. Types of meeting: Statutory meeting, Emergency meeting, Board meeting, Management meeting, Annual General Meeting, Staff meeting, Committee meeting. Procedure for conducting a meeting (Opening prayer, Agenda, Chairman's opening remarks, Reading of the last minutes, Correction, Adoption, Matters arising, Main business, AOB, Chairman's closing remarks, Adjournment/closing, Closing prayer). Meeting Terminologies: Agenda, Adoption, AOB, Adjournment, etc. Roles of the chairman/secretary. Writing the minutes."
+    },
+    {
+      "topic": "Report Writing",
+      "contents": "Meaning of report. Types of report - Formal: Short report, Long report, Investigative report; Routine/Periodic. Parts of a report. Importance of report writing."
+    },
+    {
+      "topic": "Information",
+      "contents": "Definition of information. Types of information. Uses of information. Sources of information. Storage of information. Qualities of good information: Timeliness, Accuracy, Speed of delivery, Usability, etc."
+    }
+  ],
+  "suggested_reading_list": [
+    "Modern Office Practice for Vocational Business Students By Amadin, M.S."
+  ]
+}

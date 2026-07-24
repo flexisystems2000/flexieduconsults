@@ -1,0 +1,53 @@
+{
+  "subject": "Music",
+  "preamble": "Music permeates the way of life in all cultures. An art is valued and appreciated in every society. Music is used for entertainment, cultural, artistic and commercial purposes. It features in various occasions and during ceremonies connected with events such as birth, puberty, marriage, festivals, religious worship, and death. Music encompasses both dance and drama and continues to play a significant role in society by providing pleasure, enjoyment and self-esteem. It provides outlets for creative expression and is further used for therapeutic purposes in all cultures.",
+  "aims_and_objectives": [
+    "Explore basic elements of music through reading, writing, listening, aural recognition, improvisation, and composition.",
+    "Develop skills and artistic confidence in the presentation of music and perform reasonably well as a soloist.",
+    "Appreciate the historical, social and economic factors that have influenced composers and their contributions to the development of music in the West African sub-region and the world in general.",
+    "Compose short vocal/instrumental pieces.",
+    "Explore basic computer software applications in music."
+  ],
+  "scheme_of_examination": {
+    "description": "There will be three papers, Papers 1, 2 and 3, all of which must be taken.",
+    "paper_1": "This will be a 1 hour multiple-choice objective test consisting of forty questions drawn from the entire syllabus. Candidates must attempt all the questions in the paper for 40 marks.",
+    "paper_2": "This will be a 2-hour essay type test consisting of five questions. Candidates will be required to answer three of the questions within 2 hours for 60 marks. Question 1 on Theory/Composition (Melody Writing, Harmony and Counterpoint) and Question 2 on analysis of prescribed set-works will be compulsory.",
+    "paper_3a": "Aural Test: This will be a 45-minute listening test carrying 50 marks.",
+    "paper_3b": "Performance Test: This will be a 30-minute performance test carrying 50 marks. Candidates will be expected to perform on an instrument of their choice (one of voice, violin, pianoforte/electronic keyboard, flute, atenteben, recorder, B flat trumpet, and E flat alto-saxophone)."
+  },
+  "detailed_syllabus": {
+    "theory_and_composition": {
+      "rudiments_of_music": "Notation (Staff, Clefs C, G, and F), Scales (Diatonic Major and Minor, Chromatic), Modes (Pentatonic, Hexatonic, Heptatonic), Keys and Key Signatures, Time Signatures (Simple and Compound), Intervals, Transcription, Transposition, Musical terms, signs, ornaments and abbreviations.",
+      "elementary_harmony": "Chords/Triads (Primary, Secondary, Chord vii, 7th Chords), Chord Progressions (Cadences), Use of primary and secondary triads in harmonising a given melody, six-four chords, non-harmonic tones, Modulations, Four-part harmony (SATB), Two-part free Counterpoint.",
+      "composition": "Continuing a given melodic phrase in either a major or minor key to form a melody of not less than 12 bars and not more than 16 bars. Setting a given text in English to music.",
+      "form_and_analysis": "Simple forms, Extended forms, Form in traditional African music, Form in contemporary African art music, Prepared set-works as recommended for each year."
+    },
+    "aural_tests": {
+      "description": "Candidates will be required to write all seven tests administered by means of a CD/cassette.",
+      "tests": [
+        "Rhythmic Dictation",
+        "Melody Writing",
+        "Writing the Upper or Lower part of a Two-Part Phrase",
+        "Chords",
+        "Cadences",
+        "Modulations",
+        "Identification/Description of Themes"
+      ]
+    },
+    "history_and_literature": {
+      "traditional_musicians_composers": "Traditional musicians and composers from Nigeria and Ghana.",
+      "popular_musicians": "Popular musicians categorized into Highlife, Afrobeat, Juju, Fuji, Waka, Afro-Pop, Afro-Reggae, and Hip-Hop across Nigeria and Ghana.",
+      "contemporary_art_musicians": "Contemporary art musicians from Nigeria and Ghana.",
+      "western_composers": "Western composers across Medieval, Renaissance, Baroque, Classical, Romantic, and 20th-century periods.",
+      "black_music_in_the_dispora": "Key figures and forms including Spiritual, Jazz, Blues, Rock, Gospel, Soul, Calypso, Reggae, and Afrobeat."
+    },
+    "traditional_and_contemporary_african_music": {
+      "role_of_music": "The role of music in traditional African Society.",
+      "musical_instruments": "Names, description, classification, and function (musical and non-musical).",
+      "general_characteristics": "Scales/Modes, Rhythm, Polyphony, Form, Vocal styles, Texture, Instrumentation.",
+      "categories_and_types": "Dirges, Cradle songs/Lullabies, Ritual songs, Folk songs, Satirical songs, Other traditional vocal genres.",
+      "relationship_with_other_arts": "Relationship of music to dance, drama, festival, etc.",
+      "traditional_dances": "List of traditional dances to be studied from Ghana and Nigeria."
+    }
+  }
+}

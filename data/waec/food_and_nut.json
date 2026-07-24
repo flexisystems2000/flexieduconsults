@@ -1,0 +1,236 @@
+{
+  "subject": "Foods and Nutrition",
+  "preamble": {
+    "description": "Food is one of the basic needs of man. Without good food, an individual would not be able to function properly in all spheres of life. Good food promotes health and therefore it is important that students are exposed to ways of selecting, preparing and cooking wholesome food for themselves and others. Foods and Nutrition as a vocational subject prepares students for the world of work. It also encourages the creative use of local foods and associated food service to meet the nutritional needs and other demands of consumers."
+  },
+  "aims_and_objectives": [
+    "acquire basic knowledge about foods and nutrition;",
+    "understand the relationship between nutrition and health;",
+    "identify career opportunities in foods and nutrition and acquire skills for further studies;",
+    "apply the general principles underlying meal planning, selection, preparation and serving of food to feed family and other consumers for different occasions;",
+    "understand the need for planning an efficient and safe kitchen;",
+    "choose, use, care and store kitchen equipment and tools effectively;",
+    "appreciate the importance of sanitation in the kitchen food preparation and service;",
+    "apply basic principles underlying food processing, storage and preservation;",
+    "acquire basic knowledge in consumer education;",
+    "acquire research skills and use the information to experiment, develop and improve local dishes;",
+    "set up a business in the food industry using all the basic skills acquired."
+  ],
+  "scheme_of_examination": {
+    "papers": [
+      {
+        "paper_number": 1,
+        "description": "Comprise sixty multiple choice questions, all of which are to be answered within 1 hour for 60 marks."
+      },
+      {
+        "paper_number": 2,
+        "description": "Comprise six essay questions out of which candidates will be required to answer four. Carries 40 marks and will last 1 hour 15 minutes."
+      },
+      {
+        "paper_number": 3,
+        "description": "Practical test of 3 hours duration. Carries 100 marks and will be conducted by a visiting examiner."
+      }
+    ],
+    "note": "Papers 1 and 2 will be a composite paper and will be taken at one sitting."
+  },
+  "sections": [
+    {
+      "section_code": "I",
+      "section_title": "Nutrition and Health",
+      "topics": [
+        {
+          "topic": "1. Introduction to Foods and Nutrition",
+          "content_notes": "Meaning; Basic knowledge of nutrition; Importance of human nutrition; Factors affecting foods and nutrition; Food habits."
+        },
+        {
+          "topic": "2. Careers associated with Foods and Nutrition",
+          "content_notes": "Careers associated with foods and nutrition; Factors that influence career choices; Characteristics required for foods and nutrition careers."
+        },
+        {
+          "topic": "3. Basic Food Nutrients",
+          "content_notes": "Nutrients and their nutritive values; Functions of different nutrients; Sources of different nutrients; Dietary deficiencies; Metabolism (digestion and absorption of carbohydrates, proteins, fats); Knowledge and use of food composition tables; Food tests (simple physical and chemical tests of foodstuffs to detect presence of nutrients e.g., proteins, fats, and carbohydrates)."
+        }
+      ]
+    },
+    {
+      "section_code": "II",
+      "section_title": "Food Laboratory and Equipment",
+      "topics": [
+        {
+          "topic": "1. The kitchen",
+          "content_notes": "Types of kitchen (traditional, modern, institutional); Planning different types of kitchen; Factors to consider when planning; Cleaning agents and abrasives (commercial and local)."
+        },
+        {
+          "topic": "2. Kitchen equipment and tools",
+          "content_notes": "Classes and types of equipment; Selection, use, care, and storage of large and small equipment, fixtures, and appliances."
+        },
+        {
+          "topic": "3. Safety in the kitchen",
+          "content_notes": "Types of kitchen accidents; Causes and prevention of accidents; Content and use of first aid box; Simple first aid treatment."
+        },
+        {
+          "topic": "4. Meal Management and Sanitation",
+          "content_notes": "Meal planning terms, reasons, factors, general principles, and meal patterns; Special nutritional needs (pregnant, lactating mothers, infants, children, adolescents, adults, aged, vegetarians); Planning meals for specific health conditions (HIV & AIDS, invalids, convalescents, overweight, underweight, hypertension, diabetes, etc.); Sanitation (personal hygiene, kitchen hygiene, food hygiene including handling, food-borne diseases, food sanitation laws)."
+        }
+      ]
+    },
+    {
+      "section_code": "III",
+      "section_title": "Food Commodities",
+      "topics": [
+        {
+          "topic": "1. Animal and animal products",
+          "content_notes": "Milk and milk products (cheese, yoghurt), eggs, meat, poultry, fish (kinds/types, structure, selection, storage)."
+        },
+        {
+          "topic": "2. Cereals/grains",
+          "content_notes": "Kinds and forms; Importance (versatility, thickening, cheap source of energy/good source of roughage)."
+        },
+        {
+          "topic": "3. Fruits and vegetables",
+          "content_notes": "Classification, structure, nutritive value, storage, and importance in the diet."
+        },
+        {
+          "topic": "4. Legumes and oily seeds",
+          "content_notes": "Classification and importance in the diet."
+        },
+        {
+          "topic": "5. Fats and oils",
+          "content_notes": "Kinds and classification (vegetable and animal fats/oils); Uses in diet and body; Health implications."
+        },
+        {
+          "topic": "6. Starchy roots and plantain",
+          "content_notes": "Types of starchy roots, plantain, and dishes."
+        }
+      ]
+    },
+    {
+      "section_code": "IV",
+      "section_title": "Food Storage and Preservation",
+      "topics": [
+        {
+          "topic": "1. Food spoilage",
+          "content_notes": "Meaning, causes, and agents of food spoilage."
+        },
+        {
+          "topic": "2. Food preservation",
+          "content_notes": "Meaning, importance, general principles, and methods of food preservation."
+        },
+        {
+          "topic": "3. Food storage",
+          "content_notes": "Meaning, importance, storage of perishable and non-perishable foods, storage space and equipment (refrigeration, deep freezer, cupboards, shelves, granaries, barns, etc.)."
+        }
+      ]
+    },
+    {
+      "section_code": "V",
+      "section_title": "Food Preparation",
+      "topics": [
+        {
+          "topic": "1. Principles underlying cooking",
+          "content_notes": "Explanation of concept and reasons for cooking food."
+        },
+        {
+          "topic": "2. Methods of cooking",
+          "content_notes": "Moist heat methods (boiling, stewing, steaming); Dry heat methods (baking, roasting, grilling, frying); Effects of heat on different food commodities."
+        },
+        {
+          "topic": "3. Transfer of heat",
+          "content_notes": "Convection (liquid, gases), radiation (space), conduction (solid metal)."
+        },
+        {
+          "topic": "4. Cooking terms",
+          "content_notes": "Explanation of cooking terms."
+        },
+        {
+          "topic": "5. Food additives",
+          "content_notes": "Definitions, types, functions, selection and use, food adulteration."
+        },
+        {
+          "topic": "6. Flour Cookery and Confectionery",
+          "content_notes": "Types of flour, basic ingredients, raising agents (steam, carbon dioxide, air), batters and doughs, biscuits classification, cakes (rubbed in, creamed, whisked, melted, sponge mixtures), pastries (shortcrust, suet, flaky, etc.), yeast mixtures, cake decoration/icing."
+        }
+      ]
+    },
+    {
+      "section_code": "VI",
+      "section_title": "Beverages",
+      "topics": [
+        {
+          "topic": "Beverages classification, importance, and preparation principles",
+          "content_notes": "Non-alcoholic (coffee, tea, cocoa, milk/egg drinks, fruit juices/drinks, beef tea, lemon grass) and alcoholic (beer, wine); Nutritive values."
+        }
+      ]
+    },
+    {
+      "section_code": "VII",
+      "section_title": "Convenience Foods",
+      "topics": [
+        {
+          "topic": "Convenience foods overview",
+          "content_notes": "Types, selection, uses, advantages, disadvantages, and preparation of dishes using convenience foods."
+        }
+      ]
+    },
+    {
+      "section_code": "VIII",
+      "section_title": "Rechauffé (Leftover) Foods",
+      "topics": [
+        {
+          "topic": "Rechauffé foods overview",
+          "content_notes": "Explanation, importance, rules/guidelines, and rechauffé dishes."
+        }
+      ]
+    },
+    {
+      "section_code": "IX",
+      "section_title": "Festive Dishes/Special Occasion Dishes",
+      "topics": [
+        {
+          "topic": "Festive dishes overview",
+          "content_notes": "Explanation, occasions, types, and preparation of festive/special occasion dishes."
+        }
+      ]
+    },
+    {
+      "section_code": "X",
+      "section_title": "Art of Entertaining",
+      "topics": [
+        {
+          "topic": "Entertainment, Table setting, and Meal Service",
+          "content_notes": "Explanation, types of parties, factors for success; table setting, cover, appointments, manners/etiquette; meal service styles (informal, formal) and factors determining choice."
+        }
+      ]
+    },
+    {
+      "section_code": "XI",
+      "section_title": "Experimental Cookery",
+      "topics": [
+        {
+          "topic": "Research and experiments in local dishes",
+          "content_notes": "Importance of research, data collection, developing/improving local dishes, recipes, nutritive value, time/energy use; experiments using fruits (passion fruit, samia, royal palm fruit) and alternative flours (root, cereal, legume)."
+        }
+      ]
+    },
+    {
+      "section_code": "XII",
+      "section_title": "Consumer Education",
+      "topics": [
+        {
+          "topic": "Consumer Education and Budgeting",
+          "content_notes": "Meaning, principles, and consumer agents; Food budgeting factors; Food purchasing guidelines, bulk purchasing reasons, advantages, and disadvantages."
+        }
+      ]
+    },
+    {
+      "section_code": "XIII",
+      "section_title": "Self Employment",
+      "topics": [
+        {
+          "topic": "Setting up a catering enterprise and work ethics",
+          "content_notes": "Explanation of terms (entrepreneur, enterprise); characteristics, pros and cons; setting up and success factors; work ethics; food packaging (reasons, qualities, types of materials)."
+        }
+      ]
+    }
+  ]
+}

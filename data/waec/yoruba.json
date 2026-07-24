@@ -1,0 +1,109 @@
+{
+  "subject": "Yorùbá",
+  "preamble": "This examination syllabus is based entirely on the Yoruba curriculum developed by NERDC in 2007.",
+  "aims_and_objectives": [
+    "Enable candidates speak, read and write competently in Yoruba and communicate effectively with other speakers of the language;",
+    "Familiarize candidates with the sound system, grammatical structures and other features of Yoruba Language;",
+    "Acquaint candidates with the necessary tools needed for a thorough appreciation of Yoruba speech usage, literature and culture (customs and institutions)."
+  ],
+  "scheme_of_examination": {
+    "description": "The examination will consist of two papers, Papers 1 and 2. It will test comprehension, composition, sound system, grammar, translation, selected texts of oral and written literature, Basic Principles of Literary Appreciation, Customs and Institutions. Rubrics shall be written in Yoruba.",
+    "paper_1": {
+      "description": "Shall contain 60 multiple-choice objective questions on Language, Literature and Culture across three sections (A, B, C) to be answered in 1 hour for 60 marks.",
+      "sections": {
+        "section_a_language": [
+          "Comprehension (2 short passages) - 10 items",
+          "Composition - 4 items",
+          "Sound System - 6 items",
+          "Grammar - 6 items",
+          "Translation - 4 items"
+        ],
+        "section_b_literature": [
+          "Basic Principles of Literary Appreciation - 4 items",
+          "Oral Literature (Prose - 3, Poetry - 3, Drama - 3) - 9 items",
+          "Written Literature (Prose - 3, Poetry - 3, Drama - 3) - 9 items"
+        ],
+        "section_c_culture": [
+          "Customs - 4 items",
+          "Institutions - 4 items"
+        ]
+      }
+    },
+    "paper_2": {
+      "description": "Shall be essay type questions on language, literature and culture across three sections (A, B, C), duration 2 hours, 100 marks. Candidates answer six questions in all: three from Section A, two from Section B, one from Section C, using official Yoruba orthography and metalanguage.",
+      "sections": {
+        "section_a_language": {
+          "composition": "Write 300 words in max 45 minutes from types: Narrative, Descriptive, Argumentative, Expository, Dialogue, Debate, Letter writing.",
+          "sound_system": "Answer one out of two questions. Covers vowels, consonants, syllabic nasal (production, classification), syllable structure, sound processes (harmony, assimilation, elision), orthography, tones and tone notation.",
+          "grammar": "Answer one out of two questions. Covers word classes, word structure and formation, numerals, grammatical categories, phrases and clauses, sentence structure and types."
+        },
+        "section_b_literature": {
+          "oral_literature": "3 set books covering different genres; 1 question set from each, answer any 1 of 3.",
+          "written_literature": "3 set books covering different genres; 1 question set from each, answer any 1 of 3."
+        },
+        "section_c_culture": {
+          "description": "Two questions set on customs and institutions, answer any one.",
+          "areas_to_cover": [
+            "Customs: Make-up and adornments, In-door and out-door games, Pregnancy and its care, Naming, Home training, Yoruba foods, Non-verbal communication, Funerals, Inheritance.",
+            "Institutions: Traditional occupations, Marriage, Politics, Child care, Ancestors, Yoruba beliefs about Olodumare and divinities, Modern religions, Economy."
+          ]
+        }
+      }
+    }
+  },
+  "selected_texts_2014_2015": {
+    "language": [
+      "Abiodun, Jibola: (1996) Aroko Ati Aayan, Ogbufo. Majab (Ilorin)",
+      "Owolabi, K: (1989) Ijinle Itupale Ede Yoruba. Extension Publications (Ibadan)",
+      "Bamgbose, A: (1991) Fonoloji Ati Girama Yoruba. Press (Lagos)"
+    ],
+    "oral_literature": {
+      "prose": "Ojo, Olagoke: (2005) Ijapa Tiroko Oko Yannibo. University Press (Ibadan)",
+      "poetry": "Abimbola, Wande: (2004) Awon Oju Odu Mererindinlogun (ppi-xxxi; 52-96). Longman (Ibadan)",
+      "drama": "Ogunniran, L: (2007) Eegun Alare. Macmillan (Lagos)"
+    },
+    "written_literature": {
+      "prose": "Eso-Oluborode, Sunday: (1994) Olorunsogo. Sumob Publishers (Osogbo)",
+      "poetry": "Olayiwola, Ademola: (2007) Akowe ko wura. Extension Publications (Ibadan)",
+      "drama": "Awe, Debo: (2004) Apoti Alakara. Elyon Publishers (Ibadan)"
+    },
+    "culture": [
+      "Adeoye, C.L.: (1979) Asa Ati Ise Yoruba. University Press",
+      "Olajubu, O. (1978) Iwe Asa Ibile Yoruba. Longman (Lagos)",
+      "Daramola, A. ati Jeje. Asa Ati Orisa. Onibon-Oje (Ibadan)"
+    ]
+  },
+  "references": {
+    "language": [
+      "Mustapha D-et al: (1983) Iwe Ede Iperi Yoruba Vol. 1",
+      "Mustapha D-et al: (1987) Iwe Ede Iperi Yoruba Vo. II",
+      "Bamgbose (ed): (1983) Eko Ede Yoruba Ode Oni SSI-III",
+      "Awobuluyi (ed): (1990) YSAN/NERDC",
+      "Egbe Akomolede ati Asa Yoruba, Naijiria: (1988) UPL/NERDC",
+      "Ajayi W.B.: (1989) Macmillan",
+      "Owolabi, O. et al: (1984) Ijinle Ede ati Litireso Yoruba. Evans",
+      "Babalola, A. et al: (1988) Iwe Imodotun Yoruba I-III. Longman",
+      "Awoyale, Y. et al: (1984) Eko Ede Yoruba Ode Oni JSI-III. Macmillan",
+      "Egbe Akomolede ati Asa Yoruba, Naijiria: (1986) Yoruba Gbode Macmillan",
+      "Odujinrin, J.S.A.: Modern Lesson in Yoruba Part I-III. Odujinrin Publishers",
+      "Awobuluyi, O. (1978) Essentials of Yoruba Grammar. UPL",
+      "Bamgbose, A. (1967) A short Yoruba Grammar. Vantage",
+      "Akinlade, Kola: (1987) Owe Pelu Itumo. Gbemi Sodipo Press",
+      "Fabunmi, M.A. (1969) Yoruba Idioms. Corpomutt Publishers",
+      "Delano, I.O. Owe Lesin Oro. UPL",
+      "Koseemanii, Supo: (1987) Owe ati Asayan Oro Yoruba. Heinemann",
+      "Olopade, A: (1991) Asayan Akanlo - Ede Yoruba. Longman",
+      "Adewoyin, S.Y. (2006) Imo Ede, Asa ati Litireso Yoruba 1-III. AUP"
+    ],
+    "literature": [
+      "Alaba and Ogunsipe: (1982) Iwe Afinimona Lori Awon Iwe Fagunwa. Nelson",
+      "Ogunsina, Bisi: (1981) Iwe Akoyawo Alaye lori O le ku. Evans",
+      "Egbe Akomolede ati Asa Yoruba, Naijiria: (2007) Ewi Yoruba Lakotun 1-III. Macmillan",
+      "Ladele, T.A.A. et al (1986) Akojopo Ijinle Asa Yoruba. Evans",
+      "Adeoye, C.L.: (1985) Igbagbo ati Esin Yoruba. Vantage",
+      "Opadotun, O.: (1966) Aroko. Longman",
+      "Adeniji, A.A.: (1987) Ogun ni ile Yoruba. UPL",
+      "Adeoye, C.L.: (1982) Oruko Yoruba"
+    ]
+  }
+}

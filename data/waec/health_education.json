@@ -1,0 +1,201 @@
+{
+  "subject": "Health Education",
+  "preamble": "This examination syllabus is drawn from the Senior School Health Education curriculum and directed towards empowering students to have correct, adequate and timely information that will make them acquire attitude and practices which will restore, maintain and promote positive health.",
+  "aims_and_objectives": [
+    "acquire basic knowledge of the human body and necessary skills for maintenance of health;",
+    "acquire positive health practices in the school and community;",
+    "identify and show the ecological relationship between man and his environment as a basis for preventing diseases;",
+    "make observations and draw inferences from practical experiences that may have implications for health;",
+    "develop readiness necessary for professional training in health-related careers."
+  ],
+  "scheme_of_examination": {
+    "papers": [
+      {
+        "paper_number": 1,
+        "description": "Will consist of fifty multiple choice objective questions, all of which must be taken in 1 hour for 50 marks."
+      },
+      {
+        "paper_number": 2,
+        "description": "The paper will last 1 hour and carry a total of 70 marks.",
+        "sections": [
+          {
+            "section_letter": "A",
+            "section_title": "Short-Structured Questions",
+            "instructions": "Will consist of six short-structured questions, all of which must be answered for 30 marks."
+          },
+          {
+            "section_letter": "B",
+            "section_title": "Essay Questions",
+            "instructions": "Will consist of three essay questions out of which candidates will be required to answer two questions for 40 marks."
+          }
+        ]
+      },
+      {
+        "paper_number": 3,
+        "description": "Will be a practical test for school candidates and an alternative test of practical work for private candidates. The paper will last for 1 3/4 hours and carry 80 marks."
+      }
+    ]
+  },
+  "detailed_syllabus": [
+    {
+      "section": "A",
+      "title": "History and Development of Health Education",
+      "topics": [
+        "Meaning and setting for health education (home-based, school-based, community-based, health facility-based, work place-based)",
+        "Meaning of health promotion"
+      ]
+    },
+    {
+      "section": "B",
+      "title": "Human Anatomy and Physiology",
+      "topics": [
+        "Cells and tissues of Human Body (somatic and sex cells, cell division, cell differentiation, growth and development)",
+        "Sense Organs (structure and functions of eye, ear, skin, nose, tongue)",
+        "Systems of the Body (skeletal and muscle systems, circulatory system, digestive system, excretory system, respiratory system, nervous system, endocrine system, homeostasis)",
+        "Posture and Postural Defects (definition, characteristics, determination, types, and effects)"
+      ]
+    },
+    {
+      "section": "C",
+      "title": "Personal Health",
+      "topics": [
+        "Meaning and importance of physical health",
+        "Personal hygiene",
+        "Promotion and maintenance of health",
+        "Health Screening (eye defects, auditory defects, skin disorders)",
+        "Dental health education (types of human teeth, teeth diseases)"
+      ]
+    },
+    {
+      "section": "D",
+      "title": "Community Health",
+      "topics": [
+        "Community health services (definition, providers, community efforts)",
+        "School health programme (definition, components, goals, objectives, and promotion linkages)",
+        "Family health (meaning, aspects like maternal and child health, family size and budgeting)",
+        "Ageing and death education",
+        "Epidemiology and vital statistics"
+      ]
+    },
+    {
+      "section": "E",
+      "title": "Environmental Health",
+      "topics": [
+        "Housing (criteria, components, effects of poor sanitation)",
+        "Water supply (definition, sources, purification, and uses)",
+        "Waste disposal (meaning, types, methods)",
+        "Pollution (meaning, types, sources, health consequences)",
+        "Industrial occupation",
+        "Pests and vectors control"
+      ]
+    },
+    {
+      "section": "F",
+      "title": "Nutrition and Food Nutrients",
+      "topics": [
+        "Nutrition (classes, sources, functions of food nutrients, caloric value)",
+        "Balanced/adequate diets",
+        "Water in relation to nutrition",
+        "Nutritional processes",
+        "Beverages",
+        "Diet for different groups of people",
+        "Food hygiene, preservation and storage"
+      ]
+    },
+    {
+      "section": "G",
+      "title": "Safety Education and First Aid",
+      "topics": [
+        "First Aid (meaning, aims, principles, kit, specific emergency conditions, agencies)",
+        "Disaster (meaning, types, relief activities)",
+        "Accident (types, causes, prevention)",
+        "Disability and rehabilitation"
+      ]
+    },
+    {
+      "section": "H",
+      "title": "Drug, Alcohol and Tobacco Education",
+      "topics": [
+        "Drug Education (terminologies, classes of drugs, ways of taking drugs, drug abuse)",
+        "Behaviour altering chemicals (tobacco, alcohol, drugs)"
+      ]
+    },
+    {
+      "section": "I",
+      "title": "Communicable and Non-Communicable Diseases",
+      "topics": [
+        "Communicable diseases (definition, classification: air-borne, water/food-borne, insect-borne, worm infection, animal-borne, contact diseases, factors necessary to occur)",
+        "Non-communicable diseases (types: deficiency, growth/heredity/normal disorders)"
+      ]
+    },
+    {
+      "section": "J",
+      "title": "Family Life and Human Sexuality Education",
+      "topics": [
+        "Human Reproduction (definitions, structures, functions, conception, pregnancy, disorders)",
+        "Human Sexuality Education (meaning, importance, life skills)",
+        "Family and family member roles",
+        "Family life challenges",
+        "Family planning and safe motherhood",
+        "Population Education"
+      ]
+    },
+    {
+      "section": "K",
+      "title": "Emotional and Social Health",
+      "topics": [
+        "Interrelationship",
+        "Attributes (personality traits, problems and solutions)",
+        "Mental health (definition, promotion, types, prevention, importance)"
+      ]
+    },
+    {
+      "section": "L",
+      "title": "Consumer Health Education",
+      "topics": [
+        "Consumer health products and services",
+        "Laws protecting the consumer",
+        "Factors influencing choice of consumer products",
+        "Consumer health care services",
+        "Quacks and quackery",
+        "Health insurance and advertisement",
+        "Nostrum"
+      ]
+    }
+  ],
+  "materials_needed": [
+    "Models of various organs of the body",
+    "Models of various parts of the body e.g. tooth",
+    "Human skeleton",
+    "Bones of the body",
+    "Contraceptive devices",
+    "Reagents for testing of starch, protein, fat",
+    "Road safety signs",
+    "Different types of safety elements",
+    "Posters/charts of systems of the body",
+    "First aid box and kits",
+    "Fire extinguisher",
+    "Sand bucket",
+    "Photographs of health facilities and workers",
+    "Photographs of methods of sewage and refuse disposals",
+    "Microscope",
+    "Stethoscope",
+    "Preserved worms",
+    "Preserved pests and vectors",
+    "Photographs/posters of various types of communicable and non-communicable diseases",
+    "Model/poster showing parts of the body",
+    "Materials for personal hygiene",
+    "Dissecting set",
+    "Photographs/posters of accident scenes",
+    "Photographs/posters showing methods of food preservation",
+    "Photographs/posters showing disaster scenes",
+    "Safety materials",
+    "Photographs/posters of drugs commonly misused/abused",
+    "Tobacco products",
+    "Hand lens",
+    "Real objects/photographs/poster/charts of classes of food",
+    "Photographs/posters showing correct postures",
+    "Photographs/posters showing postural abnormalities",
+    "Poster/real object of sphygmomanometer, thermometer, litmus paper, snellen chart"
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "subject": "Biology",
+  "preamble": {
+    "description": "This is an examination syllabus drawn up from the curricula of the member countries of the West African Examinations Council. It should be used alongside the appropriate teaching syllabus(es) of the country where the candidates are domiciled. This examination syllabus is divided into three sections: Sections A, B and C. Section A is for all candidates, Section B is for candidates in Ghana only and Section C is for candidates in Nigeria, Sierra Leone, The Gambia and Liberia."
+  },
+  "aims_and_objectives": [
+    "understanding of the structure and functions of living organisms as well as appreciation of nature;",
+    "acquisition of adequate laboratory and field skills in order to carry out and evaluate experiments and projects in Biology;",
+    "acquisition of necessary scientific skills for example observing, classifying and interpreting biological data;",
+    "acquisition of the basic relevant knowledge in Biology needed for future advanced studies in biological sciences;",
+    "acquisition of scientific attitudes for problem solving;",
+    "ability to apply biological principles in everyday life in matters that affect personal, social, environmental, community health and economic problems;",
+    "awareness of the existence of interrelationships between biology and other scientific disciplines."
+  ],
+  "scheme_of_examination": {
+    "papers": [
+      {
+        "paper_number": 1,
+        "description": "Will consist of fifty multiple-choice objective questions drawn from Section A of the syllabus (the section of the syllabus which is common to all countries). It will carry 50 marks and last for 50 minutes."
+      },
+      {
+        "paper_number": 2,
+        "description": "Will consist of six essay questions drawn from the entire syllabus. The paper will be put into three sections, Sections A, B and C (Section A: four questions from Section A; Section B: short-structured questions for Ghana only; Section C: short-structured questions for Nigeria, Sierra Leone, The Gambia and Liberia). Candidates will answer two questions from Section A and all short-structured questions from either Section B or Section C. Each Section A question carries 20 marks, while compulsory short-structured questions carry 30 marks. Total score is 70 marks, lasting 1 hour 40 minutes."
+      },
+      {
+        "paper_number": 3,
+        "description": "Will be a practical test (for school candidates) or a test of practical work (for private candidates) lasting 2 hours and consisting of three sections. Section A: two compulsory questions from Section A (25 marks each). Section B: one question from Section B for Ghana only (30 marks). Section C: one question from Section C for Nigeria, Sierra Leone, The Gambia and Liberia (30 marks). Candidates answer all in Section A and one in either Section B or C. Total score is 80 marks."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "section_code": "A",
+      "section_title": "For all candidates",
+      "topics": [
+        {
+          "topic": "1. Classification",
+          "content_notes": "Living and non-living things; Classification of living things into Kingdoms: Monera, Protoctista (Protista), Fungi, Plantae, Animalia; Differences between plants and animals."
+        },
+        {
+          "topic": "2. Organization of life",
+          "content_notes": "Levels of organization (cell, tissue, organ, system/organ system); Complexity of organization in higher organisms: advantages and disadvantages."
+        },
+        {
+          "topic": "3. Forms in which living cells exist",
+          "content_notes": "Single and free-living, colony, filament, part of a living organism."
+        },
+        {
+          "topic": "4. Cell structure and functions",
+          "content_notes": "Cell structure and functions of cell components; Similarities and differences between plant and animal cells."
+        },
+        {
+          "topic": "5. The Cell and its environment",
+          "content_notes": "Physical and Biophysical processes: diffusion, osmosis, active transport."
+        },
+        {
+          "topic": "6. Properties and functions of the living cell",
+          "content_notes": "Nutrition, cellular respiration, excretion, growth, movement, and reproduction (asexual and sexual)."
+        },
+        {
+          "topic": "7. Tissues and supporting systems",
+          "content_notes": "Skeleton and supporting systems in animals; Different types of supporting tissues in plants."
+        },
+        {
+          "topic": "8. Transport System",
+          "content_notes": "Need for transport, transport in animals, transport in plants."
+        },
+        {
+          "topic": "9. Respiratory System",
+          "content_notes": "Body surface (cutaneous, gills, lungs); Mechanisms of gaseous exchange in fish, toad, mammals and plants."
+        },
+        {
+          "topic": "10. Excretory Systems and Mechanisms",
+          "content_notes": "Types of excretory systems (kidney, stomata, lenticels); Explanation of the concept of excretion in plants."
+        },
+        {
+          "topic": "11. Regulation of Internal Environment (Homeostasis)",
+          "content_notes": "Kidney (structure and functions), liver (functions), skin (structure and function)."
+        },
+        {
+          "topic": "12. Hormonal Coordination",
+          "content_notes": "Animal hormones (site of secretion, functions, effects of over/under-secretion); Plant hormones (auxins)."
+        },
+        {
+          "topic": "13. Nervous Coordination",
+          "content_notes": "Central nervous system, peripheral nervous system, types of nervous actions."
+        },
+        {
+          "topic": "14. Sense Organs",
+          "content_notes": "Structure and function of the eye and the ear."
+        },
+        {
+          "topic": "15. Reproduction",
+          "content_notes": "Reproductive system of mammals, metamorphosis in insects, comparison of reproduction across vertebrates, reproduction in flowering plants, pollination, and dispersal of fruits and seeds."
+        },
+        {
+          "topic": "B. Plant and Animal Nutrition",
+          "content_notes": "Plant nutrition (photosynthesis, mineral requirements) and animal nutrition (food substances, balanced diet, food tests, digestive enzymes, modes of nutrition, alimentary system, dental formula, feeding in protozoa and mammals)."
+        },
+        {
+          "topic": "C. Basic Ecological Concepts",
+          "content_notes": "Ecosystem components, ecological factors, simple measurement of ecological factors, food webs and trophic levels, energy flow, decomposition, ecological management (biological associations, pollution), ecology of population, man and health."
+        },
+        {
+          "topic": "D. Conservation of Natural Resources",
+          "content_notes": "Resources to be conserved (soil, water, wildlife, forest, minerals) and ways of ensuring conservation."
+        },
+        {
+          "topic": "E. Variation in Population",
+          "content_notes": "Morphological variations and physiological variations."
+        },
+        {
+          "topic": "F. Biology of Heredity (Genetics)",
+          "content_notes": "Genetic terminologies, transmission and expression of characteristics, chromosomes, probability in genetics, linkage, sex determination, and application of heredity principles in agriculture and medicine."
+        },
+        {
+          "topic": "G. Adaptation for Survival and Evolution",
+          "content_notes": "Behavioural adaptations in social animals and evolution (evidence and theories)."
+        }
+      ]
+    },
+    {
+      "section_code": "B",
+      "section_title": "For candidates in Ghana only",
+      "topics": [
+        {
+          "topic": "1. Introducing Biology",
+          "content_notes": "Biology as a science of life, procedure for biological work, importance of biology, body symmetry, sectioning and orientation, the microscope, biological drawings."
+        },
+        {
+          "topic": "2. Cell Biology",
+          "content_notes": "Movement of substances (endocytosis, exocytosis), nucleic acids, DNA structure and replication, RNA transcription, protein synthesis, cell cycle."
+        },
+        {
+          "topic": "3. Life Processes in Living Things",
+          "content_notes": "Amoeba, Paramecium, Euglena, Spirogyra, Rhizopus, mosses and ferns."
+        },
+        {
+          "topic": "4. Diversity of Living Things",
+          "content_notes": "Characteristics of some insect orders and identification using biological keys."
+        },
+        {
+          "topic": "5. Interactions in Nature",
+          "content_notes": "Soil components and reclamation."
+        },
+        {
+          "topic": "6. Mammalian Anatomy and Physiology",
+          "content_notes": "Dissection of a small mammal, transport (heart), cellular respiration (RQ), movement (muscles, skeletal tissues), reproduction (secondary sexual characteristics, prenatal/antenatal care)."
+        },
+        {
+          "topic": "7. Plant Structure and Physiology",
+          "content_notes": "Morphology of monocotyledonous and dicotyledonous plants, transport (guttation), reproduction (floral formula)."
+        },
+        {
+          "topic": "8. Humans and their Environment",
+          "content_notes": "Integrated water resources management, health and hygiene, community health, evolution, recombinant DNA technology."
+        },
+        {
+          "topic": "9. Biology and Industry",
+          "content_notes": "Water industry, fishing industry, food industry, agriculture, biotechnology, and biological fuel generation."
+        }
+      ]
+    },
+    {
+      "section_code": "C",
+      "section_title": "For candidates in Nigeria, Sierra Leone, The Gambia and Liberia",
+      "topics": [
+        {
+          "topic": "1. Concept of Living",
+          "content_notes": "Cell theory, irritability as a basic characteristic of protoplasm, excretory systems (kidney and liver diseases), sense organs (nose, tongue, skin)."
+        },
+        {
+          "topic": "2. Reproduction",
+          "content_notes": "Courtship behaviour, metamorphosis and life history of housefly, adaptive features in developing animals, seed germination."
+        },
+        {
+          "topic": "3. Plant and Animal Nutrition",
+          "content_notes": "Nitrogen cycle, modes of nutrition (autotrophic, chemosynthetic, carnivorous plants), alimentary system, feeding habits."
+        },
+        {
+          "topic": "4. Basic Ecological Concepts",
+          "content_notes": "Ecological components, population studies by sampling, energy transformation in nature, nutrient cycling, ecological management (tolerance), habitats, relevance of biology to agriculture, microorganisms (man and his health)."
+        },
+        {
+          "topic": "5. Application of Variations",
+          "content_notes": "Crime detection, blood transfusion, determination of paternity."
+        },
+        {
+          "topic": "6. Evolution",
+          "content_notes": "Adaptation for survival (competition, structural adaptation) and adaptive coloration."
+        }
+      ]
+    }
+  ]
+}

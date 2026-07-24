@@ -1,0 +1,538 @@
+{
+  "subject": "BUSINESS MANAGEMENT",
+  "preamble": "The course in Business Management at the senior school level embraces principles and activities in the core functional areas of business management. It also covers legal environment of business, information technology, globalization, economic integration and entrepreneurship.",
+  "objectives": [
+    "Understanding and appreciation of the basic concepts, principles and practices of business management.",
+    "Understanding of the role of business management in an economy.",
+    "Ability to relate the concepts and principles of business management to practical business situations.",
+    "Ability to pursue further studies in business management."
+  ],
+  "examination_scheme": {
+    "summary": "There will be two papers, Paper 1 and Paper 2; both of which will constitute a composite paper and will be taken at a sitting.",
+    "papers": [
+      {
+        "paper": "Paper 1",
+        "title": "Multiple Choice Objectives",
+        "duration": "1 hour",
+        "marks": "30 marks",
+        "details": "This will consist of fifty compulsory multiple-choice objective questions which will cover the entire syllabus and will carry 30 marks. It will last 1 hour."
+      },
+      {
+        "paper": "Paper 2",
+        "title": "Case Study and Essay Questions",
+        "duration": "Not specified",
+        "marks": "70 marks",
+        "details": "It will consist of a compulsory case study question and seven other essay questions, out of which candidates will be expected to answer any three. The case study will range between 200 and 250 words and will carry 25 marks, while the other questions will carry equal marks of 15 each. The paper will therefore carry a total of 70 marks."
+      }
+    ]
+  },
+  "syllabus_content": [
+    {
+      "section_title": "1. NATURE OF MANAGEMENT",
+      "topics": [
+        {
+          "topic_number": 1.1,
+          "title": "Meaning and Process of Management",
+          "details": [
+            "Meaning of Management and administration.",
+            "Basic Functions of Management.",
+            "Levels of Management.",
+            "Types and Roles of Managers.",
+            "Difference between Administration and Management."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 1.2,
+          "title": "Forms of Business Organization",
+          "details": [
+            "Meaning of Business Organization.",
+            "Identification of Major Forms: (Sole Proprietorship, Partnership, Limited Liability Company, Public Corporations, Co-operative society).",
+            "Procedures for the formations/Characteristics, advantages and disadvantages of each form.",
+            "Causes of business failure."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 1.3,
+          "title": "Business and Society",
+          "details": [
+            "Meaning of Business Environment.",
+            "Forces in the Business Environment.",
+            "Ethical, legal and social responsibilities of Businesses.",
+            "Primary and Secondary stakeholders meaning and differences.",
+            "Responsibilities of businesses towards stakeholders."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "2. FUNCTIONS OF MANAGEMENT",
+      "topics": [
+        {
+          "topic_number": 2.1,
+          "title": "Planning and Decision Making",
+          "details": [
+            "Meaning and importance of planning.",
+            "Steps in planning, Types of planning, Limitations to planning.",
+            "Meaning and importance of decision making.",
+            "Steps in the decision making process.",
+            "Types of (Programmed and Non-programmed) decisions.",
+            "Levels of management decisions."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2.2,
+          "title": "Organizing",
+          "details": [
+            "Meaning, importance and activities of organizing.",
+            "Principles of organizing, Organizational structure and Organizational chart.",
+            "Centralization and decentralization- meaning, differences, advantages and disadvantages.",
+            "Meaning and benefits of delegation.",
+            "Reasons why managers do not delegate.",
+            "Reasons why subordinates do not accept delegation.",
+            "Guidelines for delegation."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2.3,
+          "title": "Directing",
+          "details": [
+            "Meaning and elements of directing.",
+            "Motivation - meaning, intrinsic and extrinsic factors.",
+            "Maslow's Hierarchy of Needs.",
+            "Leadership - importance of good leadership.",
+            "Leadership styles and Sources of power available to leaders.",
+            "Communication - meaning, importance, formal and informal channels.",
+            "The Communication process.",
+            "Barriers to communication.",
+            "Guidelines to effective communication."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2.4,
+          "title": "Controlling",
+          "details": [
+            "Meaning and reasons for controlling.",
+            "Steps in controlling.",
+            "Tools for controlling."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "3. MANAGEMENT INFORMATION TECHNOLOGY",
+      "topics": [
+        {
+          "topic_number": 3.1,
+          "title": "Concept of ICT",
+          "details": [
+            "Concept of Information and Communications Technology (ICT)."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 3.2,
+          "title": "Data and Information",
+          "details": [
+            "Meaning, differences, and sources of business information."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 3.3,
+          "title": "Functions of the Computer",
+          "details": [
+            "Functions of the computer in business."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 3.4,
+          "title": "Applications of Computers in Business",
+          "details": [
+            "Applications of computers in Business."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 3.5,
+          "title": "Advantages and Challenges of Computers in Business",
+          "details": [
+            "Advantages and challenges of the use of computers in business."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "4. LEGAL ENVIRONMENT OF BUSINESS",
+      "topics": [
+        {
+          "topic_number": 4.1,
+          "title": "Law of Contract",
+          "details": [
+            "Meaning and elements of contract.",
+            "Classification of contracts.",
+            "Vitiating factors (Void and Voidable contracts).",
+            "Ways of discharging a contract."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 4.2,
+          "title": "Principles of Agency",
+          "details": [
+            "Creation of agency.",
+            "Rights and duties of a principal.",
+            "Rights and duties of an agent.",
+            "Termination of agency."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 4.3,
+          "title": "Negotiable Instruments",
+          "details": [
+            "Meaning and characteristics of negotiable instruments.",
+            "Types of negotiable instruments (Cheques; Bills of exchange; Promissory notes).",
+            "Cheques: Class, types, advantages, disadvantages and ways of avoiding cheque frauds."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "5. FINANCE AND FINANCIAL INSTITUTIONS",
+      "topics": [
+        {
+          "topic_number": 5.1,
+          "title": "Money",
+          "details": [
+            "Meaning and characteristics of money.",
+            "Functions of money.",
+            "Meaning and causes of inflation."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 5.2,
+          "title": "Banking",
+          "details": [
+            "Types of banks.",
+            "Functions of the Central bank.",
+            "Functions of commercial and other types of banks.",
+            "Types of bank accounts.",
+            "Tools of monetary control."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 5.3,
+          "title": "Risk Management and Insurance",
+          "details": [
+            "Meaning of risk and risk management.",
+            "Types of business risks.",
+            "Meaning and importance of insurance.",
+            "Principles of insurance.",
+            "Types of insurance and insurance policies."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 5.4,
+          "title": "Stock Exchange",
+          "details": [
+            "Meaning and functions.",
+            "Types of securities."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "6. ROLE OF GOVERNMENT IN THE ECONOMY",
+      "topics": [
+        {
+          "topic_number": 6.1,
+          "title": "Role of Government",
+          "details": [
+            "Role of government in an economy."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 6.2,
+          "title": "Government Revenue",
+          "details": [
+            "Sources and types of government revenue."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 6.3,
+          "title": "Taxation",
+          "details": [
+            "Purpose of taxation.",
+            "Types of taxes and challenges of tax collection."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 6.4,
+          "title": "Government Expenditure",
+          "details": [
+            "Types and items of government expenditure."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "7. INTERNATIONAL TRADE AND PROBLEMS OF DEVELOPING ECONOMIES",
+      "topics": [
+        {
+          "topic_number": 7.1,
+          "title": "International Trade",
+          "details": [
+            "Meaning of trade.",
+            "Difference between domestic and international trade.",
+            "Documents used in domestic and international trade.",
+            "Reasons for international trade.",
+            "Theories of absolute cost and comparative cost advantage.",
+            "Restrictions in international trade.",
+            "Balance of Payments (BOP) and measures for correcting BOP deficit."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 7.2,
+          "title": "Developing Economies",
+          "details": [
+            "Challenges of developing economies in relation to international trade.",
+            "Ways of improving developing economies by government.",
+            "Role of institutions in international trade: International Monetary Fund (IMF), International Bank for Reconstruction and Development (IBRD), United Nations Conference on Trade and Development (UNCTAD)."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "8. GLOBALIZATION AND ECONOMIC INTEGRATION",
+      "topics": [
+        {
+          "topic_number": 8.1,
+          "title": "Globalization",
+          "details": [
+            "Meaning and causes of globalization.",
+            "Advantages and disadvantages of globalization."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 8.2,
+          "title": "Economic Integration",
+          "details": [
+            "Meaning of economic integration.",
+            "Roles of regional bodies in economic integration: Economic Community of West African States (ECOWAS), African Union (AU), European Union (EU), African Caribbean and Pacific Countries (ACP), Association of Southeast Asian Nations (ASEAN)."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "9. FUNCTIONAL MANAGEMENT",
+      "topics": [
+        {
+          "topic_number": 9.1,
+          "title": "Elements of Human Resource Management",
+          "details": [
+            "Meaning of human resource management.",
+            "Functions of human resource management.",
+            "Steps in the recruitment and selection process.",
+            "Sources of recruitment.",
+            "Types of training.",
+            "Job Analysis (job description and job specification).",
+            "Performance appraisal - meaning and importance."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 9.2,
+          "title": "Labour Relations",
+          "details": [
+            "Meaning of labour relations, Trade Unions and industrial relations.",
+            "Functions of Trade Unions.",
+            "Employers' Association: Meaning and functions.",
+            "Collective bargaining - process, importance and rights of parties involved."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 9.3,
+          "title": "Fundamentals of Production Management",
+          "details": [
+            "Meaning of production and production management.",
+            "Forms of Production - extractive, manufacturing, construction, commercial and personal services.",
+            "Factors of production.",
+            "Meaning of specialization and exchange.",
+            "Advantages and disadvantages of specialization.",
+            "Types of production process - job, batch, flow.",
+            "Steps in production planning and control."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 9.4,
+          "title": "Principles of Marketing",
+          "details": [
+            "Meaning of Marketing: Meaning and activities.",
+            "Market segmentation: Meaning and bases.",
+            "Elements of the marketing mix (product, price, promotion and place).",
+            "Steps in new product development.",
+            "Stages of product life cycle (introduction, growth, maturity and decline).",
+            "Functions of packaging and uses of branding.",
+            "Factors affecting pricing and pricing objectives.",
+            "Promotion: Meaning, importance and types.",
+            "Channels of distribution.",
+            "Functions of wholesalers and retailers."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 9.5,
+          "title": "Electronic Commerce (e-Commerce)",
+          "details": [
+            "e-commerce: Meaning and importance."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 9.6,
+          "title": "Business Finance",
+          "details": [
+            "Meaning of Business Finance.",
+            "Short-term and long-term sources of finance.",
+            "Government lending programmes; Venture capital fund."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "10. ENTREPRENEURSHIP AND SMALL BUSINESS",
+      "topics": [
+        {
+          "topic_number": 10.1,
+          "title": "Entrepreneurship",
+          "details": [
+            "Meaning of entrepreneurship.",
+            "Role of entrepreneurs.",
+            "Characteristics of an entrepreneur.",
+            "Content of business plan.",
+            "Reasons for business successes and failures.",
+            "Record Keeping: Meaning, importance and types.",
+            "Time Management: Meaning, importance and techniques."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 10.2,
+          "title": "Small Business",
+          "details": [
+            "Small businesses: Meaning and categories.",
+            "Procedures in the formation of small businesses.",
+            "Importance of small businesses in the economy.",
+            "Challenges of small businesses.",
+            "Role of government in promoting small businesses.",
+            "Ways of sustaining an established business."
+          ],
+          "subsections": []
+        }
+      ]
+    }
+  ],
+  "appendices": [],
+  "reading_list": [
+    {
+      "author": "Ansah, J.K.",
+      "title": "Introduction to Business Management",
+      "publisher": "Wilas Press Ltd"
+    },
+    {
+      "author": "Attieku, B., Marfo-Yiadom, E., Dorkey, T., and Tekyi, K.",
+      "title": "Business Management",
+      "publisher": "Smartline Limited"
+    },
+    {
+      "author": "Boachie-Mensah, F.O.",
+      "title": "Essentials of Management",
+      "publisher": "Woeli Publishing Services"
+    },
+    {
+      "author": "Browne, D., Barass, M.W., Dransfield, R., and Needham, D.",
+      "title": "Business Studies for AS Level",
+      "publisher": "Heinemann Education Publishers"
+    },
+    {
+      "author": "Buckley, M., Brindley, B., and Greenwood, M.S.",
+      "title": "Business Studies",
+      "publisher": "Longman Group"
+    },
+    {
+      "author": "Callaghan, P. (ed)",
+      "title": "Advanced Level Business Studies",
+      "publisher": "Sunderhid Tyre and Wear"
+    },
+    {
+      "author": "Carysforth, C. and Neild, M.",
+      "title": "Intermediate Business",
+      "publisher": "Heinemann Education Publishers"
+    },
+    {
+      "author": "Danks, S.",
+      "title": "Advanced Business Studies",
+      "publisher": "DP Publications"
+    },
+    {
+      "author": "Du Toit, G.S., Erasmus, B.G., and Strydom, J.W.",
+      "title": "Introduction to Business Management",
+      "publisher": "Oxford University Press South Africa"
+    },
+    {
+      "author": "Fardon, M. (ed)",
+      "title": "Business Studies",
+      "publisher": "Osborne Books Limited"
+    },
+    {
+      "author": "Needham, D. and Dransfield, R.",
+      "title": "Business Studies",
+      "publisher": "Stanley Thornes"
+    },
+    {
+      "author": "Needle, D.",
+      "title": "Business in Context",
+      "publisher": "International Thomson Business Press"
+    },
+    {
+      "author": "Nickels, W.G., McHugh, J.M., and McHugh, S.M.",
+      "title": "Understanding Business",
+      "publisher": "Irwin McGraw-Hill"
+    },
+    {
+      "author": "Marfo-Yiadom, E.",
+      "title": "Introduction to Business",
+      "publisher": "Excellent Printing & Publishing"
+    },
+    {
+      "author": "Redmond, P.W.D.",
+      "title": "Mercantile Law",
+      "publisher": "Pitman Publishing Ltd"
+    }
+  ]
+}

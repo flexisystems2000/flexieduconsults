@@ -1,0 +1,310 @@
+{
+  "subject": "Geography",
+  "preamble": "The Geography syllabus is designed to evaluate candidates' knowledge of the features of the earth's crust (internal and external), the spatial spread of the physical and human features, the interactions that exist between man and these spatial features, the changes that occur over space as well as the effects of those changes on man with a view to maintaining sustainability in man's ecosystem.",
+  "aims_and_objectives": [
+    "explain the concepts of differential character and the spatial relationships of the surface features of the earth;",
+    "explain the concepts of man- environment relations (i.e. to analyse the life of man within his physical and cultural environments and to explain their interactions);",
+    "demonstrate a basic knowledge of the nature and functioning of physical and human environments, particularly an understanding of their inter-relationships and the resulting issues;",
+    "organize and formulate principles according to acquired geographical concepts and then apply these principles to interpret and analyze spatial problems in the immediate and wider environments;",
+    "demonstrate skills and techniques for accurate, orderly and objective geographical investigations to be carried out both in the classrooms and in the immediate environment;",
+    "communicate geographical ideas effectively through reports, graphs, charts, sketches, diagrams and maps;",
+    "explain the cultural, social and economic circumstances of people in their immediate environments and those of other countries within the sub-region."
+  ],
+  "scheme_of_examination": {
+    "papers": [
+      {
+        "paper_number": 1,
+        "description": "Consisting of fifty objective questions to be taken in 1 hour for 50 marks. Drawn from topics common to all member countries."
+      },
+      {
+        "paper_number": 2,
+        "description": "Containing nine essay-type questions out of which candidates will be required to answer four in 2 hours for 80 marks. Structured into sections depending on the candidate's country.",
+        "sections": [
+          {
+            "section_letter": "A",
+            "section_title": "Economic and Human Geography",
+            "instructions": "3 essay-type questions."
+          },
+          {
+            "section_letter": "B",
+            "section_title": "Regional Geography of Candidate's Home Country",
+            "instructions": "3 essay-type questions per country."
+          },
+          {
+            "section_letter": "C",
+            "section_title": "Regional Geography of Africa",
+            "instructions": "3 essay-type questions for candidates in Ghana, Sierra Leone, Liberia and The Gambia."
+          }
+        ]
+      },
+      {
+        "paper_number": 3,
+        "description": "Element of Practical and Physical Geography. Consist of eight essay-type questions out of which candidates are to answer four in 1 hour 50 minutes for 70 marks. Question 1 on map reading and interpretation is compulsory (25 marks)."
+      }
+    ]
+  },
+  "detailed_syllabus": {
+    "elements_of_practical_and_physical_geography": [
+      {
+        "topic": "Map work",
+        "notes": [
+          "Maps: meaning, types and uses",
+          "Map reading and interpretation based on contoured survey maps of parts of West Africa."
+        ]
+      },
+      {
+        "topic": "Principles of elementary surveying",
+        "notes": [
+          "Definitions of terms, instruments, chain and prismatic compass, plotting of traverse, avoiding obstacles in the field. (For Ghana, Sierra Leone, Liberia and The Gambia)"
+        ]
+      },
+      {
+        "topic": "Geographic Information System (GIS)",
+        "notes": [
+          "GIS: Basic concepts, components, sources of data, uses, problems. (For Nigeria only)"
+        ]
+      },
+      {
+        "topic": "Statistical maps and diagrams",
+        "notes": [
+          "Graphical representation of statistical data: Bar graphs, Line graphs, flow charts, dot maps, proportional circles, density maps, isopleth maps."
+        ]
+      },
+      {
+        "topic": "Elements of Physical Geography",
+        "notes": [
+          "The earth as a planet, hydrosphere, rocks, tectonic processes, denudational processes, weather and climate, vegetation, soil, and the environment."
+        ]
+      }
+    ],
+    "economic_and_human_geography": [
+      {
+        "topic": "World Population",
+        "notes": [
+          "Factors and patterns of growth, distribution and movement, growth rate problems."
+        ]
+      },
+      {
+        "topic": "Settlement",
+        "notes": [
+          "Types, patterns and factors affecting location, growth and size, functions, interaction patterns, migration."
+        ]
+      },
+      {
+        "topic": "Transportation",
+        "notes": [
+          "Modes, transportation and economic development, problems and solutions."
+        ]
+      },
+      {
+        "topic": "Industry",
+        "notes": [
+          "Classification, types, factors of industrial location, contributions to development, problems/solutions."
+        ]
+      },
+      {
+        "topic": "Trade",
+        "notes": [
+          "Meaning, types, reasons for trade, importance."
+        ]
+      },
+      {
+        "topic": "Tourism",
+        "notes": [
+          "Meaning, centres, reasons, importance, problems and solutions."
+        ]
+      }
+    ],
+    "aspects_of_regional_geography": {
+      "nigeria": [
+        "Nigeria on broad outline",
+        "Physical setting",
+        "Population",
+        "Resources",
+        "Agriculture",
+        "Transportation",
+        "Communication",
+        "Industry",
+        "Trade",
+        "Tourism",
+        "Issues on development and environmental concerns",
+        "ECOWAS",
+        "Geo-political issues"
+      ],
+      "ghana": [
+        "Ghana on broad outline",
+        "Physical setting",
+        "Population",
+        "Settlement",
+        "Primary economic activities (Agriculture, Fishing, Lumbering, Mining)",
+        "Manufacturing",
+        "Trade and commerce",
+        "Tourism",
+        "Energy and power",
+        "Issues on development and environmental concerns"
+      ],
+      "sierra_leone": [
+        "Sierra Leone on broad outline",
+        "Primary economic activities",
+        "Manufacturing",
+        "Transport and communication",
+        "Trade",
+        "Population",
+        "Tourism"
+      ],
+      "liberia": [
+        "Liberia on broad outline",
+        "Physical setting",
+        "Population",
+        "Resources",
+        "Agriculture",
+        "Transportation",
+        "Communication",
+        "Industry",
+        "Trade",
+        "Tourism",
+        "Fishing",
+        "Mining"
+      ],
+      "senegambia": [
+        "Senegambia on broad outline",
+        "Physical setting",
+        "Population",
+        "Resources",
+        "Agriculture",
+        "Transportation",
+        "Communication",
+        "Industry",
+        "Mining",
+        "Fishing",
+        "Issues on development and environmental concerns",
+        "Trade",
+        "Tourism"
+      ],
+      "africa": [
+        "Africa on broad outline",
+        "Selected topics (Irrigation agriculture, Plantation agriculture, Oil production, Lumbering, Gold mining, Copper mining, Population distribution in West Africa)",
+        "ECOWAS"
+      ]
+    },
+    "field_work": [
+      "Land use (rural or urban)",
+      "Market survey - rural or urban",
+      "Traffic flow - rural or urban",
+      "Patterns of journey to work - rural or urban",
+      "Rate of erosion in the locality"
+    ]
+  },
+  "suggested_reading_list": [
+    {
+      "author": "R. B. BUNNETT & P.O. OKUNROTIFA",
+      "title": "General Geography in Diagram for West Africa",
+      "publisher": "Longman"
+    },
+    {
+      "author": "B. O. AKINDELE & G. C. LEONG",
+      "title": "Certificate Physical and Human Geography (West African Edition)",
+      "publisher": "Oxford"
+    },
+    {
+      "author": "STRAHLER, A. N.",
+      "title": "Introduction to Physical Geography",
+      "publisher": "Wiley International Ed."
+    },
+    {
+      "author": "MONKHOUSE, F. J.",
+      "title": "Principles of Physical Geography",
+      "publisher": "University of London"
+    },
+    {
+      "author": "UDO, REUBEN K.",
+      "title": "Comprehensive Geography of Tropical Africa",
+      "publisher": "Longman"
+    },
+    {
+      "author": "UDO, REUBEN K.",
+      "title": "Geographical Regions of Nigeria",
+      "publisher": "Longman"
+    },
+    {
+      "author": "N. P. ILOEJE",
+      "title": "A new Geography of Nigeria (New Edition)",
+      "publisher": "Longman"
+    },
+    {
+      "author": "M. A. ABEGUNDE et al",
+      "title": "Senior Secondary Geography Series (1-3)",
+      "publisher": "Longman"
+    },
+    {
+      "author": "DICKSON K. B. & BENNEH G.",
+      "title": "New Geography of Ghana",
+      "publisher": "Ghana University Press"
+    },
+    {
+      "author": "DICKSON & ACHEAMPONG",
+      "title": "Geography for Senior Secondary Schools in Ghana",
+      "publisher": "Ghana Education Service"
+    },
+    {
+      "author": "OBOLI, H.O.N.",
+      "title": "An outline Geography of West Africa",
+      "publisher": "Harrap & Company"
+    },
+    {
+      "author": "J. L CLARKE",
+      "title": "Sierra Leone in Maps",
+      "publisher": "Hodder & Stoughton"
+    },
+    {
+      "author": "GWYN-JONES",
+      "title": "A New Geography of Sierra Leone",
+      "publisher": "Hodder & Stoughton"
+    },
+    {
+      "author": "PRITCHARD, J. M.",
+      "title": "Africa",
+      "publisher": "Longman"
+    },
+    {
+      "author": "M. DUZE & AFOLABI OJO",
+      "title": "Macmillan Senior School Atlas",
+      "publisher": "Macmillan"
+    },
+    {
+      "author": "COLLINS",
+      "title": "New Secondary School Atlas",
+      "publisher": "Longman"
+    },
+    {
+      "author": "PHILIPS",
+      "title": "World Atlas",
+      "publisher": "Longman"
+    },
+    {
+      "author": "CLARY AUDREY N.",
+      "title": "Longman Dictionary of Geography (Human and Physical)",
+      "publisher": "Longman"
+    },
+    {
+      "author": "MOORE, W. E.",
+      "title": "A Penguin Dictionary of geography",
+      "publisher": "Longman"
+    },
+    {
+      "author": "N. P. ILOEJE, P.C. ONOKALA & F.O. ODEMERHO",
+      "title": "Basic Geography Course for Senior Secondary Schools Books 1-3",
+      "publisher": "Macmillan"
+    },
+    {
+      "author": "MACMILLAN",
+      "title": "Macmillan Senior School Atlas for Liberia Schools",
+      "publisher": "Macmillan"
+    },
+    {
+      "author": "Guiness, P. & Nagle, G.",
+      "title": "IGCSE Geography",
+      "publisher": "Hodder Education, UK"
+    }
+  ]
+}

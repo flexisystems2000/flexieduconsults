@@ -1,0 +1,123 @@
+{
+  "subject": "ISLAMIC STUDIES",
+  "aims_and_objectives": [
+    "To assess the extent to which candidates have acquired knowledge in the historical and contemporary development of Islam as well as the lessons learnt from them;",
+    "To assess knowledge of the spiritual, moral, socio-economic and intellectual roles of Islam in society;",
+    "To assess the practical application of Islamic teachings in daily life."
+  ],
+  "scheme_of_examination": {
+    "description": "There will be two papers, Papers 1 and 2, both of which will be put into a composite paper to be taken at one sitting.",
+    "paper_1": {
+      "details": "Will comprise fifty multiple choice questions all of which should be answered within 50 minutes for 50 marks."
+    },
+    "paper_2": {
+      "details": "Will consist of six essay questions one of which will be compulsory. Candidates will be required to answer the compulsory question and any three of the optional ones in 2 hours for 100 marks."
+    }
+  },
+  "detailed_syllabus": {
+    "PART 1: TARIKH (HISTORICAL DEVELOPMENT OF ISLAM)": [
+      {
+        "topic": "The Jahiliyyah: Arabia before Islam",
+        "details": "Location of Arabia; Social Life (Marriage, divorce and inheritance); Religious life (Idol worship and names of major gods / idols); Political Life (System of Government); Economic Life (Sources of livelihood); The Reforms introduced by Islam on Jahiliyyah practices."
+      },
+      {
+        "topic": "The life of Prophet Muhammad (S.A.W.)",
+        "details": "(i) Birth, (ii) Marriage, (iii) Call to prophethood and mission, (iv) Hijrah: Causes, Course and Significance, (v) Formation of the Ummah and the Madinan Constitution, (vi) Leadership qualities of the Prophet, (vii) Battles of Badr, Uhud and Khandaq (causes, courses and effects), (viii) Treaty of Hudaybiyyah: terms and outcomes, (ix) Conquest of Makkah, (x) The Farewell Pilgrimage: description, sermon and lessons, (xi) Death."
+      },
+      {
+        "topic": "The Khulafa'ur-Rashidīn (The Rightly-guided Caliphs)",
+        "details": "Abu-Bakr Ibn Abī Quhhāfah, 'Umar Ibn al-Khattab, 'Uthman Ibn 'Affan and 'Ali Ibn Abi Talib. Their biographies, contributions to Islam, and lessons learnt from their lives."
+      },
+      {
+        "topic": "Islam in West Africa",
+        "details": "(i) Advent and roles of traders, teachers, murābitun, sufi orders, mujaddidun (reformers) and Hajj in the spread of Islam. (ii) Impact of Islam on Socio-Political, Economic and Linguistic Lives of the ancient empires of Ghana, Mali, Songhai, and Kanem-Borno."
+      }
+    ],
+    "PART 2: QUR'AN": [
+      {
+        "topic": "Revelation, Preservation and Importance",
+        "details": "(a) Revelation: Cave Hira, first revelation, modes of revelation, piecemeal-revelation. (b) Preservation: Complete arrangement, Makki and Madani Suwar distinctions, Recording, Compilation, Standardization, and roles of the Companions. (c) Importance: The Qur'an as a source of guidance in social, political, spiritual, and moral matters."
+      },
+      {
+        "topic": "Prescribed Suwar for Study",
+        "details": "Reading (Arabic/Transliteration), Memorization, Meaning and lessons of: Suratul Fatihah (Q.1), Suratud Duha (Q.93), Suratut Tin (Q.95), Suratul 'Alaq (Q.96:1-5), Suratul Qadr (Q.97), Suratul Kafirun (Q.109), Suratun Nasr (Q.110), Suratul Ikhlas (Q.112), Suratul Falaq (Q.113), Suratun Nas (Q.114)."
+      },
+      {
+        "topic": "Moral Lessons from the Qur'an",
+        "details": "(a) Attitudes to Parents (Q.17:23-24; 31:13-15). (b) Honesty in Words and Deeds (Q.2:42; 61:2-3; 17:35). (c) Prohibition of Gambling (Q.2:219; 5:90-91)."
+      }
+    ],
+    "PART 3: HADITH": [
+      {
+        "topic": "Introduction to Hadith and Sunnah",
+        "details": "(a) Definitions. (b) Differences and similarities. (c) Importance. (d) Parts of Hadith: 'Isnad, Matn and Rawi. (e) Criteria for authenticity. (f) Classification: Sahih, Hasan and Da'if. (g) The Six Sound Collections (Sihaus-Sittah) and compilers."
+      },
+      {
+        "topic": "Selected Ahadith from an-Nawawi",
+        "details": "Reading, memorization, meaning, and lessons of Hadith numbers: 1, 5, 7, 9, 13, 15, 16, 18, 34 and 41."
+      }
+    ],
+    "PART 4: TAWHID AND FIQH (ISLAMIC THEOLOGY AND JURISPRUDENCE)": [
+      {
+        "topic": "'Iman (Faith)",
+        "details": "(i) Meaning/Significance. (ii) Articles of Faith: Belief in Allah (Kalimatush-Shahadah), His angels, His books, His Prophets (focus on Ulul-'Azm: Ibrahim, Nuh, Musa, 'Isa, Muhammad), Day of Resurrection/Judgement, and Destiny (Qada' and Qadar)."
+      },
+      {
+        "topic": "Shirk (Associating Partners with Allah)",
+        "details": "(i) Worship of idols. (ii) Ancestor and Hero-worship."
+      },
+      {
+        "topic": "Taharah (Purification)",
+        "details": "Importance of Taharah, al-Istinja', al-Wudu', at-Tayammum, and al-Ghusl."
+      },
+      {
+        "topic": "Salat (Prayer)",
+        "details": "Meaning, Importance, Acts that vitiate, Congregational Salat, Sujudus-Sahwi. Kinds: Obligatory, Non-Obligatory (Nawafil, Duha, Witr), Special (Jum'ah, 'Idayn, Janazah, Istisqa', Tarawih, Kusufayn, Istikhara), and Salatus-Safar."
+      },
+      {
+        "topic": "Sawm (Fasting)",
+        "details": "Objectives, Types (compulsory e.g. Ramadan, Kaffarah, Nadr; voluntary e.g. Six of Shawwal, 'Ashura', Tasu'a, Mondays/Thursdays). Observance, exemptions, vitiating acts, and benefits."
+      },
+      {
+        "topic": "Zakat (Charity)",
+        "details": "Zakat vs Sadaqah, articles liable, Nisab of Livestock, Money, and Agricultural Products. Beneficiaries (Q.9:60), Zakatul-Fitr, and benefits."
+      },
+      {
+        "topic": "Hajj (Pilgrimage)",
+        "details": "Definition and Origin of Hajj and Umrah, prerequisites, types (Ifrad, Tamattu, Qiran), rites, invalidating acts, and significance."
+      },
+      {
+        "topic": "Shari 'ah",
+        "details": "Definition, Sources (Qur'an, Sunnah, Ijma', Qiyas), and Significance."
+      },
+      {
+        "topic": "Nikah (Marriage)",
+        "details": "Concept, Prohibited Categories, conditions of validity, rights and duties of spouses, and laws prohibiting ill-treatment (Idrar)."
+      },
+      {
+        "topic": "Talaq (Divorce)",
+        "details": "Islamic Attitude, Kinds (Talaq, Khul', Faskh, Mubara'ah, Zihar, Li'an), 'Iddatut-Talaq (Waiting Period) duration and implications."
+      }
+    ]
+  },
+  "suggested_reading_list": [
+    "The Holy Qur'an (text, translation and commentary) by A. Yusuf Ali.",
+    "The meaning of the The Glorious Koran by Mohammed Marmaduke Picktall.",
+    "Islamic Religious knowledge for WASC (Book 1: Qur'an and Tafsir, Book 2: Fiqh, Book 3: Hadith) by M. Bushir Sambo and Mohammed Higab.",
+    "The life of Muhammad by Haykal.",
+    "Islam in Focus by Hammudah Abdalati.",
+    "Islamic Studies for Secondary Schools Books 1 & 2 by B. 'Aisha Lemu.",
+    "Selected traditions of an-Nawawi by M.O.A. Abdul.",
+    "Studies in Islam series Books 1-5 by M.O.A. Abdul.",
+    "AL-'IZZIYYAH for English audience by Quadri Y.A. and Oloyede, I.O.",
+    "Islamic Religious Knowledge for senior secondary School series 1-3 by Seriki and Badmos.",
+    "Yasin wal-Qur'an by S.H.A. Malik.",
+    "The Classical Caliphate by M.O.A. Abdul.",
+    "West Africa And Islam by P.B. Clarke.",
+    "A History of Islam in West Africa by J.S. Trimingham.",
+    "Essentials of Islamic Studies Books 1 & 2 by M.O. Raheemson.",
+    "40 Hadith: An Explanation by Dr. Yushau Sodiq.",
+    "Islamic Studies by Sulemana, M. (2004).",
+    "Islam: The Religion of Peace by Muhammad Jamiu Yunus (2011)."
+  ]
+}

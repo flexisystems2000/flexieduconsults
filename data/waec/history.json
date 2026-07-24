@@ -1,0 +1,763 @@
+{
+  "subject": "History",
+  "preamble": {
+    "aims": [
+      "knowledge of their national histories from earliest times to 2000 with emphasis on the relationship between the peoples and states;",
+      "intellectual capacity and skills of historical interpretation and analysis;",
+      "ability to use acquired skills in relating the past to the present;",
+      "appreciation of factors that make for national unity and global understanding;",
+      "exposure and appreciation of the similarities and differences in the National, social and political institutions;",
+      "knowledge of the main historical developments in West Africa from earliest times to 2000;",
+      "ability to relate events in their country and West Africa to those of the outside world;",
+      "ability to present clear, relevant and logical arguments."
+    ]
+  },
+  "examination_scheme": {
+    "paper_1": {
+      "description": "This will be a multiple-choice objective test of fifty items. Candidates will be required to answer all the questions in 1 hour for 40 marks.",
+      "coverage": "West Africa and the Wider World from the earliest times to 2000."
+    },
+    "paper_2": {
+      "description": "This will be a 2 hour essay type test containing sets of questions on the histories of member countries. Each set shall be made up of three sections, Sections A, B and C. Candidates will answer four questions in all, choosing at least one question from each section. The paper will carry 60 marks."
+    }
+  },
+  "detailed_syllabus": {
+    "paper_1_west_africa_and_wider_world": [
+      {
+        "topic_number": 1,
+        "title": "Historiography and Historical Skills",
+        "details": "What is History and why do we study History? Sources of History; Historical skills (ancient and modern approaches); Prospect of ICT in historical studies."
+      },
+      {
+        "topic_number": 2,
+        "title": "Trans-Saharan Trade",
+        "details": "Origin, organization and the effects on the development of West African states."
+      },
+      {
+        "topic_number": 3,
+        "title": "Islam in West Africa",
+        "details": "Introduction, spread and effects."
+      },
+      {
+        "topic_number": 4,
+        "title": "European Contact with West Africa",
+        "details": "Reasons for their coming, immediate effects and West African reaction"
+      },
+      {
+        "topic_number": 5,
+        "title": "Trans-Atlantic slave trade",
+        "details": "Origin, organization, effects and suppression."
+      },
+      {
+        "topic_number": 6,
+        "title": "Christian Missionary Activities in West Africa",
+        "details": "The suppression of slave trade. Christian Missionary activities and their impact on West Africa."
+      },
+      {
+        "topic_number": 7,
+        "title": "The Scramble for and Partition of West Africa",
+        "details": "The Industrial Revolution, Scramble for colonies, Colonial subjugation, Occupation and West African reaction."
+      },
+      {
+        "topic_number": 8,
+        "title": "Colonial Rule in West Africa",
+        "details": "Patterns of colonial rule, consolidation of European culture in Africa, colonial economy and the underdevelopment of Africa: colonial Africa and the two World Wars."
+      },
+      {
+        "topic_number": 9,
+        "title": "Problems of independent West African States",
+        "details": "Nature of politics: neo-colonialism and economic underdevelopment, unequal development within states and instability, the Military in West African politics, boundary disputes and threat to West African Unity."
+      },
+      {
+        "topic_number": 10,
+        "title": "West Africa and international organizations",
+        "subtopics": [
+          "(i) United Nations Organization (U.N.O.)/United Nations (U.N);",
+          "(ii) Organization of African Unity (O.A.U)/African Union (A.U.);",
+          "(iii) Economic Community of West African States (ECOWAS);",
+          "Etc."
+        ],
+        "details": "Membership, aims and objectives, achievements and failures."
+      }
+    ],
+    "paper_2_national_histories": {
+      "the_gambia": {
+        "section_a": {
+          "period": "From earliest times to 1800",
+          "topics": [
+            {
+              "number": 1,
+              "title": "Historiography and Historical Skills",
+              "details": "What is History and why do we study History; sources of History; Historical skills (ancient and modern approaches); Prospect of ICT in Historical Studies."
+            },
+            {
+              "number": 2,
+              "title": "Origin, political, social and economic organization of the following",
+              "groups": [
+                "The Wollof",
+                "Mandinka",
+                "Fula",
+                "Jola",
+                "Krio(Aku)",
+                "Serahuli"
+              ]
+            },
+            {
+              "number": 3,
+              "title": "Indigenous crafts and industries",
+              "details": "Pottery, salt making, iron working, soap making, leather works, weaving, carving, tie and dyeing, boat building - technology; social and economic importance."
+            },
+            {
+              "number": 4,
+              "title": "Early European contact",
+              "details": "Trade, Christianity and impact."
+            },
+            {
+              "number": 5,
+              "title": "Introduction, spread and effects of Islam."
+            },
+            {
+              "number": 6,
+              "title": "The Gambia and the trans-Atlantic slave trade",
+              "details": "Origin, organization and effects"
+            }
+          ]
+        },
+        "section_b": {
+          "period": "19th Century",
+          "topics": [
+            {
+              "number": 7,
+              "title": "Suppression of the slave trade and its effects",
+              "details": "Campaigns against kings of Barra, Sabiji and Fuladu."
+            },
+            {
+              "number": 8,
+              "title": "The founding of Bathurst (Banjul)"
+            },
+            {
+              "number": 9,
+              "title": "Christian Missionary activities and their impact"
+            },
+            {
+              "number": 10,
+              "title": "The Soninke-Marabout wars, jihadist leaders",
+              "details": "Colonial government's reaction to religious disturbances, 1850 to 1880."
+            },
+            {
+              "number": 11,
+              "title": "Resistance to European Colonialism",
+              "leaders": [
+                "Foday Kombo Sillah",
+                "Foday Kabbah Dumbuya",
+                "Musa Molloh Baldeh"
+              ]
+            }
+          ]
+        },
+        "section_c": {
+          "period": "1900 to 2000",
+          "topics": [
+            {
+              "number": 12,
+              "title": "British Colonial administration",
+              "details": "Indirect Rule and the role of traditional rulers"
+            },
+            {
+              "number": 13,
+              "title": "Economic and social developments in the colonial period",
+              "aspects": [
+                "agriculture; attempts at diversification",
+                "transportation and communication",
+                "education",
+                "health services"
+              ]
+            },
+            {
+              "number": 14,
+              "title": "Development of local Government"
+            },
+            {
+              "number": 15,
+              "title": "The struggle for and regaining of independence",
+              "aspects": [
+                "Emergence and role of trade unions and political parties",
+                "Internal government",
+                "Independence negotiations",
+                "Senegambia relations before independence"
+              ]
+            },
+            {
+              "number": 16,
+              "title": "Development after independence",
+              "aspects": [
+                "attempt at national government",
+                "the Republican Constitution",
+                "parliamentary government; multiparty politics, political realignment",
+                "social and economic developments",
+                "Senegambia relations",
+                "1981 attempted coup d'etat",
+                "1994 coup d'etat - AFPRC",
+                "The Second Republic - 1996 to 2000"
+              ]
+            },
+            {
+              "number": 17,
+              "title": "The Gambia and international organizations",
+              "organizations": [
+                "United Nations Organization (U.N.O.)/United Nations (U.N)",
+                "Commonwealth of Nations/ The Commonwealth",
+                "Organization of African Unity (O.A.U)/African Union (A.U.)",
+                "Economic Community of West African States (ECOWAS)"
+              ]
+            }
+          ]
+        }
+      },
+      "ghana": {
+        "section_a": {
+          "period": "Landmarks of African history: From the earliest times to AD 1800",
+          "topics": [
+            {
+              "number": 1,
+              "title": "Introduction to African History",
+              "subtopics": [
+                "History as a subject of study",
+                "Sources of African History",
+                "Methods of African History"
+              ]
+            },
+            {
+              "number": 2,
+              "title": "African pre-history up to 500 B.C",
+              "subtopics": [
+                "Hunters and gatherers, etc.",
+                "Beginning of village/community life."
+              ]
+            },
+            {
+              "number": 3,
+              "title": "Civilizations of North Africa from 3000B.C To A.D 1800",
+              "subtopics": [
+                {
+                  "name": "Pharaonic Egypt",
+                  "details": [
+                    "emergence of Lower and Upper Kingdoms.",
+                    "development of: Farming technology (irrigation), Metal technology (ship building), Engineering technology (pyramids).",
+                    "development of: African arts and sciences, writing, mathematics, commerce, military organization, architecture etc.",
+                    "Introduction of Christianity and Islam"
+                  ]
+                },
+                {
+                  "name": "Northern Africa-Berber",
+                  "details": [
+                    "indigenous civilization.",
+                    "economy, metal technology etc.",
+                    "external relations with the Phoenicians/Greeks, Carthaginians, Romans and Arabs."
+                  ]
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "title": "Civilizations of the Horn, East and Central Africa",
+              "subtopics": [
+                {
+                  "name": "Axum",
+                  "details": [
+                    "Rise of Axum- factors responsible",
+                    "Major achievements in Arts, Technology etc.",
+                    "Introduction of Christianity and effects."
+                  ]
+                },
+                {
+                  "name": "Emergence of Ancient Ethiopia (Abyssinia)",
+                  "details": "rise of Solomonic line of Kings, conflicts - internal and external"
+                },
+                {
+                  "name": "Bantu Civilization",
+                  "details": [
+                    "Definition, origin and spread",
+                    "Study of examples of Bantu complex societies: Zimbabwe, Mapungubwe, Kisale"
+                  ]
+                },
+                {
+                  "name": "Swahili Civilization of the East African Coast",
+                  "details": [
+                    "Definition and origins of Swahili Civilization",
+                    "Economy",
+                    "Metal Technology",
+                    "Architecture",
+                    "City Based Civilization",
+                    "The Swahili Language"
+                  ]
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "title": "West Africa - Civilizations and Cultures",
+              "subtopics": [
+                {
+                  "name": "General characteristics of West African Sudanese states and kingdoms",
+                  "details": "Location, social and political organizations, economic, religious, technological developments, citing examples from: Ghana, Mali, Songhai, Kanem-Bornu, Hausa States"
+                },
+                {
+                  "name": "The trans-Saharan trade",
+                  "details": "origin, organisation and effects on the development of the states."
+                },
+                {
+                  "name": "Forest and Coastal States",
+                  "details": "General characteristics of West African Coastal States and kingdoms (Ife, Oyo, Asante, Mende-Temne, Dahomey, Igbo): social, political and economic organization, intra-regional trade, religious and technological developments."
+                }
+              ]
+            }
+          ]
+        },
+        "section_b": {
+          "period": "Ghana and the wider world: From earliest times to AD 1900",
+          "topics": [
+            {
+              "number": 6,
+              "title": "Introduction to the History of Ghana",
+              "subtopics": [
+                "Sources and Methods",
+                "Pre-history of Ghana -50,000B.C. - A.D 1700 (Hunters and Gatherers, Kintampo culture- farmers and village builders (2000 BC - AD 500), The first townsmen in Ghana: Begho, Bono-Manso etc. (AD1000-1700))"
+              ]
+            },
+            {
+              "number": 7,
+              "title": "The peopling of Ghana",
+              "subtopics": [
+                "Peoples of Ghana: Northern zone, Forest zone, Coastal zone",
+                "The rise of states and kingdoms (General characteristics): Northern zone (Dagomba, Manprugu, Gonja, Nanumba), Forest zone (Denkyira, Akwamu, Akyem, Asante), Coastal zone (Fante, Ga, Anlo)"
+              ]
+            },
+            {
+              "number": 8,
+              "title": "Social, Cultural, Political and Economic Developments in Ghana in the Sixteenth Centuries",
+              "subtopics": [
+                "Political systems: Centralized communities (Asante, Dagomba), Non-centralized communities (Sisala, Chamba), Theocratic communities (Ga-Adangbe, Guan), Comparison of the three systems.",
+                "Social organizations: religion, kinship systems (matriclans and patriclans), festivals, rites and ceremonies associated with various stages in the life cycle (marriage, birth, puberty and death)",
+                "History of medicine: botanical and zoological aspects of medicine",
+                "Pre-colonial technological advancement: brass casting, gold working, pottery etc. (processes, products, importance)",
+                "Art forms: Adinkra symbols, textiles, Kete, Adowa dance forms.",
+                "Economy: subsistence economy, exchange economy (long distance trading, local trading, importance of long distance trade)"
+              ]
+            },
+            {
+              "number": 9,
+              "title": "European contact",
+              "subtopics": [
+                "Europeans on Ghana Coast: reasons for coming, immediate effects",
+                "Changing patterns of trade: AD1500-1900 (Atlantic slave trade- nature, volume, contributions to development of the Americas, effects on Ghana; trade with Europeans - gold, ivory etc.)",
+                "The Scramble for and partition of West Africa: causes, Berlin Conference, major recommendations, effects on West Africa."
+              ]
+            },
+            {
+              "number": 10,
+              "title": "Social and Political Development AD 1500-1900",
+              "subtopics": [
+                "Activities of the Christian missionaries: opening churches, schools, colleges, medical facilities, literacy work",
+                "Political Developments: Effects of European presence on local politics, The Bond of 1844, Aborigines Rights Protection Society."
+              ]
+            }
+          ]
+        },
+        "section_c": {
+          "period": "Ghana: AD 1900-1991",
+          "topics": [
+            {
+              "number": 11,
+              "title": "Social, Economic and Political Developments (AD 1900-1957)",
+              "subtopics": [
+                "Nationalist activities and political changes from 1900 to 1957: Early Nationalist organizations (ARPS, NCBWA, Gold Coast Youth Conference, West African Youth League), Early Nationalists (John Mensah Sarbah, J. Casely Hayford, Kobina Sekyi), Later Nationalist Parties (UGCC, CPP, NLM), Later Nationalists (J.B. Danquah, Kwame Nkrumah, Paa Grant)",
+                "Social and Economic Developments: education, health and sanitation, religion, agriculture, transport and communications, mining, timber, the work of Sir Gordon Guggisberg"
+              ]
+            },
+            {
+              "number": 12,
+              "title": "Post-Independence Ghana",
+              "subtopics": [
+                "The Nkrumah Era: Social developments, Economic developments, Political developments, contributions to African unity and world peace, development of one party state, the fall of Nkrumah regime",
+                "Post Nkrumah Era: causes of rapid changes of government, social and economic character of each regime (NLC, Second Republic 1969-1972, NRC & SMC 1972-1979, Uprising of 1979 & AFRC, Third Republic 1979-1981, PNDC 1981-1991)"
+              ]
+            },
+            {
+              "number": 13,
+              "title": "Ghana in the Comity of Nations",
+              "organizations": [
+                "United Nations Organization (UNO); / United Nations (UN)",
+                "Commonwealth of Nations",
+                "Non-Aligned Movement (NAM)",
+                "Organization of African Unity (OAU); African Union (AU)",
+                "Economic Community of West African States (ECOWAS)",
+                "African, Caribbean and Pacific Countries (ACP/EEC)"
+              ]
+            }
+          ]
+        }
+      },
+      "liberia": {
+        "section_a": {
+          "period": "From earliest times to 1800",
+          "topics": [
+            {
+              "number": 1,
+              "title": "Historiography and Historical skills",
+              "details": "What is History and why we learn history; sources of History; historical skills (ancient and modern approaches); prospect of ICT in Historical Studies."
+            },
+            {
+              "number": 2,
+              "title": "Land and People",
+              "details": "Main geographical zones of Liberia. Demographic, Ethnic, Linguistic distribution (Kru, Bassa, Krahn, Gio, Mano, Grebo, Lorma, Kpelle, Belle, Mandingo, Vai, Kissi, Gbandi, Gola, Dey, Mende)."
+            },
+            {
+              "number": 3,
+              "title": "Migration",
+              "details": "Migration due to war, pestilence, drought, overpopulation. Introduction, spread and effects of Islam."
+            },
+            {
+              "number": 4,
+              "title": "Kingdoms, Chiefdoms and Confederacies",
+              "details": "Political Institutions. Social, religious and cultural activities (weaving, blacksmithing)."
+            },
+            {
+              "number": 5,
+              "title": "European Contacts - Liberia",
+              "details": "Economic and social effects."
+            },
+            {
+              "number": 6,
+              "title": "Trans Atlantic Slave Trade",
+              "details": "Origin, organization, effects, suppression"
+            }
+          ]
+        },
+        "section_b": {
+          "period": "19th Century",
+          "topics": [
+            {
+              "number": 7,
+              "title": "The effects of Colonization movements on Liberia",
+              "details": "The coming of migrants from the USA, the Caribbean and the Recaptives to Liberia. The establishment and administration of settlements by the American Colonization Society and other Organizations. Christian missionary activities and impact."
+            },
+            {
+              "number": 8,
+              "title": "The formation and significance of the Commonwealth of Liberia",
+              "details": "Problems, conflicts and cooperation between the settlers and indigenous people. Territorial expansion and its effects."
+            },
+            {
+              "number": 9,
+              "title": "Declaration of Independence",
+              "details": "The reasons for and the significance of the Declaration of Independence. The Constitution of 1847 and its importance. The origin and development of political parties. The administration of Joseph J. Roberts. Edward J. Roye and the ruling class."
+            },
+            {
+              "number": 10,
+              "title": "Liberia's relationship with the outside world",
+              "details": "Diplomatic recognition by Britain, France etc."
+            },
+            {
+              "number": 11,
+              "title": "Problems of land acquisition",
+              "details": "Encroachment by the British and French beyond the agreed colonial boundaries. Expansion into the interior"
+            }
+          ]
+        },
+        "section_c": {
+          "period": "1900 to 2000",
+          "topics": [
+            {
+              "number": 12,
+              "title": "Political Development",
+              "details": "The roles of Presidents David Coleman and Arthur Barclay. The origin and development of political parties up to 2000. Exportation of labour; the Fernando Po crisis, intervention of the League of Nations."
+            },
+            {
+              "number": 13,
+              "title": "The administration of Edwin Barclay, William V.S Tubman, William R. Tolbert Jnr."
+            },
+            {
+              "number": 14,
+              "title": "1980 coup d'etat and Samuel K. Doe",
+              "details": "Beginning of the civil war (ECOWAS intervention/ ECOMOG activities). Interim government - 1990-1994; 1994-1997. Administration of Charles Taylor (1997-2000)."
+            },
+            {
+              "number": 15,
+              "title": "Economic development and the spread of education."
+            },
+            {
+              "number": 16,
+              "title": "Liberia and international organizations",
+              "organizations": [
+                "United Nations Organization (UNO)",
+                "Organization of African Unity (OAU)/ African Union (AU)",
+                "Economic Community of West African States (ECOWAS)",
+                "Mano River Union (MRU)"
+              ]
+            }
+          ]
+        }
+      },
+      "nigeria": {
+        "section_a": {
+          "period": "From earliest times to 1800",
+          "topics": [
+            {
+              "number": 1,
+              "title": "Historiography and historical skills",
+              "details": "What is History and why we study History; sources of History; Historical skills (ancient and modern approaches); Prospect of ICT in Historical Studies."
+            },
+            {
+              "number": 2,
+              "title": "Land and peoples of Nigeria",
+              "details": "Main geographical zones in Nigeria: impact of the environment on human activities e.g. hunting, fishing, farming, etc."
+            },
+            {
+              "number": 3,
+              "title": "Centers of ancient civilization",
+              "details": "Nok, Ife, Igbo Ukwu, Benin."
+            },
+            {
+              "number": 4,
+              "title": "Centralized and non-centralized states",
+              "subtopics": [
+                "States: Kanem and Borno, Hausa, Nupe, Oyo, Benin, Igbo, Efik, Tiv.",
+                "Inter-group relations: economic activities, intermarriages, bilingualism, etc.",
+                "Impact of migrations; wars and politics on inter-group relations."
+              ]
+            },
+            {
+              "number": 5,
+              "title": "Indigenous crafts and industries",
+              "details": "Pottery, salt making, iron working, gold mining, soap making, leather works, weaving, carving, bronze casting, tie and dyeing, bead making, boat building - technology; social and economic importance."
+            },
+            {
+              "number": 6,
+              "title": "External Influences",
+              "subtopics": [
+                "Contact with North Africa: trans-Saharan trade, Islam (Borno and Hausaland) and impact",
+                "Early European contact with coastal states; trade, Christianity and impact"
+              ]
+            },
+            {
+              "number": 7,
+              "title": "Nigeria and the trans-Atlantic slave trade",
+              "details": "Origin, organization and effects"
+            }
+          ]
+        },
+        "section_b": {
+          "period": "19th Century",
+          "topics": [
+            {
+              "number": 8,
+              "title": "The Sokoto Caliphate",
+              "details": "Establishment, administration, relations with its neighbours and impact of the Sokoto jihad on Nigeria."
+            },
+            {
+              "number": 9,
+              "title": "Borno under the Shehus",
+              "details": "The emergence of El-Kanemi, developments under El-Kanemi and Shehu Umar, development under the later Shehus, the fall of Borno."
+            },
+            {
+              "number": 10,
+              "title": "Christian Missionary Activities",
+              "details": "activities, impact."
+            },
+            {
+              "number": 11,
+              "title": "Yorubaland in the 19th century",
+              "details": "Era of Ibadan dominance; increased British pressure on Yorubaland;"
+            },
+            {
+              "number": 12,
+              "title": "Benin in the 19th century"
+            },
+            {
+              "number": 13,
+              "title": "The first phase of the British conquest of Nigeria: 1851-1900"
+            }
+          ]
+        },
+        "section_c": {
+          "period": "1900 to 2000",
+          "topics": [
+            {
+              "number": 14,
+              "title": "The second phase of the British conquest in Nigeria 1900-1960",
+              "subtopics": [
+                "The early phase 1900-1914: the amalgamation of 1914 and its significance",
+                "Later phase 1914-1960: central administration, indirect rule, the colonial economy, social developments."
+              ]
+            },
+            {
+              "number": 15,
+              "title": "The decolonization process in Nigeria, 1922-1960",
+              "details": "Origin of nationalism, nationalist movements after the Second World War, the road to and the attainment of independence."
+            },
+            {
+              "number": 16,
+              "title": "Nigeria since independence",
+              "subtopics": [
+                "the First Republic, 1960-1966",
+                "the coups d'etat, military rule, civil war and reconstruction, 1966-1975",
+                "the military administration - Murtala/Obasanjo regime of 1975-1979",
+                "the Second Republic, 1979-1983",
+                "the return of military rule - Buhari/Idiagbon regime, 1983-1984",
+                "The Ibrahim Babangida regime, 1985-1993",
+                "Interim national government and Abacha regime, 1993-1998",
+                "Transition to fourth republic and Olusegun Obasanjo administration",
+                "Emerging issues up to 2000: poverty, corruption, youth unemployment, religious crisis, terrorism, etc."
+              ]
+            },
+            {
+              "number": 17,
+              "title": "Nigeria and international organizations",
+              "organizations": [
+                "United Nations Organization (U.N.O.)/United Nations (U.N)",
+                "Commonwealth of Nations",
+                "Organization of Unity (O.A.U)/African Union (A.U.)",
+                "Economic Community of West African States (ECOWAS)",
+                "Organization of Petroleum Exporting Countries (OPEC)"
+              ]
+            },
+            {
+              "number": 18,
+              "title": "Global issues",
+              "details": "West Africa in Diaspora; Racism, Debt relief and International aids; Peacekeeping and socio-political interest of developed societies; World peace (armament, nuclear science); Millennium Development Goals (MDGS)."
+            }
+          ]
+        }
+      },
+      "sierra_leone": {
+        "section_a": {
+          "period": "From earliest times to 1800",
+          "topics": [
+            {
+              "number": 1,
+              "title": "Historiography and Historical Skills",
+              "details": "What is History and why do we study History; sources of History, Historical skills (ancient and modern approaches); Prospect of ICT in Historical Studies."
+            },
+            {
+              "number": 2,
+              "title": "Origin, political, social and economic organization of the following",
+              "groups": [
+                "Temne",
+                "Mende",
+                "Limba",
+                "Loko",
+                "Susu",
+                "Mandingo",
+                "Sherbro/Bullom"
+              ]
+            },
+            {
+              "number": 3,
+              "title": "Indigenous crafts and industries",
+              "details": "Potters, salt making, iron working, gold mining, soap making, leather works, weaving, carving, tie and dyeing, boat building - technology, social and economic importance."
+            },
+            {
+              "number": 4,
+              "title": "Mane Invasions"
+            },
+            {
+              "number": 5,
+              "title": "Early European contact",
+              "details": "Trade, Christianity and impact."
+            },
+            {
+              "number": 6,
+              "title": "Introduction spread and effects of Islam."
+            },
+            {
+              "number": 7,
+              "title": "Sierra Leone and the trans-Atlantic slave trade",
+              "details": "Origin, organization and effects"
+            }
+          ]
+        },
+        "section_b": {
+          "period": "19th Century",
+          "topics": [
+            {
+              "number": 8,
+              "title": "The founding of the settlement colony of Sierra Leone to the declaration of the Crown Colony."
+            },
+            {
+              "number": 9,
+              "title": "The emergence of the Krio and their subsequent decline"
+            },
+            {
+              "number": 10,
+              "title": "Christian Missionary activities and their impact"
+            },
+            {
+              "number": 11,
+              "title": "The role of the colonial government in contacts between the colony and the hinterland."
+            },
+            {
+              "number": 12,
+              "title": "The activities of Samori Toure in Sierra Leone"
+            },
+            {
+              "number": 13,
+              "title": "Declaration of the Protectorate and the Hut Tax War"
+            }
+          ]
+        },
+        "section_c": {
+          "period": "1900 to 2000",
+          "topics": [
+            {
+              "number": 14,
+              "title": "The administration of the colony and constitutional developments up to 1947"
+            },
+            {
+              "number": 15,
+              "title": "The administration of the Protectorate",
+              "details": "Indirect rule and the Protectorate Assembly"
+            },
+            {
+              "number": 16,
+              "title": "Economic and social developments in the colonial period",
+              "aspects": [
+                "Agriculture",
+                "Mining",
+                "Transportation and communication",
+                "Education",
+                "Health"
+              ]
+            },
+            {
+              "number": 17,
+              "title": "Political and constitutional developments from 1947 to the regaining of independence in 1961."
+            },
+            {
+              "number": 18,
+              "title": "Sierra Leone from independence to 2000",
+              "eras": [
+                "The era of the Margais - 1961",
+                "Military rule - National Reformation Council",
+                "The administration of Siaka Stevens",
+                "The administration of Joseph Saidu Momoh - outbreak of the rebel war",
+                "Military rule - National Provisional Ruling Council",
+                "The administration of Ahmed Tejan Kabbah up to 2000"
+              ]
+            },
+            {
+              "number": 19,
+              "title": "Sierra Leone and international organizations",
+              "organizations": [
+                "United Nations Organization (U.N.O.)/United Nations (U.N)",
+                "Commonwealth of Nations",
+                "Organization of African Unity (O.A.U.)/African Union (A.U.)",
+                "Economic Community of West African States (ECOWAS)",
+                "Mano River Union (MRU)"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

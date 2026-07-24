@@ -1,0 +1,67 @@
+{
+  "subject": "Arabic (WASSCE 2026-2030)",
+  "document_title": "List of Arabic Texts for the West African Senior School Certificate Examination (WASSCE) 2026-2030",
+  "sections": [
+    {
+      "section_name": "SECTION A: Arabic Literature of West Africa (1800 to Date)",
+      "texts": [
+        "1. Abdul Wahhab Danladi Shittu: As-shiirul-Arabiyy An-Nayjīriyy Baynal Madi Wal-hadir (including poems by As-shaykh Uthman Bn Fudī and Asmaa Bint Shaykh Uthmāna Bn Fūdī)",
+        "2. Aliyu Abdulkadir Al-Asali: Abathut-Tufulah",
+        "3. Isa Alabi Abubakar: Allughatul-Arabiyyatu",
+        "4. Kamalud-Dini Balogun: Rihlatul bahthi anil insāni",
+        "5. Mbaye Kebba Kah: Risālātun Ila Shabab",
+        "6. Abdullah Bn Fodio: Risālātun-Nasa ihi",
+        "7. Mbaye Kebba Kah: Risālāh Ilal-Watan",
+        "8. Zakariyau Oseni: An-Nūjumul Mubtasima (Smiling Stars)",
+        "9. Muhammad Al-Amin Sambou Gasāmā: Al-'Ftikhar Bil Qarati Al-Ifriqiyyah Al-Arīqah"
+      ]
+    },
+    {
+      "section_name": "SECTION B: Arabic Literature in the Modern Era (1798 Up To Date)",
+      "texts": [
+        "1. Mahmudu Sāmī Al-Bārūdi (Poem)",
+        "2. Ahmadu Shawqī: Atha'labu wad-Dīku (Fox and Cock)",
+        "3. Mustapha Lutfi-Almanfalūtī: Al-yatīmu (Orphan)",
+        "4. Mustafa Lutfi-Almanfalūtī: Al-Hijab (Veil)",
+        "5. Hafiz Ibrahim: Al-Lughatul-Arabiyyah Watarbiyatul Banāt"
+      ]
+    },
+    {
+      "section_name": "SECTION C: Arabic Literature of the Abbasid and Umayyad Era (661-1798 AD)",
+      "texts": [
+        "1. Jarīru bn Atiyyah (Poem in eulogy of Al-Khalifah Umar bn Abdil-Azīz)",
+        "2. Al-Hajjāju Bn Yusuf Ath-Thaqafiyy (Sermon)",
+        "3. Al-mutanabbī (Poem of admonition and pride)",
+        "4. Abdullahi Bn-muqaffa'a (Message in relationship with a friend)",
+        "5. Al-Farazdaq (Poem in eulogy of Imam Zaynul-Abidīn)"
+      ]
+    },
+    {
+      "section_name": "SECTION D: Arabic Literature in the Era of Early Islam and the Islamic Era (500AD-662AD)",
+      "texts": [
+        "1. Ar-Rasûl (SAW): First sermon in Makkah",
+        "2. Ukthumu Bn Sayfi At-Tamīmiyy: Sermon at Caesar's palace",
+        "3. Zuhayru bn Abi Sulmā: Philosophical poem (Al-Mimiyah)",
+        "4. Hassan bn Thabit: Poem on the Conquest of Makkah",
+        "5. Aliyyu Bn Abi Talib: Sermon on Jihad with sincerity"
+      ]
+    }
+  ],
+  "references": [
+    "Abdullahi Bn Fūdī; Tazyīnul-waraqat",
+    "Ahmadul Iskandarī wa ākharūna; Al Mufassal fi Tarikhl Adab (v. 1 and 2)",
+    "Ahmadul Iskandarī wa ākharūna; Almuntakhab Minal-Adabil-Arabiyy",
+    "Zakariyah Husayn: Al-Ma'dubatul Adabiyyah Litullābil Arabiyyah Fi gharbi Ifriqiyyah",
+    "Aliyu Abdulkadir Al-Asaliyy, Abathut-Tufulah",
+    "Isa Alabi Abubakar; Diwanur-Riyād",
+    "Kamalud-Dini Balogun, Rihlatul Bahth anil-Insāni",
+    "Abdulwahab Danlad Shittu, Ash-shirul Arabiy An-Nayjīriyy baynal mādī wal hadir",
+    "Uthman Abubakar Eleyinla, Al-Inshau Wat-Ta'abīru",
+    "Aliyyu Abubakar, Ath-thaqafatul Arabiyyatu Fi Nayjīriyya",
+    "Shayku Ahamadu Saidu Galadanchi, Harakatul Lughatil Arabiyya Fi Nayjirriyya",
+    "Uthman Abduls-Salam Muhammad (Al-thaqafi), Tarikhul Adabil-Arabiyy Fi Madinati",
+    "Zakariyah Husayn, An-Nujõmul Mubtasimah",
+    "Assheikh Adam Abdullahi Al-Iloriyy, Al-Islām Fi Nayjīyya Was-Sheikh Uthman Bn Fudi",
+    "Mbaya Bn kayba Kāh, AlMadaniyyāt Fil-Muhāwalātis-Shiiriyyā"
+  ]
+}

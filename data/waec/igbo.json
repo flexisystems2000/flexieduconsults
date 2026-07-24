@@ -1,0 +1,92 @@
+{
+  "subject": "Igbo",
+  "preamble": "A sound knowledge of the Igbo language, literature and culture is a fundamental need for all who desire the comprehensive knowledge of the Igbo people. Based on this, the Igbo syllabus is designed for candidates studying Igbo. Adequate care has been taken to ensure that candidates go through the rubrics of the Igbo language. The syllabus covers such important areas of the language as the sound system, grammar, culture, worldview, etc.",
+  "objectives_of_the_syllabus": [
+    "To enable candidates to speak, read and write Igbo properly and communicate effectively in it;",
+    "To familiarize them with the sound system, grammatical structures and other features of the Igbo language;",
+    "To expose the candidates to Igbo culture - customs, institutions, worldview, etc;",
+    "To provide them with the necessary tools needed for creative writing and appreciation of Igbo language and literature."
+  ],
+  "scheme_of_examination": {
+    "description": "The examination shall consist of two papers, Papers 1 and 2; both of which shall constitute a composite paper and shall be taken at one sitting. The rubrics of the papers shall be written in Igbo. Candidates will be required to answer all the questions in Igbo using the standard orthography metalanguage.",
+    "paper_1": {
+      "description": "PAPER 1 will consist of sixty multiple choice objective questions all of which should be answered within 1 hour for 60 marks. The paper will have three sections, Sections A, B and C.",
+      "sections": {
+        "section_a_language": {
+          "description": "This will contain thirty multiple choice questions on language distributed as follows:",
+          "items": [
+            "Comprehension (2 short passages) - 10 items",
+            "Composition/letter writing - 4 items",
+            "Sound system - 6 items",
+            "Grammar - 6 items",
+            "Translation - 4 items"
+          ]
+        },
+        "section_b_literature": {
+          "description": "Will contain twenty-two multiple choice questions on literature distributed as follows:",
+          "items": [
+            "Basic Principles of Literary Appreciation - 4 items",
+            "Oral Literature: Prose (3 items), Poetry (3 items), Drama (3 items)",
+            "Written Literature: Prose (3 items), Poetry (3 items), Drama (3 items)"
+          ]
+        },
+        "section_c_culture": {
+          "description": "Will contain eight multiple choice questions on culture distributed as follows:",
+          "items": [
+            "Customs - 4 items",
+            "Institutions - 4 items"
+          ]
+        }
+      }
+    },
+    "paper_2": {
+      "description": "PAPER 2 will be a composition test and will also have three sections, Section A, B and C. Candidates will be required to answer six out of the total of thirteen questions to be made available. The paper will take 2 hours to complete and carry 100 marks.",
+      "sections": {
+        "section_a_essay": {
+          "description": "This section will consist of three parts: Part I (Composition/Letter writing), Part II (Sound System), Part III (Grammar).",
+          "part_1_composition_letter_writing": "Five topics from essay types (Narrative, Descriptive, Argumentative, Expository, Dialogue, Debate, Letter writing); candidates write on one in about 300 words. Recommended max time: 45 minutes.",
+          "part_2_sound_system": "Two questions set, answer one. Tests Igbo Phonemes (vowels, consonants, syllabic nasal, production, classification), Syllable Structure, Sound Processes (vowel harmony, vowel assimilation, vowel elision, consonants elision), Tone and tone notation, The Igbo alphabet.",
+          "part_3_grammar": "Two questions set, answer one. Tests Spelling rules, Word formation, Igbo dialects and Standard Igbo, Loan words, Igbo metalanguage (new words), Word classes, Grammatical categories, Phrases and Clauses, Sentences, Lexis and Structure, Punctuation marks."
+        },
+        "section_b_literature": {
+          "description": "This section will consist of two parts, Parts I and II based on prescribed texts.",
+          "part_1_oral_literature": "Three questions set, answer one. Covers definition and characteristics, classification and functions, literary devices, folktales (ifo), anecdotes (ukabuilu), legends, myths, poems, songs, proverbs, riddles, chants, oral drama, tongue twisters.",
+          "part_2_written_literature": "Three questions set, attempt only one."
+        },
+        "section_c_culture": {
+          "description": "Two questions set on culture, candidates attempt only one. Covers Customs (Omenala) and Institutions (Ewumewu)."
+        }
+      }
+    }
+  },
+  "list_of_igbo_texts_2016_2020": {
+    "oral": [
+      "Ezennxnxs",
+      "Qka Mgba"
+    ],
+    "prose": [
+      "Xwa Adighị Ka Echere (Kanụgozi F.)",
+      "Agụgü M.O.",
+      "Eke Na Egwurugwu (Nwadike I.U.)",
+      "Iroaganachi J."
+    ],
+    "poetry": [
+      "Abụ Akwamaozu (Ọzọchukwu S)",
+      "Mbem na Egwu Igbo (Ọgbala F.C.)",
+      "Ndidi Amaka (Okoro C.L)",
+      "Anụ Gbaa Ajọqsụ (Ọfọmata C.)",
+      "Xwa Bụ Agha (Nwadike I.U.)",
+      "Ọdịkona Mba (Okebalama C.N.)",
+      "Oke Soro Ngwere (Okechukwu Ihejirika)",
+      "Akọ na Uche (Echebima G.N)",
+      "Akọnuche (Nwadike I.U)"
+    ],
+    "drama": [
+      "Nke M Ji Ka Nwaozuzu G.L.",
+      "Amaghị Igbo Asụsụ Oyibo (Okeke C.)",
+      "Nka Dị na Ntị (Okoro Emeka)",
+      "Afere (Chukwuemeka O.)",
+      "Ka Ọ dị Ma Nke A..... (Agụgü M.O.)"
+    ]
+  }
+}

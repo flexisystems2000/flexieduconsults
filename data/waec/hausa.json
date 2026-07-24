@@ -1,0 +1,240 @@
+{
+  "subject": "Hausa",
+  "scheme_of_examination": {
+    "summary": {
+      "paper_1": "60 marks",
+      "paper_2": "100 marks",
+      "maximum_marks_obtainable": "160 marks (to be scaled down to 100%)"
+    },
+    "papers": [
+      {
+        "paper_number": 1,
+        "description": "Multiple choice objective test which will last 1 hour and carry 60 marks.",
+        "sections": [
+          {
+            "section_letter": "A",
+            "section_title": "LANGUAGE",
+            "total_items": 30,
+            "breakdown": {
+              "comprehension": "10 items (2 short passages)",
+              "composition_letter_writing": "4 items",
+              "sound_system": "6 items",
+              "grammar": "6 items",
+              "translation": "4 items"
+            }
+          },
+          {
+            "section_letter": "B",
+            "section_title": "LITERATURE",
+            "total_items": 22,
+            "breakdown": {
+              "basic_principles_of_literary_appreciation": "4 items",
+              "oral_literature": {
+                "prose": "3 items",
+                "poetry": "3 items",
+                "drama": "3 items"
+              },
+              "written_literature": {
+                "prose": "3 items",
+                "poetry": "3 items",
+                "drama": "3 items"
+              }
+            }
+          },
+          {
+            "section_letter": "C",
+            "section_title": "CULTURE",
+            "total_items": 8,
+            "breakdown": {
+              "customs": "4 items",
+              "institutions": "4 items"
+            }
+          }
+        ]
+      },
+      {
+        "paper_number": 2,
+        "description": "Essay test in three sections (Sections A, B, and C) with rubrics written in Hausa. Will take 2 hours and carry 100 marks.",
+        "instructions": "Candidates will be required to answer six questions: three from Section A, two from Section B, and one from Section C, using official Hausa orthography and appropriate metalanguage.",
+        "weighting": {
+          "composition_letter_writing": "25 marks",
+          "other_five_questions": "75 marks (15 marks each)",
+          "total": "100 marks"
+        },
+        "sections": [
+          {
+            "section_letter": "A",
+            "section_title": "LANGUAGE",
+            "subsections": [
+              {
+                "title": "Composition and Letter Writing",
+                "description": "Essay of about 300 words (max 45 minutes).",
+                "topics": [
+                  "Narrative (Insha'i Na Labari)",
+                  "Descriptive (Insha'i Na Siffance)",
+                  "Argumentative (Insha'i Na Muhawara)",
+                  "Expository (Insha'i Na Bayani)",
+                  "Dialogue (Muhawara ta kai tsaye)",
+                  "Proverbial (Karin Magana)",
+                  "Letter Writing (Rubutun Wasika)"
+                ]
+              },
+              {
+                "title": "Sound System (Tsarin Sauti)",
+                "topics": [
+                  "Consonants, Vowels and Syllable Structure (Furucin bakake da wasula da kirar gaba)",
+                  "Structure of Syllable (Tsarin gaba)",
+                  "Types of Syllable (ire-iren gaba): open syllable (budaddiyar gaba), close syllable (rufaffiyar gaba)",
+                  "Vowel production (furucin Wasula): vowel length, diphthongs",
+                  "Tone (Karin Sauti): High tone, Low tone, Falling tone"
+                ]
+              },
+              {
+                "title": "Grammar (Nahawu)",
+                "topics": [
+                  "Word Structure And Word Formation (Ginin kalmomi): Root, Affix, Prefix, Infix, Suffix",
+                  "Word Classes (Azuzuwan kalmomi): Noun, Verb, Adjective, Adverb, Pronoun, Conjunction, Specifier, Quantifier, Demonstrative, Ideophone, Diminutive, Stabilizer, Referential",
+                  "Grammatical Categories (Rukunonin Nahawu): Tense and Aspect, Negative, Gender, Number",
+                  "The structure and Types of Sentences (Tsari da ire-iren jumloli): Subject and predicate, Simple sentence, Complex sentence, Compound sentence"
+                ]
+              }
+            ]
+          },
+          {
+            "section_letter": "B",
+            "section_title": "LITERATURE",
+            "description": "Oral and Written Literature. Candidates attempt two questions: one from Oral Literature and one from Written Literature.",
+            "subsections": [
+              {
+                "category": "Oral Literature",
+                "genres": [
+                  "Prose (Tatsuniya da tarihihi da Karin Magana da Ka-Cinci-Ka-Cinci)",
+                  "Poetry (Wakokin Baka)",
+                  "Drama (Wasannin Gargajiya)"
+                ]
+              },
+              {
+                "category": "Written Literature",
+                "genres": [
+                  "Prose (Zube)",
+                  "Poetry (Rubutattun wakoki)",
+                  "Drama (Wasan kwaikwayo)"
+                ]
+              }
+            ]
+          },
+          {
+            "section_letter": "C",
+            "section_title": "CULTURE",
+            "description": "Customs and Institutions. Two questions set, one to be answered.",
+            "topics": [
+              "Greeting (Gaisuwar ban girma, Gaisuwar taya murna, Gaisuwar lokatai, Jaje, Ta'aziyya)",
+              "Tarbiyya (Hanyoyin tarbiyya, Girmama iyaye, Girmama na gaba, Girmama tsara, Da'a ga hukuma)",
+              "Hospitality (karimci): Girmama bako, Kyauta, Ciyarwa, Sadaka",
+              "Family (Iyali): Al'adun Aure, Haihuwa, Radin Suna, Reno, Yaye, Kaciya, Zumunci, Al'adun Mutuwa",
+              "Traditional Beliefs and Practices (camfi, bori, duba, tsibbu, maita, fatalwa, d.s.)",
+              "Traditional Occupations (Noma, Kira, Saka, Jima, Wanzanci, Kitso, Sassaka, Kiwo, Dukanci, Fawa, Su, Rini, Kasuwanci, Dillanci)",
+              "Traditional Medicine (Magungunan gargajiya)",
+              "Traditional Authority and office holding (sarautun gargajiya)",
+              "Forms of Traditional Recreation (Wasannin dandali): Dambe, Kokawa, Kalankuwa, Shanci, Sukuwa, Hawan kaho"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "set_books_and_references": {
+    "language_sound_system_and_grammar_reference": [
+      {
+        "title": "Tsarin Sauti Da Nahawun Hausa",
+        "author": "Sani, M. A. Z.",
+        "publisher": "U.P. Plc, Ibadan, 1999"
+      },
+      {
+        "title": "Exam Focus Hausa Language",
+        "author": "Sani, M. A. Z. et al.",
+        "publisher": "U.P. Plc, Ibadan, 2000"
+      },
+      {
+        "title": "Darussan Hausa 1 - 3",
+        "author": "Yahaya, I. Y. et al.",
+        "publisher": "U.P. Plc, Ibadan, 1992"
+      }
+    ],
+    "oral_literature": [
+      {
+        "genre": "Prose",
+        "title": "Labarun Gargajiya 2",
+        "author": "Yahaya, I. Y.",
+        "publisher": "O.U.P. Zaria 1977"
+      },
+      {
+        "genre": "Poetry",
+        "title": "Kowa Ya Sha Kida",
+        "author": "Muhammad, S. I.",
+        "publisher": "Longman Nigeria Plc Lagos reprint 2003"
+      },
+      {
+        "genre": "Drama",
+        "title": "Wasannin Tashe A Kasar Hausa",
+        "author": "Umar, M. B.",
+        "publisher": "NNPC Zaria, 1980"
+      }
+    ],
+    "written_literature": [
+      {
+        "genre": "Prose",
+        "title": "Nagari Na Kowa",
+        "author": "Jabiru, A.",
+        "publisher": "NNPC, Zaria reprint 2004"
+      },
+      {
+        "genre": "Poetry",
+        "title": "Ciza ka Busa",
+        "author": "Ismaila, J.",
+        "publisher": "Longman Nig Plc Lagos, reprint 2002"
+      },
+      {
+        "genre": "Drama",
+        "title": "Zamanin Nan Namu",
+        "author": "Shu'aibu, M.",
+        "publisher": "NNPC, Zaria, reprint 1983"
+      }
+    ],
+    "reference_texts": [
+      {
+        "title": "Jagoran Nazarin Kagaqqun Labarai",
+        "author": "Mukhtar, I.",
+        "publisher": "A.J. Publishers, Kano, 2002"
+      },
+      {
+        "title": "Rabe-raben Adabi Da Muhimmancinsa",
+        "author": "Dangambo, A.",
+        "publisher": "Truimp Publishing Company, Kano, 1984"
+      },
+      {
+        "title": "Harshe Da Adabin Hausa A Kamalle",
+        "author": "Ismaila, J. and Tanimu, M. Y.",
+        "publisher": "Spectrum Books, Ibadan, 2007"
+      },
+      {
+        "title": "Rayuwar Hausawa",
+        "publisher": "CSNL/BUK, Nelson Lagos, 1980"
+      },
+      {
+        "title": "Hausa Customs",
+        "author": "Madauci, I. et al.",
+        "publisher": "NNPC, Zaria, 1970"
+      },
+      {
+        "title": "Labaru Na Da Da Na Yanzu",
+        "publisher": "NNPC, 1985"
+      },
+      {
+        "title": "Zaman Mutum Da Sana'arsa",
+        "author": "E. M. Rimmer, et al.",
+        "publisher": "NNPC, Zaria, reprint 2002"
+      }
+    ]
+  }
+}

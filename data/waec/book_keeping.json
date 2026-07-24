@@ -1,0 +1,228 @@
+{
+  "subject": "Book Keeping",
+  "preamble": "The Book Keeping syllabus is designed to assess the candidates' basic knowledge of business activities and understanding of financial system for the purpose of establishing a business and laying a good foundation for further studies.",
+  "aim_and_objectives": [
+    "knowledge of basic skills required to start a business;",
+    "ability to appreciate the rules and functions of book keeping;",
+    "ability to apply the basic knowledge and skills in Book Keeping to modern business activities."
+  ],
+  "examination_scheme": {
+    "description": "There will be two papers, Papers 1 and 2, both of which will be a composite paper to be taken at one sitting.",
+    "paper_1": "Will consist of forty multiple choice questions all of which must be answered in 50 minutes for 40 marks.",
+    "paper_2": {
+      "description": "Will consist of two sections, Sections A and B as follows:",
+      "section_a": "Will cover Theory of Book-Keeping and contain four questions. Candidates will be required to answer two for 20 marks.",
+      "section_b": "Will cover Practice of Book-Keeping and contain five questions. Candidates will be required to answer three for 60 marks. The paper will last 2 hours."
+    }
+  },
+  "detailed_syllabus": [
+    {
+      "topic_number": 1,
+      "topic": "Introduction to Book Keeping",
+      "notes": [
+        "1.1 Meaning of Book Keeping: definition, history, nature, importance and functions of book keeping; career opportunities and beneficiaries of book keeping; qualities and values of book keepers.",
+        "1.2 Assets and Liabilities: definition, differences, classification and examples of Assets and Liabilities.",
+        "1.3 Business Transactions: meaning and types of business transactions; parties involved in business transactions.",
+        "1.4 Classification of Accounts: personal accounts (debtors and creditors); Impersonal accounts (real and nominal).",
+        "1.5 Source Documents: definition, identification, types and uses of source documents."
+      ]
+    },
+    {
+      "topic_number": 2,
+      "topic": "Concepts and Conventions",
+      "notes": [
+        "Definition, identification and the differences between concepts and conventions."
+      ]
+    },
+    {
+      "topic_number": 3,
+      "topic": "Books of Original Entry",
+      "notes": [
+        "Definition, purpose, types, format, uses and preparation of Books of Original entry"
+      ]
+    },
+    {
+      "topic_number": 4,
+      "topic": "Ledger and Principles of Double Entry",
+      "notes": [
+        "4.1 Ledger: definition, classification, format, uses and preparation of ledgers.",
+        "4.2 Principles of Double Entry: meaning, history, rules and making double entries."
+      ]
+    },
+    {
+      "topic_number": 5,
+      "topic": "Cash Book",
+      "notes": [
+        "Meaning, purpose, description, differences and preparation of:",
+        "single column;",
+        "double column;",
+        "three column;",
+        "petty cash book."
+      ]
+    },
+    {
+      "topic_number": 6,
+      "topic": "Bank Reconciliation Statement",
+      "notes": [
+        "meaning and purpose",
+        "terminologies and banking documents",
+        "causes of differences between cash book and bank statement balance"
+      ]
+    },
+    {
+      "topic_number": 7,
+      "topic": "Trial Balance and Errors",
+      "notes": [
+        "meaning and functions of trial balance;",
+        "rules and preparation of trial balance;",
+        "meaning, types, classification of errors;",
+        "correction of errors and preparation of Suspense Account."
+      ]
+    },
+    {
+      "topic_number": 8,
+      "topic": "Financial Statements of Sole Proprietorship",
+      "notes": [
+        "8.1 Trading Account: definition, purpose, format and preparation of simple Trading Account; methods of valuing stock (FIFO and LIFO).",
+        "8.2 Profit and Loss Account: definition, purpose, format and preparation of Profit and Loss Account;",
+        "8.3 Balance Sheet: meaning, content, format and preparation of a simple balance sheet."
+      ]
+    },
+    {
+      "topic_number": 9,
+      "topic": "Adjustments to Financial Statements",
+      "notes": [
+        "9.1 Adjustment for prepayments, accruals, depreciation, bad and doubtful debts;",
+        "9.2 Meaning and methods of depreciation (straight line and reducing balance)."
+      ]
+    },
+    {
+      "topic_number": 10,
+      "topic": "Control Accounts",
+      "notes": [
+        "Meaning and preparation of Sales Ledger and Purchases Ledger Control Accounts."
+      ]
+    },
+    {
+      "topic_number": 11,
+      "topic": "Single Entry and Incomplete Records",
+      "notes": [
+        "Meaning, limitations and preparation of final accounts from incomplete records"
+      ]
+    },
+    {
+      "topic_number": 12,
+      "topic": "Accounts of Not-For-Profit Making organizations",
+      "notes": [
+        "Purpose, content and preparation of Receipts and Payments Accounts, Income and Expenditure Account."
+      ]
+    },
+    {
+      "topic_number": 13,
+      "topic": "Manufacturing Accounts",
+      "notes": [
+        "meaning, purpose and terminologies;",
+        "preparation of Manufacturing, Trading, Profit and Loss Accounts."
+      ]
+    },
+    {
+      "topic_number": 14,
+      "topic": "Partnership Accounts",
+      "notes": [
+        "meaning and terms: partnership deed, drawings, interest on capital, interest on drawings;",
+        "preparation of Capital and Current Accounts, Profit and Loss and Appropriation Account and Balance Sheet;",
+        "admission of new partners and Goodwill Account."
+      ]
+    },
+    {
+      "topic_number": 15,
+      "topic": "Joint Venture Accounts",
+      "notes": [
+        "meaning and purpose;",
+        "differences between joint venture and partnership."
+      ]
+    },
+    {
+      "topic_number": 16,
+      "topic": "Departmental and Branch Accounts",
+      "notes": [
+        "importance and differences;",
+        "preparation of Departmental and simple Branch Accounts."
+      ]
+    },
+    {
+      "topic_number": 17,
+      "topic": "Introduction to Company Accounts",
+      "notes": [
+        "formation and terminologies;",
+        "preparation of simple financial statements."
+      ]
+    },
+    {
+      "topic_number": 18,
+      "topic": "Interpretation of Accounts",
+      "notes": [
+        "Purpose and computation of ratios: net profit margin; stock turnover; quick ratio; acid test ratio; gross profit margin; return on capital employed."
+      ]
+    },
+    {
+      "topic_number": 19,
+      "topic": "Purchase of Business",
+      "notes": [
+        "Reasons, terminologies and preparation of accounts related to purchase and sale of business."
+      ]
+    },
+    {
+      "topic_number": 20,
+      "topic": "Consignment Accounts",
+      "notes": [
+        "Terminologies and preparation of simple Consignment Accounts."
+      ]
+    },
+    {
+      "topic_number": 21,
+      "topic": "Hire Purchase",
+      "notes": [
+        "Meaning and preparation of accounts in the seller's and hirer's books."
+      ]
+    },
+    {
+      "topic_number": 22,
+      "topic": "Contract Accounts",
+      "notes": [
+        "meaning, purpose and terminologies;",
+        "preparation of Contract Accounts."
+      ]
+    },
+    {
+      "topic_number": 23,
+      "topic": "Cooperative Accounts",
+      "notes": [
+        "Meaning and objectives of cooperative societies."
+      ]
+    }
+  ],
+  "note": "Emphasis should be on application",
+  "suggested_reading_list": [
+    {
+      "title": "Business Accounting Vol.1 and 2",
+      "author": "F. Wood"
+    },
+    {
+      "title": "Book-keeping and Accounts (ELBS)",
+      "author": "Spicer & Peggler"
+    },
+    {
+      "title": "Introduction to Accounting for Business Studies",
+      "author": "F.P. Langley"
+    },
+    {
+      "title": "Accounting I and II",
+      "author": "Jennings"
+    },
+    {
+      "title": "Essential Financial Accounting for Senior Secondary School",
+      "author": "O.A Longe and R.A. Kezeem"
+    }
+  ]
+}

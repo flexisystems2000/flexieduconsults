@@ -1,0 +1,356 @@
+{
+  "subject": "CIVIC EDUCATION",
+  "preamble": "This syllabus aims at assessing the candidate's ability to understand the importance of citizenship in the society; explain the structure, functions and responsibilities of government to the people; know emerging issues in the society; understand the rights, duties and obligations of citizens to government and society; and appreciate democratic values and strive to uphold them.",
+  "objectives": [
+    "Understand the importance of citizenship in the society.",
+    "Explain the structure, functions and responsibilities of government to the people.",
+    "Know emerging issues in the society.",
+    "Understand the rights, duties and obligations of citizens to government and society.",
+    "Appreciate democratic values and strive to uphold them."
+  ],
+  "examination_scheme": {
+    "summary": "There will be two papers, Paper 1 and Paper 2; both of which will be in a composite paper and will be taken at one sitting.",
+    "papers": [
+      {
+        "paper": "Paper 1",
+        "title": "Multiple Choice Objective Test",
+        "duration": "1 hour",
+        "marks": "40 marks",
+        "details": "This will be a 1-hour multiple choice test consisting of fifty questions drawn from the entire syllabus and will carry 40 marks."
+      },
+      {
+        "paper": "Paper 2",
+        "title": "Essay Paper",
+        "duration": "2 hours",
+        "marks": "60 marks",
+        "details": "This paper will be a 2-hour essay type test consisting of three sections: Sections A, B, C. Each section shall contain three questions. Candidates will be required to answer four questions choosing at least one from each Section. The paper will carry 60 marks."
+      }
+    ]
+  },
+  "syllabus_content": [
+    {
+      "section_title": "SECTION A: NATIONAL ETHICS, DISCIPLINE, RIGHTS AND OBLIGATIONS",
+      "topics": [
+        {
+          "topic_number": 1,
+          "title": "Values",
+          "details": [
+            "(1) definition,",
+            "(2) types,",
+            "(3) importance of values to the society."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 2,
+          "title": "Citizenship and Nationalism",
+          "details": [
+            "(1) meaning of citizenship;",
+            "(2) meaning of citizenship education;",
+            "(3) goals of citizenship education;",
+            "(4) duties and obligations of citizens;",
+            "(5) meaning of nationalism;",
+            "(6) ways of promoting national consciousness, integrity and unity in the society;",
+            "(7) the nationalistic roles of individual and groups;",
+            "(8) identification of local and world civic problems."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 3,
+          "title": "Human Rights",
+          "details": [
+            "(1) meaning of human rights;",
+            "(2) categories of human rights;",
+            "(3) characteristics of human rights;",
+            "(4) meaning and historical background of the Universal Declaration of Human Rights (UDHR);",
+            "(5) meaning and identification of the seven core freedoms of UDHR;",
+            "(6) importance of UDHR;",
+            "(7) roles of individual, groups and government in UDHR;",
+            "(8) limitations to the exercise of human rights."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 4,
+          "title": "Law and Order",
+          "details": [
+            "(1) definition of Law and Order;",
+            "(2) features of Law and Order;",
+            "(3) importance of Law and Order in the society;",
+            "(4) meaning of constituted authority;",
+            "(5) types of constituted authority;",
+            "(6) importance and roles of constituted authority."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 5,
+          "title": "Responsible Parenthood",
+          "details": [
+            "(1) meaning of responsible parenthood;",
+            "(2) roles of responsible parents;",
+            "(3) importance of responsible parenthood in national development."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 6,
+          "title": "Traffic Regulations",
+          "details": [
+            "(1) meaning of traffic regulations;",
+            "(2) traffic regulation and its importance in the society;",
+            "(3) the roles of the individual and government in maintaining traffic regulations."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 7,
+          "title": "Inter-Personal Relationships",
+          "details": [
+            "(1) meaning of inter-personal relationships;",
+            "(2) types of interpersonal relationships;",
+            "(3) skills that promotes interpersonal relationships;",
+            "(4) meaning of inter communal relationships;",
+            "(5) importance of inter communal relationships;",
+            "(6) meaning of inter-communal conflicts;",
+            "(7) skills for resolving inter-communal conflicts."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "SECTION B: EMERGING ISSUES IN THE SOCIETY",
+      "topics": [
+        {
+          "topic_number": 8,
+          "title": "Cultism",
+          "details": [
+            "(1) meaning and origin of cultism;",
+            "(2) different cult groups in Nigeria and their symbols;",
+            "(3) reasons for cultism;",
+            "(4) consequences of cultism;",
+            "(5) ways of preventing cultism in the society."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 9,
+          "title": "Drugs and Drug Abuse",
+          "details": [
+            "(1) meaning of drug abuse;",
+            "(2) drugs that can be abused;",
+            "(3) how drugs are abused;",
+            "(4) symptoms of drug abuse;",
+            "(5) behaviours of drug addicts;",
+            "(6) ways of preventing drug abuse;",
+            "(7) government agencies working to prevent drug abuse/trafficking and their activities;",
+            "(8) laws against drug abuse."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 10,
+          "title": "Human Trafficking",
+          "details": [
+            "(1) meaning of human trafficking;",
+            "(2) causes of human trafficking;",
+            "(3) effects and consequences of human trafficking;",
+            "(4) efforts of government and individuals in stopping human trafficking."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 11,
+          "title": "HIV/AIDS",
+          "details": [
+            "(1) meaning of HIV/AIDS;",
+            "(2) causes of HIV/AIDS;",
+            "(3) symptoms and effects of HIV/AIDS;",
+            "(4) prevention of HIV/AIDS;",
+            "(5) stigmatization of people living with HIV/AIDS."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 12,
+          "title": "Youth Empowerment",
+          "details": [
+            "(1) meaning of youth empowerment;",
+            "(2) youth empowerment skills;",
+            "(3) importance and benefits of youth empowerment skills;",
+            "(4) efforts of government towards youth empowerment."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "section_title": "SECTION C: GOVERNMENTAL SYSTEM AND PROCESSES",
+      "topics": [
+        {
+          "topic_number": 13,
+          "title": "Structure and Functions of Government",
+          "details": [
+            "(1) meaning of government;",
+            "(2) structure/tiers of government;",
+            "(3) functions of government."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 14,
+          "title": "Democracy, Rule of Law and National Development",
+          "details": [
+            "(1) meaning, types, and features of democracy;",
+            "(2) importance of democracy;",
+            "(3) pillars of democracy;",
+            "(4) problems of democracy;",
+            "(5) meaning of rule of law;",
+            "(6) features of rule of law;",
+            "(7) importance of rule of law;",
+            "(8) problems of rule of law;",
+            "(9) meaning of national development;",
+            "(10) how democracy and Rule of law promote national development- good governance, employment creation and poverty alleviation etc."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 15,
+          "title": "Political Apathy",
+          "details": [
+            "(1) meaning of political apathy;",
+            "(2) causes of political apathy;",
+            "(3) consequences of political apathy;",
+            "(4) why leaders fail to protect the interests of their followers;",
+            "(5) how leaders can protect the interests of their followers;",
+            "(6) ways of discouraging political apathy."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 16,
+          "title": "Civil Society and Popular Participation",
+          "details": [
+            "(1) meaning of popular participation;",
+            "(2) types of popular participation;",
+            "(3) the need for popular participation in the society;",
+            "(4) traditional and modern modes of popular participation;",
+            "(5) achieving popular participation in politics;",
+            "(6) meaning of civil society;",
+            "(7) functions/need for civil society;",
+            "(8) qualities / characteristics of civil society; i.e. accountability, fairness, justice, equity etc.;",
+            "(9) problems of civil society; i.e. bribery and corruption, inadequate funding, over bearing influence of foreign donors etc."
+          ],
+          "subsections": []
+        },
+        {
+          "topic_number": 17,
+          "title": "Public Service in Democracy",
+          "details": [
+            "(1) meaning of public service;",
+            "(2) functions of public service;",
+            "(3) problems of public service;",
+            "(4) reasons for the shortcomings in the public service;",
+            "(5) ways of improving the public service."
+          ],
+          "subsections": []
+        }
+      ]
+    }
+  ],
+  "appendices": [],
+  "reading_list": [
+    {
+      "author": "ADAMOLEKUN, L.",
+      "title": "Politics and Administration in Nigeria",
+      "publisher_year": "Ibadan: Spectrum Books Ltd, 1986."
+    },
+    {
+      "author": "ADEBAYO, A.",
+      "title": "Principles and Practice of Public Administration in Nigeria",
+      "publisher_year": "Ibadan: Spectrum Books Ltd, 2000."
+    },
+    {
+      "author": "ANIFOWOSE, R. & F. ENEMUO (eds)",
+      "title": "Elements of Politics",
+      "publisher_year": "Lagos: Sam Iroanusi Publications, 1999"
+    },
+    {
+      "author": "APPADORAI A.",
+      "title": "The Substance of Politics, Eleventh Edition",
+      "publisher_year": "Madras: Oxford University Press, 1975."
+    },
+    {
+      "author": "BANJI, K.",
+      "title": "Citizenship Education",
+      "publisher_year": "Lagos: Dedun Educational Books, 1976."
+    },
+    {
+      "author": "FGN",
+      "title": "1999 Constitution of Federal Republic of Nigeria as Amended",
+      "publisher_year": "Abuja: Federal Government Press, 2011."
+    },
+    {
+      "author": "LEAP AFRICA",
+      "title": "Rage for Change, a Guide for Young Nigerians who Desire to Make a Difference",
+      "publisher_year": "Lagos: Leap Africa, 2008."
+    },
+    {
+      "author": "MENEKE, O.A. and NWEBO, L",
+      "title": "Milestone Comprehensive Civic Education for Senior Secondary Schools, Books 1 & 2",
+      "publisher_year": "Owerri: Milestone Publishers Limited, 2012."
+    },
+    {
+      "author": "NWAUBANI, O.O.",
+      "title": "Citizenship Education and Nigerian Culture",
+      "publisher_year": "Lagos: T-Excel Publishers, 2000."
+    },
+    {
+      "author": "OGUNBAMERUN, O.A.",
+      "title": "Reading on Campus Secret Acts",
+      "publisher_year": "Ile-ife: O.A.U Press Ltd, 1997."
+    },
+    {
+      "author": "OKUNLOYE, R.W., et al",
+      "title": "Civic Education for Senior Secondary, Books 1, 2 & 3, UBE Edition",
+      "publisher_year": "Lagos: Learn Africa PLC, 2011."
+    },
+    {
+      "author": "OLURODE, L. & O. SOYOMBO (eds)",
+      "title": "Readings in Campus Violence",
+      "publisher_year": "Lagos: John West Publications Ltd, 2004."
+    },
+    {
+      "author": "ONI, E.O., et al",
+      "title": "Straight-Gate Civic Education for Senior Secondary Schools, Books 1 & 2",
+      "publisher_year": "Ibadan: Straight-Gate Publishers Ltd, 2012."
+    },
+    {
+      "author": "OYEDIRAN, O., et al.",
+      "title": "Government For Senior Secondary Schools",
+      "publisher_year": "Lagos: Longman Nig Ltd, 1990."
+    },
+    {
+      "author": "OYEDIRAN, O.",
+      "title": "Introduction to Political Science",
+      "publisher_year": "Ibadan: Oyediran Consults International, 1998."
+    },
+    {
+      "author": "TANYA, R.H.",
+      "title": "HIV/AIDS: Hope in the Midst of Despair",
+      "publisher_year": "Lagos: Megarona (West Africa) Ltd, 2005."
+    },
+    {
+      "author": "UKEGBU, M.N., et al.",
+      "title": "Basic Civic Education for Senior Secondary Schools, SS 2",
+      "publisher_year": "Owerri: Maybiks Nigeria Publisher."
+    },
+    {
+      "author": "UNO",
+      "title": "Human Right: the International Bill of Human Rights",
+      "publisher_year": "New York: United Nations Organization, 1993."
+    }
+  ]
+}
