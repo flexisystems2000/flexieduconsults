@@ -1,337 +1,139 @@
 {
-  "subject": "VISUAL ART",
-  "preamble": "The syllabus is intended to provide candidates with the opportunity to demonstrate the extent of their aesthetic awareness, emotional and visual development through self-participatory creative activities.",
-  "objectives": [
-    "Assess candidates' development of deep sense of observation, analytical and expressive skills through a variety of self-participatory art activities.",
-    "Assess candidates' knowledge and skills in the use and maintenance of art tools, equipment and materials.",
-    "Assess candidates' level of appreciation of values and qualities of different works of art, including indigenous material culture.",
-    "Assess candidates' understanding and creative application of design elements and principles.",
-    "Assess candidates' knowledge of the history and branches of Art.",
-    "Assess candidates' knowledge and appreciation of the relationship between African Art and Western Art.",
-    "Assess candidates' understanding of the meaning, significance and role of art in socio-economic development and self-reliance.",
-    "Assess candidates' understanding and application of indigenous and modern technology in art.",
-    "Assess candidates' creative skills in the improvisation of local materials and resources.",
-    "Assess candidates' understanding of the relevance of art in other subjects areas.",
-    "Assess candidates' level of exposure to careers in art."
+  "subject": "Visual Art",
+  "preamble": "The Visual Art syllabus is designed to evaluate candidates' aesthetic awareness, creative expression, emotional and visual development through self-participatory art activities. It encompasses general principles of art, West African art history and culture, Pre-historic and Western art historical traditions, as well as practical proficiency across 2-Dimensional design, 3-Dimensional design, and studio drawing.",
+  "aims": [
+    "Assess candidates' observation, analytical, and expressive skills through self-participatory creative activities;",
+    "Evaluate knowledge and skills in using, improvising, and maintaining art tools, equipment, and local materials;",
+    "Appreciate the cultural values and artistic qualities of indigenous, West African, and global works of art;",
+    "Examine understanding and creative application of design elements, art principles, perspective, and technological developments;",
+    "Evaluate understanding of the historical, socio-economic, interdisciplinary, and career relevance of visual art."
+  ],
+  "requirements": [
+    "Candidates must take all three papers: Paper 1 (Objective), Paper 2 (Essay), and Paper 3 (Practical Test). Papers 1 and 2 are taken at a single composite sitting.",
+    "For Paper 3 (Practical), May/June diet candidates answer Section A (Drawing) and either Section B (2D) or Section C (3D). November/December diet candidates answer Sections A and B only.",
+    "Section C (3-Dimensional Creative Design) involves a studio project executed over a 6-month period, where preliminary notes, working drawings, and diagrams constitute 10% of the total marks."
   ],
   "examination_scheme": {
-    "summary": "The examination consists of three papers: Papers 1, 2, and 3 all of which must be taken. Papers 1 and 2 will be combined in a composite paper and will be taken at one sitting.",
+    "summary": "The examination consists of three compulsory papers assessing general objective recall, historical and analytical essay writing, and practical studio skill performance across drawing, 2D design, and 3D craft/sculpture.",
     "papers": [
       {
         "paper": "Paper 1",
-        "title": "Multiple Choice Objective Test",
+        "title": "Objective Test",
         "duration": "50 minutes",
-        "marks": "40 marks",
-        "details": "This paper will contain forty multiple choice objective questions to be taken in 50 minutes for 40 marks."
+        "marks": "40",
+        "details": "Consists of forty multiple-choice objective questions covering general knowledge in art, art history, tools, and principles."
       },
       {
         "paper": "Paper 2",
-        "title": "Essay Paper",
+        "title": "Essay Test",
         "duration": "2 hours",
-        "marks": "60 marks",
-        "details": "Will consist of three sections: Sections A, B and C. Section A: General knowledge in art; Section B: Art of West Africa; Section C: Pre-historic art, Ancient Egyptian art and Western Art. The paper will contain a total of eight essay questions. Candidates will be required to answer four questions choosing one question from Section A, two from Section B and one question in Section C."
+        "marks": "60",
+        "details": "Consists of eight essay questions divided into three sections: Section A (General Knowledge in Art), Section B (Art of West Africa), and Section C (Pre-historic, Ancient Egyptian, and Western Art). Candidates answer four questions: one from Section A, two from Section B, and one from Section C."
       },
       {
         "paper": "Paper 3",
         "title": "Practical Test",
         "duration": "Varies by section",
-        "marks": "300 marks total (100 marks per section attempted)",
-        "details": "The paper shall have three sections: Sections A, B and C. Candidates for the May/June diet shall answer questions in Section A and those in either Section B or C. Those for the November/December diet shall answer questions in Sections A and B only. Section A (Drawing): 3 hours, 100 marks. Section B (2-Dimensional Creative Design): 3 hours, 100 marks. Section C (3-Dimensional Creative Design): Project executed within 6 months, 100 marks."
+        "marks": "300",
+        "details": "Comprises three practical sections carrying 100 marks each: Section A (Drawing - 3 hours), Section B (2-Dimensional Creative Design - 3 hours), and Section C (3-Dimensional Creative Design - 6-month project work)."
       }
     ]
   },
-  "syllabus_content": [
+  "detailed_syllabus": [
     {
-      "section_title": "PAPERS 1 AND 2",
+      "section_name": "General Knowledge in Art",
       "topics": [
         {
-          "topic_number": 1,
-          "title": "GENERAL KNOWLEDGE IN ART",
-          "details": [
-            "(a) Visual awareness, understanding and appreciation of Art elements, their forms, characteristics and functions e.g. line, colour, space, shape, form, texture, etc.",
-            "(b) Nature and branches of Art and careers in art.",
-            "(c) Principles of Art - creative application of art and design principles e.g. balance, rhythm, proportion, harmony, emphasis, variety, etc.",
-            "(d) Perspective - meaning and type e.g. aerial, linear (angular/parallel) and foreshortening.",
-            "(e) The knowledge of production, use and care of art/craft tools and materials e.g. brush, pencil, colour, palette, easels, etc.",
-            "(f) Art and craft terms e.g. tie and dye, biscuit ware, silhouette, relief, chiaroscuro, sfumato, aperture, etc.",
-            "(g) The inter-relationships of the arts e.g. music, visual art, dance, drama and literary arts."
-          ],
-          "subsections": []
+          "title": "1. Art Elements, Principles & Perspective",
+          "notes": "Visual awareness and function of art elements (line, colour, space, shape, form, texture). Principles of art and design (balance, rhythm, proportion, harmony, emphasis, variety). Types and concepts of perspective (aerial, linear: angular/parallel, foreshortening)."
         },
         {
-          "topic_number": 2,
-          "title": "ART OF WEST AFRICA",
-          "details": [
-            "Knowledge of traditional Art of West Africa, the basic concepts (e.g. animism, fetishism and mythology): art forms, geographical location, characteristics, underlying beliefs and the sacred and secular functions of art. A general knowledge of contemporary artists and art educator, their works, style, media, materials and contribution to the development of art."
-          ],
-          "subsections": [
-            {
-              "subtitle": "Ancient Traditional Art",
-              "details": [
-                "Cameroon: Bamileke",
-                "Dahomey (Now Benin Republic): Fon",
-                "Gambia: Wollof, Mandinka, Jola",
-                "Ghana (Formerly Gold Coast): Fante, Ewe, Frafra, Ashanti",
-                "Guinea: Kissi",
-                "Cote d'Ivoire (Ivory Coast): Senufo, Baule",
-                "Liberia: Dan and Ngere",
-                "Mali: Dogon, Bambara",
-                "Sierra Leone: Mende, Sherbro",
-                "Upper Volta (Now Burkina Faso): Mossi, Bobo, Kurumba",
-                "Nigeria: Benin, Ife, Nok, Igbo-Ukwu, Esie, Owo, etc."
-              ]
-            },
-            {
-              "subtitle": "Modern Traditional Art",
-              "details": [
-                "Oshogbo art, Ashanti and Ewe Kente, Modern Benin art, Winneba pottery, Abuja pottery, Ntoso adinkra, Bida brass works, calabash carving, Enyiresi basketry, Mbari mud sculpture, weaving, leatherwork, wall decoration, indigenous Decorative Motifs."
-              ]
-            },
-            {
-              "subtitle": "Contemporary Art",
-              "details": [
-                "(a) Art institutions (art schools, art galleries, arts centres, museums). Various departments responsible for art and culture, Art organizations, e.g. INSEA, NSIAD, Ghana Artists Association, Ghana Craftsmen Association, Ghana Arts Council, GAT, NAAC, SNA, NSEA, Ona Art Movement, Ulli Art Movement, The Eye Society.",
-                "(b) Cultural festivals (their artistic significance e.g. costumes, symbols, objects, masks, body decorations, wall decorations, etc.).",
-                "(c) Outstanding contemporary West African Artists: their training, style, achievements and contributions to the development of art."
-              ]
-            }
-          ]
-        },
-        {
-          "topic_number": 3,
-          "title": "PRE-HISTORIC, ANCIENT EGYPTIAN AND WESTERN ART",
-          "details": [
-            "(a) Pre-historic (Earlyman's Art 20,000 - 2000 BC) (Paleolithic, Mesolithic and Neolithic stone Ages) beliefs, materials, characteristics and functions.",
-            "(b) Ancient Egyptian art 11,000 - 7,000 BC (Old, Middle and New Kingdoms) beliefs, styles and functions.",
-            "(c) Greek Art: Periods (Archaic, Classical and Hellenistic), characteristics and artists.",
-            "(d) Medieval Art: Features, media and characteristics.",
-            "(e) Renaissance Art: Early, Low and High Renaissance Art - Artists: Giotto, Donatello, Masaccio, etc.",
-            "(f) 19th Century Art: Impressionism (Paul Cezanne, Claude Monet, Edouard Manet, Georges Seurat); Post Impressionism (Vincent van Gogh, Paul Gauguin, etc.).",
-            "(g) 20th Century Art: Cubism: Influence of African Art and Artists - Pablo Picasso, Georges Braque."
-          ],
-          "subsections": []
+          "title": "2. Nature, Branches, Terminology & Inter-relationships",
+          "notes": "Branches and career opportunities in art. Identification, usage, and care of art/craft tools and equipment (brushes, pencils, palettes, easels). Key art terminology (tie and dye, biscuit ware, silhouette, relief, chiaroscuro, sfumato, aperture). Inter-relationships among visual art, music, dance, drama, and literary arts."
         }
       ]
     },
     {
-      "section_title": "PAPER 3: PRACTICAL",
+      "section_name": "Art of West Africa",
       "topics": [
         {
-          "topic_number": 1,
-          "title": "PART A - DRAWING",
-          "details": [
-            "Tests candidates' ability to observe, analyse and accurately depict natural and man-made objects, as well as human structure and forms. Works rendered in pencil, pastel, charcoal, pen and ink, or poster/water colour.",
-            "(a) Drawing from Objects: Composition of arranged man-made objects (e.g., radio sets, car parts, bicycles, machines, bottles).",
-            "(b) Drawing from Nature: Study of natural objects (e.g., branches, flowers, foliage, fruits, vegetables, rocks, bones, insects, birds, shells, fish, crustaceans, skeletons).",
-            "(c) Drawing from Life: Accurate depiction of structure and form of a living model (male or female) in specified poses."
-          ],
-          "subsections": []
+          "title": "1. Ancient Traditional Art of West Africa",
+          "notes": "Core concepts (animism, fetishism, mythology), forms, geographic locations, underlying beliefs, and functions of traditional art centers: Cameroon (Bamileke), Benin Republic (Fon), Gambia (Wollof, Mandinka, Jola), Ghana (Fante, Ewe, Frafra, Ashanti), Guinea (Kissi), Cote d'Ivoire (Senufo, Baule), Liberia (Dan, Ngere), Mali (Dogon, Bambara), Sierra Leone (Mende, Sherbro), Burkina Faso (Mossi, Bobo, Kurumba), and Nigeria (Nok, Ife, Benin, Igbo-Ukwu, Esie, Owo)."
         },
         {
-          "topic_number": 2,
-          "title": "PART B - CREATIVE DESIGN (2-DIMENSIONAL ART)",
-          "details": [
-            "Tests candidates' ability to visualize ideas, originality, and technical proficiency in 2-Dimensional art forms."
-          ],
-          "subsections": [
-            {
-              "subtitle": "Graphic Design",
-              "details": [
-                "(i) Lettering and Poster Design: Formal lettering (Roman, Gothic), pictorial posters, greeting cards, invitations, book jackets, logotypes, emblems, symbols, labels, wall hangings.",
-                "(ii) Book Illustration: Story and text illustrations for books, magazines, and newspapers.",
-                "(iii) Printmaking: Linocut, woodcut, yam print, stenciling, screen printing, etc.",
-                "(iv) Package Design: Wrappers, cereal packages, CD jackets, etc.",
-                "(v) Computer Graphics: Designing any graphic design areas using software (e.g., CorelDraw, Adobe Photoshop)."
-              ]
-            },
-            {
-              "subtitle": "Textile Design",
-              "details": [
-                "Designing dyed or printed material (at least 2 metres long, unsewn) via batik, tie-and-dye, block, or screen printing.",
-                "(i) Appliqué: Shaped fabric pieces sewn on foundation fabric.",
-                "(ii) Tapestry: Fabric with a woven pattern/picture for wall hanging or upholstery."
-              ]
-            },
-            {
-              "subtitle": "Picture-Making",
-              "details": [
-                "(i) Painting: Illustrative composition of themes from everyday life or imagination, including Murals.",
-                "(ii) Photography: Basic knowledge and skills in shooting and printing portraits, landscapes, seascapes, nature, pets, and experimental photo tricks (photograms, image distortion).",
-                "(iii) Mosaic: Pictures made with small regular-shaped coloured materials (glass, paper, tile).",
-                "(iv) Collage: Pictures synthesized using irregular materials (cloth, paper, objects)."
-              ]
-            }
-          ]
+          "title": "2. Modern Traditional & Contemporary West African Art",
+          "notes": "Modern traditional art forms: Osogbo art, Kente weaving (Ashanti/Ewe), modern Benin art, Winneba and Abuja pottery, Adinkra printing, Bida brassware, calabash carving, Mbari mud sculpture, leatherwork, and wall decorations. Contemporary art developments: art schools, galleries, museums, movements (Ona, Ulli, The Eye Society), organizations (SNA, GAT, Ghana Artists Association), cultural festivals, and prominent contemporary West African artists."
+        }
+      ]
+    },
+    {
+      "section_name": "Pre-Historic, Ancient Egyptian & Western Art",
+      "topics": [
+        {
+          "title": "1. Pre-Historic and Ancient Egyptian Art",
+          "notes": "Pre-historic Early Man art (Paleolithic, Mesolithic, Neolithic Stone Ages: 20,000–2,000 BC) covering beliefs, materials, and cave art functions. Ancient Egyptian art (Old, Middle, New Kingdoms: 11,000–7,000 BC) exploring religious beliefs, stylistic conventions, and architectural/sculptural functions."
         },
         {
-          "topic_number": 3,
-          "title": "PART C - CREATIVE DESIGN (3-DIMENSIONAL ART)",
-          "details": [
-            "Project executed within 6 months using materials like clay, papier-mâché, wood, cement, fiberglass, POP, paperboards, etc. Notes, diagrams, and working drawings constitute 10% of total marks."
-          ],
-          "subsections": [
-            {
-              "subtitle": "Sculpture",
-              "details": [
-                "Rendered in clay, metal, wood, papier-mâché, cement, etc. All clay works must be fired."
-              ]
-            },
-            {
-              "subtitle": "Product Design/Modeling",
-              "details": [
-                "Designing and producing models of industrial products (automobiles, phones, bottles, cosmetics)."
-              ]
-            },
-            {
-              "subtitle": "Ceramics",
-              "details": [
-                "Ceramic wares (jugs, flower vases, bowls, toy animals/figures) moulded, hand-built, or wheel-thrown. Clay works must be fired."
-              ]
-            },
-            {
-              "subtitle": "Crafts",
-              "details": [
-                "(i) Basketry: Mats, chairs, hats, stools, bags, macramé woven/plaited in cane, raffia, etc.",
-                "(ii) Jewellery: Construction of ornaments with metals, beads, plastic, shells, seeds, etc.",
-                "(iii) Calabash Decoration: Designing and decorating calabash using various methods."
-              ]
-            }
-          ]
+          "title": "2. Greek, Medieval, Renaissance & Modern Western Movements",
+          "notes": "Greek art periods (Archaic, Classical, Hellenistic). Medieval art features and media. Renaissance art (Early, Low, High Renaissance: Giotto, Donatello, Masaccio, Leonardo, Michelangelo). 19th-century movements: Impressionism (Monet, Manet, Seurat, Cézanne) and Post-Impressionism (van Gogh, Gauguin). 20th-century movements: Cubism (Picasso, Braque) and the influence of African art on Western art."
+        }
+      ]
+    },
+    {
+      "section_name": "Practical Art - Drawing & 2D Creative Design",
+      "topics": [
+        {
+          "title": "1. Part A - Drawing (3 Hours)",
+          "notes": "Observational accuracy, analytical rendering, and media handling (pencil, pastel, charcoal, pen and ink, watercolor) across: (a) Object Drawing (arranged man-made objects), (b) Nature Study (plants, flowers, bones, rocks, shells), and (c) Life Drawing (accurate depiction of living human models in specified poses)."
+        },
+        {
+          "title": "2. Part B - 2-Dimensional Creative Design (3 Hours)",
+          "notes": "Originality and technical proficiency in 2D media. Graphic Design: formal lettering (Roman, Gothic), posters, book illustrations, printmaking (linocut, woodcut, screen printing), package design, and computer graphics (CorelDraw, Photoshop). Textile Design: batik, tie-dye, block/screen printing (2m fabric), appliqué, tapestry. Picture-Making: painting/murals, photography tricks/printing, mosaic, collage."
+        }
+      ]
+    },
+    {
+      "section_name": "Practical Art - 3D Creative Design (Project)",
+      "topics": [
+        {
+          "title": "1. Part C - 3-Dimensional Creative Design (6-Month Project)",
+          "notes": "Execution of a 3D studio project over 6 months accompanied by preliminary notes, sketches, and working drawings (10% total mark allocation). Areas include: Sculpture (clay, metal, wood, paper-mâché, cement; clay works must be fired), Product Design/Modeling (industrial prototypes), Ceramics (moulded, hand-built, or wheel-thrown fired pottery), and Crafts (basketry, macramé, jewelry construction, calabash decoration)."
         }
       ]
     }
   ],
   "appendices": [],
-  "reading_list": [
+  "references": [
     {
-      "author": "Amenuke, S.K., B. K. Dogbe et al",
-      "title": "General Knowledge in Art for Senior Secondary Schools",
-      "publisher_year": "Ministry of Education, Accra, Ghana"
-    },
-    {
-      "author": "E. H. Gombrich",
-      "title": "The Story of Art",
-      "publisher_year": "Phaidon Press Limited"
-    },
-    {
-      "author": "Hellen Gardner",
-      "title": "Art Through the Agers",
-      "publisher_year": "Harcourt, Brace & World, N.Y. 1980"
-    },
-    {
-      "author": "Kofi Antubam",
-      "title": "Ghana's Heritage of Culture",
-      "publisher_year": ""
-    },
-    {
-      "author": "Bernard S. Mayers",
-      "title": "Art & Civilization",
-      "publisher_year": "McGraw Hill, New York"
-    },
-    {
-      "author": "Harlow",
-      "title": "Art History in Africa",
-      "publisher_year": "Longman Group Limited"
-    },
-    {
-      "author": "Robert Clement",
-      "title": "The Art Teacher's Handbook",
-      "publisher_year": "Century Hutchinson Limited, London"
-    },
-    {
-      "author": "Harry Sternberg",
-      "title": "Composition",
-      "publisher_year": "Grosset & Dunlap, New York"
-    },
-    {
-      "author": "Maurice De Sausmarez",
-      "title": "Basic Design: The Dynamics of Visual Form",
-      "publisher_year": "Studio Vista Limited, London"
-    },
-    {
-      "author": "Harold Osborne",
-      "title": "Art of Appreciation",
-      "publisher_year": "Oxford University, London"
-    },
-    {
-      "author": "Henry Pluckrose",
-      "title": "The Book of Crafts",
-      "publisher_year": "Evans Brothers Limited, London"
-    },
-    {
-      "author": "Werner Gillon",
-      "title": "A Short History of African Art",
-      "publisher_year": "Penguin Books Limited, Harmondsworth, U.K."
-    },
-    {
-      "author": "Whitfield",
-      "title": "Beginning Pen Lettering (Book 3)",
-      "publisher_year": "Ginn and Company Ltd, London"
-    },
-    {
-      "author": "Ayisi, Eric, O.",
-      "title": "An Introduction to the Study of African Culture",
-      "publisher_year": "Heinemann, 1972"
-    },
-    {
-      "author": "Beier, Ulli",
-      "title": "Art in Nigeria",
-      "publisher_year": "London, Cambridge University Press, 1960"
-    },
-    {
-      "author": "Olaosebikan, W.A.",
-      "title": "Cultural & Creative Arts: A Source Book for Teachers",
-      "publisher_year": "Ibadan: Evans"
-    },
-    {
-      "author": "Underwood, Leon",
-      "title": "Bronzes of West Africa",
-      "publisher_year": "Transatlantic Art, 1968"
-    },
-    {
-      "author": "Wangboje, S. J.",
-      "title": "A Textbook on Art for Senior Secondary School",
-      "publisher_year": "Evans Brothers (Nig.) Ltd, 1982"
-    },
-    {
-      "author": "Frank Willett",
-      "title": "Ife and the History of West African Sculpture",
-      "publisher_year": "Thames and Hudson, 1967"
-    },
-    {
-      "author": "Pat Oyelola",
-      "title": "Nigerian Crafts",
-      "publisher_year": "Macmillan, 1981"
-    },
-    {
-      "author": "George Talabi",
-      "title": "Art Teaching in African Schools",
-      "publisher_year": "Heinemann Educational Books, Ibadan"
-    },
-    {
-      "author": "Frank Willett",
-      "title": "African Art",
-      "publisher_year": "Thames and Hudson"
-    },
-    {
-      "author": "Ibrahim Banjoko",
-      "title": "Cultural and Creative Arts",
-      "publisher_year": ""
-    },
-    {
-      "author": "Emu Ogumor",
-      "title": "Certificate Art for Junior and Senior Secondary Schools",
-      "publisher_year": "University Press, 2007"
-    },
-    {
-      "author": "Uzoagba, I. N.",
-      "title": "Understanding Art in General Education",
-      "publisher_year": "African First Publishers Ltd, 2008"
-    },
-    {
-      "author": "Filani Kunle",
-      "title": "Patterns of Culture in Contemporary Yoruba Art",
-      "publisher_year": "Symphony Books, 2005"
+      "type": "Recommended Textbooks",
+      "books": [
+        "General Knowledge in Art for Senior Secondary Schools by S. K. Amenuke, B. K. Dogbe et al. - Ministry of Education, Accra, Ghana",
+        "The Story of Art by E. H. Gombrich - Phaidon Press Limited",
+        "Art Through the Ages by Helen Gardner - Harcourt, Brace & World, N.Y. (1980)",
+        "Ghana's Heritage of Culture by Kofi Antubam",
+        "Art & Civilization by Bernard S. Mayers - McGraw Hill, New York",
+        "Art History in Africa by Harlow - Longman Group Limited",
+        "The Art Teacher's Handbook by Robert Clement - Century Hutchinson Limited, London",
+        "Composition by Harry Sternberg - Grosset & Dunlap, New York",
+        "Basic Design: The Dynamics of Visual Form by Maurice De Sausmarez - Studio Vista Limited, London",
+        "Art of Appreciation by Harold Osborne - Oxford University, London",
+        "The Book of Crafts by Henry Pluckrose - Evans Brothers Limited, London",
+        "A Short History of African Art by Werner Gillon - Penguin Books Limited, Harmondsworth, U.K.",
+        "Beginning Pen Lettering (Book 3) by Whitfield - Ginn and Company Ltd, London",
+        "An Introduction to the Study of African Culture by Eric O. Ayisi - Heinemann (1972)",
+        "Art in Nigeria by Ulli Beier - Cambridge University Press, London (1960)",
+        "Cultural & Creative Arts: A Source Book for Teachers by W. A. Olaosebikan - Evans, Ibadan",
+        "Bronzes of West Africa by Leon Underwood - Transatlantic Art (1968)",
+        "A Textbook on Art for Senior Secondary School by S. J. Wangboje - Evans Brothers (Nig.) Ltd (1982)",
+        "Ife and the History of West African Sculpture by Frank Willett - Thames and Hudson (1967)",
+        "Nigerian Crafts by Pat Oyelola - Macmillan (1981)",
+        "Art Teaching in African Schools by George Talabi - Heinemann Educational Books, Ibadan",
+        "African Art by Frank Willett - Thames and Hudson",
+        "Cultural and Creative Arts by Ibrahim Banjoko",
+        "Certificate Art for Junior and Senior Secondary Schools by Emu Ogumor - University Press (2007)",
+        "Understanding Art in General Education by I. N. Uzoagba - African First Publishers Ltd (2008)",
+        "Patterns of Culture in Contemporary Yoruba Art by Kunle Filani - Symphony Books (2005)"
+      ]
     }
   ]
 }

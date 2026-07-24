@@ -1,228 +1,185 @@
 {
   "subject": "Home Management",
-  "aims_and_objectives": [
-    "Assess knowledge, understanding, appreciation and application of management concepts; goals, values, standards and needs",
-    "Assess knowledge, understanding, appreciation and application of decision-making processes",
-    "Assess knowledge, understanding, appreciation and application of human and material resources available for managing a home",
-    "Assess knowledge, understanding, appreciation and application of basic skills needed in caring for the home and society",
-    "Assess knowledge, understanding, appreciation and application of consumer skills",
-    "Assess knowledge, understanding, appreciation and application of sound health practices",
-    "Assess knowledge, understanding, appreciation and application of self-reliant skills for effective living"
+  "preamble": "The Home Management syllabus is designed to evaluate candidates' knowledge, appreciation, and application of fundamental management concepts, human and material resources, and decision-making processes essential for effective family living and societal contribution. It assesses practical skills in caring for the home, consumer education, nutrition, clothing, housing, health practices, and self-reliant entrepreneurial skills for daily life.",
+  "aims": [
+    "Assess knowledge, understanding, appreciation, and application of management concepts, goals, values, standards, and needs;",
+    "Evaluate proficiency in applying decision-making and work-simplification processes in managing family resources;",
+    "Demonstrate effective utilization of human, material, and community resources available for home management;",
+    "Apply basic practical skills in caring for the home, managing family clothing, and maintaining personal and environmental health;",
+    "Develop critical consumer skills, awareness of consumer rights, and environmentally friendly consumption practices;",
+    "Promote sound health, safety, and sanitation practices within the home and immediate environment;",
+    "Cultivate self-reliant, creative, and entrepreneurial skills for wealth creation and effective living."
   ],
-  "scheme_of_examination": {
-    "description": "There will be three papers, Papers 1, 2, and 3 all of which must be taken. Papers 1 and 2 will be a composite paper to be taken at one sitting.",
-    "paper_1": "Comprise fifty multiple choice objective questions, all of which are to be answered in 1 hour for 50 marks.",
-    "paper_2": "Comprise six essay questions out of which candidates will be required to answer four within 1 hour 15 minutes for 50 marks.",
-    "paper_3": "A 3-hour practical test conducted by a visiting examiner appointed by WAEC, carrying 100 marks."
-  },
-  "detailed_syllabus": {
-    "principle_of_management": [
+  "requirements": [
+    "Candidates must take all three papers: Paper 1 (Objective), Paper 2 (Essay), and Paper 3 (Practical Test).",
+    "Paper 1 and Paper 2 are composite papers taken in a single sitting.",
+    "Paper 3 is a 3-hour practical examination conducted by an appointed visiting examiner."
+  ],
+  "examination_scheme": {
+    "summary": "The examination comprises three compulsory papers: Papers 1 and 2 are written composite tests, while Paper 3 evaluates practical home management skills.",
+    "papers": [
       {
-        "topic": "Definition of Home Management",
-        "contents": "Definition and fundamental concepts of home management"
+        "paper": "Paper 1",
+        "title": "Objective Test",
+        "duration": "1 hour",
+        "marks": "50",
+        "details": "Consists of fifty multiple-choice objective questions covering the entire syllabus. All questions are compulsory."
       },
       {
-        "topic": "Careers in Home Management",
-        "contents": "Explore potential career paths and opportunities related to home management"
+        "paper": "Paper 2",
+        "title": "Essay Test",
+        "duration": "1 hour 15 minutes",
+        "marks": "50",
+        "details": "Consists of six essay questions. Candidates are required to answer any four questions."
       },
       {
-        "topic": "The Management Process",
-        "contents": "(a) Planning, (b) Organization, (c) Implementation, (d) Evaluation. Application of process to specific tasks."
-      },
-      {
-        "topic": "Motivations for Home Management",
-        "contents": "(a) Personal characteristics, (b) Values, (c) Goals, (d) Standards, (e) Needs, (f) Events"
-      },
-      {
-        "topic": "Family Resources",
-        "contents": "(a) Definition, (b) Characteristics, (c) Kinds - Human (time, energy, skill, work simplification as it applies to the home), Non-human/material community"
-      },
-      {
-        "topic": "Decision making & Management of time and energy",
-        "contents": "Decision-making processes, management of time, energy, and work simplification in the home"
-      }
-    ],
-    "family_living": [
-      {
-        "topic": "The Family",
-        "contents": "(a) Definition, (b) Types - nuclear, monogamous, polygamous, extended, (c) Advantages and disadvantages of each type, (d) Family life cycle - beginning, expanding, contracting and empty-nest, (e) Functions of the family, (f) Roles and responsibilities of family members (mother, father, children, working mothers, single parent, etc.), (g) Family relationships, factors affecting family relationships, effects on well-being, conflict and conflict resolution"
-      },
-      {
-        "topic": "Courtship and Marriage",
-        "contents": "(a) Types of marriage, Boy/Girl relationship (definition, traditional/custom, guidelines for healthy relationship, problems of unhealthy relationship, consequences of indiscriminate sexual indulgence, sex education), (b) Choosing a life partner (factors to consider e.g. blood group, genotype, HIV status, dating, courtship, engagement), (c) Preparation for marriage (readiness - where to live, maturity, finances, introduction to each other's family), (d) Marriage Ceremony in different localities"
-      },
-      {
-        "topic": "Parenthood",
-        "contents": "(a) Preparation for parenthood (planning a family, reproduction, pregnancy, ante-natal care), (b) Child birth (labour, delivery, post-natal care - immunization), (c) Parenting (meaning, importance, responsibilities, provision of needs, bathing)"
-      }
-    ],
-    "feeding_the_family": [
-      {
-        "topic": "Classes of food and food nutrients",
-        "contents": "Scientific study of food nutrients"
-      },
-      {
-        "topic": "Cooking terms and methods",
-        "contents": "Basic cooking methods and culinary terminology"
-      },
-      {
-        "topic": "Effect of heat on nutrients",
-        "contents": "How cooking heat alters and affects food nutrients"
-      },
-      {
-        "topic": "Special nutrition needs",
-        "contents": "Nutritional needs of infants, toddlers, adolescents, adults, pregnant women, lactating women, the aged, convalescents, invalids, and vegetarians"
-      },
-      {
-        "topic": "Food storage and preservation",
-        "contents": "Methods and importance of storing and preserving food items"
-      },
-      {
-        "topic": "Meal planning",
-        "contents": "Planning of balanced meals for different groups of people"
-      },
-      {
-        "topic": "Kitchen plan, hygiene and safety",
-        "contents": "Kitchen layout, hygiene practices, and safety measures"
-      },
-      {
-        "topic": "Food purchasing",
-        "contents": "Guidelines and practices for buying food economically and safely"
-      },
-      {
-        "topic": "Preparation and serving of meals, snacks and beverages",
-        "contents": "Cooking equipment, utensils, tableware, table setting, and service"
-      },
-      {
-        "topic": "Entertainment",
-        "contents": "Hosting, entertaining, and social etiquette in the home"
-      }
-    ],
-    "clothing_the_family": [
-      {
-        "topic": "Clothing",
-        "contents": "Meaning, types, and functions of clothing"
-      },
-      {
-        "topic": "Household linen",
-        "contents": "Types and functions of household linen"
-      },
-      {
-        "topic": "Textiles",
-        "contents": "Origin of fibres and classification of fibres/fabrics"
-      },
-      {
-        "topic": "Fabric construction",
-        "contents": "Weaving, knitting, crocheting, etc."
-      },
-      {
-        "topic": "Planning a wardrobe",
-        "contents": "Selecting and organizing clothing for individual and family needs"
-      },
-      {
-        "topic": "Maintenance of clothing and laundry work",
-        "contents": "Laundry agents (water, detergents, fabric rinses, stiffening agents, bleaches), laundry equipment and tools, management of the family wash, stains and stain removal, care of special garments"
-      },
-      {
-        "topic": "Sewing equipment, tools and processes",
-        "contents": "Tools usage and simple garment repairs"
-      },
-      {
-        "topic": "Storage of clothing",
-        "contents": "Proper techniques for storing garments"
-      }
-    ],
-    "housing_the_family": [
-      {
-        "topic": "Family house",
-        "contents": "Definition of house, types of house (storey building, bungalow, duplex, etc.), classification of houses (traditional and modern)"
-      },
-      {
-        "topic": "Choosing a family house",
-        "contents": "(a) Acquiring a house (renting, mortgage, building, buying, inheritance, gift), (b) Factors influencing the choice of a house (economic, social, psychological, sites, ventilation, design), (c) Guidelines for choosing a family house"
-      },
-      {
-        "topic": "Setting up a home",
-        "contents": "(a) Definition, difference between a home and a house, (b) Equipment and furnishing in the home (large/small equipment, hard/soft furnishing, fixtures)"
-      },
-      {
-        "topic": "Home Improvement/Interior Decoration",
-        "contents": "(a) Meaning and importance, (b) Elements and principles of art and design (colours, textures, lines, proportion, rhythm, etc.), (c) Guidelines for interior decoration, (d) Flower arrangements"
-      },
-      {
-        "topic": "Utilities in the home",
-        "contents": "(a) Water (sources, uses, purification, storage), (b) Light (electricity meter reading, electric bill), (c) Fuels (uses, storage, control, advantages, disadvantages of cooking gas, kerosene, firewood, charcoal, electricity)"
-      },
-      {
-        "topic": "Simple home maintenance and repairs",
-        "contents": "(a) Cleaning agents and materials (water, soaps, abrasives, polishes), (b) Cleaning equipment and tools, (c) Care of surfaces (wood, tile, formica, concrete, plastic, etc.), (d) Care of floors/floor coverings/finishing (carpets, linoleums, mats, rugs, terrazzo, parquet, etc.), (e) Care of home furnishing and ornaments, (f) Cleaning functional areas, (g) Bed making"
-      },
-      {
-        "topic": "Safety measures in the home",
-        "contents": "(a) Importance, (b) Common accidents, (c) Prevention, (d) Use of first aid"
-      },
-      {
-        "topic": "Environmental Sanitation",
-        "contents": "(a) Definition, (b) Importance of sanitation, (c) Waste disposal (household waste, drainage system, disposal methods, pollution and health hazards), (d) Household pests (types, control)"
-      }
-    ],
-    "wealth_creation_and_management": [
-      {
-        "topic": "Creativity and Entrepreneurship",
-        "contents": "(a) Meaning, (b) Importance, (c) Relationship between creativity and entrepreneurship, (d) Entrepreneurial skills (creativity, management, communication), (e) Entrepreneurial activities/enterprises (fashion designing, hair dressing, fast foods, bead making, etc.)"
-      },
-      {
-        "topic": "Money Management",
-        "contents": "(a) Meaning, (b) Guidelines, (c) Processes, (d) Family budget (income, expenditure, steps in budgeting)"
-      },
-      {
-        "topic": "Wealth Creation",
-        "contents": "(a) Meaning, (b) Types, (c) Advantages, (d) Ways of creating wealth (saving, investment, trading, etc.)"
-      },
-      {
-        "topic": "Capital Market Investment",
-        "contents": "(a) Meaning, (b) Advantages, (c) Guidelines, (d) Investment opportunities (stocks, shares, treasury bills)"
-      }
-    ],
-    "consumer_education": [
-      {
-        "topic": "Definition and Importance",
-        "contents": "Introduction to consumer education"
-      },
-      {
-        "topic": "Consumer Information",
-        "contents": "(a) Sources, (b) Uses"
-      },
-      {
-        "topic": "Rights and responsibilities of a consumer",
-        "contents": "Understanding consumer rights and obligations"
-      },
-      {
-        "topic": "Consumer Legislation and Agencies",
-        "contents": "(a) Types, (b) Functions, (c) Regulations of agencies"
-      },
-      {
-        "topic": "Principles of consumer education",
-        "contents": "Core principles guiding consumer awareness"
-      },
-      {
-        "topic": "Consumer Agents",
-        "contents": "(a) Types, (b) Functions"
-      },
-      {
-        "topic": "Environmentally Friendly Consumption Practice",
-        "contents": "(i) Market and market survey (meaning, types, uses/importance, procedures), (ii) Wise purchasing practices, (iii) Prevention of wastage in the home"
-      },
-      {
-        "topic": "Purchasing practices",
-        "contents": "Effective and wise market purchasing techniques"
+        "paper": "Paper 3",
+        "title": "Practical Test",
+        "duration": "3 hours",
+        "marks": "100",
+        "details": "A practical examination administered by a visiting examiner appointed by WAEC to assess practical proficiency in home management tasks."
       }
     ]
   },
-  "reading_texts": [
-    "Home Management by R.O. Johnson, A. Akingbehin and J. Mifie. Publisher: Longman",
-    "Home Management for Secondary Schools by Enid O'Reilly Wright & Lillian Adesimi-Davies. Publisher: Evans Brothers Ltd.",
-    "Home Management for Secondary Schools 1-3 by Mary Edna Aufani Joe, Oby Eyisi et al. Publisher: University Press Plc.",
-    "Home Management for Secondary Schools 1005 Q & A Series by Elizabeth Anyakoha. Publisher: Fep Publisher Ltd."
+  "detailed_syllabus": [
+    {
+      "section_name": "Principles of Management",
+      "topics": [
+        {
+          "title": "1. Definition and Scope of Home Management",
+          "notes": "Definition, fundamental concepts, and potential career paths and opportunities related to Home Management."
+        },
+        {
+          "title": "2. The Management Process",
+          "notes": "Steps in management process: planning, organizing, implementing, and evaluating. Application of the process to specific home tasks."
+        },
+        {
+          "title": "3. Motivations for Home Management",
+          "notes": "Factors motivating management: personal characteristics, values, goals, standards, needs, and life events."
+        },
+        {
+          "title": "4. Family Resources and Work Simplification",
+          "notes": "Definition, characteristics, and classifications of resources: human (time, energy, skills) and non-human/material/community resources. Principles of work simplification applied to home activities."
+        },
+        {
+          "title": "5. Decision Making, Time, and Energy Management",
+          "notes": "Decision-making processes, steps in decision making, and techniques for efficient management of time and energy in the home."
+        }
+      ]
+    },
+    {
+      "section_name": "Family Living",
+      "topics": [
+        {
+          "title": "1. The Family System",
+          "notes": "Definition and types of family (nuclear, monogamous, polygamous, extended); advantages and disadvantages of each. Stages of the family life cycle (beginning, expanding, contracting, empty-nest). Functions of the family, roles and responsibilities of members (parents, children, working mothers, single parents). Family relationships, factors influencing harmony, and conflict resolution mechanisms."
+        },
+        {
+          "title": "2. Courtship and Marriage",
+          "notes": "Types of marriage; interpersonal relationships (healthy guidelines, consequences of indiscriminate sexual behavior, sex education). Selecting a life partner (health factors: blood group, genotype, HIV status; dating, courtship, engagement). Preparation for marriage (maturity, financial readiness, family introductions). Traditional, religious, and civil marriage ceremonies."
+        },
+        {
+          "title": "3. Parenthood and Childcare",
+          "notes": "Preparation for parenthood: family planning, human reproduction, pregnancy, ante-natal care. Childbirth: labor, delivery, post-natal care, and immunization schedule. Parenting responsibilities: physical care, bathing, feeding, and meeting developmental needs."
+        }
+      ]
+    },
+    {
+      "section_name": "Feeding the Family",
+      "topics": [
+        {
+          "title": "1. Food Nutrients and Culinary Science",
+          "notes": "Classes of food nutrients, scientific study of functions and sources. Cooking terminology, basic cooking methods (moist, dry, combination), and the effect of heat on food nutrients."
+        },
+        {
+          "title": "2. Special Nutritional Needs and Meal Planning",
+          "notes": "Nutritional needs across life stages: infants, toddlers, adolescents, adults, pregnant/lactating women, the elderly, convalescents, invalids, and vegetarians. Principles of planning balanced meals for diverse groups."
+        },
+        {
+          "title": "3. Food Purchasing, Preservation, and Kitchen Management",
+          "notes": "Guidelines for economical and safe food purchasing. Methods and importance of food storage and preservation. Kitchen layout planning, hygiene practices, and safety measures."
+        },
+        {
+          "title": "4. Meal Service and Hospitality",
+          "notes": "Preparation and serving of meals, snacks, and beverages. Cooking equipment, utensils, tableware, table settings, and social etiquette in home entertaining."
+        }
+      ]
+    },
+    {
+      "section_name": "Clothing the Family",
+      "topics": [
+        {
+          "title": "1. Clothing and Textiles",
+          "notes": "Meaning, functions, and types of clothing. Classification and origin of textile fibers and fabrics. Fabric construction methods: weaving, knitting, crocheting, etc."
+        },
+        {
+          "title": "2. Household Linen and Wardrobe Planning",
+          "notes": "Types, selection, and functions of household linen. Guidelines for selecting, planning, and organizing wardrobes for individuals and families."
+        },
+        {
+          "title": "3. Care and Maintenance of Clothing",
+          "notes": "Laundry agents (water, soaps, detergents, fabric rinses, stiffening agents, bleaches) and equipment. Management of family wash, stain identification and removal techniques, care of special garments, sewing equipment, simple repairs, and proper storage techniques."
+        }
+      ]
+    },
+    {
+      "section_name": "Housing the Family",
+      "topics": [
+        {
+          "title": "1. Choice and Acquisition of a Family House",
+          "notes": "Definition and types of houses (bungalow, duplex, storey building; traditional vs. modern). Methods of acquisition (renting, mortgage, building, buying, inheritance, gift). Economic, social, psychological, site, and ventilation factors influencing selection."
+        },
+        {
+          "title": "2. Setting Up a Home and Interior Decoration",
+          "notes": "Distinction between a house and a home. Equipment and furnishings (large/small equipment, hard/soft furnishings, fixtures). Elements and principles of design (color, texture, line, proportion, balance). Guidelines for interior decoration and flower arrangements."
+        },
+        {
+          "title": "3. Home Utilities, Maintenance, and Safety",
+          "notes": "Utilities: water sources, purification, and storage; electricity meter reading and billing; cooking fuels (gas, kerosene, firewood, charcoal, electricity). Cleaning agents, tools, and care of diverse surfaces (wood, tile, formica) and floor coverings (carpets, rugs, terrazzo, parquet). Functional area cleaning, bed making, safety measures, first aid, and prevention of home accidents."
+        },
+        {
+          "title": "4. Environmental Sanitation",
+          "notes": "Importance of environmental sanitation. Waste disposal methods (household waste, drainage systems, pollution prevention) and household pest control."
+        }
+      ]
+    },
+    {
+      "section_name": "Wealth Creation and Management",
+      "topics": [
+        {
+          "title": "1. Creativity and Entrepreneurship",
+          "notes": "Meaning and importance of creativity and entrepreneurship. Entrepreneurial skills and small enterprise opportunities (fashion design, hair dressing, catering, bead making)."
+        },
+        {
+          "title": "2. Money Management and Wealth Creation",
+          "notes": "Principles of money management; steps in family budgeting (income vs. expenditure). Meaning and methods of wealth creation (saving, trading, capital market investments: stocks, shares, treasury bills)."
+        }
+      ]
+    },
+    {
+      "section_name": "Consumer Education",
+      "topics": [
+        {
+          "title": "1. Consumer Rights, Responsibilities, and Information",
+          "notes": "Definition and importance of consumer education. Sources and uses of consumer information. Basic rights and responsibilities of consumers."
+        },
+        {
+          "title": "2. Legislation, Agencies, and Buying Practices",
+          "notes": "Consumer protection laws, regulatory agencies, and their functions. Wise purchasing practices, market survey procedures, and strategies for preventing home wastage through eco-friendly consumption."
+        }
+      ]
+    }
+  ],
+  "appendices": [],
+  "references": [
+    {
+      "type": "Recommended Textbooks",
+      "books": [
+        "Johnson, R. O., Akingbehin, A., & Mifie, J. Home Management. Longman.",
+        "Wright, E. O., & Adesimi-Davies, L. Home Management for Secondary Schools. Evans Brothers Ltd.",
+        "Joe, M. E. A., Eyisi, O., et al. Home Management for Secondary Schools (Books 1–3). University Press Plc.",
+        "Anyakoha, E. Home Management for Secondary Schools 1005 Q & A Series. Fep Publisher Ltd."
+      ]
+    }
   ]
 }

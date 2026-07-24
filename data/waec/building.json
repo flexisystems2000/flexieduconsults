@@ -1,345 +1,164 @@
 {
   "subject": "Building Construction",
+  "preamble": "The Building Construction syllabus is designed to assess candidates' basic knowledge of building construction principles, safety practices, drawing interpretations, structural elements, services, and management required for building projects.",
+  "aims": [
+    "knowledge of basic safety rules, practices, and protective measures in building construction;",
+    "understanding of the roles, functions, and relationships of members in the construction team;",
+    "ability to identify, select, use, and maintain basic construction tools, equipment, and plants;",
+    "skill in reading, interpreting, and producing building drawings and construction details;",
+    "understanding of site preparation, excavation, structural elements, services, and finishes in building construction;",
+    "knowledge of basic principles of business management, book keeping, and contract work in the building industry."
+  ],
   "examination_scheme": {
     "papers": [
       {
-        "paper_number": 1,
-        "description": "Will consist of forty multiple-choice objective questions all of which are to be answered in 45 minutes for 40 marks."
+        "paper": "Paper 1",
+        "title": "Objective Questions",
+        "duration": "45 mins",
+        "marks": "40",
+        "details": "Forty multiple-choice objective questions, all of which must be answered."
       },
       {
-        "paper_number": 2,
-        "description": "Will consist of five short-structured essay questions. Candidates will be required to answer any four in 1 hour for 60 marks."
+        "paper": "Paper 2",
+        "title": "Short-Structured Essay Questions",
+        "duration": "1 hour",
+        "marks": "60",
+        "details": "Five short-structured essay questions. Candidates will be required to answer any four."
       },
       {
-        "paper_number": 3,
-        "description": "Will be a practical test. It will consist of two sections, Sections A and B, taking 2.5 hours and carrying 100 marks.",
-        "sections": [
-          {
-            "section_letter": "A",
-            "instructions": "For candidates in Nigeria, Sierra Leone and The Gambia only. It will be on BUILDING DRAWING and shall consist of four questions including a compulsory one. Candidates will be required to answer the compulsory question and any two of the other questions."
-          },
-          {
-            "section_letter": "B",
-            "instructions": "For candidates in Ghana only. It will consist of six essay questions including a compulsory one. Candidates will be required to answer the compulsory question and any three of the other questions."
-          }
-        ]
+        "paper": "Paper 3",
+        "title": "Practical Test",
+        "duration": "2.5 hours",
+        "marks": "100",
+        "details": "Consists of two regional sections. Section A (Building Drawing for Nigeria, Sierra Leone, The Gambia): 4 questions including a compulsory one (answer compulsory + 2 others). Section B (Ghana only): 6 essay questions including a compulsory one (answer compulsory + 3 others)."
       }
     ]
   },
   "detailed_syllabus": [
     {
-      "topic_number": 1,
-      "topic": "Introduction to Building",
-      "content_notes": [
-        "Definition of building",
-        "Classification and types",
-        "Introduction to National Building Codes. (Building regulations and Byelaw requirements)"
+      "section_name": "General Principles & Site Operations",
+      "topics": [
+        {
+          "title": "1. Introduction to Building",
+          "notes": "Definition of building; classification and types; introduction to National Building Codes (Building regulations and Byelaw requirements)."
+        },
+        {
+          "title": "2. Building Construction and Construction Team",
+          "notes": "Definition, purpose, and procedures for building construction; parties in the construction team (Client's team, contractor's team, and statutory personnel); functions of team members; relationship of the parties."
+        },
+        {
+          "title": "3. Safety Practices",
+          "notes": "Definition of safety, rules, and regulations; hazards in the workshop and construction site; causes and methods of accident prevention; safety equipment and measures at construction sites; first aid equipment, procedures, and safety wear; safety in working with dangerous equipment and materials (electricity, scaffolding, formwork, cement, roofs, etc.)."
+        },
+        {
+          "title": "4. Basic Tools, Equipment, and Machines",
+          "notes": "Identification and functions of basic tools and equipment; care and maintenance of tools and equipment."
+        },
+        {
+          "title": "5. Site Clearing and Levelling",
+          "notes": "Operations involved in site clearing; tools and equipment for site clearing and levelling; basic site levelling operations."
+        },
+        {
+          "title": "6. Site Organization and Layout",
+          "notes": "Preliminary operations in building construction; procedure for site layout; location, boundary lines, hoarding, hutments, and access roads."
+        },
+        {
+          "title": "7. Setting Out",
+          "notes": "Methods of setting out (3:4:5 method, Builder's square method); tools and equipment for setting out; procedures for setting out."
+        },
+        {
+          "title": "8. Building Drawing",
+          "notes": "Use of drawing tools and simple exercises on plane geometry in relation to building; building drawing symbols; scales used in building and their application on site; production drawings and interpretations (plans, elevations, sections, and details); special details (detailing building elements including doors and windows schedule); scaling (enlargement, pictorial, and perspectives); definitions and use of Auto-CAD."
+        },
+        {
+          "title": "9. Excavation and Earthwork",
+          "notes": "Classifications, types, and properties of soil; definition and function of excavation; methods of excavation; tools, equipment, and plant used for excavation; solution to excavation problems (earthwork support, timbering, battering, and dewatering); safety rules during excavations."
+        }
       ]
     },
     {
-      "topic_number": 2,
-      "topic": "Building Construction and Construction Team",
-      "content_notes": [
-        "Definition, purpose and procedures for building construction",
-        "Parties in the construction team. (Client's team, contractor's team and statutory personnel.)",
-        "Function of the team members.",
-        "Relationship of the parties."
+      "section_name": "Structural Elements & Materials",
+      "topics": [
+        {
+          "title": "10. Foundations",
+          "notes": "Definition, purpose, and functional requirements of foundations; types of foundations; factors determining the choice of foundation."
+        },
+        {
+          "title": "11. Ground Floors",
+          "notes": "Types, functions, and functional requirements of ground floors; methods of constructing ground floors; definition of basement; differences between buildings with and without basements; problems relating to basements in a building."
+        },
+        {
+          "title": "12. Suspended Floors",
+          "notes": "Definition and functions of upper floors; methods of constructing concrete floors and timber upper floors."
+        },
+        {
+          "title": "13. Concrete",
+          "notes": "Definition and types of concrete; materials for concrete; definitions, types, components, and manufacture of cement; properties and uses of cement including alternative products (e.g., Pozzolana, Pulverized Fuel Ash [P.F.A.], Rice Husk Ash [R.H.A.]); types and uses of aggregates (including alternative aggregates like palm kernel shells, periwinkle, etc.); types and uses of reinforcements; properties and characteristics of concrete; concrete production processes; types of concrete tests."
+        },
+        {
+          "title": "14. Walls",
+          "notes": "Definition, types, and functions of walls; definition, types, and properties of walling materials (including locally sourced materials); manufacturing processes of walling materials (clay, bricks, blocks, concrete blocks); sizes of blocks and bricks; mortar mixes for brickwork; methods of wall construction; timber wall construction."
+        },
+        {
+          "title": "15. Doors and Windows",
+          "notes": "Definition and functions of wall openings; methods of constructing wall openings; functions of lintels and arches; definition, functions, and types of doors and windows; methods of fixing door and window frames."
+        },
+        {
+          "title": "16. Staircases",
+          "notes": "Definition, classification, types, and uses of stairs; materials used for the construction of stairs; materials used for finishing staircases."
+        },
+        {
+          "title": "17. Roofs",
+          "notes": "Definition, purpose, and types of roofs; functional requirements of roofs; materials used for roofs; roof covering materials; protection of roofs from wind, rain, lightning, etc."
+        }
       ]
     },
     {
-      "topic_number": 3,
-      "topic": "Safety Practices.",
-      "content_notes": [
-        "Definition of safety, rules and regulation.",
-        "Hazards in the workshop and construction site.",
-        "Causes and method of accident prevention.",
-        "Safety equipment and measures at construction site.",
-        "First aid equipment, procedures and safety wears.",
-        "Safety in working with dangerous equipment and materials (electricity, scaffolding, formwork, cement, roof, etc)."
-      ]
-    },
-    {
-      "topic_number": 4,
-      "topic": "Basic tools, equipment and machines",
-      "content_notes": [
-        "Identification and functions of basic tools and equipment.",
-        "Care of tools and equipment."
-      ]
-    },
-    {
-      "topic_number": 5,
-      "topic": "Site clearing and levelling",
-      "content_notes": [
-        "Operations involved in site clearing.",
-        "Tools and equipment for site clearing and levelling.",
-        "Basic site levelling operations."
-      ]
-    },
-    {
-      "topic_number": 6,
-      "topic": "Site organization and layout",
-      "content_notes": [
-        "Preliminary operations in building construction.",
-        "Procedure for site layout.",
-        "Location, boundary lines, hoarding, hutments and access road."
-      ]
-    },
-    {
-      "topic_number": 7,
-      "topic": "Setting out",
-      "content_notes": [
-        "Methods of setting-out. (3:4:5 method, Builders' square method).",
-        "Tools and equipment for setting out.",
-        "Procedures for setting out."
-      ]
-    },
-    {
-      "topic_number": 8,
-      "topic": "Building Drawing",
-      "content_notes": [
-        "Use of drawing tools and simple exercise on plane geometry in relation to building.",
-        "Building drawing symbols",
-        "Scales used in building and their application on site.",
-        "Production drawings and interpretations (Plans, Elevations, sections and details).",
-        "Special details (Detailing building elements including doors and windows schedule).",
-        "Scaling (Enlargement, pictorial and perspectives.",
-        "Definitions and use of Auto-CADD."
-      ]
-    },
-    {
-      "topic_number": 9,
-      "topic": "Excavation and earth-work.",
-      "content_notes": [
-        "Classifications, types and properties of soil.",
-        "Definition and function of excavation.",
-        "Methods of excavations.",
-        "Tools, equipment and plant used for excavation.",
-        "Solution to excavation problems (Earthwork support, timbering battering and dewatering).",
-        "Safety rules during excavations."
-      ]
-    },
-    {
-      "topic_number": 10,
-      "topic": "Foundation",
-      "content_notes": [
-        "Definition, purpose and functional requirement of foundation.",
-        "Types of foundation.",
-        "Factors that determine choice of foundation."
-      ]
-    },
-    {
-      "topic_number": 11,
-      "topic": "Ground Floors",
-      "content_notes": [
-        "Types, functions and functional requirement of ground floor.",
-        "Methods of construction ground floor.",
-        "Definition of basement.",
-        "Explain differences between building with basement and without basement.",
-        "Problems relating basement in a building."
-      ]
-    },
-    {
-      "topic_number": 12,
-      "topic": "Suspended floors",
-      "content_notes": [
-        "Definition and functions of upper floor",
-        "Methods of construction concrete floors and timber upper floors."
-      ]
-    },
-    {
-      "topic_number": 13,
-      "topic": "Concrete",
-      "content_notes": [
-        "Definition and types of concrete.",
-        "Materials for concrete.",
-        "Definitions types, components and manufacture of cement. Properties and uses of cement including other alternatives to cement product e.g. Pozzolana, Pulverize fuel Ash (P.F.A.), Rice husk ash (R.H.A), etc",
-        "Types and uses of aggregates (other aggregates such as palm kernel shell) and periwinkle, etc.",
-        "Types and uses of reinforcements.",
-        "Properties and characteristic of concrete",
-        "Process of concrete production.",
-        "Types of concrete tests."
-      ]
-    },
-    {
-      "topic_number": 14,
-      "topic": "Walls",
-      "content_notes": [
-        "Definition, types and functions of walls",
-        "Definition, types and properties of walling materials. (including locally sourced materials).",
-        "Manufacturing processes of walling materials (clay, brick, blocks and concrete blocks).",
-        "Sizes of blocks and bricks.",
-        "Mortar mixes for brick.",
-        "Methods of wall construction",
-        "Timber wall construction."
-      ]
-    },
-    {
-      "topic_number": 15,
-      "topic": "Doors and windows",
-      "content_notes": [
-        "Definition and function of wall openings.",
-        "Methods of constructing wall opening.",
-        "Functions of lintels and arches.",
-        "Definition, functions and types of doors and windows.",
-        "Methods of mixing doors and window frames."
-      ]
-    },
-    {
-      "topic_number": 16,
-      "topic": "Staircases",
-      "content_notes": [
-        "Definition, classification, types and uses of stairs.",
-        "Materials used for construction of stairs.",
-        "Materials used for finishing staircases."
-      ]
-    },
-    {
-      "topic_number": 17,
-      "topic": "Plumbing installations and drainage system.",
-      "content_notes": [
-        "Types of fitting in plumbing and sanitary works.",
-        "Materials for plumbing works and fittings.",
-        "Types of sanitary appliances.",
-        "Soil and waste appliances.",
-        "Installation of sanitary appliances",
-        "Terms used in drainage works.",
-        "Principles and functional requirement of drainage system.",
-        "Types of drainage system.",
-        "Types of drainage materials (pipes and fittings).",
-        "Methods of laying and testing drain lines.",
-        "Description of septic and soakaway (inspection chamber, manhole, etc)."
-      ]
-    },
-    {
-      "topic_number": 18,
-      "topic": "Electrical installation and solar energy system.",
-      "content_notes": [
-        "Electrical symbols, installation terms and materials.",
-        "Identification and uses of electrical wiring materials.",
-        "Types of electrical wiring.",
-        "Definition, functions and components of solar energy systems."
-      ]
-    },
-    {
-      "topic_number": 19,
-      "topic": "Roofs",
-      "content_notes": [
-        "Definition, purpose and types of roof.",
-        "Functional requirements of roof.",
-        "Materials used for roofs.",
-        "Roof covering materials.",
-        "Protection of roof from wind, rain, lightening, etc."
-      ]
-    },
-    {
-      "topic_number": 20,
-      "topic": "Finishes (Floors, Walls, Ceiling)",
-      "content_notes": [
-        "Floors: Types, characteristics, methods of laying, uses, care and maintenance of floor finishes.",
-        "Walls: Types, characteristics, plastering, rendering, and methods of applying mix.",
-        "Ceiling: Types, function, and ceiling finishing materials."
-      ]
-    },
-    {
-      "topic_number": 21,
-      "topic": "External Work.",
-      "content_notes": [
-        "Types of fence, materials for fencing and construction of fence.",
-        "Types of gate, fixing of gates and production of gate.",
-        "Types and materials for construction of access roads.",
-        "Construction of access road.",
-        "Needs and materials for landscaping.",
-        "Procedures for landscaping."
-      ]
-    },
-    {
-      "topic_number": 22,
-      "topic": "Types of Business Organization and Ways of Raising Capital.",
-      "content_notes": [
-        "Principles and Management of Business",
-        "Organization in the building industry.",
-        "Types of Business Organization in the Building Industry.",
-        "Types and sources of Capital."
-      ]
-    },
-    {
-      "topic_number": 23,
-      "topic": "Book Keeping",
-      "content_notes": [
-        "Book Keeping in small scale businesses.",
-        "Books of original entries."
-      ]
-    },
-    {
-      "topic_number": 24,
-      "topic": "Contract Work",
-      "content_notes": [
-        "Definition and types of contract.",
-        "Contract documents.",
-        "Parties to a contract."
+      "section_name": "Services, Finishes & Construction Management",
+      "topics": [
+        {
+          "title": "18. Plumbing Installations and Drainage Systems",
+          "notes": "Types of fittings in plumbing and sanitary works; materials for plumbing works and fittings; types of sanitary appliances; soil and waste appliances; installation of sanitary appliances; terms used in drainage works; principles and functional requirements of drainage systems; types of drainage systems; types of drainage materials (pipes and fittings); methods of laying and testing drain lines; description of septic tanks, soakaways, inspection chambers, manholes, etc."
+        },
+        {
+          "title": "19. Electrical Installations and Solar Energy Systems",
+          "notes": "Electrical symbols, installation terms, and materials; identification and uses of electrical wiring materials; types of electrical wiring; definition, functions, and components of solar energy systems."
+        },
+        {
+          "title": "20. Finishes (Floors, Walls, Ceilings)",
+          "notes": "Floors: types, characteristics, laying methods, uses, care, and maintenance of floor finishes. Walls: types, characteristics, plastering, rendering, and methods of applying mix. Ceilings: types, functions, and ceiling finishing materials."
+        },
+        {
+          "title": "21. External Works",
+          "notes": "Types of fences, materials for fencing, and fence construction; types of gates, fixing, and production of gates; types and materials for constructing access roads; construction of access roads; needs and materials for landscaping; procedures for landscaping."
+        },
+        {
+          "title": "22. Business Organizations and Capital in Building",
+          "notes": "Principles and management of business organizations in the building industry; types of business organizations in the building industry; types and sources of capital."
+        },
+        {
+          "title": "23. Book Keeping",
+          "notes": "Book keeping in small-scale businesses; books of original entries."
+        },
+        {
+          "title": "24. Contract Work",
+          "notes": "Definition and types of contracts; contract documents; parties to a contract."
+        }
       ]
     }
   ],
-  "suggested_reading_list": [
-    {
-      "author": "Stephen Emmitt and Christopher A. Gorse",
-      "title": "Barry's Introduction to Construction in Buildings",
-      "publisher": "Blackwell Publishing"
-    },
-    {
-      "author": "M. O. Obande",
-      "title": "Blocklaying and Concreting",
-      "publisher": "Longman Publishing Company"
-    },
-    {
-      "author": "R. Barry",
-      "title": "The Construction of Buildings Vols I-V",
-      "publisher": "Granada"
-    },
-    {
-      "author": "Ivor H. Seeley",
-      "title": "Building Technology",
-      "publisher": "Palgrave"
-    },
-    {
-      "author": "S. C. O. A. Ezeji",
-      "title": "Building Construction",
-      "publisher": ""
-    },
-    {
-      "author": "Nash",
-      "title": "Brickwork Vols 1-3",
-      "publisher": ""
-    },
-    {
-      "author": "R. Chudley",
-      "title": "Building Construction Handbook",
-      "publisher": "Billing & Sons Ltd."
-    },
-    {
-      "author": "W. B. Mckay",
-      "title": "Building Construction Vols 1-4",
-      "publisher": ""
-    },
-    {
-      "author": "Roger Greeno",
-      "title": "Principles of Construction",
-      "publisher": ""
-    },
-    {
-      "author": "Adesokan and M. O. Adeniyi",
-      "title": "Building Construction for Senior Secondary Schools Vols 1 - 3 (Ilesanmi)",
-      "publisher": ""
-    },
-    {
-      "author": "R. Chudley",
-      "title": "Construction Technology Vols 1-4",
-      "publisher": "Longman"
-    },
-    {
-      "author": "C. M. H. Barritt",
-      "title": "Advanced Building Construction Vols 1 & 2",
-      "publisher": "Longman"
-    }
+  "references": [
+    "Stephen Emmitt and Christopher A. Gorse — Barry's Introduction to Construction in Buildings (Blackwell Publishing)",
+    "M. O. Obande — Blocklaying and Concreting (Longman Publishing Company)",
+    "R. Barry — The Construction of Buildings Vols I-V (Granada)",
+    "Ivor H. Seeley — Building Technology (Palgrave)",
+    "S. C. O. A. Ezeji — Building Construction",
+    "Nash — Brickwork Vols 1-3",
+    "R. Chudley — Building Construction Handbook (Billing & Sons Ltd.)",
+    "W. B. Mckay — Building Construction Vols 1-4",
+    "Roger Greeno — Principles of Construction",
+    "Adesokan and M. O. Adeniyi — Building Construction for Senior Secondary Schools Vols 1-3 (Ilesanmi)",
+    "R. Chudley — Construction Technology Vols 1-4 (Longman)",
+    "C. M. H. Barritt — Advanced Building Construction Vols 1 & 2 (Longman)"
   ]
 }
