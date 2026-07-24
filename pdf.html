@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resource Library | Flexi Educational Consult</title>
-    <!-- Paystack Inline JS SDK -->
-    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <!-- Paystack Inline JS SDK V2 -->
+    <script src="https://js.paystack.co/v2/inline.js"></script>
     
     <style>
         /* Base Reset & Typography */
@@ -24,7 +24,7 @@
             flex-direction: column;
         }
 
-        /* 1cm Dynamic Sticky Header Configuration */
+        /* Dynamic Sticky Header Configuration */
         header {
             position: sticky;
             top: 0;
@@ -33,10 +33,10 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        /* Top 1cm Blue Bar (Approx 38px) */
+        /* Top Blue Bar */
         .header-blue-bar {
             height: 38px;
-            background-color: #0B1B3D; /* Signature Navy Blue */
+            background-color: #0B1B3D;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -52,14 +52,14 @@
             text-align: center;
         }
 
-        /* Accent Green Stripe Beneath Blue (Approx 4px) */
+        /* Accent Green Stripe */
         .header-green-stripe {
             height: 4px;
-            background-color: #00A859; /* Signature Green */
+            background-color: #00A859;
             width: 100%;
         }
 
-        /* Main Workspace & Filter Layout */
+        /* Workspace & Filter Layout */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -116,14 +116,14 @@
             border-color: #00A859;
         }
 
-        /* Responsive Resource Grid */
+        /* Resource Grid */
         .resource-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 25px;
         }
 
-        /* Modern Resource Card Styling */
+        /* Resource Card Styling */
         .resource-card {
             background: #ffffff;
             border: 1px solid #eef2f5;
@@ -145,7 +145,7 @@
         .card-thumbnail-box {
             position: relative;
             width: 100%;
-            padding-top: 75%; /* 4:3 Aspect Ratio */
+            padding-top: 75%;
             background-color: #f7f9fa;
             border-bottom: 1px solid #eef2f5;
         }
@@ -296,7 +296,6 @@
 </head>
 <body>
 
-    <!-- Signature 1cm Navy Blue & Green Sticky Header Module -->
     <header>
         <div class="header-blue-bar">
             <h1 class="header-title">Flexi Educational Consult Resource Library</h1>
@@ -305,8 +304,6 @@
     </header>
 
     <div class="container">
-        
-        <!-- Live Engine Filter System -->
         <div class="filter-ribbon">
             <div class="search-wrapper">
                 <input type="text" id="searchInput" placeholder="Search by title, subject or description...">
@@ -331,37 +328,29 @@
             </select>
         </div>
 
-        <!-- Target Destination Grid for Engine Injection -->
-        <div class="resource-grid" id="resourceGrid">
-            <!-- JavaScript populates individual structural items dynamically here -->
-        </div>
+        <div class="resource-grid" id="resourceGrid"></div>
     </div>
 
     <!-- Firebase Integration Logic Core -->
     <script type="module">
-        // Import raw modules natively without package builds
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Assign Configuration Variable Elements
         const firebaseConfig = {
-        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
-        authDomain: "waec2026jamb2027.firebaseapp.com",
-        projectId: "waec2026jamb2027",
-    };
+            apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+            authDomain: "waec2026jamb2027.firebaseapp.com",
+            projectId: "waec2026jamb2027",
+        };
 
-        // Initialize Firebase Scope Instance
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Core App Memory States
         let masterResources = [];
         let clearUserPurchases = new Set();
         let activeUser = null;
 
-        // Listen for current active authentication state
         onAuthStateChanged(auth, async (user) => {
             activeUser = user;
             if (user) {
@@ -370,7 +359,6 @@
             fetchResourceMetadataCollection();
         });
 
-        // Pull verified ownership ledger maps direct from Firestore
         async function syncUserPurchases(uid) {
             try {
                 const querySnapshot = await getDocs(collection(db, "purchases"));
@@ -385,7 +373,6 @@
             }
         }
 
-        // Fetch display data schema items mapping public resource cards
         async function fetchResourceMetadataCollection() {
             try {
                 const querySnapshot = await getDocs(collection(db, "resources"));
@@ -399,7 +386,6 @@
             }
         }
 
-        // Stream and verify filter interface metrics array matching search conditions
         function applyActiveFiltersFilterPipeline() {
             const searchVal = document.getElementById('searchInput').value.toLowerCase();
             const catVal = document.getElementById('categoryFilter').value;
@@ -420,7 +406,6 @@
             renderInterfaceGrid(trackingResults);
         }
 
-        // Programmatic DOM construction matching the explicit design patterns
         function renderInterfaceGrid(items) {
             const grid = document.getElementById('resourceGrid');
             grid.innerHTML = '';
@@ -436,17 +421,14 @@
                 const card = document.createElement('div');
                 card.className = 'resource-card';
 
-                // Setup asset elements or fallback structural parameters
                 const thumbnailElement = res.thumbnailUrl 
                     ? `<img src="${res.thumbnailUrl}" alt="${res.title}">`
                     : `<div class="card-thumbnail-placeholder">PDF</div>`;
 
-                // Handle string currency display configurations
                 const pricingDisplayHTML = res.isPremium && !isOwned
                     ? `<span class="price-tag">₦${parseInt(res.priceNGN).toLocaleString()}</span>`
                     : `<span class="status-free">${res.isPremium ? 'Unlocked' : 'Free'}</span>`;
 
-                // Choose primary call execution trigger structure
                 const executionBtnHTML = isOwned
                     ? `<button class="btn-action btn-download" data-id="${res.id}" id="btn-${res.id}">Download</button>`
                     : `<button class="btn-action btn-unlock" data-id="${res.id}" id="btn-${res.id}">Unlock</button>`;
@@ -471,7 +453,6 @@
 
                 grid.appendChild(card);
 
-                // Attach dynamic events cleanly inline post rendering tracking instance
                 const actionBtn = card.querySelector(`#btn-${res.id}`);
                 actionBtn.addEventListener('click', () => {
                     if (isOwned) {
@@ -483,26 +464,13 @@
             });
         }
 
-        // Strip the standard link format to deliver an isolated background byte stream
         function normalizeDropboxStreamMapping(url) {
-    if (!url) return '';
-    
-    // If it contains dl=0, smoothly swap it for dl=1
-    if (url.includes('dl=0')) {
-        return url.replace('dl=0', 'dl=1');
-    } 
-    // If dl=1 is already present, leave the URL untouched
-    else if (url.includes('dl=1')) {
-        return url;
-    } 
-    // If no dl parameter exists at all, append it safely based on existing query strings
-    else {
-        return url.includes('?') ? `${url}&dl=1` : `${url}?dl=1`;
-    }
-}
+            if (!url) return '';
+            if (url.includes('dl=0')) return url.replace('dl=0', 'dl=1');
+            if (url.includes('dl=1')) return url;
+            return url.includes('?') ? `${url}&dl=1` : `${url}?dl=1`;
+        }
 
-
-        // Direct secure storage link mapping pull and hidden click stream trigger
         async function executeBackgroundDropboxFetchStream(id, title) {
             const targetBtn = document.getElementById(`btn-${id}`);
             targetBtn.disabled = true;
@@ -516,7 +484,6 @@
                     const rawUrl = querySnap.data().dropboxSecureUrl;
                     const clearUrl = normalizeDropboxStreamMapping(rawUrl);
 
-                    // Dynamic element generation to shield user interface redirection
                     const hiddenAnchor = document.createElement('a');
                     hiddenAnchor.href = clearUrl;
                     hiddenAnchor.setAttribute('download', `${title}.pdf`);
@@ -535,7 +502,7 @@
             }
         }
 
-        // Paystack processing configuration workflow
+        // Paystack V2 Processing Configuration Workflow
         function triggerPaystackInlineGateway(resource) {
             if (!activeUser) {
                 alert("Please authenticate inside the Flexi student account dashboard to purchase items.");
@@ -546,41 +513,37 @@
             targetBtn.disabled = true;
             targetBtn.innerText = "Loading...";
 
-            const gatewayHandler = window.PaystackPop.setup({
-                key: 'pk_test_9408761e58ce1fe7a3a57c0df2422d887c3d4b35', // Swap context dynamically during builds
+            // Check for modern V2 PaystackPop constructor
+            if (typeof window.PaystackPop !== 'function') {
+                alert("Paystack payment gateway is still loading. Please check your internet connection and try again.");
+                targetBtn.disabled = false;
+                targetBtn.innerText = "Unlock";
+                return;
+            }
+
+            // Instantiate modern V2 popup handler
+            const popup = new window.PaystackPop();
+
+            popup.newTransaction({
+                key: 'pk_test_9408761e58ce1fe7a3a57c0df2422d887c3d4b35',
                 email: activeUser.email,
-                amount: parseInt(resource.priceNGN) * 100, // Process values explicitly inside kobo units
+                amount: parseInt(resource.priceNGN) * 100, // In kobo
                 currency: 'NGN',
-                ref: `flexi_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
-                callback: async function(response) {
+                reference: `flexi_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+                onSuccess: async (transaction) => {
                     try {
-                        // Client-side execution parameters checking transaction validity natively
-                        const apiVerification = await fetch(`https://api.paystack.co/transaction/verify/${response.reference}`, {
-                            method: 'GET',
-                            headers: {
-                                'Authorization': 'Bearer sk_live_YOUR_SECRET_KEY'
-                            }
+                        const transactionTrackingKey = `${activeUser.uid}_${resource.id}`;
+                        
+                        await setDoc(doc(db, "purchases", transactionTrackingKey), {
+                            userId: activeUser.uid,
+                            resourceId: resource.id,
+                            referenceCode: transaction.reference,
+                            settledAt: new Date().toISOString()
                         });
 
-                        const parsedPayload = await apiVerification.json();
-
-                        if (parsedPayload.status === true && parsedPayload.data.status === 'success') {
-                            const transactionTrackingKey = `${activeUser.uid}_${resource.id}`;
-                            
-                            // Write directly through validation rule maps
-                            await setDoc(doc(db, "purchases", transactionTrackingKey), {
-                                userId: activeUser.uid,
-                                resourceId: resource.id,
-                                referenceCode: response.reference,
-                                settledAt: new Date().toISOString()
-                            });
-
-                            clearUserPurchases.add(resource.id);
-                            alert("Resource catalog status authorized successfully!");
-                            applyActiveFiltersFilterPipeline();
-                        } else {
-                            alert("Verification sequence failed to confirm system transaction.");
-                        }
+                        clearUserPurchases.add(resource.id);
+                        alert("Resource catalog status authorized successfully!");
+                        applyActiveFiltersFilterPipeline();
                     } catch (err) {
                         console.error("Internal processing fault engine record:", err);
                         alert("Error generating direct database ledger state adjustments.");
@@ -588,17 +551,14 @@
                         targetBtn.disabled = false;
                     }
                 },
-                onClose: function() {
+                onCancel: () => {
                     targetBtn.disabled = false;
                     targetBtn.innerText = "Unlock";
                     alert("Checkout process suspended by context request.");
                 }
             });
-
-            gatewayHandler.openIframe();
         }
 
-        // Bind filter ribbon listener hooks globally
         document.getElementById('searchInput').addEventListener('input', applyActiveFiltersFilterPipeline);
         document.getElementById('categoryFilter').addEventListener('change', applyActiveFiltersFilterPipeline);
         document.getElementById('examFilter').addEventListener('change', applyActiveFiltersFilterPipeline);
