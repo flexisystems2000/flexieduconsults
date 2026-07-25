@@ -1,441 +1,1187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JAMB Brochure | Flexi Educational Consult</title>
-  <style>
-    :root {
-      --bg-color: #f8f6f6;
-      --card-bg: #ffffff;
-      --text-main: #1f2937;
-      --text-muted: #6b7280;
-      --border-color: #e5e7eb;
-      --flexi-navy: #0f172a;
-      --flexi-green: #10b981;
-      --radius: 12px;
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+<link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+<link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="Flexi Educational Consult (Flexi Tutors) is an online CBT exam practice portal for JAMB, WAEC, NECO, and JUPEB.">
+    <meta name="keywords" content="flexieduconsult, Flexi Educational Consult, Flexi Tutors">
+  
+    <title>Flexi Tutors | Excel with us in JAMB/WAEC/NECO/JUPEB and all other exams</title><link rel="stylesheet" type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<style>
+    :root{
+        --blue:#003366;
+        --green:#2E8B57;
+        --yellow:#FFD700;
+        --bg:#f4f7f6;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    body{
+        font-family:'Segoe UI',sans-serif;
+        background:var(--bg);
+        margin:0;
+        padding:0;
     }
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
+    header{
+        background:var(--blue);
+        color:white;
+        height:1cm;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:0 15px;
+        border-bottom:3px solid var(--green);
+        position:sticky;
+        top:0;
+        z-index:1000;
     }
 
-    /* Full-width header */
-    .header-wrapper {
-      width: 100%;
-      background-color: var(--flexi-navy);
-      border-bottom: 5px solid var(--flexi-green);
-      margin-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    .header-left{
+        display:flex;
+        align-items:center;
+        gap:10px;
     }
 
-    .header-content {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 28px 20px;
-      text-align: center;
-      color: #ffffff;
+    .logo-img{
+        height:.8cm;
+        width:.8cm;
+        object-fit:contain;
     }
 
-    .header-content h1 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      letter-spacing: 0.3px;
+    .container{
+        max-width:700px;
+        margin:15px auto;
+        width:95%;
     }
 
-    .header-content p {
-      font-size: 0.85rem;
-      color: #94a3b8;
+    #welcome-banner{
+        margin-bottom:15px;
+        padding:15px;
+        background:white;
+        border-radius:10px;
+        box-shadow:0 2px 10px rgba(0,0,0,.05);
+        border-left:5px solid var(--blue);
+        display:none;
+        animation:fadeIn .5s ease-in;
     }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0 16px 24px 16px;
+    @keyframes fadeIn{
+        from{
+            opacity:0;
+            transform:translateY(-5px);
+        }
+        to{
+            opacity:1;
+            transform:translateY(0);
+        }
     }
 
-    .nav-bar {
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    /* NEW SLIDER */
+
+    .slider-container{
+        position:relative;
+        width:100%;
+        height:3cm;
+        margin-bottom:15px;
+        border-radius:8px;
+        overflow:hidden;
+        box-shadow:0 2px 8px rgba(0,0,0,.1);
     }
 
-    .back-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: var(--text-main);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    .slider-slide{
+        position:absolute;
+        width:100%;
+        height:100%;
+        opacity:0;
+        transition:opacity .6s ease;
     }
 
-    .nav-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-main);
+    .slider-slide.active{
+        opacity:1;
     }
 
-    /* Dropdown Selectors */
-    .select-box-group {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 16px;
+    .slider-slide img{
+        width:100%;
+        height:100%;
+        object-fit:contain;
+        background:#001f3f;
     }
 
-    .select-box {
-      width: 100%;
+    .slider-dots{
+        position:absolute;
+        bottom:8px;
+        width:100%;
+        text-align:center;
     }
 
-    .select-box label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .dot{
+        display:inline-block;
+        width:8px;
+        height:8px;
+        border-radius:50%;
+        background:rgba(255,255,255,.5);
+        margin:0 4px;
     }
 
-    .select-box select {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      background-color: var(--card-bg);
-      color: var(--text-main);
-      font-size: 0.95rem;
-      font-weight: 600;
-      outline: none;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-      cursor: pointer;
+    .active-dot{
+        background:white;
     }
 
-    .select-box select:focus {
-      border-color: var(--flexi-green);
+    .news-table{
+        width:100%;
+        border-collapse:collapse;
+        background:white;
+        border-radius:8px;
+        overflow:hidden;
+        box-shadow:0 2px 10px rgba(0,0,0,.05);
     }
 
-    /* Search Box */
-    .search-box {
-      position: relative;
-      margin-bottom: 16px;
+    .news-table tr{
+        border-bottom:1px solid #eee;
+        cursor:pointer;
     }
 
-    .search-box input {
-      width: 100%;
-      padding: 14px 16px 14px 46px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      background-color: var(--card-bg);
-      color: var(--text-main);
-      font-size: 0.95rem;
-      outline: none;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-      transition: border-color 0.2s;
+    .news-table tr:hover{
+        background:#f1f1f1;
     }
 
-    .search-box input:focus {
-      border-color: var(--flexi-green);
+    .news-table td{
+        padding:12px;
+        vertical-align:middle;
     }
 
-    .search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-size: 1.1rem;
+    .td-img{
+        width:80px;
+        height:60px;
+        object-fit:cover;
+        border-radius:4px;
+        border:1px solid #ddd;
     }
 
-    .section-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-main);
-      margin-bottom: 14px;
+    .td-title{
+        font-size:14px;
+        font-weight:600;
+        color:var(--blue);
+    }
+ 
+    .pagination-bar{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:5px;
+margin:25px 0;
+padding:10px;
+background:white;
+border-radius:30px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+    .pg-btn{
+        min-width:35px;
+        height:35px;
+        border:1px solid #ddd;
+        background:white;
+        color:var(--blue);
+        border-radius:4px;
+        cursor:pointer;
+        font-weight:bold;
+        font-size:14px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
     }
 
-    .course-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .pg-active{
+        background:var(--blue)!important;
+        color:white!important;
     }
 
-    .course-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      border: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      text-decoration: none;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-      transition: transform 0.1s ease, border-color 0.2s;
+    .card{
+        background:white;
+        padding:20px;
+        border-radius:10px;
+        border-top:5px solid var(--green);
+        margin-top:10px;
     }
 
-    .course-card:active {
-      transform: scale(0.98);
+    input,
+    textarea{
+        width:100%;
+        padding:12px;
+        margin-bottom:10px;
+        border:1px solid #ccc;
+        border-radius:6px;
+        box-sizing:border-box;
     }
 
-    .course-card:hover {
-      border-color: var(--flexi-green);
+    .btn-green{
+        background:var(--green);
+        color:white;
+        border:none;
+        padding:14px;
+        width:100%;
+        border-radius:6px;
+        font-weight:bold;
+        cursor:pointer;
     }
 
-    .course-name {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-main);
+    .menu-container{
+        position:relative;
     }
 
-    .arrow-icon {
-      color: var(--text-muted);
-      font-size: 1rem;
-      font-weight: bold;
+    .menu-btn{
+        width:30px;
+        height:30px;
+        cursor:pointer;
+        background:none;
+        border:1px solid rgba(255,255,255,.3);
+        border-radius:4px;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        gap:3px;
     }
 
-    .no-results {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 20px;
-      font-size: 0.9rem;
-      display: none;
+    .menu-btn span{
+        width:18px;
+        height:2px;
+        background:white;
     }
-  </style>
+
+    .square-menu{
+        display:none;
+        position:absolute;
+        top:45px;
+        right:0;
+        width:220px;
+        background:var(--blue);
+        border:2px solid var(--green);
+        border-radius:8px;
+        z-index:2000;
+        box-shadow:0 10px 30px rgba(0,0,0,.3);
+    }
+
+    .square-menu a{
+        display:block;
+        padding:15px;
+        color:white;
+        text-decoration:none;
+        font-size:14px;
+        border-bottom:1px solid rgba(255,255,255,.1);
+    }
+
+    .square-menu a:last-child{
+        border-bottom:none;
+    }
+
+/* NEW MODERN FOOTER */
+.footer {
+    background: #011627; /* Darker, premium navy tone */
+    color: #e2e8f0;
+    padding: 60px 20px 20px 20px;
+    margin-top: 60px;
+    border-top: 4px solid var(--green);
+    font-size: 14px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.2fr; /* Better weight distribution */
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Fallback for smaller screens */
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+}
+
+
+
+.footer h4 {
+    color: var(--yellow);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 18px 0;
+}
+
+.footer p {
+    margin: 0 0 12px 0;
+    line-height: 1.6;
+    color: #a0aec0;
+}
+
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-list li {
+    margin-bottom: 10px;
+}
+
+.footer a {
+    color: #cbd5e0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.footer a:hover {
+    color: var(--yellow);
+    transform: translateX(4px); /* Subtle nudge effect on hover */
+}
+
+/* For social links, keep them centered or normal without breaking layout */
+.footer .social-links a:hover {
+    transform: scale(1.05);
+}
+
+.footer-bottom {
+    max-width: 1100px;
+    margin: 40px auto 0 auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 13px;
+    color: #718096;
+}
+
+/* TESTIMONIALS SLIDER */
+.testimonials-section {
+    margin-top: 40px;
+    margin-bottom: 25px;
+}
+
+.testimonials-heading {
+    color: var(--blue);
+    border-left: 5px solid var(--green);
+    padding-left: 10px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* UPDATED PHYSICAL SLIDER MOTION */
+.testimonial-slider-container {
+    position: relative;
+    width: 100%;
+    height: 140px; 
+    overflow: hidden; /* Important: Hides the slides waiting off-screen */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+
+.testimonial-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    /* This handles the sliding physics */
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translateX(100%); /* Default: Keep all slides hidden to the extreme right */
+}
+
+/* Active slide sits perfectly center stage */
+.testimonial-slide.active {
+    transform: translateX(0);
+}
+
+/* Old slide exits smoothly off to the left side */
+.testimonial-slide.exit {
+    transform: translateX(-100%);
+}
+
+@media (max-width: 480px) {
+    .testimonial-slider-container {
+        height: 160px;
+    }
+}
+
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e1e7ec;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid var(--green);
+}
+
+.student-details h4 {
+    margin: 0;
+    color: var(--blue);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.student-details span {
+    font-size: 12px;
+    color: #666;
+}
+
+.testimonial-text {
+    margin: 0;
+    font-size: 13px;
+    color: #4a5568;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* QUOTE SLIDER STYLES */
+.quote-slider-container {
+    position: relative;
+    width: 100%;
+    min-height: 180px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    background: #001f3f;
+}
+
+.quote-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.quote-slide.active {
+    opacity: 1;
+}
+
+.quote-content-box {
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+.quote-content-box blockquote {
+    margin: 0 0 8px 0;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.quote-content-box cite {
+    display: block;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-align: right;
+}
+
+/* Make it responsive if text gets longer on tight mobile devices */
+@media (max-width: 480px) {
+    .testimonial-slider-container {
+        height: 160px;
+    }
+}
+
+</style>
+
 </head>
 <body>
+  <header>
+    <div class="header-left">
+        <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg"
+             class="logo-img">    <span style="font-size:14px;font-weight:bold;">
+        Flexi Educational Consult
+    </span>
+</div>
 
-  <!-- Flexi Navy Header -->
-  <div class="header-wrapper">
-    <div class="header-content">
-      <h1>Flexi Educational Consult</h1>
-      <p id="facultyHeaderTitle">Degree (Universities) - Faculty Courses</p>
+<div class="menu-container">
+
+    <button class="menu-btn"
+            onclick="toggleMenu()">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+    <div class="square-menu" id="squareMenu">
+    <a href="index.html">Home</a> <!-- Added Home for better navigation -->
+    <a href="videos.html">Watch Video Lessons</a> <!-- NEW LINK -->
+    <a href="syllabus.html">Access the JAMB and WAEC syllabus here</a> <!-- NEW LINK -->
+    <a href="cbt.html">CBT Simulator</a>
+    <a href="classroom.html">Classroom (Groups)</a>
+    <a href="purchase.html">Purchase Scratch Cards</a>
+    <a href="pdf.html">Get your PDFs from here</a>
+    <a href="location.html">Tutorial Centers Near You</a>
+    <a href="profile.html">User Profile</a>
+    <a href="#" id="auth-menu-btn">Login</a>
+</div>
+</div>
+
+</header><div class="container"><div id="welcome-banner">
+
+    <span id="user-greeting"
+          style="font-weight:bold;
+          color:var(--blue);
+          font-size:1.1rem;">
+    </span>
+
+</div>
+<!-- Announcement Banner -->
+<div id="announcement-banner" style="display: none; margin-bottom: 15px; padding: 15px; background: #003366; color: white; border-radius: 10px; border-left: 5px solid #FFD700;">
+    <h4 id="ann-title" style="margin: 0 0 5px 0;"></h4>
+    <p id="ann-content" style="margin: 0; font-size: 0.9rem;"></p>
+    <small id="ann-date" style="display: block; margin-top: 8px; opacity: 0.8;"></small>
+</div>
+
+<!-- MOTIVATIONAL QUOTES SLIDER -->
+<div id="quote-slider-container" class="quote-slider-container" style="display: none;">
+    <div id="quote-slides-wrapper" class="quote-slides-wrapper"></div>
+    <div id="quote-dots" class="slider-dots"></div>
+</div>
+
+
+<!-- NEW SLIDER -->
+
+<div class="slider-container">
+
+    <div class="slider-slide active">
+        <img src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg">
     </div>
-  </div>
 
-  <div class="container">
-    <!-- Back Button -->
-    <div class="nav-bar">
-      <a class="back-btn" href="index.html">&#8592;</a>
-      <div class="nav-title">Back to Main</div>
+    <div class="slider-slide">
+        <img src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg">
     </div>
 
-    <!-- Institution & Faculty Selectors -->
-    <div class="select-box-group">
-      <!-- Institution Category Switcher -->
-      <div class="select-box">
-        <label for="institutionSelect">Select Institution Type</label>
-        <select id="institutionSelect">
-          <option value="Universities">Degree (Universities)</option>
-          <option value="Polytechnics">ND / HND (Polytechnics & Monotechnics)</option>
-          <option value="Colleges">NCE (Colleges of Education)</option>
-          <option value="IEIs">Innovation Enterprise Institutions (IEIs)</option>
-        </select>
-      </div>
-
-      <!-- Faculty Switcher -->
-      <div class="select-box">
-        <label for="facultySelect">Select Faculty / Category</label>
-        <select id="facultySelect">
-          <option value="Administration">Administration</option>
-          <option value="Agriculture">Agriculture</option>
-          <option value="Engineering">Engineering, Environment & Technology</option>
-          <option value="Education">Education</option>
-          <option value="Law">Law</option>
-          <option value="Medical">Medical, Pharmaceutical & Health Services</option>
-          <option value="Sciences">Sciences</option>
-          <option value="SocialSciences">Social Sciences</option>
-        </select>
-      </div>
+    <div class="slider-slide">
+        <img src="https://i.postimg.cc/76p3Srkc/Screenshot-20260418-191139-2.png">
     </div>
 
-    <!-- Real-time Search Filter -->
-    <div class="search-box">
-      <span class="search-icon">&#128269;</span>
-      <input type="text" id="searchInput" placeholder="Search Course..." />
+    <div class="slider-dots">
+        <span class="dot active-dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
     </div>
 
-    <div class="section-title">Select a Course:</div>
+</div>
+
+<h3 style="
+    color:var(--blue);
+    border-left:5px solid var(--green);
+    padding-left:10px;">
+    News Updates
+</h3>
+
+<table class="news-table">
+    <tbody id="news-table-body"></tbody>
+</table>
+
+<div class="pagination-bar"
+     id="pagination-controls"></div>
+
+<div class="testimonials-section">
+    <h3 class="testimonials-heading">What Our Students Say</h3>
     
-    <div class="course-list" id="courseListContainer"></div>
-    <div class="no-results" id="noResultsMsg">No courses found matching your search.</div>
-  </div>
+    <div class="testimonial-slider-container">
+        <div class="testimonial-slide active">
+            <div class="student-info">
+                <div class="student-avatar">CO</div>
+                <div class="student-details">
+                    <h4>Chidi O.</h4>
+                    <span>JAMB Candidate (Score: 312)</span>
+                </div>
+            </div>
+            <p class="testimonial-text">
+                "The CBT Simulator on Flexi Tutors is the closest thing to the actual JAMB exam. It gave me the speed and accuracy I needed to score over 300!"
+            </p>
+        </div>
 
-  <script>
-    // Master Dataset for all 8 Faculties
-    const brochureData = {
-      "Administration": [
-        "Accounting", "Actuarial Science", "Banking and Finance", "Business Administration",
-        "Business Management", "Cooperative and Rural Development", "Entrepreneurship", "Finance",
-        "Human Resource Management", "Industrial Relations and Personnel Management", "Insurance",
-        "International Relations", "Local Government and Development Studies", "Management",
-        "Marketing", "Office and Information Management", "Public Administration",
-        "Purchasing and Supply", "Secretarial Administration", "Taxation", "Transport Management"
-      ],
-      "Agriculture": [
-        "Agricultural Economics", "Agricultural Economics and Extension", "Agricultural Extension",
-        "Agricultural Extension and Rural Development", "Agronomy", "Animal Science", "Crop Science",
-        "Crop Science and Horticulture", "Crop Protection", "Crop Protection and Environmental Biology",
-        "Soil Science", "Soil Resources Management", "Food Science and Technology", "Fisheries",
-        "Fisheries and Aquaculture", "Forestry", "Forestry and Wildlife Management",
-        "Forestry and Environmental Management", "Home Science and Management", "Horticulture",
-        "Water Resources and Agro-Meteorology", "Agricultural Engineering", "Agricultural Biochemistry",
-        "Agricultural Technology", "Plant Science", "Plant Breeding and Seed Science"
-      ],
-      "Engineering": [
-        "Agricultural Engineering", "Architecture", "Building", "Chemical Engineering",
-        "Civil Engineering", "Computer Engineering", "Electrical Engineering",
-        "Electrical and Electronics Engineering", "Electronics Engineering", "Environmental Management",
-        "Estate Management", "Geomatics", "Industrial and Production Engineering", "Industrial Design",
-        "Information and Communication Engineering", "Mechanical Engineering", "Mechatronics Engineering",
-        "Metallurgical and Materials Engineering", "Mining Engineering", "Petroleum Engineering",
-        "Polymer and Textile Engineering", "Quantity Surveying", "Surveying and Geoinformatics",
-        "Telecommunication Engineering", "Urban and Regional Planning", "Water Resources Engineering",
-        "Wood Products Engineering"
-      ],
-      "Education": [
-        "Adult Education", "Adult and Continuing Education", "Arts Education", "Business Education",
-        "Curriculum and Instruction", "Early Childhood Education", "Educational Administration",
-        "Educational Foundations", "Educational Management", "Educational Psychology",
-        "Educational Technology", "Guidance and Counselling", "Health Education", "Human Kinetics",
-        "Library and Information Science", "Primary Education Studies", "Science Education",
-        "Social Science Education", "Special Education", "Teacher Education", "Technical Education",
-        "Vocational Education", "Agricultural Education", "Biology Education", "Chemistry Education",
-        "Christian Religious Studies Education", "Computer Education", "Economics Education",
-        "English Education", "French Education", "Geography Education", "History Education",
-        "Integrated Science Education", "Islamic Studies Education", "Mathematics Education",
-        "Music Education", "Physical and Health Education", "Physics Education",
-        "Political Science Education", "Social Studies Education", "Yoruba Education", "Igbo Education",
-        "Hausa Education", "Fine and Applied Arts Education"
-      ],
-      "Law": [
-        "Common Law", "Civil Law", "Commercial and Industrial Law", "International Law and Jurisprudence",
-        "Private and Property Law", "Public Law", "Islamic Law", "Customary Law",
-        "Jurisprudence and International Law", "Business Law", "Constitutional Law", "Criminal Law", "Law"
-      ],
-      "Medical": [
-        "Anatomy", "Audiology", "Dentistry", "Dental Surgery", "Dental Technology", "Dental Therapy",
-        "Environmental Health Science", "Epidemiology", "Human Anatomy", "Human Nutrition and Dietetics",
-        "Medical Biochemistry", "Medical Laboratory Science", "Medical Rehabilitation",
-        "Medicine and Surgery", "Microbiology and Parasitology", "Nursing", "Nursing Science",
-        "Nutrition and Dietetics", "Occupational Therapy", "Optometry", "Pharmaceutical Chemistry",
-        "Pharmaceutical Technology", "Pharmacognosy", "Pharmacology", "Pharmacy", "Physiology",
-        "Physiotherapy", "Prosthetics and Orthotics", "Public Health", "Radiography",
-        "Radiography and Radiation Science", "Speech and Language Therapy", "Veterinary Anatomy",
-        "Veterinary Medicine", "Veterinary Physiology", "Veterinary Public Health", "Veterinary Surgery"
-      ],
-      "Sciences": [
-        "Actuarial Science", "Applied Biology", "Applied Biophysics", "Applied Geology",
-        "Applied Geophysics", "Biochemistry", "Biological Science", "Biology", "Biotechnology",
-        "Botany", "Cell Biology and Genetics", "Chemistry", "Computer Science", "Cyber Security",
-        "Data Science", "Ecology", "Environmental Biology", "Environmental Science", "Forensic Science",
-        "Geography", "Geology", "Geophysics", "Industrial Chemistry", "Industrial Mathematics",
-        "Industrial Physics", "Information Technology", "Marine Biology", "Mathematics",
-        "Microbiology", "Physics", "Plant Science", "Pure and Applied Biology",
-        "Pure and Applied Chemistry", "Pure and Applied Mathematics", "Statistics", "Zoology"
-      ],
-      "SocialSciences": [
-        "Anthropology", "Criminology and Security Studies", "Demography and Social Statistics",
-        "Economics", "Geography", "Geography and Environmental Management", "International Relations",
-        "Mass Communication", "Peace and Conflict Studies", "Political Science", "Psychology",
-        "Public Administration", "Sociology", "Sociology and Anthropology", "Social Work",
-        "Urban and Regional Planning", "Development Studies", "Intelligence and Security Studies",
-        "Population Studies", "Gender Studies"
-      ]
+        <div class="testimonial-slide">
+            <div class="student-info">
+                <div class="student-avatar">AA</div>
+                <div class="student-details">
+                    <h4>Amina A.</h4>
+                    <span>WAEC Student (5 A1s)</span>
+                </div>
+            </div>
+            <p class="testimonial-text">
+                "I downloaded all my past questions in PDF here. The online classroom groups kept me accountable during my final revisions. Thank you, Flexi!"
+            </p>
+        </div>
+
+        <div class="testimonial-slide">
+            <div class="student-info">
+                <div class="student-avatar">TE</div>
+                <div class="student-details">
+                    <h4>Tunde E.</h4>
+                    <span>Post-UTME Student</span>
+                </div>
+            </div>
+            <p class="testimonial-text">
+                "Highly recommended! The instant admission updates kept me from missing important post-UTME screening dates. Exceptional platform."
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+
+    <h3 style="
+        margin:0 0 15px 0;
+        color:var(--blue);">
+
+        Customer Care
+
+    </h3>
+
+    <form id="contact-form">
+
+        <input
+            type="email"
+            name="email"
+            id="contact-email"
+            placeholder="Your Email Address"
+            required>
+
+        <textarea
+            name="message"
+            rows="3"
+            placeholder="How can we help you?"
+            required></textarea>
+
+        <button
+            type="submit"
+            id="submit-btn"
+            class="btn-green">
+
+            Submit Inquiry
+
+        </button>
+
+    </form>
+
+</div>
+
+</div>
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <p>
+               We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
+            </p>
+        </div>
+
+        <div>
+            <h4>Quick Links</h4>
+            <ul class="footer-links-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="videos.html">Video Lessons</a></li>
+                <li><a href="pdf.html">Past Questions & PDFs</a></li>
+                <li><a href="cbt.html">CBT Simulator</a></li>
+                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="location.html">Tutorial Centres</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4>Support & Community</h4>
+            <!-- UPDATED: Using a vibrant green background for the WhatsApp link -->
+            <p>
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
+                   target="_blank" 
+                   style="background: #25D366; color: white; padding: 6px 12px; border-radius: 6px; display: inline-block; font-weight: bold; text-decoration: none;">
+                    Join our WhatsApp Channel
+                </a>
+            </p>
+            <p>📞 09034159839</p>
+            <p>📧 flexitutors2000@gmail.com</p>
+        </div>
+
+        <div class="social-links">
+            <h4>Follow Us</h4>
+            <p><a href="https://www.facebook.com/profile.php?id=61589793118693" target="_blank">Facebook @flexieduconsult</a></p>
+            <p><a href="https://instagram.com/flexieduconsult2000" target="_blank">Instagram @flexieduconsult2000</a></p>
+            <p><a href="https://www.tiktok.com/@flexieduconsult" target="_blank">TikTok @flexieduconsult</a></p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
+    </div>
+</footer>
+<div id="support-widget" style="position:fixed; bottom:20px; right:20px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
+    
+    <div id="support-tooltip" style="background:#003366; color:white; padding:10px 15px; border-radius:20px 20px 0px 20px; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); animation: fadeIn 0.5s; opacity: 1;">
+    Need help with your admission? Chat with us!
+    </div>
+    
+
+    <button id="support-btn" onclick="window.location.href='contactsupport.html'" style="background:#2E8B57; border:none; width:60px; height:60px; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.3s;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+        </svg>
+    </button>
+</div>
+
+<style>
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    #support-btn:hover { transform: scale(1.1); }
+</style>
+    
+<div id="seo-crawler-map" style="display: none !important; visibility: hidden;" aria-hidden="true">
+    <h2>Latest Educational News Updates Index</h2>
+    <div id="seo-links-holder"></div>
+</div>
+
+<script
+src="https://cdn.jsdelivr.net/npm/toastify-js">
+</script>
+<script type="module">
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit}
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut}
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+   apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+   authDomain: "auth.flexieduconsult.com.ng",
+   projectId: "waec2026jamb2027"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+/* AUTH OBSERVER */
+
+onAuthStateChanged(auth, (user) => {
+    const welcomeBanner = document.getElementById('welcome-banner');
+    const userGreeting = document.getElementById('user-greeting');
+    const authMenuBtn = document.getElementById('auth-menu-btn');
+    const contactEmail = document.getElementById('contact-email');
+    if(user){
+        welcomeBanner.style.display = "block";
+        const name = user.displayName || user.email.split('@')[0];
+        userGreeting.innerHTML = `Welcome back, <span style="color:var(--green)">${name}</span> 👋`;
+        authMenuBtn.innerText = "Logout";
+        authMenuBtn.style.color = "#ff4d4d";
+        authMenuBtn.onclick = async (e)=>{
+            e.preventDefault();
+            await signOut(auth);
+            window.location.reload();
+        };
+        if(contactEmail){
+            contactEmail.value = user.email;
+        }
+    }else{
+        welcomeBanner.style.display = "none";
+        authMenuBtn.innerText = "Login";
+        authMenuBtn.style.color = "white";
+        authMenuBtn.onclick = ()=>{
+            window.location.href = "login.html";
+        };
+    }
+});
+
+async function loadAnnouncement() {
+    try {
+        const annBanner = document.getElementById('announcement-banner');
+        const q = query(
+            collection(db, "announcements"), 
+            orderBy("createdAt", "desc"), 
+            limit(1)
+        );
+
+        const snap = await getDocs(q);
+        
+        if (!snap.empty) {
+            const data = snap.docs[0].data();
+            
+            document.getElementById('ann-title').innerText = data.title;
+            document.getElementById('ann-content').innerText = data.content;
+            document.getElementById('ann-date').innerText = `Posted: ${new Date(data.createdAt.seconds * 1000).toLocaleDateString()}`;
+            
+            annBanner.style.display = "block";
+        }
+    } catch (e) {
+        console.error("Error loading announcement:", e);
+    }
+}
+
+/* DYNAMIC QUOTES SLIDER ENGINE */
+let quoteSlides = [];
+let currentQuoteIndex = 0;
+let quoteInterval = null;
+
+async function loadMotivationalQuote() {
+    try {
+        const container = document.getElementById('quote-slider-container');
+        const wrapper = document.getElementById('quote-slides-wrapper');
+        const dotsContainer = document.getElementById('quote-dots');
+
+        // Retrieve all published quotes from Firestore
+        const q = query(collection(db, "quotes"), orderBy("createdAt", "desc"));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+            container.style.display = 'none';
+            return;
+        }
+
+        wrapper.innerHTML = '';
+        dotsContainer.innerHTML = '';
+
+        let index = 0;
+        snap.forEach(docSnap => {
+            const data = docSnap.data();
+
+            // Create Slide
+            const slide = document.createElement('div');
+            slide.className = `quote-slide ${index === 0 ? 'active' : ''}`;
+            if (data.bgImage) {
+                slide.style.backgroundImage = `url('${data.bgImage}')`;
+            }
+
+            slide.innerHTML = `
+                <div class="quote-content-box">
+                    <blockquote style="color: ${data.textColor || '#ffffff'};">"${escapeHtml(data.text)}"</blockquote>
+                    <cite style="color: ${data.authorColor || '#f1f5f9'};">— ${escapeHtml(data.author)}</cite>
+                </div>
+            `;
+            wrapper.appendChild(slide);
+
+            // Create Indicator Dot
+            const dot = document.createElement('span');
+            dot.className = `dot ${index === 0 ? 'active-dot' : ''}`;
+            dotsContainer.appendChild(dot);
+
+            index++;
+        });
+
+        container.style.display = 'block';
+
+        // Start auto-swiping if there is more than 1 quote
+        quoteSlides = document.querySelectorAll('.quote-slide');
+        const quoteDots = dotsContainer.querySelectorAll('.dot');
+
+        if (quoteSlides.length > 1) {
+            if (quoteInterval) clearInterval(quoteInterval);
+            quoteInterval = setInterval(() => {
+                quoteSlides[currentQuoteIndex].classList.remove('active');
+                if (quoteDots[currentQuoteIndex]) quoteDots[currentQuoteIndex].classList.remove('active-dot');
+
+                currentQuoteIndex = (currentQuoteIndex + 1) % quoteSlides.length;
+
+                quoteSlides[currentQuoteIndex].classList.add('active');
+                if (quoteDots[currentQuoteIndex]) quoteDots[currentQuoteIndex].classList.add('active-dot');
+            }, 5000); // Swipes smoothly every 5 seconds
+        }
+    } catch (e) {
+        console.error("Error loading quotes slider:", e);
+    }
+}
+
+function escapeHtml(str) {
+    return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+}
+
+/* NEWS */
+
+let allNews = [];
+let currentPage = 1;
+const itemsPerPage = 5;
+
+/* BULLETPROOF NEWS FETCH WITH ISOLATED SEO ENGINE */
+async function loadNews(){
+    try {
+        const q = query(
+            collection(db, "news"),
+            orderBy("timestamp", "desc")
+        );
+
+        const snap = await getDocs(q);
+        allNews = [];
+
+        snap.forEach(doc => {
+            allNews.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+
+        renderTablePage(1);
+
+        try {
+            const sepHolder = document.getElementById('seo-links-holder');
+            if (sepHolder) {
+                sepHolder.innerHTML = ""; 
+                allNews.forEach(item => {
+                    const seoAnchor = document.createElement('a');
+                    seoAnchor.href = item.slug
+                        ? `news-view.html?slug=${item.slug}`
+                        : `news-view.html?id=${item.id}`;
+                    seoAnchor.innerText = `${item.title || 'News'} - Flexi Educational Consult Updates`;
+                    sepHolder.appendChild(seoAnchor);
+                });
+            }
+        } catch (seoError) {
+            console.warn("SEO background map skipped:", seoError);
+        }
+
+    } catch(e) {
+        console.error("Error loading news:", e);
+    }
+}
+
+/* NEWS RENDER */
+
+function renderTablePage(page){
+    currentPage = page;
+    const tbody = document.getElementById('news-table-body');
+    tbody.innerHTML = "";
+    const start = (page - 1) * itemsPerPage;
+    const items = allNews.slice(start, start + itemsPerPage);
+    items.forEach(item => {
+        const row = document.createElement('tr');
+        row.onclick = () => {
+            if (item.slug) {
+                window.location.href = `news-view.html?slug=${item.slug}`;
+            } else {
+                window.location.href = `news-view.html?id=${item.id}`;
+            }
+        };
+        row.innerHTML = `
+            <td style="width:80px;">
+                <img src="${item.imageUrl || 'https://via.placeholder.com/80'}" class="td-img">
+            </td>
+            <td class="td-title">
+                ${item.title}
+            </td>
+            <td style="text-align:right;color:#999;">
+                ❯
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    renderPaginationUI();
+}
+
+/* FIXED 5-ELEMENT BOUNDED PAGINATION */
+function renderPaginationUI(){
+    const controls = document.getElementById('pagination-controls');
+    controls.innerHTML = "";
+
+    const totalPages = Math.ceil(allNews.length / itemsPerPage);
+    if(totalPages <= 1) return;
+
+    const prev = document.createElement('button');
+    prev.className = 'pg-btn';
+    prev.innerText = "<";
+    prev.disabled = (currentPage === 1);
+    prev.onclick = () => renderTablePage(currentPage - 1);
+    controls.appendChild(prev);
+
+    const createBtn = (pageNumber) => {
+        const btn = document.createElement('button');
+        btn.className = `pg-btn ${pageNumber === currentPage ? 'pg-active' : ''}`;
+        btn.innerText = pageNumber;
+        btn.onclick = () => renderTablePage(pageNumber);
+        controls.appendChild(btn);
     };
 
-    const institutionSelect = document.getElementById('institutionSelect');
-    const facultySelect = document.getElementById('facultySelect');
-    const courseListContainer = document.getElementById('courseListContainer');
-    const searchInput = document.getElementById('searchInput');
-    const facultyHeaderTitle = document.getElementById('facultyHeaderTitle');
-    const noResultsMsg = document.getElementById('noResultsMsg');
-
-    // Render courses based on selected institution and faculty
-    function renderCourses() {
-      const facultyKey = facultySelect.value;
-      const institutionKey = institutionSelect.value;
-      const courses = brochureData[facultyKey] || [];
-      
-      courseListContainer.innerHTML = '';
-      
-      // Update sub-header title text dynamically
-      const selectedInstitutionText = institutionSelect.options[institutionSelect.selectedIndex].text;
-      const selectedFacultyText = facultySelect.options[facultySelect.selectedIndex].text;
-      facultyHeaderTitle.textContent = `${selectedInstitutionText} - Faculty of ${selectedFacultyText}`;
-
-      courses.forEach(course => {
-        const a = document.createElement('a');
-        a.className = 'course-card';
-        a.href = `requirements.html?institution=${encodeURIComponent(institutionKey)}&faculty=${encodeURIComponent(facultyKey)}&course=${encodeURIComponent(course)}`;
-        
-        a.innerHTML = `
-          <span class="course-name">${course}</span>
-          <span class="arrow-icon">&#10095;</span>
-        `;
-        courseListContainer.appendChild(a);
-      });
-
-      // Re-apply search filter
-      filterCourses();
-    }
-
-    // Live search function
-    function filterCourses() {
-      const term = searchInput.value.toLowerCase().trim();
-      const cards = courseListContainer.getElementsByClassName('course-card');
-      let visibleCount = 0;
-
-      Array.from(cards).forEach(card => {
-        const text = card.textContent.toLowerCase();
-        if (text.includes(term)) {
-          card.style.display = 'flex';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
+    if (totalPages <= 3) {
+        for (let i = 1; i <= totalPages; i++) {
+            createBtn(i);
         }
-      });
-
-      noResultsMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+    } else {
+        if (currentPage === 1) {
+            createBtn(1);
+            createBtn(2);
+            createBtn(3);
+        } else if (currentPage === totalPages) {
+            createBtn(totalPages - 2);
+            createBtn(totalPages - 1);
+            createBtn(totalPages);
+        } else {
+            createBtn(currentPage - 1);
+            createBtn(currentPage);
+            createBtn(currentPage + 1);
+        }
     }
 
-    // Read URL query parameters if present (e.g., page.html?institution=Polytechnics&faculty=Engineering)
-    const urlParams = new URLSearchParams(window.location.search);
-    const institutionParam = urlParams.get('institution');
-    const facultyParam = urlParams.get('faculty');
+    const next = document.createElement('button');
+    next.className = 'pg-btn';
+    next.innerText = ">";
+    next.disabled = (currentPage === totalPages);
+    next.onclick = () => renderTablePage(currentPage + 1);
+    controls.appendChild(next);
+}
 
-    if (institutionParam) {
-      const matchingOption = Array.from(institutionSelect.options).find(opt => opt.value.toLowerCase() === institutionParam.toLowerCase());
-      if (matchingOption) institutionSelect.value = matchingOption.value;
+/* CONTACT FORM */
+
+const contactForm = document.getElementById('contact-form');
+const submitBtn = document.getElementById('submit-btn');
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Sending...";
+    const formData = new FormData(contactForm);
+    try{
+        const response = await fetch("https://formspree.io/f/xojywaeg", {
+            method:"POST",
+            body:formData,
+            headers:{ "Accept":"application/json" }
+        });
+
+        if(response.ok){
+            Toastify({
+                text:"Inquiry sent successfully!",
+                duration:4000,
+                gravity:"top",
+                position:"right",
+                style:{ background:"#2E8B57" }
+            }).showToast();
+            contactForm.reset();
+        }else{
+            throw new Error();
+        }
+    }catch(error){
+        Toastify({
+            text:"Failed to send. Try again.",
+            duration:4000,
+            gravity:"top",
+            position:"right",
+            style:{ background:"#b22222" }
+        }).showToast();
+    }finally{
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Inquiry";
     }
+});
 
-    if (facultyParam && brochureData[facultyParam]) {
-      facultySelect.value = facultyParam;
+/* MENU TOGGLE */
+
+window.toggleMenu = () => {
+    const m = document.getElementById('squareMenu');
+    m.style.display = (m.style.display === "block") ? "none" : "block";
+};
+
+document.addEventListener('click', (e) => {
+    const m = document.getElementById('squareMenu');
+    const b = document.querySelector('.menu-btn');
+    if(m && m.style.display === "block" && !m.contains(e.target) && !b.contains(e.target)){
+        m.style.display = "none";
     }
+});
 
-    // Event Listeners
-    institutionSelect.addEventListener('change', renderCourses);
-    facultySelect.addEventListener('change', renderCourses);
-    searchInput.addEventListener('input', filterCourses);
+/* SLIDER */
 
-    // Initial Render
-    renderCourses();
-  </script>
+const slides = document.querySelectorAll('.slider-slide');
+const dots = document.querySelectorAll('.dot');
+let currentSlide = 0;
 
+function showSlide(index){
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active-dot'));
+    slides[index].classList.add('active');
+    dots[index].classList.add('active-dot');
+}
+
+setInterval(() => {
+    currentSlide++;
+    if(currentSlide >= slides.length){
+        currentSlide = 0;
+    }
+    showSlide(currentSlide);
+}, 5000);
+
+/* INIT */
+
+loadNews();
+loadAnnouncement();
+loadMotivationalQuote(); // <-- Loads quote from Firestore on startup
+
+document.getElementById('current-year').textContent = new Date().getFullYear();
+
+/* UPDATED TESTIMONIALS SLIDER ENGINE */
+const tSlides = document.querySelectorAll('.testimonial-slide');
+let currentTSlide = 0;
+
+function showNextTestimonial() {
+    const oldSlide = tSlides[currentTSlide];
+    oldSlide.classList.remove('active');
+    oldSlide.classList.add('exit');
+
+    currentTSlide = (currentTSlide + 1) % tSlides.length;
+
+    const nextSlide = tSlides[currentTSlide];
+    nextSlide.classList.remove('exit');
+    nextSlide.classList.add('active');
+
+    setTimeout(() => {
+        if (!oldSlide.classList.contains('active')) {
+            oldSlide.classList.remove('exit');
+        }
+    }, 600);
+}
+
+setInterval(showNextTestimonial, 6000);
+
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const tooltip = document.getElementById('support-tooltip');
+        if (tooltip) {
+            tooltip.style.transition = 'opacity 0.5s ease';
+            tooltip.style.opacity = '0';
+            setTimeout(() => {
+                tooltip.style.display = 'none';
+            }, 500);
+        }
+    }, 5000);
+});
+</script>
 </body>
 </html>
