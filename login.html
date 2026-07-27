@@ -36,6 +36,8 @@
         input { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 1rem; color: #333; }
         input:focus { border-color: var(--blue); }
 
+        .otp-input { letter-spacing: 6px; font-size: 18px; text-align: center; font-weight: bold; }
+
         .password-wrapper { position: relative; }
         .toggle-password {
             position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
@@ -60,10 +62,12 @@
             font-size: 0.85rem; text-align: center; margin-top: 15px; 
             display: none; padding: 12px; border-radius: 8px; 
             animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            word-wrap: break-word;
         }
         @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .error { background: var(--error-bg); color: var(--error-text); border: 1px solid #f5c6cb; }
         .success { background: var(--success-bg); color: var(--success-text); border: 1px solid #c8e6c9; }
+        .info { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
 
         .btn-auth { width: 100%; padding: 14px; background: var(--blue); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; text-transform: uppercase; }
         .btn-auth:disabled { background: #ccc; cursor: not-allowed; }
@@ -81,6 +85,8 @@
 
         .toggle-text { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #555; }
         .toggle-text span { color: var(--green); cursor: pointer; font-weight: bold; }
+        
+        .step-indicator { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; text-align: center; }
     </style>
 </head>
 <body>
@@ -93,6 +99,9 @@
     <div class="auth-form-view">
         <h2 id="auth-title">Welcome Back</h2>
         
+        <!-- STEP INDICATOR FOR RESET OTP FLOW -->
+        <div id="otp-step-indicator" class="step-indicator" style="display: none;">Step 1 of 2: Enter Email</div>
+
         <div id="name-field-group" style="display: none;">
             <div class="input-group">
                 <label>Full Name</label>
@@ -100,9 +109,17 @@
             </div>
         </div>
 
-        <div class="input-group">
+        <div class="input-group" id="email-field-group">
             <label>Email Address</label>
             <input type="email" id="auth-email" placeholder="student@example.com">
+        </div>
+
+        <!-- OTP CODE FIELD FOR RESET STEP 2 -->
+        <div id="otp-field-group" style="display: none;">
+            <div class="input-group">
+                <label>6-Digit OTP Code</label>
+                <input type="text" id="auth-otp" class="otp-input" placeholder="123456" maxlength="6">
+            </div>
         </div>
 
         <div id="password-field-group">
@@ -165,13 +182,14 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
- import { 
-    getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
-    updateProfile, GoogleAuthProvider, signInWithPopup, // Added
-    onAuthStateChanged, // Added
-    sendPasswordResetEmail 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { 
+        getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
+        updateProfile, GoogleAuthProvider, signInWithPopup, 
+        onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+    // LIVE RENDER BACKEND URL
+    const RENDER_BASE_URL = "https://flexieduconsult-email-server.onrender.com";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
@@ -183,35 +201,39 @@
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirect = urlParams.get('redirect');
-        
-        if (redirect) {
-            // Decodes the URL and sends the user back to the exact page
-            window.location.replace(decodeURIComponent(redirect));
-        } else {
-            // If no redirect, just go to your main page
-            window.location.replace("index.html");
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get('redirect');
+            
+            if (redirect) {
+                window.location.replace(decodeURIComponent(redirect));
+            } else {
+                window.location.replace("index.html");
+            }
         }
-    }
-});
+    });
 
-    
     // DOM References
     const statusBox = document.getElementById('status-box');
     const mainBtn = document.getElementById('main-auth-btn');
     const passInput = document.getElementById('auth-pass');
+    const passLabel = document.getElementById('pass-label');
     const confirmPassInput = document.getElementById('auth-confirm-pass');
     const emailInput = document.getElementById('auth-email');
     const nameInput = document.getElementById('auth-name');
+    const otpInput = document.getElementById('auth-otp');
+    
     const eyeIcon = document.getElementById('eye-icon');
     const confirmEyeIcon = document.getElementById('confirm-eye-icon');
     
     const nameFieldGroup = document.getElementById('name-field-group');
     const passwordFieldGroup = document.getElementById('password-field-group');
     const confirmPasswordFieldGroup = document.getElementById('confirm-password-field-group');
+    const emailFieldGroup = document.getElementById('email-field-group');
+    const otpFieldGroup = document.getElementById('otp-field-group');
+    const otpStepIndicator = document.getElementById('otp-step-indicator');
+    
     const forgotLinkContainer = document.getElementById('forgot-link-container');
     const googleBlock = document.getElementById('google-block');
     const authTitle = document.getElementById('auth-title');
@@ -224,16 +246,23 @@ onAuthStateChanged(auth, (user) => {
     const reqBox = document.getElementById('requirements-box');
 
     let currentView = "login";
+    let resetStep = 1; // 1 = Request OTP, 2 = Verify OTP & Update Password
 
     // View Switching Logic
     const switchView = (view) => {
         currentView = view;
+        resetStep = 1;
         statusBox.style.display = "none";
         passInput.value = "";
         confirmPassInput.value = "";
+        otpInput.value = "";
+        passLabel.innerText = "Password";
         
         strengthMeter.style.display = "none";
         reqBox.style.display = "none";
+        otpStepIndicator.style.display = "none";
+        otpFieldGroup.style.display = "none";
+        emailFieldGroup.style.display = "block";
 
         if (view === "login") {
             authTitle.innerText = "Welcome Back";
@@ -257,26 +286,29 @@ onAuthStateChanged(auth, (user) => {
         } 
         else if (view === "forgot") {
             authTitle.innerText = "Reset Password";
+            otpStepIndicator.innerText = "Step 1 of 2: Enter Email";
+            otpStepIndicator.style.display = "block";
             nameFieldGroup.style.display = "none";
             passwordFieldGroup.style.display = "none";
             confirmPasswordFieldGroup.style.display = "none";
+            forgotLinkContainer.style.display = "none";
             googleBlock.style.display = "none";
-            mainBtn.innerText = "SEND RESET LINK";
+            mainBtn.innerText = "SEND OTP CODE";
             toggleArea.innerHTML = `Back to <span id="toggle-action" style="color:var(--green); font-weight:bold; cursor:pointer;">Login</span>`;
         }
 
-        // Re-attach link navigation intercept click bindings
+        // Re-attach toggle click handler
         document.getElementById('toggle-action').onclick = () => {
             if (currentView === "login") switchView("signup");
             else switchView("login");
         };
     };
 
-    // Initial event bindings
+    // View Navigation Binds
     forgotPassLink.onclick = () => switchView("forgot");
     document.getElementById('toggle-action').onclick = () => switchView("signup");
 
-    // Mask Visibility Toggles
+    // Eye Toggles
     eyeIcon.onclick = () => {
         const isProtected = passInput.type === "password";
         passInput.type = isProtected ? "text" : "password";
@@ -295,18 +327,16 @@ onAuthStateChanged(auth, (user) => {
         statusBox.style.display = "block";
     };
 
-
+    // Google Sign-In
     document.getElementById('google-auth-btn').onclick = async () => {
-    try {
-        await signInWithPopup(auth, googleProvider);
-        // No redirect needed here! The Guard below will handle it.
-    } catch (e) {
-        showStatus(e.message.replace('auth/', '').replace(/-/g, ' '), "error");
-    }
-};
+        try {
+            await signInWithPopup(auth, googleProvider);
+        } catch (e) {
+            showStatus(e.message.replace('auth/', '').replace(/-/g, ' '), "error");
+        }
+    };
 
-
-    // Live Password Strength & Rules Validation Loop
+    // Password Validation
     passInput.addEventListener('input', () => {
         if (currentView !== "signup") {
             strengthMeter.style.display = "none";
@@ -362,44 +392,103 @@ onAuthStateChanged(auth, (user) => {
         }
     });
 
-    // Central Submission Form Handler
+    // Central Submission Handler
     mainBtn.onclick = async () => {
-        const email = emailInput.value;
+        const email = emailInput.value.trim();
         const pass = passInput.value;
         const confirmPass = confirmPassInput.value;
+        const otp = otpInput.value.trim();
         statusBox.style.display = "none";
 
-        if (!email) return showStatus("Please enter your email address", "error");
+        if (!email) return showStatus("Please enter your email address.", "error");
 
         try {
+            // 1. LOGIN VIEW
             if (currentView === "login") {
-                if (!pass) return showStatus("Please enter your password", "error");
+                if (!pass) return showStatus("Please enter your password.", "error");
+                mainBtn.disabled = true;
+                showStatus("Logging in...", "info");
                 await signInWithEmailAndPassword(auth, email, pass);
                 window.location.href = "index.html";
             } 
+            // 2. SIGNUP VIEW
             else if (currentView === "signup") {
-                if (!pass) return showStatus("Please enter your password", "error");
-                const name = nameInput.value;
-                if (!name) return showStatus("Please enter your full name", "error");
+                if (!pass) return showStatus("Please enter your password.", "error");
+                const name = nameInput.value.trim();
+                if (!name) return showStatus("Please enter your full name.", "error");
                 
-                // Ruleset checking validation gate
                 const passesAllRules = pass.length >= 6 && /[a-z]/.test(pass) && /[A-Z]/.test(pass) && /[0-9]/.test(pass);
-                if (!passesAllRules) return showStatus("Please fulfill all password criteria rules", "error");
+                if (!passesAllRules) return showStatus("Please fulfill all password criteria rules.", "error");
 
-                if (pass !== confirmPass) return showStatus("Passwords do not match", "error");
+                if (pass !== confirmPass) return showStatus("Passwords do not match.", "error");
 
+                mainBtn.disabled = true;
+                showStatus("Creating account...", "info");
                 const res = await createUserWithEmailAndPassword(auth, email, pass);
                 await updateProfile(res.user, { displayName: name });
                 window.location.href = "index.html";
             } 
+            // 3. FORGOT PASSWORD (OTP FLOW)
             else if (currentView === "forgot") {
-                await sendPasswordResetEmail(auth, email);
-                showStatus("Verification link sent! Check your inbox/spam folders.", "success");
+                
+                // --- STEP 1: SEND OTP ---
+                if (resetStep === 1) {
+                    mainBtn.disabled = true;
+                    showStatus("Sending OTP code to your email...", "info");
+
+                    const response = await fetch(`${RENDER_BASE_URL}/api/send-otp`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email })
+                    });
+
+                    const data = await response.json();
+                    mainBtn.disabled = false;
+
+                    if (response.ok && data.success) {
+                        resetStep = 2;
+                        otpStepIndicator.innerText = "Step 2 of 2: Verify Code & Update Password";
+                        otpFieldGroup.style.display = "block";
+                        passwordFieldGroup.style.display = "block";
+                        passLabel.innerText = "New Password";
+                        mainBtn.innerText = "VERIFY & UPDATE PASSWORD";
+                        showStatus("OTP code sent! Please check your email inbox or spam folder.", "success");
+                    } else {
+                        showStatus(data.message || "Failed to send OTP.", "error");
+                    }
+                } 
+                // --- STEP 2: VERIFY OTP & RESET PASSWORD ---
+                else if (resetStep === 2) {
+                    if (otp.length !== 6) return showStatus("Please enter the 6-digit OTP code.", "error");
+                    if (!pass || pass.length < 6) return showStatus("New password must be at least 6 characters.", "error");
+
+                    mainBtn.disabled = true;
+                    showStatus("Verifying code and updating password...", "info");
+
+                    const response = await fetch(`${RENDER_BASE_URL}/api/verify-otp`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, otp, newPassword: pass })
+                    });
+
+                    const data = await response.json();
+                    mainBtn.disabled = false;
+
+                    if (response.ok && data.success) {
+                        showStatus("Password updated successfully! Redirecting to login...", "success");
+                        setTimeout(() => {
+                            switchView("login");
+                        }, 2500);
+                    } else {
+                        showStatus(data.message || "Failed to reset password.", "error");
+                    }
+                }
             }
         } catch (e) {
+            mainBtn.disabled = false;
             showStatus(e.message.replace('auth/', '').replace(/-/g, ' '), "error");
         }
     };
 </script>
 </body>
-    </html>
+</html>
