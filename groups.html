@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexi Groups</title>
+    <style>
+        :root { --blue: #003366; --green: #2E8B57; --bg: #f4f7f6; --text: #222; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 70px; }
+        header { position: sticky; top: 0; z-index: 999; height: 60px; background: var(--blue); border-bottom: 4px solid var(--green); display: flex; align-items: center; justify-content: space-between; padding: 0 18px; color: #fff; font-weight: 700; }
+        .container { width: min(700px, 94%); margin: 18px auto; }
+        .create-box { background: #fff; border-radius: 15px; padding: 18px; box-shadow: 0 5px 15px rgba(0,0,0,.06); }
+        .modern-input { width: 100%; height: 50px; padding: 0 16px; border: 2px solid #e5e7eb; border-radius: 10px; margin-bottom: 12px; outline: none; }
+        .btn-create { width: 100%; background: var(--blue); color: #fff; border: none; border-radius: 10px; padding: 13px; font-weight: 700; cursor: pointer; }
+        .nav-tabs { display: flex; gap: 10px; margin-top: 18px; }
+        .tab-btn { flex: 1; border: none; cursor: pointer; border-radius: 10px; background: #ececec; color: #666; padding: 11px; font-weight: 700; text-align: center; text-decoration: none; }
+        .tab-btn.active { background: var(--blue); color: #fff; }
+        .group-list { background: #fff; margin-top: 18px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,.05); }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 1px solid #e8e8e8; }
+        .btn-action { border: none; cursor: pointer; background: var(--green); color: #fff; padding: 9px 18px; border-radius: 40px; font-weight: 700; text-decoration: none; font-size: 0.8rem; }
+        .btn-enter { background: var(--blue); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span>Flexi Group Hub</span>
+    </header>
+
+    <div class="container">
+        <div class="create-box">
+            <h3>Start a Discussion</h3>
+            <input id="new-group-name" type="text" class="modern-input" placeholder="E.g. JAMB Mathematics 2027...">
+            <button class="btn-create" onclick="handleCreateGroup()">CREATE GROUP</button>
+            
+            <div class="nav-tabs">
+                <a href="groups.html" class="tab-btn active">GROUPS</a>
+                <a href="chat.html" class="tab-btn">CHATS</a>
+            </div>
+        </div>
+
+        <div id="group-list-container" class="group-list">
+            <div style="padding: 20px; text-align: center; color: #888;">Loading discussion groups...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, doc, getDoc, getDocs, query, orderBy, onSnapshot, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", authDomain: "flexieduconsult.com.ng", projectId: "waec2026jamb2027" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let joinedGroupIds = new Set();
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) { window.location.href = "login.html"; return; }
+            await loadJoinedGroups(user.uid);
+            loadGroups();
+        });
+
+        async function loadJoinedGroups(uid) {
+            joinedGroupIds.clear();
+            const snap = await getDocs(collection(db, "groups"));
+            for (const g of snap.docs) {
+                const memberDoc = await getDoc(doc(db, "groups", g.id, "members", uid));
+                if (memberDoc.exists()) joinedGroupIds.add(g.id);
+            }
+        }
+
+        function loadGroups() {
+            onSnapshot(query(collection(db, "groups"), orderBy("createdAt", "desc")), (snapshot) => {
+                const container = document.getElementById("group-list-container");
+                container.innerHTML = "";
+                snapshot.forEach((groupDoc) => {
+                    const group = groupDoc.data();
+                    const groupId = groupDoc.id;
+                    const joined = joinedGroupIds.has(groupId);
+
+                    container.innerHTML += `
+                        <div class="item">
+                            <div>
+                                <strong style="color:#003366">${group.name}</strong>
+                                <div style="font-size:0.75rem; color:#777">Admin: ${group.creatorName}</div>
+                            </div>
+                            <button class="btn-action ${joined ? 'btn-enter' : ''}" onclick="openGroup('${groupId}', '${group.name}', ${joined})">
+                                ${joined ? 'ENTER' : 'JOIN'}
+                            </button>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        window.handleCreateGroup = async () => {
+            const input = document.getElementById("new-group-name");
+            if (!input.value.trim()) return;
+            await addDoc(collection(db, "groups"), {
+                name: input.value.trim(),
+                creatorName: auth.currentUser.displayName || auth.currentUser.email.split("@")[0],
+                createdAt: serverTimestamp()
+            });
+            input.value = "";
+        };
+
+        window.openGroup = async (id, name, isJoined) => {
+            if (!isJoined) {
+                await setDoc(doc(db, "groups", id, "members", auth.currentUser.uid), {
+                    uid: auth.currentUser.uid,
+                    joinedAt: serverTimestamp()
+                });
+            }
+            window.location.href = `entergroup.html?id=${id}&name=${encodeURIComponent(name)}`;
+        };
+    </script>
+</body>
+</html>
