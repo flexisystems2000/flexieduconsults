@@ -3,18 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-<link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-<link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Flexi CBT | Simulator</title>
     
+    <!-- MATHJAX LOGIC -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+   <script id="MathJax-script" async src="./tex-mml-chtml.js"></script>
+    
     <style>
-        :root { --j-green: #228B22; --j-red: #cc0000; --ui-dark: #1a1a1a; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: sans-serif; }
-        body { margin: 0; display: none; background: #fff; overflow-x: hidden; }
+        :root { 
+            --blue: #003366;
+            --green: #2E8B57;
+            --j-green: #228B22; 
+            --j-red: #cc0000; 
+            --ui-dark: #1a1a1a; 
+            --yellow: #fbbf24;
+        }
 
-        /* HEADER */
-        header { background: var(--j-green); color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: Arial, Helvetica, sans-serif; }
+        body { margin: 0; display: none; background: #ffffff; overflow-x: hidden; }
+
+        /* MAIN PAGE HEADER (BLUE & GREEN) */
+        .site-header {
+            background: var(--blue);
+            color: white;
+            padding: 12px 10px;
+            border-bottom: 8px solid var(--green);
+            text-align: center;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header-logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .site-header h1 {
+            margin: 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+        }
+
+        /* CONTAINER WRAPPER FOR CENTERING CONTENT */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* AD BANNER */
+        .ad-banner {
+            width: 100%;
+            height: 85px;
+            display: block;
+            overflow: hidden;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            background: #f5f5f5;
+        }
+
+        .ad-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* CBT EXAM TOP BAR */
+        .exam-header { 
+            background: var(--j-green); 
+            color: white; 
+            padding: 12px 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            border-radius: 8px 8px 0 0;
+        }
         .h-left { font-weight: bold; font-size: 0.8rem; line-height: 1.2; }
         .h-right { display: flex; align-items: center; gap: 12px; }
         #timer { font-size: 1.2rem; font-weight: bold; min-width: 80px; text-align: right; }
@@ -26,12 +116,31 @@
         .beaker-liquid { height: 3px; background: #ff0000; transition: width 1s linear; margin-left: -2px; border-radius: 0 5px 5px 0; }
 
         /* SUBJECT TABS */
-        .subject-nav { display: flex; overflow-x: auto; padding: 10px; gap: 8px; border-bottom: 1px solid #eee; background: #fff; position: sticky; top: 56px; z-index: 90; scrollbar-width: none; }
-        .subject-tab { padding: 6px 16px; font-size: 0.85rem; border-radius: 20px; border: 1px solid #ccc; white-space: nowrap; transition: 0.2s; }
+        .subject-nav { 
+            display: flex; 
+            overflow-x: auto; 
+            padding: 10px; 
+            gap: 8px; 
+            border-bottom: 1px solid #eee; 
+            background: #fff; 
+            position: sticky; 
+            top: 50px; 
+            z-index: 90; 
+            scrollbar-width: none; 
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .subject-tab { padding: 6px 16px; font-size: 0.85rem; border-radius: 20px; border: 1px solid #ccc; white-space: nowrap; transition: 0.2s; cursor: pointer; }
         .subject-tab.active { color: var(--j-red); border-color: var(--j-red); font-weight: bold; background: #fff5f5; }
 
         /* MAIN SCROLL AREA */
-        .main-scroll { padding: 20px; padding-bottom: 120px; }
+        .main-scroll { 
+            padding: 20px; 
+            background: #fff;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
         .q-text { font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px; font-weight: 500; min-height: 60px; color: #333; }
         
         .opt-row { display: flex; align-items: center; padding: 14px 0; cursor: pointer; border-bottom: 1px solid #f2f2f2; }
@@ -55,7 +164,7 @@
         .num-box.answered { background: var(--j-green); }
         .num-box.current { border: 3px solid #000; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
 
-        /* CALCULATOR */
+        /* CALCULATOR OVERLAY */
         #calc-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; }
         .calc-card { background: #000; width: 90%; max-width: 340px; border-radius: 25px; overflow: hidden; padding-bottom: 10px; }
         #cD { color: #fff; padding: 20px; text-align: right; font-size: 2.2rem; min-height: 70px; }
@@ -64,43 +173,248 @@
         .calc-grid { display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px; }
         .calc-grid button { background: none; border: none; color: #fff; font-size: 1.6rem; padding: 18px 0; }
         .close-btn { width: 100%; background: #222; border: none; color: #999; padding: 15px; font-size: 0.8rem; letter-spacing: 1px; }
+
+        /* FOOTER STYLES */
+        .footer {
+            background: linear-gradient(135deg, #011627 0%, #032038 100%);
+            color: #e2e8f0;
+            padding: 60px 20px 30px 20px;
+            margin-top: 60px;
+            border-top: 4px solid var(--green);
+            font-size: 14px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+            gap: 35px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer h4 {
+            color: var(--yellow);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0 0 16px 0;
+            position: relative;
+            padding-bottom: 6px;
+        }
+
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 24px;
+            height: 2px;
+            background: var(--yellow);
+            opacity: 0.7;
+            border-radius: 2px;
+        }
+
+        .footer-about {
+            line-height: 1.7;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .footer-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links-list li {
+            margin-bottom: 10px;
+        }
+
+        .footer a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .footer-links-list a:hover {
+            color: var(--yellow);
+            transform: translateX(4px);
+            display: inline-block;
+        }
+
+        .whatsapp-channel-link {
+            color: #25D366 !important;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .whatsapp-channel-link:hover {
+            opacity: 0.85;
+            transform: translateX(4px);
+        }
+
+        .contact-group {
+            margin-bottom: 16px;
+        }
+
+        .contact-group h5 {
+            color: #ffffff;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0 0 6px 0;
+            opacity: 0.9;
+        }
+
+        .contact-group a {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-bottom: 4px;
+        }
+
+        .contact-group a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="h-left">Flexi CBT<br><span id="display-name">...</span></div>
-    <div class="h-right">
-        <div class="beaker-wrap">
-            <div class="beaker-dot"></div>
-            <div id="beaker-liquid" class="beaker-liquid"></div>
-        </div>
-        <div id="timer">0:00:00</div>
-        <img src="https://i.postimg.cc/3rk3rtb6/Background-Eraser-20260213-084152616.png" class="calc-icon" onclick="toggleCalc()">
+<header class="site-header">
+    <div class="header-container">
+        <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Logo" class="header-logo">
+        <h1>FLEXI EDUCATIONAL CONSULT</h1>
     </div>
 </header>
 
-<div id="subject-tabs-container" class="subject-nav"></div>
+<div class="container">
 
-<main class="main-scroll">
-    <div id="question-area">
-        <div class="q-text"><span id="q-idx">1.</span> <span id="q-text">Loading question...</span></div>
-        <div id="options-list"></div>
-    </div>
+    <a href="#" class="ad-banner">
+        <img src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg" alt="Advertisement">
+    </a>
 
-    <div class="action-area">
-        <div class="nav-pills">
-            <button class="btn-pill btn-prev" onclick="prevQuestion()">PREVIOUS</button>
-            <button class="btn-pill btn-next" onclick="nextQuestion()">NEXT</button>
+    <header class="exam-header">
+        <div class="h-left">Flexi CBT<br><span id="display-name">...</span></div>
+        <div class="h-right">
+            <div class="beaker-wrap">
+                <div class="beaker-dot"></div>
+                <div id="beaker-liquid" class="beaker-liquid"></div>
+            </div>
+            <div id="timer">0:00:00</div>
+            <img src="https://i.postimg.cc/3rk3rtb6/Background-Eraser-20260213-084152616.png" class="calc-icon" onclick="toggleCalc()">
         </div>
-        <button class="btn-pill btn-submit" onclick="submitExam()">FINISH & SUBMIT</button>
+    </header>
+
+    <div id="subject-tabs-container" class="subject-nav"></div>
+
+    <main class="main-scroll">
+        <div id="question-area">
+            <div class="q-text"><span id="q-idx">1.</span> <span id="q-text">Loading questions...</span></div>
+            <div id="options-list"></div>
+        </div>
+
+        <div class="action-area">
+            <div class="nav-pills">
+                <button class="btn-pill btn-prev" onclick="prevQuestion()">PREVIOUS</button>
+                <button class="btn-pill btn-next" onclick="nextQuestion()">NEXT</button>
+            </div>
+            <button class="btn-pill btn-submit" onclick="submitExam()">FINISH & SUBMIT</button>
+        </div>
+
+        <div class="grid-container">
+            <p style="font-weight: bold; font-size: 0.7rem; color: #999; margin-bottom: 12px; text-transform: uppercase;">Question Map</p>
+            <div id="num-grid" class="num-grid"></div>
+        </div>
+    </main>
+
+</div>
+
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <p class="footer-about">
+               We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul class="footer-links-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
+                <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="brochure.html">Access JAMB Brochure</a></li>
+                <li><a href="videos.html">Video Lessons</a></li>
+                <li><a href="pdf.html">Past Questions & PDFs</a></li>
+                <li><a href="cbt.html">CBT Simulator</a></li>
+                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="location.html">Tutorial Centres</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Support & Community</h4>
+            
+            <div class="contact-group">
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
+                   target="_blank" 
+                   class="whatsapp-channel-link">
+                   Join our WhatsApp Channel
+                </a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Contact Us</h5>
+                <a href="tel:+2349034159839">(+234) 903 415 9839</a>
+                <a href="tel:+2347033855206">(+234) 703 385 5206</a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Email Us</h5>
+                <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
+                <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
+            </div>
+        </div>
+
+        <div class="footer-col social-links">
+            <h4>Follow Us</h4>
+            <ul class="footer-links-list">
+                <li><a href="https://www.facebook.com/profile.php?id=61589793118693" target="_blank">Facebook @flexieduconsult</a></li>
+                <li><a href="https://instagram.com/flexieduconsult2000" target="_blank">Instagram @flexieduconsult2000</a></li>
+                <li><a href="https://www.tiktok.com/@flexieduconsult" target="_blank">TikTok @flexieduconsult</a></li>
+            </ul>
+        </div>
     </div>
 
-    <div class="grid-container">
-        <p style="font-weight: bold; font-size: 0.7rem; color: #999; margin-bottom: 12px; text-transform: uppercase;">Question Map</p>
-        <div id="num-grid" class="num-grid"></div>
+    <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
-</main>
+</footer>
 
 <div id="calc-overlay">
     <div class="calc-card">
@@ -118,73 +432,427 @@
         <button class="close-btn" onclick="toggleCalc()">CLOSE CALCULATOR</button>
     </div>
 </div>
+
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getDatabase, ref, get, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+window.addEventListener('error', (event) => {
+    console.error("🔴 Global Error Caught:", event.message, "at", event.filename, ":", event.lineno);
+});
 
-const firebaseConfig = { 
-    apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", 
-    authDomain: "flexieduconsult.com.ng", 
-    databaseURL: "https://waec2026jamb2027-default-rtdb.firebaseio.com", 
-    projectId: "waec2026jamb2027" 
+window.addEventListener('unhandledrejection', (event) => {
+    console.error("🔴 Unhandled Promise Rejection:", event.reason);
+});
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  
+const RENDER_SERVER_URL = "https://jamb-questions-server.onrender.com"; 
+
+const firebaseConfig = {
+    apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+    authDomain: "waec2026jamb2027.firebaseapp.com",
+    projectId: "waec2026jamb2027",
 };
+  
+let app, auth;
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    console.log("🟢 Firebase initialized successfully.");
+} catch (err) {
+    console.error("🔴 Firebase Initialization Error:", err);
+}
 
 let examData = {}, userAnswers = {}, visitedQuestions = {};
 let currentSubject = "", currentQIndex = 0;
+let displaySubjectMap = {}; // Maps SLUG or key to UI label
 let timerInterval; 
 const totalDuration = (localStorage.getItem("examMode") === "Full" ? 120 : 50) * 60;
 let timeLeft = totalDuration;
 
+// 1. JAMB Subject Slugs (MyQuest API)
+const SUBJECT_SLUG_MAP = {
+    "Fine Art": "Fine Art",
+    "Yoruba": "Yoruba",
+    "Physics": "Physics",
+    "Economics": "Economics",
+    "Biology": "Biology",
+    "Literature in English": "Literature in English",
+    "Commerce": "Commerce",
+    "Mathematics": "Mathematics",
+    "Use of English": "Use of English",
+    "Government": "Government",
+    "Accounting": "Accounting",
+    "Christian Religious Knowledge": "Christian Religious Knowledge",
+    "Computer Studies": "Computer Studies",
+    "Arabic Studies": "Arabic Studies",
+    "Chemistry": "Chemistry",
+    "The Lekki Headmaster": "The Lekki Headmaster"
+};
+
+// 2. WAEC Subject Slugs (ALOC WASSCE API)
+const WAEC_SLUG_MAP = {
+    "English Language": "english",
+    "Use of English": "english",
+    "Mathematics": "mathematics",
+    "Civic Education": "civiledu",
+    "Biology": "biology",
+    "Chemistry": "chemistry",
+    "Physics": "physics",
+    "Economics": "economics",
+    "Government": "government",
+    "Commerce": "commerce",
+    "Financial Accounting": "accounting",
+    "Accounting": "accounting",
+    "Literature in English": "englishlit",
+    "Geography": "geography",
+    "Christian Religious Knowledge (CRK)": "crk",
+    "Christian Religious Knowledge": "crk",
+    "Islamic Religious Knowledge (IRK)": "irk",
+    "Insurance": "insurance",
+    "History": "history"
+};
+
+// 3. POST-UTME Subject Slugs (ALOC Post-UTME API)
+const POSTUTME_SLUG_MAP = {
+    "English Language": "english",
+    "Financial Accounting": "accounting",
+    "Literature in English": "englishlit",
+    "Christian Religious Knowledge": "crk",
+    "Christian Religious Knowledge (CRK)": "crk",
+    "Islamic Religious Knowledge": "irk",
+    "Islamic Religious Knowledge (IRK)": "irk",
+    "Civic Education": "civiledu",
+    "Current Affairs": "currentaffairs"
+};
+
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
+        console.log("🟢 User Authenticated:", user.uid);
         document.body.style.display = "block";
         document.getElementById('display-name').innerText = user.displayName || "Candidate";
-        startEngine();
-    } else { window.location.href = "login.html"; }
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        startEngine().catch(err => console.error("🔴 Error starting exam engine:", err));
+    } else { 
+        console.warn("⚠️ No user session found. Redirecting to login...");
+        window.location.href = "login.html"; 
+    }
 });
 
 async function startEngine() {
-    const subjects = JSON.parse(localStorage.getItem("userSubjectKeys")) || ["English Language"];
-    currentSubject = subjects[0];
-    renderSubjectTabs(subjects);
+    const rawSubjects = JSON.parse(localStorage.getItem("userSubjectKeys")) || ["Use of English"];
+    const subjectLabels = JSON.parse(localStorage.getItem("userSubjectLabels")) || [];
+    const subjects = [...new Set(rawSubjects)];
 
-    for (const sub of subjects) {
-        examData[sub] = await fetchQuestions(sub);
+    // Map labels
+    subjects.forEach((sub, i) => {
+        displaySubjectMap[sub] = subjectLabels[i] || sub;
         userAnswers[sub] = {};
         visitedQuestions[sub] = new Set();
-    }
+    });
+
+    currentSubject = subjects[0];
+
+    // Show all tabs immediately
+    renderSubjectTabs(subjects);
+
+    console.log("📡 Loading first subject...");
+
+    // Load ONLY the first subject
+    examData[currentSubject] = await fetchQuestionsFromProxy(currentSubject);
+
+    // Start exam immediately
     runTimer();
     updateUI();
+
+    console.log("🟢 Exam Started.");
+
+    // Load remaining subjects in background
+    subjects.slice(1).forEach(async (sub) => {
+        console.log(`📡 Background loading ${sub}...`);
+
+        examData[sub] = await fetchQuestionsFromProxy(sub);
+
+        console.log(`🟢 ${sub} ready.`);
+
+        // Refresh tabs so user can access it
+        renderSubjectTabs(subjects);
+
+        // If user is currently viewing this subject
+        if (currentSubject === sub) {
+            updateUI();
+        }
+    });
 }
 
-async function fetchQuestions(subjectName) {
-    const examType = localStorage.getItem("selectedExamType") || "JAMB";
-    // Dynamic year: uses the year chosen by the user, or defaults to 2026
-    const year = localStorage.getItem("selectedYear") || "2026"; 
+function getRandomYear() {
+    const validYears = ["2025", "2024", "2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016"];
+    const randomIndex = Math.floor(Math.random() * validYears.length);
+    return validYears[randomIndex];
+}
+
+function getRandomLekkiYear() {
+    const validYears = ["2025", "2024"];
+    const randomIndex = Math.floor(Math.random() * validYears.length);
+    return validYears[randomIndex];
+}
+
+// HELPER FUNCTION: Fetch WAEC questions through Render Proxy
+async function fetchWaecFromAloc(subjectKey) {
+    const slug = WAEC_SLUG_MAP[subjectKey] || subjectKey.toLowerCase();
 
     try {
-        const examRef = ref(db, `exams/${examType}/${subjectName}/${year}`);
-        const snapshot = await get(examRef);
-        if (snapshot.exists()) {
-            let fetched = snapshot.val();
-            // Handle both Array and Object formats from Realtime DB
-            return Array.isArray(fetched) ? fetched : Object.values(fetched);
-        } else { 
-            return generatePlaceholders(subjectName, year); 
+        console.log(`📡 Fetching WAEC questions from Proxy for [${slug}]...`);
+
+        const response = await fetch(`${RENDER_SERVER_URL}/api/waec-questions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                subject: slug,
+                count: 40,
+                type: "wassce"
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
         }
-    } catch (error) { 
-        return generatePlaceholders(subjectName, year); 
+
+        const json = await response.json();
+
+        if (
+            json.success &&
+            Array.isArray(json.data) &&
+            json.data.length > 0
+        ) {
+            console.log(`🟢 Successfully retrieved ${json.data.length} WAEC questions for ${slug}.`);
+            return normalizeQuestions(json.data);
+        }
+
+        console.warn(`⚠️ Proxy returned no questions for WAEC [${slug}].`, json);
+        return null;
+
+    } catch (err) {
+        console.error(`🔴 WAEC Proxy Fetch Failed for ${slug}:`, err);
+        return null;
     }
 }
 
-function generatePlaceholders(sub, yr) {
-    return Array.from({ length: 40 }, (_, i) => ({
-        question: `[Empty] Question ${i+1} for ${sub}. Admin has not uploaded ${sub} (${yr}) questions yet.`,
+// HELPER FUNCTION: Fetch Post-UTME questions through Render Proxy
+async function fetchPostUtmeFromAloc(subjectKey) {
+    const slug = POSTUTME_SLUG_MAP[subjectKey] || subjectKey.toLowerCase();
+
+    try {
+        console.log(`📡 Fetching Post-UTME questions from Proxy for [${slug}]...`);
+
+        const response = await fetch(`${RENDER_SERVER_URL}/api/post-utme-questions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                subject: slug,
+                count: 40
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const json = await response.json();
+
+        if (
+            json.success &&
+            Array.isArray(json.data) &&
+            json.data.length > 0
+        ) {
+            console.log(`🟢 Successfully retrieved ${json.data.length} Post-UTME questions for ${slug}.`);
+            return normalizeQuestions(json.data);
+        }
+
+        console.warn(`⚠️ Proxy returned no questions for Post-UTME [${slug}].`, json);
+        return null;
+
+    } catch (err) {
+        console.error(`🔴 Post-UTME Proxy Fetch Failed for ${slug}:`, err);
+        return null;
+    }
+}
+
+// HELPER FUNCTION: Fetch single subject batch from API (JAMB via MyQuest)
+async function fetchSingleSubjectApi(slug, year) {
+    const examType = (localStorage.getItem("selectedExamType") || "JAMB").toUpperCase();
+    try {
+        const response = await fetch(`${RENDER_SERVER_URL}/api/questions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                exam: examType, 
+                exam_year_id: year, 
+                subject: slug, 
+                page: 1 
+            })
+        });
+
+        if (response.ok) {
+            const json = await response.json();
+            let rawQuestions = json.data?.questions || json.data || json.questions || json;
+
+            if (Array.isArray(rawQuestions) && rawQuestions.length > 0) {
+                return normalizeQuestions(rawQuestions);
+            }
+        }
+    } catch (error) { 
+        console.warn(`🔴 Fetch attempt failed for ${slug} (${year}):`, error);
+    }
+    return null;
+}
+
+// MAIN FETCH FUNCTION: Route JAMB vs WAEC vs Post-UTME
+async function fetchQuestionsFromProxy(subjectName) {
+    const rawExamType = (localStorage.getItem("selectedExamType") || "JAMB").toUpperCase();
+    const selectedYear = getRandomYear();
+
+    // ===========================
+    // 1. POST-UTME EXAM LOGIC
+    // ===========================
+    if (rawExamType === "POST-UTME" || rawExamType === "POST_UTME" || rawExamType === "POSTUTME") {
+        let postUtmeQuestions = await fetchPostUtmeFromAloc(subjectName);
+
+        if (postUtmeQuestions && postUtmeQuestions.length > 0) {
+            return postUtmeQuestions.slice(0, 40);
+        }
+
+        console.warn(`⚠️ Could not fetch Post-UTME questions for ${subjectName}. Using placeholders.`);
+        return generatePlaceholders(subjectName, "Post-UTME", 40);
+    }
+
+    // ===========================
+    // 2. WAEC EXAM LOGIC
+    // ===========================
+    if (rawExamType === "WAEC" || rawExamType === "WASSCE") {
+
+        // English should come from MyQuest instead of ALOC
+        if (
+            subjectName === "Use Of English" ||
+            subjectName === "Use of English" ||
+            subjectName === "English Language"
+        ) {
+
+            console.log("📚 Loading WAEC English from MyQuest...");
+
+            let englishQuestions = await fetchSingleSubjectApi(
+                "Use of English",
+                getRandomYear()
+            );
+
+            if (englishQuestions && englishQuestions.length > 0) {
+                return englishQuestions.slice(0, 40);
+            }
+
+            console.warn("⚠️ MyQuest failed for English.");
+            return generatePlaceholders("English Language", "WAEC", 40);
+        }
+
+        // Every other WAEC subject uses ALOC WASSCE
+        let waecQuestions = await fetchWaecFromAloc(subjectName);
+
+        if (waecQuestions && waecQuestions.length > 0) {
+            return waecQuestions.slice(0, 40);
+        }
+
+        console.warn(`⚠️ Could not fetch WAEC questions for ${subjectName}. Using placeholders.`);
+        return generatePlaceholders(subjectName, "WAEC", 40);
+    }
+
+    // ===========================
+    // 3. JAMB EXAM LOGIC
+    // ===========================
+    // Special Handling for Use of English (40 General + 20 Lekki Headmaster)
+    if (subjectName === "Use of English" || subjectName === "english") {
+        const lekkiYear = getRandomLekkiYear();
+        console.log(`📡 Fetching English Special (40 General [Year: ${selectedYear}] + 20 Lekki Headmaster [Year: ${lekkiYear}])...`);
+        
+        let englishQuestions = await fetchSingleSubjectApi("Use of English", selectedYear);
+        let lekkiQuestions = await fetchSingleSubjectApi("The Lekki Headmaster", lekkiYear);
+
+        // Fallbacks if API returns incomplete arrays
+        if (!englishQuestions || englishQuestions.length === 0) {
+            englishQuestions = generatePlaceholders("Use of English", selectedYear, 40);
+        } else {
+            englishQuestions = englishQuestions.slice(0, 40);
+        }
+
+        if (!lekkiQuestions || lekkiQuestions.length === 0) {
+            lekkiQuestions = generatePlaceholders("The Lekki Headmaster", lekkiYear, 20);
+        } else {
+            lekkiQuestions = lekkiQuestions.slice(0, 20);
+        }
+
+        const combined = [...englishQuestions, ...lekkiQuestions];
+        console.log(`🟢 Successfully merged ${combined.length} questions for Use of English in original order.`);
+        return combined;
+    }
+
+    // JAMB Elective Subjects (40 Questions)
+    const primarySlug = SUBJECT_SLUG_MAP[subjectName] || subjectName;
+    console.log(`📡 Fetching [${subjectName} (${primarySlug}) | Year ID: ${selectedYear}]...`);
+
+    let electiveQuestions = await fetchSingleSubjectApi(primarySlug, selectedYear);
+    if (electiveQuestions && electiveQuestions.length > 0) {
+        console.log(`🟢 Successfully retrieved ${electiveQuestions.length} questions for ${subjectName}.`);
+        return electiveQuestions.slice(0, 40);
+    }
+
+    console.warn(`⚠️ Could not fetch API questions for ${subjectName}. Using placeholders.`);
+    return generatePlaceholders(subjectName, selectedYear, 40);
+}
+
+function normalizeQuestions(rawQuestions) {
+    return rawQuestions.map(q => {
+        let optionsArr = [];
+
+        // Parsing ALOC or Proxy options format: { a: "...", b: "...", c: "...", d: "..." }
+        if (q.option && typeof q.option === 'object') {
+            optionsArr = [
+                q.option.a || q.option.A || '',
+                q.option.b || q.option.B || '',
+                q.option.c || q.option.C || '',
+                q.option.d || q.option.D || ''
+            ];
+        } else if (q.options && typeof q.options === 'object' && !Array.isArray(q.options)) {
+            optionsArr = [
+                q.options.A || q.options.a || '',
+                q.options.B || q.options.b || '',
+                q.options.C || q.options.c || '',
+                q.options.D || q.options.d || ''
+            ];
+        } else if (Array.isArray(q.options)) {
+            optionsArr = q.options.map(opt => typeof opt === 'object' ? (opt.option || opt.text || '') : opt);
+        }
+
+        if (!optionsArr || optionsArr.length === 0 || optionsArr.every(o => !o)) {
+            optionsArr = ["Option A", "Option B", "Option C", "Option D"];
+        }
+
+        let answerKey = (q.correct_answer || q.answer || q.correct_option || q.solution || "A").toString().trim().toUpperCase();
+        if (answerKey.length > 1) answerKey = answerKey.charAt(0);
+
+        return {
+            question: q.question || q.q_text || q.section || "No question text provided.",
+            options: optionsArr,
+            answer: answerKey
+        };
+    });
+}
+
+function generatePlaceholders(sub, yr, count = 40) {
+    return Array.from({ length: count }, (_, i) => ({
+        question: `[Empty] Question ${i+1} for ${displaySubjectMap[sub] || sub}. Questions (${yr}) are currently unavailable.`,
         options: ["Option A", "Option B", "Option C", "Option D"],
         answer: "A"
     }));
@@ -193,7 +861,7 @@ function generatePlaceholders(sub, yr) {
 function renderSubjectTabs(subjects) {
     const container = document.getElementById('subject-tabs-container');
     container.innerHTML = subjects.map(sub => `
-        <div class="subject-tab ${sub === currentSubject ? 'active' : ''}" onclick="switchSubject('${sub}')">${sub}</div>
+        <div class="subject-tab ${sub === currentSubject ? 'active' : ''}" onclick="switchSubject('${sub}')">${displaySubjectMap[sub] || sub}</div>
     `).join('');
 }
 
@@ -204,25 +872,61 @@ function updateUI() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function formatMathText(text) {
+    if (!text) return "";
+
+    // If already wrapped in LaTeX delimiters ($ or \(), don't touch it
+    if (text.includes('$') || text.includes('\\(')) {
+        return text;
+    }
+
+    // 1. Matches base term followed by ^ or _ with parenthesized content: 4^(x - 1) -> $4^{x - 1}$
+    text = text.replace(/([a-zA-Z0-9\)]+)([\^_])\(([^)]+)\)/g, (match, base, op, inner) => {
+        return `$${base}${op}{${inner.trim()}}$`;
+    });
+
+    // 2. Matches base term followed by ^ or _ with plain unparenthesized content: 4^x or 71_10
+    text = text.replace(/([a-zA-Z0-9\)]+)([\^_])([a-zA-Z0-9\+\-]+)/g, (match, base, op, val) => {
+        return `$${base}${op}{${val}}$`;
+    });
+
+    return text;
+}
+
 function renderQuestion() {
-    const q = examData[currentSubject][currentQIndex];
+    const qList = examData[currentSubject];
+    if (!qList || qList.length === 0) return;
+
+    const q = qList[currentQIndex];
     document.getElementById('q-idx').innerText = `${currentQIndex + 1}.`;
-    document.getElementById('q-text').innerHTML = q.question;
-    const letters = ['A','B','C','D'];
-    // Flexible option keys: checks 'options' array first, then individual keys
-    const optionsArray = q.options ? q.options : [q.optA, q.optB, q.optC, q.optD];
     
+    // Pass question text through formatMathText before injecting
+    document.getElementById('q-text').innerHTML = formatMathText(q.question);
+    
+    const letters = ['A','B','C','D'];
+    const optionsArray = q.options;
+    
+    // Pass options through formatMathText before injecting
     document.getElementById('options-list').innerHTML = optionsArray.map((opt, i) => `
         <div class="opt-row" onclick="selectOption('${letters[i]}')">
             <div class="custom-radio ${userAnswers[currentSubject][currentQIndex] === letters[i] ? 'checked' : ''}"></div>
-            <span>${letters[i]}. ${opt}</span>
+            <span>${letters[i]}. ${formatMathText(opt)}</span>
         </div>
     `).join('');
+
+    // Trigger MathJax Typesetting on rendered elements
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise([
+            document.getElementById('q-text'),
+            document.getElementById('options-list')
+        ]).catch((err) => console.error("🔴 MathJax rendering error:", err));
+    }
 }
 
 function renderGrid() {
+    const qList = examData[currentSubject] || [];
     const grid = document.getElementById('num-grid');
-    grid.innerHTML = examData[currentSubject].map((_, i) => {
+    grid.innerHTML = qList.map((_, i) => {
         let status = userAnswers[currentSubject][i] ? 'answered' : 'untouched';
         let current = i === currentQIndex ? 'current' : '';
         return `<div class="num-box ${status} ${current}" onclick="jumpTo(${i})">${i+1}</div>`;
@@ -247,51 +951,112 @@ function runTimer() {
 window.nextQuestion = () => { if (currentQIndex < examData[currentSubject].length - 1) { currentQIndex++; updateUI(); } };
 window.prevQuestion = () => { if (currentQIndex > 0) { currentQIndex--; updateUI(); } };
 window.jumpTo = (i) => { currentQIndex = i; updateUI(); };
-window.switchSubject = (sub) => { 
-    currentSubject = sub; 
-    currentQIndex = 0; 
-    renderSubjectTabs(JSON.parse(localStorage.getItem("userSubjectKeys"))); 
-    updateUI(); 
+window.switchSubject = (sub) => {
+
+    currentSubject = sub;
+    currentQIndex = 0;
+
+    renderSubjectTabs(
+        [...new Set(JSON.parse(localStorage.getItem("userSubjectKeys")) || [])]
+    );
+
+    if (!examData[sub]) {
+
+        document.getElementById("q-text").innerHTML =
+            "Loading questions... Please wait.";
+
+        document.getElementById("options-list").innerHTML = "";
+
+        document.getElementById("num-grid").innerHTML = "";
+
+        return;
+    }
+
+    updateUI();
 };
 window.selectOption = (l) => { userAnswers[currentSubject][currentQIndex] = l; updateUI(); };
 
-window.submitExam = async (auto = false) => { 
+window.submitExam = async (auto = false) => {
     if (auto || confirm("Are you sure you want to submit your exam?")) {
+
         clearInterval(timerInterval);
-        
-        let totalCorrect = 0, totalQ = 0;
+
+        let totalCorrect = 0;
+        let totalQ = 0;
+        const subjectScores = {};
+
         Object.keys(examData).forEach(sub => {
-            examData[sub].forEach((q, i) => { if (userAnswers[sub][i] === q.answer) totalCorrect++; });
+            let correct = 0;
+
+            examData[sub].forEach((q, i) => {
+                if (userAnswers[sub][i] === q.answer) {
+                    correct++;
+                    totalCorrect++;
+                }
+            });
+
             totalQ += examData[sub].length;
+
+            subjectScores[sub] = {
+                score: correct,
+                total: examData[sub].length
+            };
         });
-        const finalPercent = Math.round((totalCorrect / totalQ) * 100);
 
-        // Saved with UID for accurate Profile Tracking
+        const finalPercent =
+            totalQ > 0
+                ? Math.round((totalCorrect / totalQ) * 100)
+                : 0;
+
         const scoreData = {
-            userId: auth.currentUser.uid,
-            name: auth.currentUser.displayName || "Anonymous Student",
-            score: finalPercent,
-            exam: localStorage.getItem("displayExamName") || "General Test",
-            timestamp: Date.now()
+            uid: auth.currentUser.uid,
+            name: auth.currentUser.displayName || "Candidate",
+            exam: localStorage.getItem("selectedExamType") || "JAMB",
+            score: totalCorrect,
+            total: totalQ,
+            percentage: finalPercent,
+            speedSec: Math.round((totalDuration - timeLeft) / totalQ),
+            timestamp: Date.now(),
+            subjectScores: subjectScores,
+            answers: userAnswers,
+            questions: examData
         };
-        
-        try {
-            await push(ref(db, 'leaderboard'), scoreData);
-        } catch(e) { console.error("Ranking Sync Error:", e); }
 
-        localStorage.setItem("finalAnswers", JSON.stringify(userAnswers));
-        localStorage.setItem("examQuestions", JSON.stringify(examData));
-        window.location.href = "results.html"; 
+        // Save everything for results.html
+        sessionStorage.setItem(
+            "examResult",
+            JSON.stringify(scoreData)
+        );
+
+        // Keep these if corrections.html still uses them
+        sessionStorage.setItem(
+            "finalAnswers",
+            JSON.stringify(userAnswers)
+        );
+
+        sessionStorage.setItem(
+            "examQuestions",
+            JSON.stringify(examData)
+        );
+
+        window.location.href = "results.html";
     }
 };
 
-// Calculator Logic
 let cV = "";
 window.toggleCalc = () => { const c = document.getElementById('calc-overlay'); c.style.display = (c.style.display === 'flex') ? 'none' : 'flex'; };
 window.pC = (v) => { cV += v; document.getElementById('cD').innerText = cV; };
 window.cC = () => { cV = ""; document.getElementById('cD').innerText = "0"; };
 window.dC = () => { cV = cV.slice(0, -1); document.getElementById('cD').innerText = cV || "0"; };
-window.sC = () => { try { cV = eval(cV.replace(/×/g, '*').replace(/÷/g, '/')).toString(); document.getElementById('cD').innerText = cV; } catch { cC(); } };
+window.sC = () => { 
+    try { 
+        cV = eval(cV.replace(/×/g, '*').replace(/÷/g, '/')).toString(); 
+        document.getElementById('cD').innerText = cV; 
+    } catch(err) { 
+        console.error("🔴 Calculator Error:", err);
+        cC(); 
+    } 
+};
 </script>
 </body>
 </html>

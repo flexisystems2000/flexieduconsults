@@ -2,16 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-<link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-<link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Exam Results | Flexi CBT</title>
     <style>
-        :root { --blue: #003366; --green: #2E8B57; --gray: #f8f9fa; --gold: #FFD700; }
+        :root { 
+            --blue: #003366; 
+            --green: #2E8B57; 
+            --gray: #f8f9fa; 
+            --gold: #FFD700; 
+        }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--gray); margin: 0; padding-bottom: 40px; color: #333; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--gray); 
+            margin: 0; 
+            color: #333; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
         /* Branding Header */
         header { 
@@ -23,7 +33,7 @@
         .header-logo { width: 32px; height: 32px; object-fit: contain; }
         header h1 { margin: 0; font-size: 1.05rem; letter-spacing: 0.3px; text-transform: uppercase; font-weight: 700; }
 
-        .container { width: 100%; max-width: 500px; margin: 20px auto; padding: 0 15px; }
+        .container { width: 100%; max-width: 500px; margin: 20px auto; padding: 0 15px; flex: 1; }
 
         /* Main Result Card */
         .result-card { 
@@ -67,139 +77,133 @@
         .top-rank { color: var(--green); }
         .rank-score { font-weight: 700; color: var(--blue); }
 
-        /* MODERN FOOTER STYLES */
-.footer {
-    background: linear-gradient(135deg, #011627 0%, #032038 100%);
-    color: #e2e8f0;
-    padding: 60px 20px 30px 20px;
-    margin-top: 60px;
-    border-top: 4px solid var(--green, #22c55e);
-    font-size: 14px;
-}
+       /* FOOTER STYLES */
+        .footer {
+            background: linear-gradient(135deg, #011627 0%, #032038 100%);
+            color: #e2e8f0;
+            padding: 60px 20px 30px 20px;
+            margin-top: 60px;
+            border-top: 4px solid var(--green);
+            font-size: 14px;
+        }
 
-.footer-grid {
-    display: grid;
-    grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
-    gap: 35px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+            gap: 35px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-/* Headings */
-.footer h4 {
-    color: var(--yellow, #fbbf24);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin: 0 0 16px 0;
-    position: relative;
-    padding-bottom: 6px;
-}
+        .footer h4 {
+            color: var(--yellow);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0 0 16px 0;
+            position: relative;
+            padding-bottom: 6px;
+        }
 
-.footer h4::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 24px;
-    height: 2px;
-    background: var(--yellow, #fbbf24);
-    opacity: 0.7;
-    border-radius: 2px;
-}
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 24px;
+            height: 2px;
+            background: var(--yellow);
+            opacity: 0.7;
+            border-radius: 2px;
+        }
 
-.footer-about {
-    line-height: 1.7;
-    color: #94a3b8;
-    margin: 0;
-}
+        .footer-about {
+            line-height: 1.7;
+            color: #94a3b8;
+            margin: 0;
+        }
 
-/* Links List */
-.footer-links-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        .footer-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.footer-links-list li {
-    margin-bottom: 10px;
-}
+        .footer-links-list li {
+            margin-bottom: 10px;
+        }
 
-.footer a {
-    color: #cbd5e0;
-    text-decoration: none;
-    transition: all 0.25s ease;
-}
+        .footer a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
 
-.footer-links-list a:hover {
-    color: var(--yellow, #fbbf24);
-    transform: translateX(4px);
-    display: inline-block;
-}
+        .footer-links-list a:hover {
+            color: var(--yellow);
+            transform: translateX(4px);
+            display: inline-block;
+        }
 
-/* WhatsApp Channel Text Link */
-.whatsapp-channel-link {
-    color: #25D366 !important;
-    font-weight: 600;
-    display: inline-block;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-}
+        .whatsapp-channel-link {
+            color: #25D366 !important;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
 
-.whatsapp-channel-link:hover {
-    opacity: 0.85;
-    transform: translateX(4px);
-}
+        .whatsapp-channel-link:hover {
+            opacity: 0.85;
+            transform: translateX(4px);
+        }
 
-/* Contacts & Emails Subheadings */
-.contact-group {
-    margin-bottom: 16px;
-}
+        .contact-group {
+            margin-bottom: 16px;
+        }
 
-.contact-group h5 {
-    color: #ffffff;
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin: 0 0 6px 0;
-    opacity: 0.9;
-}
+        .contact-group h5 {
+            color: #ffffff;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0 0 6px 0;
+            opacity: 0.9;
+        }
 
-.contact-group a {
-    display: block;
-    color: #94a3b8;
-    font-size: 0.88rem;
-    margin-bottom: 4px;
-}
+        .contact-group a {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-bottom: 4px;
+        }
 
-.contact-group a:hover {
-    color: #ffffff;
-}
+        .contact-group a:hover {
+            color: #ffffff;
+        }
 
-/* Bottom Bar */
-.footer-bottom {
-    max-width: 1200px;
-    margin: 40px auto 0 auto;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    text-align: center;
-    font-size: 13px;
-    color: #64748b;
-}
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+        }
 
-/* Responsive Styles */
-@media (max-width: 900px) {
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-    }
-}
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+        }
 
-@media (max-width: 550px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-}        
+        @media (max-width: 550px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -229,12 +233,12 @@
                 </tr>
             </thead>
             <tbody id="table-body">
-                </tbody>
+            </tbody>
         </table>
 
         <div class="btn-grid">
             <button class="btn-primary" onclick="location.href='corrections.html'">VIEW CORRECTIONS</button>
-            <button class="btn-outline" onclick="location.href='index.html'">NEW EXAM</button>
+            <button class="btn-outline" onclick="location.href='cbt.html'">NEW EXAM</button>
         </div>
     </div>
 
@@ -248,16 +252,15 @@
         </div>
     </div>
 </div>
+
 <footer class="footer">
     <div class="footer-grid">
-        <!-- Column 1: About -->
         <div class="footer-col">
             <p class="footer-about">
                We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
             </p>
         </div>
 
-        <!-- Column 2: Quick Links -->
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
@@ -273,7 +276,6 @@
             </ul>
         </div>
 
-        <!-- Column 3: Support & Community -->
         <div class="footer-col">
             <h4>Support & Community</h4>
             
@@ -298,7 +300,6 @@
             </div>
         </div>
 
-        <!-- Column 4: Social Links -->
         <div class="footer-col social-links">
             <h4>Follow Us</h4>
             <ul class="footer-links-list">
@@ -316,11 +317,11 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getDatabase, ref, get, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase,ref, get, set, push, query,orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = { 
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", 
-        authDomain: "flexieduconsult.com.ng", 
+        authDomain: "waec2026jamb2027.firebaseapp.com", 
         databaseURL: "https://waec2026jamb2027-default-rtdb.firebaseio.com",
         projectId: "waec2026jamb2027" 
     };
@@ -329,40 +330,87 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            document.getElementById('user-display').innerText = user.displayName || "Candidate";
-            loadData();
-            loadLeaderboard();
-        } else {
-            window.location.href = "login.html";
-        }
-    });
+    onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const userName = user.displayName || "Candidate";
+        document.getElementById("user-display").innerText = userName;
+
+        const result = loadData();
+
+
+if (result) {
+    sessionStorage.removeItem("examResult"); // Remove first
+    await saveLeaderboard(result);
+}
+
+loadLeaderboard();
+    } else {
+        window.location.href = "login.html";
+    }
+});
 
     function loadData() {
-        const examName = localStorage.getItem("displayExamName") || "JAMB";
-        const userAnswers = JSON.parse(localStorage.getItem("finalAnswers") || "{}");
-        const examData = JSON.parse(localStorage.getItem("examQuestions") || "{}");
-        
-        document.getElementById('exam-title').innerText = examName + " Results";
 
-        let totalCorrect = 0, totalQ = 0, rows = "";
+    const result = JSON.parse(sessionStorage.getItem("examResult"));
 
-        Object.keys(examData).forEach(sub => {
-            let correct = 0;
-            examData[sub].forEach((q, i) => {
-                if (userAnswers[sub] && userAnswers[sub][i] === q.answer) correct++;
-            });
-            totalCorrect += correct;
-            totalQ += examData[sub].length;
+    if (!result) {
+        alert("No exam result found.");
+        location.href = "cbt.html";
+        return;
+    }
 
-            rows += `<tr><td>${sub}</td><td style="text-align: right;"><b>${correct}</b> / ${examData[sub].length}</td></tr>`;
+    document.getElementById("exam-title").innerText =
+        `${result.exam} Results`;
+
+    document.getElementById("user-display").innerText =
+        result.name;
+
+    document.getElementById("final-percent").innerText =
+        `${result.percentage}%`;
+
+    let rows = "";
+
+    if (result.subjectScores) {
+    Object.entries(result.subjectScores).forEach(([subject, data]) => {
+        rows += `
+        <tr>
+            <td>${subject}</td>
+            <td style="text-align:right;">
+                <b>${data.score}</b> / ${data.total}
+            </td>
+        </tr>
+        `;
+    });
+}
+
+    document.getElementById("table-body").innerHTML = rows;
+
+    return result;
+}
+
+async function saveLeaderboard(result){
+
+    try{
+
+        const leaderboardRef = push(ref(db,"leaderboard"));
+
+        await set(leaderboardRef,{
+            uid: result.uid,
+            name: result.name,
+            exam: result.exam,
+            percentage: result.percentage,
+            score: result.percentage,
+            rawScore: result.score,
+            totalQuestions: result.total,
+            speedSec: result.speedSec,
+            timestamp: result.timestamp
         });
 
-        const percent = totalQ > 0 ? Math.round((totalCorrect / totalQ) * 100) : 0;
-        document.getElementById('final-percent').innerText = percent + "%";
-        document.getElementById('table-body').innerHTML = rows;
+    }catch(err){
+        console.error(err);
     }
+
+}
 
     async function loadLeaderboard() {
         const listDiv = document.getElementById('leaderboard-list');
@@ -391,8 +439,8 @@
             listDiv.innerHTML = "<p style='text-align:center; font-size:0.8rem;'>Connection error.</p>";
         }
     }
+
     document.getElementById('current-year').textContent = new Date().getFullYear();
-    
 </script>
 </body>
 </html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flexi CBT | Corrections & Review</title>
+    
+    <!-- MATHJAX LOGIC -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+   <script id="MathJax-script" async src="./tex-mml-chtml.js"></script>
+    
+    <style>
+        :root { 
+            --blue: #003366;
+            --green: #2E8B57;
+            --j-green: #228B22; 
+            --j-red: #cc0000; 
+            --ui-dark: #1a1a1a; 
+            --yellow: #fbbf24;
+
+            /* Corrections Specific Colors */
+            --correct-bg: #e6f4ea;
+            --correct-border: #137333;
+            --wrong-bg: #fce8e6;
+            --wrong-border: #c5221f;
+            --omitted-bg: #fef7e0;
+            --omitted-border: #b06000;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: Arial, Helvetica, sans-serif; }
+        body { margin: 0; display: block; background: #ffffff; overflow-x: hidden; }
+
+        /* MAIN PAGE HEADER (BLUE & GREEN) */
+        .site-header {
+            background: var(--blue);
+            color: white;
+            padding: 12px 10px;
+            border-bottom: 8px solid var(--green);
+            text-align: center;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header-logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .site-header h1 {
+            margin: 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+        }
+
+        /* CONTAINER WRAPPER FOR CENTERING CONTENT */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* AD BANNER */
+        .ad-banner {
+            width: 100%;
+            height: 85px;
+            display: block;
+            overflow: hidden;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            background: #f5f5f5;
+        }
+
+        .ad-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* CBT EXAM TOP BAR */
+        .exam-header { 
+            background: var(--blue); 
+            color: white; 
+            padding: 12px 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            border-radius: 8px 8px 0 0;
+        }
+        .h-left { font-weight: bold; font-size: 0.8rem; line-height: 1.2; }
+        .h-right { display: flex; align-items: center; gap: 12px; }
+        .mode-badge {
+            background: var(--yellow);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .calc-icon { width: 26px; height: 26px; cursor: pointer; filter: invert(1); }
+
+        /* SUBJECT TABS */
+        .subject-nav { 
+            display: flex; 
+            overflow-x: auto; 
+            padding: 10px; 
+            gap: 8px; 
+            border-bottom: 1px solid #eee; 
+            background: #fff; 
+            position: sticky; 
+            top: 50px; 
+            z-index: 90; 
+            scrollbar-width: none; 
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .subject-tab { padding: 6px 16px; font-size: 0.85rem; border-radius: 20px; border: 1px solid #ccc; white-space: nowrap; transition: 0.2s; cursor: pointer; }
+        .subject-tab.active { color: var(--blue); border-color: var(--blue); font-weight: bold; background: #eef4fa; }
+
+        /* MAIN SCROLL AREA */
+        .main-scroll { 
+            padding: 20px; 
+            background: #fff;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .q-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .q-status-tag {
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+        .q-status-tag.correct { background: var(--correct-bg); color: var(--correct-border); border: 1px solid var(--correct-border); }
+        .q-status-tag.wrong { background: var(--wrong-bg); color: var(--wrong-border); border: 1px solid var(--wrong-border); }
+        .q-status-tag.omitted { background: var(--omitted-bg); color: var(--omitted-border); border: 1px solid var(--omitted-border); }
+
+        .q-text { font-size: 1.1rem; line-height: 1.5; margin-bottom: 20px; font-weight: 500; min-height: 60px; color: #333; }
+        
+        /* CORRECTIONS OPTIONS */
+        .opt-row { 
+            display: flex; 
+            align-items: flex-start; 
+            padding: 12px 14px; 
+            border: 1px solid #eee; 
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #fafafa;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .opt-row.is-correct {
+            background: var(--correct-bg);
+            border-color: var(--correct-border);
+            color: var(--correct-border);
+            font-weight: 600;
+        }
+
+        .opt-row.is-wrong-pick {
+            background: var(--wrong-bg);
+            border-color: var(--wrong-border);
+            color: var(--wrong-border);
+            font-weight: 600;
+        }
+
+        .opt-badge {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+        .is-correct .opt-badge { background: var(--correct-border); color: white; }
+        .is-wrong-pick .opt-badge { background: var(--wrong-border); color: white; }
+
+        /* NAVIGATION BUTTONS */
+        .action-area { margin-top: 30px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-pills { display: flex; justify-content: space-between; gap: 10px; }
+        .btn-pill { flex: 1; padding: 14px; border-radius: 8px; border: none; color: #fff; font-weight: bold; font-size: 0.9rem; cursor: pointer; text-align: center; text-decoration: none; }
+        .btn-prev { background: #666; }
+        .btn-next { background: var(--green); }
+        .btn-back { background: var(--blue); width: 100%; margin-top: 5px; }
+
+        /* GRID MAP */
+        .grid-container { margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; }
+        .num-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .num-box { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 1rem; font-weight: bold; color: #fff; cursor: pointer; transition: 0.2s; }
+        
+        .num-box.grid-correct { background: var(--correct-border); }
+        .num-box.grid-wrong { background: var(--wrong-border); }
+        .num-box.grid-omitted { background: var(--yellow); color: #000; }
+        .num-box.current { border: 3px solid #000; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+
+        .legend-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #666;
+        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-box { width: 12px; height: 12px; border-radius: 3px; }
+
+        /* CALCULATOR OVERLAY */
+        #calc-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; }
+        .calc-card { background: #000; width: 90%; max-width: 340px; border-radius: 25px; overflow: hidden; padding-bottom: 10px; }
+        #cD { color: #fff; padding: 20px; text-align: right; font-size: 2.2rem; min-height: 70px; }
+        .calc-utility-bar { background: #1e5d2d; display: grid; grid-template-columns: repeat(5, 1fr); }
+        .calc-utility-bar button { background: none; border: none; color: #fff; font-size: 1.2rem; padding: 15px 0; font-weight: bold; }
+        .calc-grid { display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px; }
+        .calc-grid button { background: none; border: none; color: #fff; font-size: 1.6rem; padding: 18px 0; }
+        .close-btn { width: 100%; background: #222; border: none; color: #999; padding: 15px; font-size: 0.8rem; letter-spacing: 1px; }
+
+        /* FOOTER STYLES */
+        .footer {
+            background: linear-gradient(135deg, #011627 0%, #032038 100%);
+            color: #e2e8f0;
+            padding: 60px 20px 30px 20px;
+            margin-top: 60px;
+            border-top: 4px solid var(--green);
+            font-size: 14px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+            gap: 35px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer h4 {
+            color: var(--yellow);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0 0 16px 0;
+            position: relative;
+            padding-bottom: 6px;
+        }
+
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 24px;
+            height: 2px;
+            background: var(--yellow);
+            opacity: 0.7;
+            border-radius: 2px;
+        }
+
+        .footer-about {
+            line-height: 1.7;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .footer-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links-list li {
+            margin-bottom: 10px;
+        }
+
+        .footer a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .footer-links-list a:hover {
+            color: var(--yellow);
+            transform: translateX(4px);
+            display: inline-block;
+        }
+
+        .whatsapp-channel-link {
+            color: #25D366 !important;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .whatsapp-channel-link:hover {
+            opacity: 0.85;
+            transform: translateX(4px);
+        }
+
+        .contact-group {
+            margin-bottom: 16px;
+        }
+
+        .contact-group h5 {
+            color: #ffffff;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0 0 6px 0;
+            opacity: 0.9;
+        }
+
+        .contact-group a {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-bottom: 4px;
+        }
+
+        .contact-group a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-container">
+        <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Logo" class="header-logo">
+        <h1>FLEXI EDUCATIONAL CONSULT</h1>
+    </div>
+</header>
+
+<div class="container">
+
+    <a href="#" class="ad-banner">
+        <img src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg" alt="Advertisement">
+    </a>
+
+    <header class="exam-header">
+        <div class="h-left">Flexi CBT Review<br><span id="display-name">Candidate</span></div>
+        <div class="h-right">
+            <span class="mode-badge">Corrections</span>
+            <img src="https://i.postimg.cc/3rk3rtb6/Background-Eraser-20260213-084152616.png" class="calc-icon" onclick="toggleCalc()">
+        </div>
+    </header>
+
+    <div id="subject-tabs-container" class="subject-nav"></div>
+
+    <main class="main-scroll">
+        <div id="question-area">
+            <div class="q-header-bar">
+                <span style="font-weight: bold; color: var(--blue);" id="q-idx">Question 1</span>
+                <span id="q-status-tag" class="q-status-tag">STATUS</span>
+            </div>
+            <div class="q-text" id="q-text">Loading question review...</div>
+            <div id="options-list"></div>
+        </div>
+
+        <div class="action-area">
+            <div class="nav-pills">
+                <button class="btn-pill btn-prev" onclick="prevQuestion()">PREVIOUS</button>
+                <button class="btn-pill btn-next" onclick="nextQuestion()">NEXT</button>
+            </div>
+            <button class="btn-pill btn-back" onclick="location.href='result.html'">BACK TO RESULTS</button>
+        </div>
+
+        <div class="grid-container">
+            <p style="font-weight: bold; font-size: 0.7rem; color: #999; margin-bottom: 12px; text-transform: uppercase;">Question Map</p>
+            <div id="num-grid" class="num-grid"></div>
+
+            <div class="legend-bar">
+                <div class="legend-item"><div class="legend-box" style="background:var(--correct-border);"></div> Correct</div>
+                <div class="legend-item"><div class="legend-box" style="background:var(--wrong-border);"></div> Wrong</div>
+                <div class="legend-item"><div class="legend-box" style="background:var(--yellow);"></div> Omitted</div>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <p class="footer-about">
+               We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul class="footer-links-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
+                <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="brochure.html">Access JAMB Brochure</a></li>
+                <li><a href="videos.html">Video Lessons</a></li>
+                <li><a href="pdf.html">Past Questions & PDFs</a></li>
+                <li><a href="cbt.html">CBT Simulator</a></li>
+                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="location.html">Tutorial Centres</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Support & Community</h4>
+            
+            <div class="contact-group">
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
+                   target="_blank" 
+                   class="whatsapp-channel-link">
+                   Join our WhatsApp Channel
+                </a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Contact Us</h5>
+                <a href="tel:+2349034159839">(+234) 903 415 9839</a>
+                <a href="tel:+2347033855206">(+234) 703 385 5206</a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Email Us</h5>
+                <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
+                <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
+            </div>
+        </div>
+
+        <div class="footer-col social-links">
+            <h4>Follow Us</h4>
+            <ul class="footer-links-list">
+                <li><a href="https://www.facebook.com/profile.php?id=61589793118693" target="_blank">Facebook @flexieduconsult</a></li>
+                <li><a href="https://instagram.com/flexieduconsult2000" target="_blank">Instagram @flexieduconsult2000</a></li>
+                <li><a href="https://www.tiktok.com/@flexieduconsult" target="_blank">TikTok @flexieduconsult</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
+    </div>
+</footer>
+
+<div id="calc-overlay">
+    <div class="calc-card">
+        <div id="cD">0</div>
+        <div class="calc-utility-bar">
+            <button onclick="pC('1')">1</button><button onclick="pC('2')">2</button><button onclick="pC('3')">3</button>
+            <button onclick="dC()">DEL</button><button onclick="cC()">AC</button>
+        </div>
+        <div class="calc-grid">
+            <button onclick="pC('4')">4</button><button onclick="pC('5')">5</button><button onclick="pC('6')">6</button><button onclick="pC('+')">+</button><button onclick="pC('-')">-</button>
+            <button onclick="pC('7')">7</button><button onclick="pC('8')">8</button><button onclick="pC('9')">9</button><button onclick="pC('*')">×</button><button onclick="pC('/')">÷</button>
+            <button style="grid-column: span 1"></button><button onclick="pC('0')">0</button><button onclick="pC('.')">.</button>
+            <button style="grid-column: span 1"></button><button onclick="sC()" style="font-size: 2rem; color: #2E8B57;">=</button>
+        </div>
+        <button class="close-btn" onclick="toggleCalc()">CLOSE CALCULATOR</button>
+    </div>
+</div>
+
+<script>
+let examData = {}, userAnswers = {};
+let currentSubject = "", currentQIndex = 0;
+const optionKeys = ['A', 'B', 'C', 'D', 'E'];
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    loadReviewData();
+});
+
+function loadReviewData() {
+    try {
+        examData = JSON.parse(localStorage.getItem("examQuestions") || "{}");
+        userAnswers = JSON.parse(localStorage.getItem("finalAnswers") || "{}");
+
+        const subjects = Object.keys(examData);
+        if (subjects.length === 0) {
+            alert("No stored exam questions found to review.");
+            window.location.href = "index.html";
+            return;
+        }
+
+        currentSubject = subjects[0];
+        renderSubjectTabs(subjects);
+        updateUI();
+    } catch (e) {
+        console.error("Error loading corrections data:", e);
+    }
+}
+
+function renderSubjectTabs(subjects) {
+    const container = document.getElementById('subject-tabs-container');
+    container.innerHTML = subjects.map(sub => `
+        <div class="subject-tab ${sub === currentSubject ? 'active' : ''}" onclick="switchSubject('${sub}')">${sub}</div>
+    `).join('');
+}
+
+function updateUI() {
+    renderQuestion();
+    renderGrid();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function formatMathText(text) {
+    if (!text) return "";
+    if (text.includes('$') || text.includes('\\(')) return text;
+
+    text = text.replace(/([a-zA-Z0-9\)]+)([\^_])\(([^)]+)\)/g, (match, base, op, inner) => {
+        return `$${base}${op}{${inner.trim()}}$`;
+    });
+    text = text.replace(/([a-zA-Z0-9\)]+)([\^_])([a-zA-Z0-9\+\-]+)/g, (match, base, op, val) => {
+        return `$${base}${op}{${val}}$`;
+    });
+
+    return text;
+}
+
+function renderQuestion() {
+    const qList = examData[currentSubject] || [];
+    if (qList.length === 0) return;
+
+    const q = qList[currentQIndex];
+    const userPick = (userAnswers[currentSubject] || {})[currentQIndex];
+    const correctPick = q.answer;
+
+    document.getElementById('q-idx').innerText = `Question ${currentQIndex + 1} of ${qList.length}`;
+    document.getElementById('q-text').innerHTML = formatMathText(q.question);
+
+    // Status Badge
+    const tag = document.getElementById('q-status-tag');
+    if (!userPick) {
+        tag.innerText = "Omitted";
+        tag.className = "q-status-tag omitted";
+    } else if (userPick === correctPick) {
+        tag.innerText = "Correct";
+        tag.className = "q-status-tag correct";
+    } else {
+        tag.innerText = "Incorrect";
+        tag.className = "q-status-tag wrong";
+    }
+
+    // Options rendering
+    const optionsContainer = document.getElementById('options-list');
+    optionsContainer.innerHTML = q.options.map((optText, i) => {
+        const letter = optionKeys[i];
+        let rowClass = "";
+        let badgeHTML = "";
+
+        if (letter === correctPick) {
+            rowClass = "is-correct";
+            badgeHTML = `<span class="opt-badge">Correct Answer</span>`;
+        } else if (letter === userPick && userPick !== correctPick) {
+            rowClass = "is-wrong-pick";
+            badgeHTML = `<span class="opt-badge">Your Answer</span>`;
+        }
+
+        return `
+            <div class="opt-row ${rowClass}">
+                <div style="flex-grow: 1;">
+                    <strong>${letter}.</strong> ${formatMathText(optText)} ${badgeHTML}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // MathJax Typesetting
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise([
+            document.getElementById('q-text'),
+            document.getElementById('options-list')
+        ]).catch(err => console.error("MathJax error:", err));
+    }
+}
+
+function renderGrid() {
+    const qList = examData[currentSubject] || [];
+    const subAnswers = userAnswers[currentSubject] || {};
+    const grid = document.getElementById('num-grid');
+
+    grid.innerHTML = qList.map((q, i) => {
+        const userPick = subAnswers[i];
+        let statusClass = "grid-omitted";
+
+        if (userPick) {
+            statusClass = (userPick === q.answer) ? "grid-correct" : "grid-wrong";
+        }
+
+        const isCurrent = (i === currentQIndex) ? "current" : "";
+
+        return `<div class="num-box ${statusClass} ${isCurrent}" onclick="jumpTo(${i})">${i + 1}</div>`;
+    }).join('');
+}
+
+window.nextQuestion = () => { 
+    if (currentQIndex < (examData[currentSubject] || []).length - 1) { 
+        currentQIndex++; 
+        updateUI(); 
+    } 
+};
+
+window.prevQuestion = () => { 
+    if (currentQIndex > 0) { 
+        currentQIndex--; 
+        updateUI(); 
+    } 
+};
+
+window.jumpTo = (i) => { 
+    currentQIndex = i; 
+    updateUI(); 
+};
+
+window.switchSubject = (sub) => { 
+    currentSubject = sub; 
+    currentQIndex = 0; 
+    renderSubjectTabs(Object.keys(examData)); 
+    updateUI(); 
+};
+
+/* Calculator Utilities */
+let cV = "";
+window.toggleCalc = () => { const c = document.getElementById('calc-overlay'); c.style.display = (c.style.display === 'flex') ? 'none' : 'flex'; };
+window.pC = (v) => { cV += v; document.getElementById('cD').innerText = cV; };
+window.cC = () => { cV = ""; document.getElementById('cD').innerText = "0"; };
+window.dC = () => { cV = cV.slice(0, -1); document.getElementById('cD').innerText = cV || "0"; };
+window.sC = () => { 
+    try { 
+        cV = eval(cV.replace(/×/g, '*').replace(/÷/g, '/')).toString(); 
+        document.getElementById('cD').innerText = cV; 
+    } catch(err) { 
+        cC(); 
+    } 
+};
+</script>
+</body>
+</html>
