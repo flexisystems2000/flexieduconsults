@@ -526,13 +526,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadReviewData() {
     try {
-        examData = JSON.parse(localStorage.getItem("examQuestions") || "{}");
-        userAnswers = JSON.parse(localStorage.getItem("finalAnswers") || "{}");
+        // Read from sessionStorage (or fall back to the main examResult bundle)
+        examData = JSON.parse(sessionStorage.getItem("examQuestions") || "{}");
+        userAnswers = JSON.parse(sessionStorage.getItem("finalAnswers") || "{}");
+
+        // Fallback check: if direct keys are missing, extract from examResult
+        if (Object.keys(examData).length === 0) {
+            const savedResult = JSON.parse(sessionStorage.getItem("examResult") || "{}");
+            if (savedResult.questions && savedResult.answers) {
+                examData = savedResult.questions;
+                userAnswers = savedResult.answers;
+            }
+        }
 
         const subjects = Object.keys(examData);
         if (subjects.length === 0) {
             alert("No stored exam questions found to review.");
-            window.location.href = "index.html";
+            window.location.href = "results.html"; // Graceful redirect back to results
             return;
         }
 
@@ -543,6 +553,7 @@ function loadReviewData() {
         console.error("Error loading corrections data:", e);
     }
 }
+
 
 function renderSubjectTabs(subjects) {
     const container = document.getElementById('subject-tabs-container');

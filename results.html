@@ -317,18 +317,17 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getDatabase,ref, get, set, push, query,orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = { 
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", 
         authDomain: "waec2026jamb2027.firebaseapp.com", 
-        databaseURL: "https://waec2026jamb2027-default-rtdb.firebaseio.com",
         projectId: "waec2026jamb2027" 
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getDatabase(app);
+    const db = getFirestore(app);
 
     onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -337,9 +336,8 @@
 
         const result = loadData();
 
-
 if (result) {
-    sessionStorage.removeItem("examResult"); // Remove first
+    sessionStorage.removeItem("examResult");
     await saveLeaderboard(result);
 }
 
@@ -353,11 +351,10 @@ loadLeaderboard();
 
     const result = JSON.parse(sessionStorage.getItem("examResult"));
 
-    if (!result) {
-        alert("No exam result found.");
-        location.href = "cbt.html";
-        return;
-    }
+if (!result) {
+    window.location.replace("cbt.html");
+    return null;
+}
 
     document.getElementById("exam-title").innerText =
         `${result.exam} Results`;
@@ -388,57 +385,98 @@ loadLeaderboard();
     return result;
 }
 
-async function saveLeaderboard(result){
-
-    try{
-
-        const leaderboardRef = push(ref(db,"leaderboard"));
-
-        await set(leaderboardRef,{
-            uid: result.uid,
-            name: result.name,
-            exam: result.exam,
-            percentage: result.percentage,
-            score: result.percentage,
-            rawScore: result.score,
-            totalQuestions: result.total,
-            speedSec: result.speedSec,
-            timestamp: result.timestamp
-        });
-
-    }catch(err){
+        async function saveLeaderboard(result) {
+    try {
+        await addDoc(collection(db, "leaderboard"), {
+    uid: result.uid,
+    name: result.name,
+    exam: result.exam,
+    percentage: result.percentage,
+    score: result.percentage,
+    rawScore: result.score,
+    totalQuestions: result.total,
+    speedSec: result.speedSec || 0,
+    subjectScores: result.subjectScores || {},
+    timestamp: result.timestamp || Date.now()
+});
+    } catch (err) {
         console.error(err);
     }
-
 }
 
     async function loadLeaderboard() {
-        const listDiv = document.getElementById('leaderboard-list');
-        try {
-            const boardRef = query(ref(db, 'leaderboard'), orderByChild('score'), limitToLast(10));
-            const snap = await get(boardRef);
-            
-            if (snap.exists()) {
-                let ranks = [];
-                snap.forEach(child => { ranks.push(child.val()); });
-                ranks.sort((a, b) => b.score - a.score);
 
-                listDiv.innerHTML = ranks.map((entry, i) => `
-                    <div class="rank-row">
-                        <div class="rank-info">
-                            <span class="rank-num ${i < 3 ? 'top-rank' : ''}">${i + 1}</span>
-                            <span style="font-weight: 500;">${entry.name}</span>
-                        </div>
-                        <span class="rank-score">${entry.score}%</span>
-                    </div>
-                `).join('');
-            } else {
-                listDiv.innerHTML = "<p style='text-align:center; font-size:0.8rem;'>No data available.</p>";
-            }
-        } catch (e) {
-            listDiv.innerHTML = "<p style='text-align:center; font-size:0.8rem;'>Connection error.</p>";
+    const listDiv = document.getElementById("leaderboard-list");
+
+    try {
+
+        const q = query(
+            collection(db, "leaderboard"),
+            orderBy("score", "desc"),
+            limit(10)
+        );
+
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+
+            listDiv.innerHTML =
+                "<p style='text-align:center;font-size:0.8rem;'>No data available.</p>";
+
+            return;
+
         }
+
+        let html = "";
+
+        let rank = 1;
+
+        snap.forEach(doc => {
+
+            const entry = doc.data();
+
+            html += `
+
+            <div class="rank-row">
+
+                <div class="rank-info">
+
+                    <span class="rank-num ${rank <= 3 ? "top-rank" : ""}">
+                        ${rank}
+                    </span>
+
+                    <span style="font-weight:500;">
+                        ${entry.name}
+                    </span>
+
+                </div>
+
+                <span class="rank-score">
+
+                    ${entry.score}%
+
+                </span>
+
+            </div>
+
+            `;
+
+            rank++;
+
+        });
+
+        listDiv.innerHTML = html;
+
+    } catch (err) {
+
+        console.error(err);
+
+        listDiv.innerHTML =
+            "<p style='text-align:center;'>Connection error.</p>";
+
     }
+
+}
 
     document.getElementById('current-year').textContent = new Date().getFullYear();
 </script>
