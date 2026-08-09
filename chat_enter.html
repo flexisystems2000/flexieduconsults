@@ -11,8 +11,8 @@
         header { height: 60px; background: var(--blue); color: #fff; display: flex; align-items: center; padding: 0 15px; gap: 15px; border-bottom: 4px solid var(--green); position: sticky; top:0; z-index: 100; }
         .back-btn { font-size: 1.4rem; cursor: pointer; text-decoration: none; color: #fff; background: none; border: none; }
         
-        #chat-title { cursor: pointer; flex-grow: 1; }
-        #chat-title:hover { opacity: 0.9; }
+        #chat-title.profile-link { cursor: pointer; }
+        #chat-title.profile-link:hover { text-decoration: underline; }
 
         #comment-feed { padding: 15px; display: flex; flex-direction: column; gap: 12px; }
         .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-start; }
@@ -148,7 +148,7 @@
         const params = new URLSearchParams(window.location.search);
         const chatId = params.get('id') || params.get('chatId');
         const chatName = params.get('name') || params.get('chatName');
-        const recipientUid = params.get('uid');
+        const receiverUid = params.get('receiverUid') || params.get('uid');
 
         const MAX_FILE_SIZE_MB = 10;
         const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy";
@@ -182,16 +182,13 @@
         const lightboxPrev = document.getElementById('lightbox-prev');
         const lightboxNext = document.getElementById('lightbox-next');
 
+        // SETUP HEADER TITLE WITH PROFILE NAV
         if (chatTitleEl) {
             chatTitleEl.textContent = chatName || "Chat";
-            chatTitleEl.addEventListener('click', () => {
-                const navParams = new URLSearchParams();
-                if (chatId) navParams.append('chatId', chatId);
-                if (recipientUid) navParams.append('uid', recipientUid);
-                if (chatName) navParams.append('name', chatName);
-
-                window.location.href = `chat_info.html?${navParams.toString()}`;
-            });
+            if (receiverUid) {
+                chatTitleEl.classList.add('profile-link');
+                chatTitleEl.setAttribute('data-uid', receiverUid);
+            }
         }
 
         /* TOGGLE POPUP MENU */
@@ -341,6 +338,10 @@
         /* 3. PROFILE NAVIGATION */
         function attachProfileClickEvents() {
             document.querySelectorAll('.profile-link').forEach(el => {
+                // Prevent duplicate listener attachments
+                if (el.dataset.hasProfileListener) return;
+                el.dataset.hasProfileListener = "true";
+
                 el.addEventListener('click', (e) => {
                     const uid = el.getAttribute('data-uid');
                     if (uid) {
@@ -349,6 +350,9 @@
                 });
             });
         }
+
+        // Attach static events (like the header profile click) on initial load
+        attachProfileClickEvents();
 
         /* 4. LIGHTBOX & TOUCH GESTURES */
         let scale = 1;
