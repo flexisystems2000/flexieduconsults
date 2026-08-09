@@ -44,11 +44,24 @@
         .preview-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .remove-thumb { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
 
-        /* INPUT BAR */
+        /* INPUT BAR & ATTACHMENT POPUP MENU */
+        .input-container { position: relative; width: 100%; }
         .input-bar { display: flex; gap: 8px; padding: 10px; align-items: center; }
         .input-bar input[type="text"] { flex: 1; border: 1px solid #ccc; border-radius: 25px; padding: 10px 15px; outline: none; }
-        .btn-post, .btn-file { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; user-select: none; -webkit-tap-highlight-color: transparent; }
-        .btn-file { background: #eee; color: var(--blue); }
+        
+        .btn-post, .btn-attach { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; user-select: none; -webkit-tap-highlight-color: transparent; flex-shrink: 0; transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-attach { background: #f0f2f5; color: var(--blue); }
+        .btn-attach.active { transform: rotate(45deg); background: #e4e6eb; }
+        .btn-attach svg { width: 22px; height: 22px; stroke: var(--blue); stroke-width: 2.5; stroke-linecap: round; fill: none; }
+
+        /* POPUP ATTACHMENT MENU */
+        .attach-menu { display: none; position: absolute; bottom: 65px; left: 10px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); padding: 8px 0; z-index: 20; min-width: 150px; }
+        .attach-menu.active { display: block; animation: popUp 0.15s ease-out; }
+        @keyframes popUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .attach-option { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; font-size: 0.95rem; color: #333; transition: background 0.2s; user-select: none; }
+        .attach-option:hover { background: #f5f5f5; }
+        .attach-option svg { width: 22px; height: 22px; fill: none; stroke: var(--blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
         /* LIGHTBOX OVERLAY */
         .lightbox-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; overflow: hidden; touch-action: none; }
@@ -75,14 +88,43 @@
         <!-- Live Image Previews -->
         <div id="preview-bar" class="preview-bar"></div>
 
-        <div class="input-bar">
-            <label for="file-upload" class="btn-file">+</label>
-            <input id="chat-msg-input" type="text" placeholder="Type your message...">
-            <button id="send-btn" type="button" class="btn-post">➤</button>
+        <div class="input-container">
+            <!-- POPUP ATTACHMENT MENU -->
+            <div id="attach-menu" class="attach-menu">
+                <label for="camera-upload" class="attach-option">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <span>Camera</span>
+                </label>
+                <label for="file-upload" class="attach-option">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>Gallery</span>
+                </label>
+            </div>
+
+            <!-- INPUT BAR -->
+            <div class="input-bar">
+                <button type="button" id="btn-attach-toggle" class="btn-attach" title="Attach media">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <input id="chat-msg-input" type="text" placeholder="Type your message...">
+                <button id="send-btn" type="button" class="btn-post">➤</button>
+            </div>
         </div>
     </div>
 
+    <!-- Hidden File Inputs -->
     <input type="file" id="file-upload" accept="image/*" multiple style="display:none;">
+    <input type="file" id="camera-upload" accept="image/*" capture="environment" style="display:none;">
 
     <!-- LIGHTBOX OVERLAY -->
     <div id="lightbox" class="lightbox-modal">
@@ -128,7 +170,10 @@
         let currentGalleryIndex = 0;
 
         const groupTitleEl = document.getElementById('group-title');
+        const attachToggleBtn = document.getElementById('btn-attach-toggle');
+        const attachMenu = document.getElementById('attach-menu');
         const fileInput = document.getElementById('file-upload');
+        const cameraInput = document.getElementById('camera-upload');
         const sendBtn = document.getElementById('send-btn');
         const chatInput = document.getElementById('chat-msg-input');
         const feed = document.getElementById("comment-feed");
@@ -146,6 +191,28 @@
         if (groupTitleEl) {
             groupTitleEl.textContent = groupName || "Group Discussion";
         }
+
+        /* TOGGLE POPUP MENU */
+        function toggleAttachMenu() {
+            attachMenu.classList.toggle('active');
+            attachToggleBtn.classList.toggle('active');
+        }
+
+        function closeAttachMenu() {
+            attachMenu.classList.remove('active');
+            attachToggleBtn.classList.remove('active');
+        }
+
+        attachToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleAttachMenu();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!attachMenu.contains(e.target) && !attachToggleBtn.contains(e.target)) {
+                closeAttachMenu();
+            }
+        });
 
         const getUsername = () => {
             if (!currentAuthUser) return "Student";
@@ -356,16 +423,13 @@
             touchStartTime = Date.now();
 
             if (e.touches.length === 2) {
-                // Pinch-to-zoom setup
                 startDist = getDistance(e.touches);
                 startScale = scale;
             } else if (e.touches.length === 1) {
-                // Drag or Swipe setup
                 isDragging = true;
                 startX = e.touches[0].clientX - currentX;
                 startY = e.touches[0].clientY - currentY;
 
-                // Double Tap Detection
                 const now = Date.now();
                 if (now - lastTapTime < 300) {
                     if (scale > 1) resetZoom();
@@ -380,7 +444,6 @@
 
         lightboxWrapper.addEventListener('touchmove', (e) => {
             if (e.touches.length === 2) {
-                // Pinch zoom moving
                 const dist = getDistance(e.touches);
                 scale = Math.min(Math.max(1, startScale * (dist / startDist)), 4);
                 applyTransform();
@@ -389,7 +452,6 @@
                 const moveY = e.touches[0].clientY - startY;
 
                 if (scale > 1) {
-                    // Pan zoomed image
                     currentX = moveX;
                     currentY = moveY;
                     applyTransform();
@@ -401,18 +463,14 @@
             isDragging = false;
 
             if (e.touches.length === 0 && scale === 1) {
-                const deltaX = currentX;
                 const touchDuration = Date.now() - touchStartTime;
 
-                // Detect swipe left/right when not zoomed in
                 if (touchDuration < 400 && Math.abs(startX - (e.changedTouches[0]?.clientX || 0)) > 60) {
                     const diffX = startX - (e.changedTouches[0]?.clientX || 0);
                     if (diffX > 0 && currentGalleryImages.length > 1) {
-                        // Swipe Left -> Next
                         currentGalleryIndex = (currentGalleryIndex + 1) % currentGalleryImages.length;
                         updateLightboxView();
                     } else if (diffX < 0 && currentGalleryImages.length > 1) {
-                        // Swipe Right -> Prev
                         currentGalleryIndex = (currentGalleryIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
                         updateLightboxView();
                     }
@@ -434,15 +492,21 @@
         });
 
         /* 5. PREVIEW & FILE HANDLING */
+        function handleFileSelection(files) {
+            closeAttachMenu();
+            const validFiles = Array.from(files).filter(f => f.type.startsWith('image/') && f.size <= MAX_FILE_SIZE_MB * 1024 * 1024);
+            selectedFiles = [...selectedFiles, ...validFiles];
+            renderPreviews();
+        }
+
         if (fileInput) {
             fileInput.addEventListener('click', (e) => { e.target.value = null; });
-            fileInput.addEventListener('change', (e) => {
-                const files = Array.from(e.target.files || []);
-                const validFiles = files.filter(f => f.type.startsWith('image/') && f.size <= MAX_FILE_SIZE_MB * 1024 * 1024);
-                
-                selectedFiles = [...selectedFiles, ...validFiles];
-                renderPreviews();
-            });
+            fileInput.addEventListener('change', (e) => handleFileSelection(e.target.files || []));
+        }
+
+        if (cameraInput) {
+            cameraInput.addEventListener('click', (e) => { e.target.value = null; });
+            cameraInput.addEventListener('change', (e) => handleFileSelection(e.target.files || []));
         }
 
         function renderPreviews() {
