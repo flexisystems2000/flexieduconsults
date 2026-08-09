@@ -34,6 +34,18 @@
         .section-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .section-title { font-size: 1rem; color: var(--blue); font-weight: bold; border-left: 4px solid var(--green); padding-left: 10px; margin-bottom: 15px; }
 
+        /* FORM STYLES FOR ACADEMIC GOALS */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--blue); margin-bottom: 5px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #d1d9e6; border-radius: 8px; font-family: inherit; font-size: 0.9rem; box-sizing: border-box; }
+        .form-control:focus { outline: none; border-color: var(--green); }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        .btn-save { background: var(--green); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 0.9rem; transition: background 0.2s; }
+        .btn-save:hover { background: #236c43; }
+
+        /* TOAST NOTIFICATION */
+        #status-toast { position: fixed; bottom: 20px; right: 20px; background: var(--green); color: white; padding: 12px 20px; border-radius: 8px; font-size: 0.85rem; display: none; z-index: 10000; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+
         /* GROUPS JOINED STYLES (CLICKABLE) */
         .group-list { display: flex; flex-wrap: wrap; gap: 8px; }
         .group-tag { 
@@ -54,148 +66,70 @@
         .performance-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
         .performance-table th { text-align: left; color: #999; padding-bottom: 8px; font-weight: 500; }
         .performance-table td { padding: 12px 0; border-top: 1px solid #f0f0f0; }
-        .score-high { color: var(--green); font-weight: bold; }
 
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
 
-       /* MODERN FOOTER STYLES */
-.footer {
-    background: linear-gradient(135deg, #011627 0%, #032038 100%);
-    color: #e2e8f0;
-    padding: 60px 20px 30px 20px;
-    margin-top: 60px;
-    border-top: 4px solid var(--green, #22c55e);
-    font-size: 14px;
-}
+        /* MODERN FOOTER STYLES */
+        .footer {
+            background: linear-gradient(135deg, #011627 0%, #032038 100%);
+            color: #e2e8f0;
+            padding: 60px 20px 30px 20px;
+            margin-top: 60px;
+            border-top: 4px solid var(--green, #22c55e);
+            font-size: 14px;
+        }
 
-.footer-grid {
-    display: grid;
-    grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
-    gap: 35px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+            gap: 35px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-/* Headings */
-.footer h4 {
-    color: var(--yellow, #fbbf24);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin: 0 0 16px 0;
-    position: relative;
-    padding-bottom: 6px;
-}
+        .footer h4 {
+            color: var(--yellow, #fbbf24);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0 0 16px 0;
+            position: relative;
+            padding-bottom: 6px;
+        }
 
-.footer h4::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 24px;
-    height: 2px;
-    background: var(--yellow, #fbbf24);
-    opacity: 0.7;
-    border-radius: 2px;
-}
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 24px;
+            height: 2px;
+            background: var(--yellow, #fbbf24);
+            opacity: 0.7;
+            border-radius: 2px;
+        }
 
-.footer-about {
-    line-height: 1.7;
-    color: #94a3b8;
-    margin: 0;
-}
+        .footer-about { line-height: 1.7; color: #94a3b8; margin: 0; }
+        .footer-links-list { list-style: none; padding: 0; margin: 0; }
+        .footer-links-list li { margin-bottom: 10px; }
+        .footer a { color: #cbd5e0; text-decoration: none; transition: all 0.25s ease; }
+        .footer-links-list a:hover { color: var(--yellow, #fbbf24); transform: translateX(4px); display: inline-block; }
+        .whatsapp-channel-link { color: #25D366 !important; font-weight: 600; display: inline-block; transition: transform 0.25s ease, opacity 0.25s ease; }
+        .whatsapp-channel-link:hover { opacity: 0.85; transform: translateX(4px); }
+        .contact-group { margin-bottom: 16px; }
+        .contact-group h5 { color: #ffffff; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 6px 0; opacity: 0.9; }
+        .contact-group a { display: block; color: #94a3b8; font-size: 0.88rem; margin-bottom: 4px; }
+        .contact-group a:hover { color: #ffffff; }
+        .footer-bottom { max-width: 1200px; margin: 40px auto 0 auto; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center; font-size: 13px; color: #64748b; }
 
-/* Links List */
-.footer-links-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-links-list li {
-    margin-bottom: 10px;
-}
-
-.footer a {
-    color: #cbd5e0;
-    text-decoration: none;
-    transition: all 0.25s ease;
-}
-
-.footer-links-list a:hover {
-    color: var(--yellow, #fbbf24);
-    transform: translateX(4px);
-    display: inline-block;
-}
-
-/* WhatsApp Channel Text Link */
-.whatsapp-channel-link {
-    color: #25D366 !important;
-    font-weight: 600;
-    display: inline-block;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-}
-
-.whatsapp-channel-link:hover {
-    opacity: 0.85;
-    transform: translateX(4px);
-}
-
-/* Contacts & Emails Subheadings */
-.contact-group {
-    margin-bottom: 16px;
-}
-
-.contact-group h5 {
-    color: #ffffff;
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin: 0 0 6px 0;
-    opacity: 0.9;
-}
-
-.contact-group a {
-    display: block;
-    color: #94a3b8;
-    font-size: 0.88rem;
-    margin-bottom: 4px;
-}
-
-.contact-group a:hover {
-    color: #ffffff;
-}
-
-/* Bottom Bar */
-.footer-bottom {
-    max-width: 1200px;
-    margin: 40px auto 0 auto;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    text-align: center;
-    font-size: 13px;
-    color: #64748b;
-}
-
-/* Responsive Styles */
-@media (max-width: 900px) {
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-    }
-}
-
-@media (max-width: 550px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-}
+        @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; } }
+        @media (max-width: 550px) { .footer-grid { grid-template-columns: 1fr; gap: 28px; } }
    </style>
 </head>
 <body>
 
 <div id="loading-overlay">Loading Student Profile...</div>
+<div id="status-toast"></div>
 
 <header>
     <a href="classroom.html" class="back-btn">❮ Back to Portal</a>
@@ -205,14 +139,40 @@
     <div class="profile-card">
         <div class="profile-cover"></div>
         <div class="avatar-container">
-            <!-- This is the single, clickable avatar -->
             <img id="display-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" 
                  class="profile-img" style="cursor:pointer" onclick="document.getElementById('pic-upload').click()">
         </div>
         <h2 id="display-name" class="user-name">---</h2>
         <p id="display-email" class="user-email">---</p>
     </div>
-        <div class="section-card">
+
+    <!-- NEW SECTION: ACADEMIC GOALS & BIO -->
+    <div class="section-card">
+        <div class="section-title">Academic Profile & Goals</div>
+        <form id="academic-form">
+            <div class="form-group">
+                <label for="input-name">Display Name</label>
+                <input type="text" id="input-name" class="form-control" placeholder="Your Full Name">
+            </div>
+            <div class="form-group">
+                <label for="input-target">Target Exam / Goal</label>
+                <select id="input-target" class="form-control">
+                    <option value="UTME / JAMB">UTME / JAMB</option>
+                    <option value="WAEC / SSCE">WAEC / SSCE</option>
+                    <option value="NECO">NECO</option>
+                    <option value="POST-UTME">POST-UTME</option>
+                    <option value="GCE">GCE</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="input-bio">Tell Us About Your Academic Goals</label>
+                <textarea id="input-bio" class="form-control" placeholder="Share your target score, desired course, university, or study plan..."></textarea>
+            </div>
+            <button type="submit" id="btn-save-academic" class="btn-save">Save Academic Goals</button>
+        </form>
+    </div>
+
+    <div class="section-card">
         <div class="section-title">My Classrooms (Click to chat)</div>
         <div id="group-container" class="group-list">
             <span style="color: #ccc; font-size: 0.8rem;">Searching joined groups...</span>
@@ -240,25 +200,20 @@
                     <th>Date</th>
                 </tr>
             </thead>
-            <tbody id="performance-body">
-                </tbody>
+            <tbody id="performance-body"></tbody>
         </table>
     </div>
-    <!-- ... [Rest of your HTML sections] ... -->
 </div>
 
 <input type="file" id="pic-upload" accept="image/*" style="display:none">
 
-    <footer class="footer">
+<footer class="footer">
     <div class="footer-grid">
-        <!-- Column 1: About -->
         <div class="footer-col">
             <p class="footer-about">
                We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
             </p>
         </div>
-
-        <!-- Column 2: Quick Links -->
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
@@ -273,33 +228,22 @@
                 <li><a href="location.html">Tutorial Centres</a></li>
             </ul>
         </div>
-
-        <!-- Column 3: Support & Community -->
         <div class="footer-col">
             <h4>Support & Community</h4>
-            
             <div class="contact-group">
-                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
-                   target="_blank" 
-                   class="whatsapp-channel-link">
-                   Join our WhatsApp Channel
-                </a>
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" target="_blank" class="whatsapp-channel-link">Join our WhatsApp Channel</a>
             </div>
-
             <div class="contact-group">
                 <h5>Contact Us</h5>
                 <a href="tel:+2349034159839">(+234) 903 415 9839</a>
                 <a href="tel:+2347033855206">(+234) 703 385 5206</a>
             </div>
-
             <div class="contact-group">
                 <h5>Email Us</h5>
                 <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
                 <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
             </div>
         </div>
-
-        <!-- Column 4: Social Links -->
         <div class="footer-col social-links">
             <h4>Follow Us</h4>
             <ul class="footer-links-list">
@@ -309,16 +253,18 @@
             </ul>
         </div>
     </div>
-
     <div class="footer-bottom">
         &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
-    </footer>
-    
+</footer>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const CLOUDINARY_CLOUD_NAME = "dpr182siv"; 
+    const CLOUDINARY_UPLOAD_PRESET = "flexi_unsigned"; 
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
@@ -330,18 +276,45 @@
     const auth = getAuth(app);
     const db = getFirestore(app); 
 
+    let currentUid = null;
+    let currentPhotoURL = "";
+
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            document.getElementById('display-name').innerText = user.displayName || "Flexi Student";
+            currentUid = user.uid;
             document.getElementById('display-email').innerText = user.email;
 
-            // 1. Load saved profile pic
-            const userDoc = await getDoc(doc(db, "profiles", user.uid));
-            if (userDoc.exists() && userDoc.data().photoURL) {
-                document.getElementById('display-pic').src = userDoc.data().photoURL;
+            // 1. Fetch Profile Data (Name, Image, Target Exam, Bio/Goals)
+            try {
+                let userDoc = await getDoc(doc(db, "profiles", currentUid));
+                if (!userDoc.exists()) {
+                    userDoc = await getDoc(doc(db, "users", currentUid));
+                }
+
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    const name = data.displayName || data.name || user.displayName || "Flexi Student";
+                    currentPhotoURL = data.photoURL || data.photoUrl || user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                    const target = data.targetExam || "UTME / JAMB";
+                    const bio = data.bio || data.about || "";
+
+                    document.getElementById('display-name').innerText = name;
+                    document.getElementById('input-name').value = name;
+                    document.getElementById('display-pic').src = currentPhotoURL;
+                    document.getElementById('input-target').value = target;
+                    document.getElementById('input-bio').value = bio;
+                } else {
+                    const defaultName = user.displayName || (user.email ? user.email.split('@')[0] : "Flexi Student");
+                    document.getElementById('display-name').innerText = defaultName;
+                    document.getElementById('input-name').value = defaultName;
+                    currentPhotoURL = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                    document.getElementById('display-pic').src = currentPhotoURL;
+                }
+            } catch (e) {
+                console.error("Error loading user profile:", e);
             }
 
-            // 2. Fetch Performance from Firestore 'leaderboard'
+            // 2. Fetch CBT Performance
             try {
                 const q = query(collection(db, "leaderboard"), where("name", "==", user.displayName));
                 const snapshot = await getDocs(q);
@@ -349,10 +322,9 @@
                 tbody.innerHTML = "";
                 
                 let totalScore = 0, count = 0;
-                snapshot.forEach(doc => {
-                    const r = doc.data();
+                snapshot.forEach(docSnap => {
+                    const r = docSnap.data();
                     totalScore += r.score; count++;
-                    // Use a fallback for date if timestamp is missing
                     const date = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleDateString() : "N/A";
                     tbody.innerHTML += `<tr><td>${r.exam || 'Test'}</td><td>${r.score}%</td><td>${date}</td></tr>`;
                 });
@@ -364,7 +336,7 @@
             // 3. Fetch Joined Groups
             try {
                 const groupContainer = document.getElementById('group-container');
-                groupContainer.innerHTML = ""; // Clear loader
+                groupContainer.innerHTML = "";
                 
                 const groupsSnap = await getDocs(collection(db, "groups"));
                 let found = false;
@@ -391,27 +363,73 @@
         }
     });
 
+    // Save Academic Goals and Profile Info
+    document.getElementById('academic-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!currentUid) return;
+
+        const saveBtn = document.getElementById('btn-save-academic');
+        saveBtn.disabled = true;
+        saveBtn.innerText = "Saving Goals...";
+
+        const updatedName = document.getElementById('input-name').value.trim();
+        const updatedTarget = document.getElementById('input-target').value;
+        const updatedBio = document.getElementById('input-bio').value.trim();
+
+        try {
+            await setDoc(doc(db, "profiles", currentUid), {
+                displayName: updatedName,
+                targetExam: updatedTarget,
+                bio: updatedBio,
+                photoURL: currentPhotoURL,
+                updatedAt: new Date()
+            }, { merge: true });
+
+            document.getElementById('display-name').innerText = updatedName;
+            showToast("Academic goals saved successfully!");
+        } catch (err) {
+            console.error("Error saving profile:", err);
+            showToast("Failed to save goals.", true);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerText = "Save Academic Goals";
+        }
+    });
+
     // Image Upload Logic
     document.getElementById('pic-upload').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
-        const overlay = document.getElementById('loading-overlay');
-        overlay.style.display = "flex";
-        overlay.innerText = "Updating profile picture...";
+        showToast("Uploading profile picture...", false);
 
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", "my_preset_123");
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
         try {
-            const res = await fetch(`https://api.cloudinary.com/v1_1/dwmbgd9jy/image/upload`, { method: "POST", body: formData });
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
             const data = await res.json();
-            document.getElementById('display-pic').src = data.secure_url;
-            await setDoc(doc(db, "profiles", auth.currentUser.uid), { photoURL: data.secure_url }, { merge: true });
-            alert("Profile picture updated!");
-        } catch (err) { alert("Upload failed."); } finally { overlay.style.display = "none"; }
+            if (data.secure_url) {
+                currentPhotoURL = data.secure_url;
+                document.getElementById('display-pic').src = currentPhotoURL;
+                await setDoc(doc(db, "profiles", auth.currentUser.uid), { photoURL: currentPhotoURL }, { merge: true });
+                showToast("Profile picture updated!");
+            } else {
+                throw new Error("Upload failed");
+            }
+        } catch (err) { 
+            showToast("Upload failed.", true); 
+        }
     });
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('status-toast');
+        toast.textContent = msg;
+        toast.style.background = isError ? '#e53e3e' : 'var(--green)';
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    }
     
     document.getElementById('current-year').textContent = new Date().getFullYear();
 </script>
