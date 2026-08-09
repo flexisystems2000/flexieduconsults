@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Group Info</title>
+    <style>
+        :root { 
+            --blue: #003366; 
+            --green: #2E8B57; 
+            --bg: #f0f2f5; 
+            --text: #111b21;
+            --subtext: #667781;
+            --card-bg: #ffffff;
+            --border-color: #e9edef;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { 
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            padding-bottom: 40px; 
+        }
+        
+        header { 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            height: 60px; 
+            background: var(--blue); 
+            border-bottom: 4px solid var(--green); 
+            display: flex; 
+            align-items: center; 
+            gap: 15px;
+            padding: 0 15px; 
+            color: #fff; 
+            font-weight: 700; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .container { width: min(600px, 94%); margin: 20px auto; }
+
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 16px; 
+            padding: 24px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,.04); 
+            border: 1px solid var(--border-color);
+            margin-bottom: 18px;
+        }
+
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .group-avatar-large {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 2.2rem;
+            overflow: hidden;
+            border: 3px solid var(--blue);
+            margin-bottom: 12px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .group-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+        .badge-admin { background: #e0f2fe; color: #0369a1; }
+        .badge-member { background: #e2e8f0; color: var(--subtext); }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--subtext);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 16px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .modern-input { 
+            width: 100%; 
+            height: 48px; 
+            padding: 0 16px; 
+            border: 1.5px solid var(--border-color); 
+            border-radius: 10px; 
+            margin-bottom: 14px; 
+            outline: none; 
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .modern-input:focus { border-color: var(--blue); }
+
+        textarea.modern-input {
+            height: 90px;
+            padding: 12px 16px;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .icon-upload-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .file-label {
+            background: #eef2f5;
+            color: var(--blue);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px dashed var(--blue);
+            transition: background 0.2s;
+        }
+        .file-label:hover { background: #e1e8f0; }
+
+        .btn-save { 
+            width: 100%; 
+            background: var(--blue); 
+            color: #fff; 
+            border: none; 
+            border-radius: 10px; 
+            padding: 12px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: opacity 0.2s;
+            font-size: 0.95rem;
+        }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .member-list {
+            margin-top: 10px;
+        }
+
+        .member-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+        .member-item:last-child { border-bottom: none; }
+
+        .loading-box {
+            text-align: center;
+            padding: 40px;
+            color: var(--subtext);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a id="btn-back" href="entergroup.html" class="back-btn">❮</a>
+        <span>Group Information</span>
+    </header>
+
+    <div class="container">
+        <div id="loading" class="loading-box">Loading group details...</div>
+
+        <div id="info-content" style="display: none;">
+            <!-- Hero Card -->
+            <div class="card hero-section">
+                <div id="group-avatar" class="group-avatar-large"></div>
+                <h2 id="view-title" style="color: var(--blue); margin-top: 6px;"></h2>
+                <span id="user-role-badge" class="role-badge"></span>
+            </div>
+
+            <!-- View / Edit Form Card -->
+            <div class="card">
+                <!-- READ-ONLY SECTION (FOR STANDARD MEMBERS WHEN ADMIN EXISTS) -->
+                <div id="read-only-section" style="display: none;">
+                    <div class="info-label">Group Description</div>
+                    <div id="view-desc" class="info-value"></div>
+
+                    <div class="info-label">Administrator</div>
+                    <div id="view-admin" class="info-value"></div>
+                </div>
+
+                <!-- EDIT SECTION (FOR ADMIN OR WHEN ADMIN IS UNDEFINED) -->
+                <form id="edit-section" style="display: none;" onsubmit="handleUpdateGroup(event)">
+                    <h3 style="color: var(--blue); margin-bottom: 16px; font-size: 1.05rem;">Edit Details</h3>
+                    
+                    <div class="info-label">Group Name</div>
+                    <input id="edit-name" type="text" class="modern-input" required>
+
+                    <div class="info-label">Description</div>
+                    <textarea id="edit-desc" class="modern-input" placeholder="Group purpose or guidelines..."></textarea>
+
+                    <div class="info-label">Group Icon</div>
+                    <div class="icon-upload-wrapper">
+                        <label for="edit-icon-file" class="file-label">📷 Choose Image</label>
+                        <input type="file" id="edit-icon-file" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+                        <span id="file-name-display" style="font-size: 0.8rem; color: var(--subtext);">No image chosen</span>
+                    </div>
+
+                    <button id="btn-save" type="submit" class="btn-save">SAVE CHANGES</button>
+                </form>
+            </div>
+
+            <!-- Members List Card -->
+            <div class="card">
+                <h3 style="color: var(--blue); margin-bottom: 12px; font-size: 1.05rem;">Members</h3>
+                <div id="members-container" class="member-list">
+                    <div style="color: var(--subtext); font-size: 0.85rem;">Loading members...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Exact Firebase credentials matching your configuration
+        const firebaseConfig = { 
+            apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", 
+            authDomain: "flexieduconsult.com.ng", 
+            projectId: "waec2026jamb2027" 
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Exact Cloudinary config from your system
+        const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy";
+        const CLOUDINARY_PRESET = "my_preset_123";
+
+        // Query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const groupId = urlParams.get('id');
+
+        let currentGroupData = null;
+        let selectedBase64Icon = "";
+        let selectedFileObj = null;
+
+        // Set back button destination back to entergroup.html with group parameters
+        if (groupId) {
+            document.getElementById("btn-back").href = `entergroup.html?id=${groupId}`;
+        } else {
+            document.getElementById("btn-back").href = "entergroup.html";
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) { window.location.href = "login.html"; return; }
+            if (!groupId) { alert("No group specified."); window.location.href = "entergroup.html"; return; }
+
+            await fetchGroupDetails(user);
+            loadGroupMembers();
+        });
+
+        // Consistent avatar color assignment
+        function getAvatarColor(str) {
+            const colors = ['#003366', '#2E8B57', '#6b21a8', '#0284c7', '#d97706', '#be123c', '#0d9488'];
+            let hash = 0;
+            if (!str) return colors[0];
+            for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            return colors[Math.abs(hash) % colors.length];
+        }
+
+        function getInitials(name) {
+            if (!name) return "G";
+            const parts = name.trim().split(" ");
+            if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+            return name.substring(0, 2).toUpperCase();
+        }
+
+        async function fetchGroupDetails(currentUser) {
+            try {
+                const groupRef = doc(db, "groups", groupId);
+                const snap = await getDoc(groupRef);
+
+                if (!snap.exists()) {
+                    alert("Group not found.");
+                    window.location.href = "entergroup.html";
+                    return;
+                }
+
+                currentGroupData = snap.data();
+
+                // Admin Permissions Logic:
+                // If creatorName / admin is missing or empty string -> ANYONE CAN EDIT
+                const adminName = currentGroupData.creatorName || currentGroupData.admin;
+                const userIdentifier = currentUser.displayName || (currentUser.email ? currentUser.email.split("@")[0] : "");
+
+                const isAdminUndefined = !adminName || adminName.trim() === "";
+                const isUserAdmin = !isAdminUndefined && (
+                    adminName === userIdentifier || 
+                    adminName === currentUser.uid
+                );
+                
+                const canEdit = isAdminUndefined || isUserAdmin;
+
+                // Render Header Avatar
+                const avatarEl = document.getElementById("group-avatar");
+                if (currentGroupData.icon) {
+                    avatarEl.style.backgroundColor = "transparent";
+                    avatarEl.innerHTML = `<img src="${currentGroupData.icon}" alt="${currentGroupData.name}">`;
+                } else {
+                    avatarEl.style.backgroundColor = getAvatarColor(currentGroupData.name);
+                    avatarEl.innerText = getInitials(currentGroupData.name);
+                }
+
+                document.getElementById("view-title").innerText = currentGroupData.name || "Untitled Group";
+                document.getElementById("view-desc").innerText = currentGroupData.description || "No description provided.";
+                document.getElementById("view-admin").innerText = adminName || "None (Open Edit Access)";
+
+                // Update Role Badge
+                const badgeEl = document.getElementById("user-role-badge");
+                if (canEdit) {
+                    badgeEl.innerText = isAdminUndefined ? "Open Edit Access" : "Admin";
+                    badgeEl.className = "role-badge badge-admin";
+                } else {
+                    badgeEl.innerText = "Member";
+                    badgeEl.className = "role-badge badge-member";
+                }
+
+                // Toggle Read-Only vs Edit Form
+                if (canEdit) {
+                    document.getElementById("edit-section").style.display = "block";
+                    document.getElementById("read-only-section").style.display = "none";
+
+                    document.getElementById("edit-name").value = currentGroupData.name || "";
+                    document.getElementById("edit-desc").value = currentGroupData.description || "";
+                } else {
+                    document.getElementById("edit-section").style.display = "none";
+                    document.getElementById("read-only-section").style.display = "block";
+                }
+
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("info-content").style.display = "block";
+
+            } catch (err) {
+                console.error("Error fetching group info: ", err);
+            }
+        }
+
+        async function loadGroupMembers() {
+            const container = document.getElementById("members-container");
+            try {
+                const snap = await getDocs(collection(db, "groups", groupId, "members"));
+                if (snap.empty) {
+                    container.innerHTML = `<div style="color: var(--subtext); font-size: 0.85rem;">No registered member list yet.</div>`;
+                    return;
+                }
+                
+                let html = "";
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    html += `<div class="member-item">👤 <span>UID: ${data.uid ? data.uid.substring(0, 8) : 'Member'}...</span></div>`;
+                });
+                container.innerHTML = html;
+            } catch (err) {
+                container.innerHTML = `<div style="color: var(--subtext); font-size: 0.85rem;">Could not load members.</div>`;
+            }
+        }
+
+        window.handleFileSelect = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            selectedFileObj = file;
+            document.getElementById("file-name-display").innerText = file.name;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                selectedBase64Icon = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.handleUpdateGroup = async (e) => {
+            e.preventDefault();
+            const btnSave = document.getElementById("btn-save");
+            btnSave.disabled = true;
+            btnSave.innerText = "SAVING...";
+
+            const newName = document.getElementById("edit-name").value.trim();
+            const newDesc = document.getElementById("edit-desc").value.trim();
+
+            try {
+                let finalIconUrl = currentGroupData.icon || "";
+
+                // Perform Cloudinary image upload if a file was selected
+                if (selectedFileObj) {
+                    const formData = new FormData();
+                    formData.append("file", selectedFileObj);
+                    formData.append("upload_preset", CLOUDINARY_PRESET);
+
+                    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const data = await res.json();
+                    if (res.ok && data.secure_url) {
+                        finalIconUrl = data.secure_url;
+                    } else if (selectedBase64Icon) {
+                        finalIconUrl = selectedBase64Icon;
+                    }
+                }
+
+                // Update Firestore document
+                await updateDoc(doc(db, "groups", groupId), {
+                    name: newName,
+                    description: newDesc,
+                    icon: finalIconUrl
+                });
+
+                alert("Group details updated successfully!");
+                location.reload();
+            } catch (err) {
+                console.error("Error updating group: ", err);
+                alert("Failed to update group details.");
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerText = "SAVE CHANGES";
+            }
+        };
+    </script>
+</body>
+</html>
