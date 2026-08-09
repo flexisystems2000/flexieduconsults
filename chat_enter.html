@@ -11,6 +11,9 @@
         header { height: 60px; background: var(--blue); color: #fff; display: flex; align-items: center; padding: 0 15px; gap: 15px; border-bottom: 4px solid var(--green); position: sticky; top:0; z-index: 100; }
         .back-btn { font-size: 1.4rem; cursor: pointer; text-decoration: none; color: #fff; background: none; border: none; }
         
+        #chat-title { cursor: pointer; flex-grow: 1; }
+        #chat-title:hover { opacity: 0.9; }
+
         #comment-feed { padding: 15px; display: flex; flex-direction: column; gap: 12px; }
         .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-start; }
         .msg-row.sent { justify-content: flex-end; }
@@ -145,6 +148,7 @@
         const params = new URLSearchParams(window.location.search);
         const chatId = params.get('id') || params.get('chatId');
         const chatName = params.get('name') || params.get('chatName');
+        const recipientUid = params.get('uid');
 
         const MAX_FILE_SIZE_MB = 10;
         const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy";
@@ -180,6 +184,14 @@
 
         if (chatTitleEl) {
             chatTitleEl.textContent = chatName || "Chat";
+            chatTitleEl.addEventListener('click', () => {
+                const navParams = new URLSearchParams();
+                if (chatId) navParams.append('chatId', chatId);
+                if (recipientUid) navParams.append('uid', recipientUid);
+                if (chatName) navParams.append('name', chatName);
+
+                window.location.href = `chat_info.html?${navParams.toString()}`;
+            });
         }
 
         /* TOGGLE POPUP MENU */
