@@ -2,337 +2,243 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Group Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
     <style>
         :root { 
             --blue: #003366; 
             --green: #2E8B57; 
-            --bg: #f0f2f5; 
-            --text: #111b21;
-            --subtext: #667781;
-            --card-bg: #ffffff;
-            --border-color: #e9edef;
-            --danger: #dc2626;
-            --danger-hover: #b91c1c;
+            --bg: #f4f6f8;
+            --danger: #dc3545;
+            --warning: #ffc107;
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background: var(--bg); 
-            color: var(--text); 
-            padding-bottom: 40px; 
+            color: #333; 
+            min-height: 100vh;
         }
-        
         header { 
+            height: 60px; 
+            background: var(--blue); 
+            color: #fff; 
+            display: flex; 
+            align-items: center; 
+            padding: 0 15px; 
+            gap: 15px; 
+            border-bottom: 4px solid var(--green); 
             position: sticky; 
             top: 0; 
             z-index: 100; 
-            height: 60px; 
-            background: var(--blue); 
-            border-bottom: 4px solid var(--green); 
-            display: flex; 
-            align-items: center; 
-            gap: 15px;
-            padding: 0 15px; 
-            color: #fff; 
-            font-weight: 700; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        .back-btn {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.4rem;
-            cursor: pointer;
-        }
-
-        .container { width: min(600px, 94%); margin: 20px auto; }
-
-        .card { 
-            background: var(--card-bg); 
-            border-radius: 16px; 
-            padding: 24px; 
-            box-shadow: 0 2px 12px rgba(0,0,0,.04); 
-            border: 1px solid var(--border-color);
-            margin-bottom: 18px;
-        }
-
-        .hero-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .group-avatar-large {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 700;
-            font-size: 2.2rem;
-            overflow: hidden;
-            border: 3px solid var(--blue);
-            margin-bottom: 12px;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .group-avatar-large img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .role-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-top: 8px;
-            text-transform: uppercase;
-        }
-        .badge-admin { background: #e0f2fe; color: #0369a1; }
-        .badge-member { background: #e2e8f0; color: var(--subtext); }
-
-        .info-label {
-            font-size: 0.8rem;
-            color: var(--subtext);
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .info-value {
-            font-size: 1rem;
-            color: var(--text);
-            margin-bottom: 16px;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .modern-input { 
-            width: 100%; 
-            height: 48px; 
-            padding: 0 16px; 
-            border: 1.5px solid var(--border-color); 
-            border-radius: 10px; 
-            margin-bottom: 14px; 
-            outline: none; 
-            font-size: 0.95rem;
-            transition: border-color 0.2s ease;
-        }
-
-        .modern-input:focus { border-color: var(--blue); }
-
-        textarea.modern-input {
-            height: 90px;
-            padding: 12px 16px;
-            resize: none;
-            font-family: inherit;
-        }
-
-        .icon-upload-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .file-label {
-            background: #eef2f5;
-            color: var(--blue);
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1px dashed var(--blue);
-            transition: background 0.2s;
-        }
-        .file-label:hover { background: #e1e8f0; }
-
-        .btn-save { 
-            width: 100%; 
-            background: var(--blue); 
-            color: #fff; 
-            border: none; 
-            border-radius: 10px; 
-            padding: 12px; 
-            font-weight: 700; 
+        .back-btn { 
+            font-size: 1.4rem; 
             cursor: pointer; 
-            transition: opacity 0.2s;
-            font-size: 0.95rem;
+            text-decoration: none; 
+            color: #fff; 
+            background: none;
+            border: none;
         }
-        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .btn-exit {
-            width: 100%;
-            background: #fef2f2;
-            color: var(--danger);
-            border: 1px solid #fecaca;
-            border-radius: 10px;
-            padding: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn-exit:hover {
-            background: var(--danger);
-            color: #ffffff;
-        }
-        .btn-exit:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .member-list {
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 15px;
         }
 
-        .member-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 10px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.95rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.15s ease;
+        .profile-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-        .member-item:hover { background: #f8fafc; }
-        .member-item:last-child { border-bottom: none; }
 
-        .member-avatar {
-            width: 40px;
-            height: 40px;
+        .avatar-large {
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             background: var(--blue);
             color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 2.8rem;
             font-weight: bold;
-            font-size: 0.95rem;
-            flex-shrink: 0;
+            margin: 0 auto 15px auto;
             overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 3px solid var(--green);
         }
-        .member-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-        .member-info {
+        .user-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--blue);
+            margin-bottom: 5px;
+        }
+
+        .user-email {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .user-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: #e8f5e9;
+            color: var(--green);
+            margin-bottom: 20px;
+        }
+
+        .info-group {
+            background: #f9fbfd;
+            border: 1px solid #e1e8ed;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            color: #222;
+            word-break: break-word;
+        }
+
+        .action-btns {
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            gap: 10px;
         }
 
-        .member-name {
-            font-weight: 600;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-secondary {
+            background: #eee;
+            color: #333;
+        }
+        .btn-warning {
+            background: var(--warning);
+            color: #222;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+        .btn:active {
+            opacity: 0.8;
         }
 
-        .member-role {
-            font-size: 0.75rem;
-            color: var(--subtext);
-        }
-
-        .loading-box {
+        .loading-state, .error-state {
+            padding: 40px 20px;
             text-align: center;
-            padding: 40px;
-            color: var(--subtext);
+            color: #666;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--blue);
+            margin-bottom: 12px;
+        }
+        .modal-textarea {
+            width: 100%;
+            height: 90px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            resize: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a id="btn-back" href="entergroup.html" class="back-btn">❮</a>
-        <span>Group Information</span>
+        <button class="back-btn" onclick="history.back()">❮</button>
+        <h3>Member Profile</h3>
     </header>
 
     <div class="container">
-        <div id="loading" class="loading-box">Loading group details...</div>
+        <div id="profile-card" class="profile-card">
+            <div class="loading-state">Loading user information...</div>
+        </div>
+    </div>
 
-        <div id="info-content" style="display: none;">
-            <!-- Hero Card -->
-            <div class="card hero-section">
-                <div id="group-avatar" class="group-avatar-large"></div>
-                <h2 id="view-title" style="color: var(--blue); margin-top: 6px;"></h2>
-                <span id="user-role-badge" class="role-badge"></span>
-            </div>
-
-            <!-- View / Edit Form Card -->
-            <div class="card">
-                <!-- READ-ONLY SECTION (FOR STANDARD MEMBERS WHEN ADMIN EXISTS) -->
-                <div id="read-only-section" style="display: none;">
-                    <div class="info-label">Group Description</div>
-                    <div id="view-desc" class="info-value"></div>
-
-                    <div class="info-label">Administrator</div>
-                    <div id="view-admin" class="info-value"></div>
-                </div>
-
-                <!-- EDIT SECTION (FOR ADMIN OR WHEN ADMIN IS UNDEFINED) -->
-                <form id="edit-section" style="display: none;" onsubmit="handleUpdateGroup(event)">
-                    <h3 style="color: var(--blue); margin-bottom: 16px; font-size: 1.05rem;">Edit Details</h3>
-                    
-                    <div class="info-label">Group Name</div>
-                    <input id="edit-name" type="text" class="modern-input" required>
-
-                    <div class="info-label">Description</div>
-                    <textarea id="edit-desc" class="modern-input" placeholder="Group purpose or guidelines..."></textarea>
-
-                    <div class="info-label">Group Icon</div>
-                    <div class="icon-upload-wrapper">
-                        <label for="edit-icon-file" class="file-label">📷 Choose Image</label>
-                        <input type="file" id="edit-icon-file" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
-                        <span id="file-name-display" style="font-size: 0.8rem; color: var(--subtext);">No image chosen</span>
-                    </div>
-
-                    <button id="btn-save" type="submit" class="btn-save">SAVE CHANGES</button>
-                </form>
-            </div>
-
-            <!-- Members List Card -->
-            <div class="card">
-                <h3 style="color: var(--blue); margin-bottom: 12px; font-size: 1.05rem;">
-                    Members (<span id="member-count">0</span>)
-                </h3>
-                <div id="members-container" class="member-list">
-                    <div style="color: var(--subtext); font-size: 0.85rem;">Loading members...</div>
-                </div>
-            </div>
-
-            <!-- Action Section (Exit Group) -->
-            <div class="card" style="padding: 16px;">
-                <button id="btn-exit-group" class="btn-exit" onclick="handleExitGroup()">
-                    🚪 Exit Group
-                </button>
+    <!-- Reason Modal -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <div id="modalTitle" class="modal-title">Action Reason</div>
+            <textarea id="modalReason" class="modal-textarea" placeholder="Provide a reason..."></textarea>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button id="modalSubmitBtn" class="btn btn-danger">Submit</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { 
+            getFirestore, doc, getDoc, setDoc, deleteDoc, 
+            updateDoc, increment, collection, addDoc, serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Firebase configuration
         const firebaseConfig = { 
             apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", 
             authDomain: "flexieduconsult.com.ng", 
@@ -343,51 +249,236 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Cloudinary configuration
-        const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy";
-        const CLOUDINARY_PRESET = "my_preset_123";
+        const params = new URLSearchParams(window.location.search);
+        const profileUid = params.get('uid');
+        const cardEl = document.getElementById('profile-card');
 
-        // Query parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const groupId = urlParams.get('id');
+        let activeUser = null;
+        let targetUserName = "";
+        let targetUserEmail = "";
+        let isBlocked = false;
 
-        let currentGroupData = null;
-        let currentUserObj = null;
-        let selectedBase64Icon = "";
-        let selectedFileObj = null;
-        const profileCache = new Map();
+        onAuthStateChanged(auth, async (currentUser) => {
+            activeUser = currentUser;
 
-        // Set back button destination to entergroup.html with group ID
-        const btnBack = document.getElementById("btn-back");
-        if (groupId) {
-            btnBack.href = `entergroup.html?id=${groupId}`;
-        } else {
-            btnBack.href = "groups.html";
-        }
+            if (!profileUid) {
+                cardEl.innerHTML = `<div class="error-state">No user specified in URL.</div>`;
+                return;
+            }
 
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) { window.location.href = "login.html"; return; }
-            if (!groupId) { alert("No group specified."); window.location.href = "groups.html"; return; }
+            try {
+                let name = "";
+                let email = "";
+                let photoURL = null;
+                let bio = "No bio provided.";
+                let role = "Member";
 
-            currentUserObj = user;
-            await fetchGroupDetails(user);
-            loadGroupMembers();
+                let pSnap = await getDoc(doc(db, "profiles", profileUid));
+                if (!pSnap.exists()) {
+                    pSnap = await getDoc(doc(db, "users", profileUid));
+                }
+
+                if (pSnap.exists()) {
+                    const data = pSnap.data();
+                    name = data.displayName || data.name || data.userName || data.username || data.fullName || data.full_name || "";
+                    email = data.email || "";
+                    photoURL = data.photoURL || data.photoUrl || data.avatarUrl || data.image || null;
+                    bio = data.bio || data.about || bio;
+                    role = data.role || role;
+                }
+
+                if (currentUser && currentUser.uid === profileUid) {
+                    if (!name) name = currentUser.displayName || (currentUser.email ? currentUser.email.split("@")[0] : "");
+                    if (!email) email = currentUser.email || "";
+                    if (!photoURL) photoURL = currentUser.photoURL || null;
+                }
+
+                if (!name) name = email ? email.split("@")[0] : "Member";
+                if (!email) email = "Hidden or not provided";
+
+                targetUserName = name;
+                targetUserEmail = email;
+
+                if (currentUser && currentUser.uid !== profileUid) {
+                    const blockSnap = await getDoc(doc(db, "users", currentUser.uid, "blockedUsers", profileUid));
+                    isBlocked = blockSnap.exists();
+                }
+
+                const initial = name.charAt(0).toUpperCase();
+                const avatarHTML = photoURL 
+                    ? `<div class="avatar-large"><img src="${escapeHTML(photoURL)}" alt="${escapeHTML(name)}"></div>`
+                    : `<div class="avatar-large">${initial}</div>`;
+
+                const isSelf = currentUser && currentUser.uid === profileUid;
+                const blockText = isBlocked ? `Unblock ${escapeHTML(name)}` : `Block ${escapeHTML(name)}`;
+
+                cardEl.innerHTML = `
+                    ${avatarHTML}
+                    <div class="user-name">${escapeHTML(name)}</div>
+                    <div class="user-email">${escapeHTML(email)}</div>
+                    <div class="user-status">● ${escapeHTML(role)}</div>
+
+                    <div class="info-group">
+                        <div class="info-label">About / Bio</div>
+                        <div class="info-value">${escapeHTML(bio)}</div>
+                    </div>
+
+                    <div class="action-btns">
+                        ${!isSelf ? `
+                            <button class="btn btn-warning" id="reportBtn">Report ${escapeHTML(name)}</button>
+                            <button class="btn btn-danger" id="blockBtn">${blockText}</button>
+                        ` : ''}
+                        <button class="btn btn-secondary" onclick="history.back()">Go Back</button>
+                    </div>
+                `;
+
+                if (!isSelf) {
+                    document.getElementById('reportBtn').addEventListener('click', () => openModal('report'));
+                    document.getElementById('blockBtn').addEventListener('click', () => {
+                        if (isBlocked) {
+                            toggleBlockUser("");
+                        } else {
+                            openModal('block');
+                        }
+                    });
+                }
+
+            } catch (err) {
+                console.error("Profile load error:", err);
+                cardEl.innerHTML = `<div class="error-state">Failed to load user profile.</div>`;
+            }
         });
 
-        // Consistent avatar color generator
-        function getAvatarColor(str) {
-            const colors = ['#003366', '#2E8B57', '#6b21a8', '#0284c7', '#d97706', '#be123c', '#0d9488'];
-            let hash = 0;
-            if (!str) return colors[0];
-            for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            return colors[Math.abs(hash) % colors.length];
+        let currentAction = null;
+
+        window.openModal = function(action) {
+            if (!activeUser) {
+                alert("You must be logged in to perform this action.");
+                return;
+            }
+            currentAction = action;
+            const titleEl = document.getElementById('modalTitle');
+            const submitBtn = document.getElementById('modalSubmitBtn');
+            document.getElementById('modalReason').value = "";
+
+            if (action === 'report') {
+                titleEl.textContent = `Report ${targetUserName}`;
+                submitBtn.textContent = "Submit Report";
+                submitBtn.className = "btn btn-warning";
+            } else {
+                titleEl.textContent = `Block ${targetUserName}`;
+                submitBtn.textContent = "Block User";
+                submitBtn.className = "btn btn-danger";
+            }
+
+            document.getElementById('actionModal').style.display = 'flex';
+        };
+
+        window.closeModal = function() {
+            document.getElementById('actionModal').style.display = 'none';
+        };
+
+        document.getElementById('modalSubmitBtn').addEventListener('click', async () => {
+            const reason = document.getElementById('modalReason').value.trim();
+            if (!reason) {
+                alert("Please provide a reason.");
+                return;
+            }
+
+            closeModal();
+            if (currentAction === 'report') {
+                await handleReport(reason);
+            } else if (currentAction === 'block') {
+                await toggleBlockUser(reason);
+            }
+        });
+
+        // --- Core Action Logic ---
+
+        async function handleReport(reason) {
+            try {
+                // 1. Add Report Entry to Firestore
+                await addDoc(collection(db, "reports"), {
+                    reportedUid: profileUid,
+                    reportedName: targetUserName,
+                    reportedEmail: targetUserEmail,
+                    reporterUid: activeUser.uid,
+                    reporterEmail: activeUser.email || "Unknown",
+                    reason: reason,
+                    timestamp: serverTimestamp()
+                });
+
+                // 2. Increment Report Counter
+                const targetRef = doc(db, "users", profileUid);
+                await updateDoc(targetRef, {
+                    reportCount: increment(1)
+                }).catch(async () => {
+                    await setDoc(targetRef, { reportCount: 1 }, { merge: true });
+                });
+
+                // 3. Queue Background Email Document
+                await sendBackgroundEmail("Report", reason);
+
+                alert(`${targetUserName} has been reported.`);
+            } catch (err) {
+                console.error("Report process error:", err);
+                alert("An error occurred while reporting.");
+            }
         }
 
-        function getInitials(name) {
-            if (!name) return "U";
-            const parts = name.trim().split(" ");
-            if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
-            return name.substring(0, 2).toUpperCase();
+        async function toggleBlockUser(reason) {
+            try {
+                const blockRef = doc(db, "users", activeUser.uid, "blockedUsers", profileUid);
+
+                if (isBlocked) {
+                    await deleteDoc(blockRef);
+                    isBlocked = false;
+                    alert(`${targetUserName} has been unblocked.`);
+                } else {
+                    await setDoc(blockRef, {
+                        blockedUid: profileUid,
+                        blockedName: targetUserName,
+                        reason: reason,
+                        timestamp: serverTimestamp()
+                    });
+                    isBlocked = true;
+
+                    // Queue Background Email Document
+                    await sendBackgroundEmail("Block", reason);
+                    alert(`${targetUserName} has been blocked.`);
+                }
+
+                const blockBtn = document.getElementById('blockBtn');
+                if (blockBtn) {
+                    blockBtn.textContent = isBlocked ? `Unblock ${escapeHTML(targetUserName)}` : `Block ${escapeHTML(targetUserName)}`;
+                }
+            } catch (err) {
+                console.error("Block/Unblock error:", err);
+                alert("Could not update block state.");
+            }
+        }
+
+        // Silent Background Email Queue via Firestore
+        async function sendBackgroundEmail(actionType, reason) {
+            try {
+                await addDoc(collection(db, "mail"), {
+                    to: ["support@flexieduconsult.com.ng"],
+                    message: {
+                        subject: `User ${actionType} Notification: ${targetUserName}`,
+                        text: `Action: ${actionType}\nTarget: ${targetUserName} (${profileUid})\nBy: ${activeUser.email || activeUser.uid}\nReason: ${reason}`,
+                        html: `
+                            <h3>User ${actionType} Recorded</h3>
+                            <p><strong>Target User:</strong> ${targetUserName} (${targetUserEmail})</p>
+                            <p><strong>Target UID:</strong> ${profileUid}</p>
+                            <p><strong>Action By:</strong> ${activeUser.email || 'User'} (${activeUser.uid})</p>
+                            <p><strong>Reason:</strong> ${reason}</p>
+                            <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                        `
+                    }
+                });
+            } catch (e) {
+                console.error("Error writing background mail document:", e);
+            }
         }
 
         function escapeHTML(str) {
@@ -396,256 +487,6 @@
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
             );
         }
-
-        // Fetch user profiles (matching entergroup.html caching)
-        async function getUserProfile(uid) {
-            if (!uid) return null;
-            if (profileCache.has(uid)) return profileCache.get(uid);
-            try {
-                const pSnap = await getDoc(doc(db, "profiles", uid));
-                if (pSnap.exists()) {
-                    const data = pSnap.data();
-                    profileCache.set(uid, data);
-                    return data;
-                }
-            } catch(e) {
-                console.error("Profile fetch error:", e);
-            }
-            return null;
-        }
-
-        async function fetchGroupDetails(currentUser) {
-            try {
-                const groupRef = doc(db, "groups", groupId);
-                const snap = await getDoc(groupRef);
-
-                if (!snap.exists()) {
-                    alert("Group not found.");
-                    window.location.href = "groups.html";
-                    return;
-                }
-
-                currentGroupData = snap.data();
-
-                const adminName = currentGroupData.creatorName || currentGroupData.admin;
-                const userIdentifier = currentUser.displayName || (currentUser.email ? currentUser.email.split("@")[0] : "");
-
-                const isAdminUndefined = !adminName || adminName.trim() === "";
-                const isUserAdmin = !isAdminUndefined && (
-                    adminName === userIdentifier || 
-                    adminName === currentUser.uid
-                );
-                
-                const canEdit = isAdminUndefined || isUserAdmin;
-
-                // Render Header Group Avatar
-                const avatarEl = document.getElementById("group-avatar");
-                if (currentGroupData.icon) {
-                    avatarEl.style.backgroundColor = "transparent";
-                    avatarEl.innerHTML = `<img src="${escapeHTML(currentGroupData.icon)}" alt="${escapeHTML(currentGroupData.name)}">`;
-                } else {
-                    avatarEl.style.backgroundColor = getAvatarColor(currentGroupData.name);
-                    avatarEl.innerText = getInitials(currentGroupData.name);
-                }
-
-                document.getElementById("view-title").innerText = currentGroupData.name || "Untitled Group";
-                document.getElementById("view-desc").innerText = currentGroupData.description || "No description provided.";
-                document.getElementById("view-admin").innerText = adminName || "None (Open Edit Access)";
-
-                // Role Badge
-                const badgeEl = document.getElementById("user-role-badge");
-                if (canEdit) {
-                    badgeEl.innerText = isAdminUndefined ? "Open Edit Access" : "Admin";
-                    badgeEl.className = "role-badge badge-admin";
-                } else {
-                    badgeEl.innerText = "Member";
-                    badgeEl.className = "role-badge badge-member";
-                }
-
-                // Toggle Edit / Read-only Forms
-                if (canEdit) {
-                    document.getElementById("edit-section").style.display = "block";
-                    document.getElementById("read-only-section").style.display = "none";
-
-                    document.getElementById("edit-name").value = currentGroupData.name || "";
-                    document.getElementById("edit-desc").value = currentGroupData.description || "";
-                } else {
-                    document.getElementById("edit-section").style.display = "none";
-                    document.getElementById("read-only-section").style.display = "block";
-                }
-
-                document.getElementById("loading").style.display = "none";
-                document.getElementById("info-content").style.display = "block";
-
-            } catch (err) {
-                console.error("Error fetching group info: ", err);
-            }
-        }
-
-        // Updated Member Loading with Count, Profiles & Photos
-        async function loadGroupMembers() {
-            const container = document.getElementById("members-container");
-            const countSpan = document.getElementById("member-count");
-
-            try {
-                const snap = await getDocs(collection(db, "groups", groupId, "members"));
-                
-                // Update total number count
-                const totalCount = snap.size;
-                countSpan.innerText = totalCount;
-
-                if (snap.empty) {
-                    container.innerHTML = `<div style="color: var(--subtext); font-size: 0.85rem;">No registered member list yet.</div>`;
-                    return;
-                }
-                
-                let memberDocs = snap.docs;
-                
-                // Pre-fetch profiles for all member UIDs
-                await Promise.all(memberDocs.map(docSnap => {
-                    const data = docSnap.data();
-                    const uid = data.uid || docSnap.id;
-                    return getUserProfile(uid);
-                }));
-
-                let html = "";
-                memberDocs.forEach(docSnap => {
-                    const data = docSnap.data();
-                    const memberUid = data.uid || docSnap.id;
-                    const profile = profileCache.get(memberUid);
-
-                    let displayName = profile?.displayName || profile?.name || data.displayName || data.name || data.email || "Student";
-                    if (displayName.includes("@")) {
-                        displayName = displayName.split("@")[0];
-                    }
-
-                    const photoURL = profile?.photoURL || data.photoURL || "";
-                    const bgColor = getAvatarColor(displayName);
-                    const initials = getInitials(displayName);
-
-                    let avatarHTML = "";
-                    if (photoURL) {
-                        avatarHTML = `<div class="member-avatar"><img src="${escapeHTML(photoURL)}" alt="Avatar"></div>`;
-                    } else {
-                        avatarHTML = `<div class="member-avatar" style="background-color: ${bgColor};">${escapeHTML(initials)}</div>`;
-                    }
-
-                    const isGroupAdmin = currentGroupData && (currentGroupData.admin === memberUid || currentGroupData.creatorName === displayName);
-
-                    html += `
-                        <div class="member-item profile-link" data-uid="${escapeHTML(memberUid)}">
-                            ${avatarHTML}
-                            <div class="member-info">
-                                <span class="member-name">${escapeHTML(displayName)}</span>
-                                ${isGroupAdmin ? `<span class="member-role" style="color: #0369a1; font-weight: 600;">Admin</span>` : `<span class="member-role">Member</span>`}
-                            </div>
-                        </div>
-                    `;
-                });
-
-                container.innerHTML = html;
-                attachProfileClickEvents();
-
-            } catch (err) {
-                console.error("Error loading members:", err);
-                container.innerHTML = `<div style="color: var(--subtext); font-size: 0.85rem;">Could not load members.</div>`;
-            }
-        }
-
-        function attachProfileClickEvents() {
-            document.querySelectorAll('.profile-link').forEach(el => {
-                el.addEventListener('click', () => {
-                    const uid = el.getAttribute('data-uid');
-                    if (uid) {
-                        window.location.href = `chat_info.html?uid=${encodeURIComponent(uid)}`;
-                    }
-                });
-            });
-        }
-
-        window.handleExitGroup = async () => {
-            if (!currentUserObj || !groupId) return;
-
-            const confirmed = confirm("Are you sure you want to exit this group? You will stop receiving updates and messages.");
-            if (!confirmed) return;
-
-            const btnExit = document.getElementById("btn-exit-group");
-            btnExit.disabled = true;
-            btnExit.innerText = "Leaving group...";
-
-            try {
-                // Delete user's member document from group subcollection
-                await deleteDoc(doc(db, "groups", groupId, "members", currentUserObj.uid));
-                alert("You have left the group.");
-                window.location.href = "groups.html";
-            } catch (err) {
-                console.error("Error exiting group: ", err);
-                alert("Failed to exit group. Please try again.");
-                btnExit.disabled = false;
-                btnExit.innerText = "🚪 Exit Group";
-            }
-        };
-
-        window.handleFileSelect = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            selectedFileObj = file;
-            document.getElementById("file-name-display").innerText = file.name;
-
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                selectedBase64Icon = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        };
-
-        window.handleUpdateGroup = async (e) => {
-            e.preventDefault();
-            const btnSave = document.getElementById("btn-save");
-            btnSave.disabled = true;
-            btnSave.innerText = "SAVING...";
-
-            const newName = document.getElementById("edit-name").value.trim();
-            const newDesc = document.getElementById("edit-desc").value.trim();
-
-            try {
-                let finalIconUrl = currentGroupData.icon || "";
-
-                if (selectedFileObj) {
-                    const formData = new FormData();
-                    formData.append("file", selectedFileObj);
-                    formData.append("upload_preset", CLOUDINARY_PRESET);
-
-                    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                        method: "POST",
-                        body: formData
-                    });
-
-                    const data = await res.json();
-                    if (res.ok && data.secure_url) {
-                        finalIconUrl = data.secure_url;
-                    } else if (selectedBase64Icon) {
-                        finalIconUrl = selectedBase64Icon;
-                    }
-                }
-
-                await updateDoc(doc(db, "groups", groupId), {
-                    name: newName,
-                    description: newDesc,
-                    icon: finalIconUrl
-                });
-
-                alert("Group details updated successfully!");
-                location.reload();
-            } catch (err) {
-                console.error("Error updating group: ", err);
-                alert("Failed to update group details.");
-            } finally {
-                btnSave.disabled = false;
-                btnSave.innerText = "SAVE CHANGES";
-            }
-        };
     </script>
 </body>
 </html>
