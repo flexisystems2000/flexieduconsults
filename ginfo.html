@@ -13,6 +13,8 @@
             --subtext: #667781;
             --card-bg: #ffffff;
             --border-color: #e9edef;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { 
@@ -170,19 +172,84 @@
         }
         .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
 
+        .btn-exit {
+            width: 100%;
+            background: #fef2f2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-exit:hover {
+            background: var(--danger);
+            color: #ffffff;
+        }
+        .btn-exit:disabled { opacity: 0.6; cursor: not-allowed; }
+
         .member-list {
             margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .member-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 0;
+            gap: 12px;
+            padding: 8px 10px;
             border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s ease;
         }
+        .member-item:hover { background: #f8fafc; }
         .member-item:last-child { border-bottom: none; }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .member-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .member-info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .member-name {
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .member-role {
+            font-size: 0.75rem;
+            color: var(--subtext);
+        }
 
         .loading-box {
             text-align: center;
@@ -243,20 +310,29 @@
 
             <!-- Members List Card -->
             <div class="card">
-                <h3 style="color: var(--blue); margin-bottom: 12px; font-size: 1.05rem;">Members</h3>
+                <h3 style="color: var(--blue); margin-bottom: 12px; font-size: 1.05rem;">
+                    Members (<span id="member-count">0</span>)
+                </h3>
                 <div id="members-container" class="member-list">
                     <div style="color: var(--subtext); font-size: 0.85rem;">Loading members...</div>
                 </div>
+            </div>
+
+            <!-- Action Section (Exit Group) -->
+            <div class="card" style="padding: 16px;">
+                <button id="btn-exit-group" class="btn-exit" onclick="handleExitGroup()">
+                    🚪 Exit Group
+                </button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Exact Firebase credentials matching entergroup.html
+        // Firebase configuration
         const firebaseConfig = { 
             apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM", 
             authDomain: "flexieduconsult.com.ng", 
@@ -267,7 +343,7 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Cloudinary config matching entergroup.html
+        // Cloudinary configuration
         const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy";
         const CLOUDINARY_PRESET = "my_preset_123";
 
@@ -276,8 +352,10 @@
         const groupId = urlParams.get('id');
 
         let currentGroupData = null;
+        let currentUserObj = null;
         let selectedBase64Icon = "";
         let selectedFileObj = null;
+        const profileCache = new Map();
 
         // Set back button destination to entergroup.html with group ID
         const btnBack = document.getElementById("btn-back");
@@ -291,11 +369,12 @@
             if (!user) { window.location.href = "login.html"; return; }
             if (!groupId) { alert("No group specified."); window.location.href = "groups.html"; return; }
 
+            currentUserObj = user;
             await fetchGroupDetails(user);
             loadGroupMembers();
         });
 
-        // Consistent avatar color assignment
+        // Consistent avatar color generator
         function getAvatarColor(str) {
             const colors = ['#003366', '#2E8B57', '#6b21a8', '#0284c7', '#d97706', '#be123c', '#0d9488'];
             let hash = 0;
@@ -305,10 +384,34 @@
         }
 
         function getInitials(name) {
-            if (!name) return "G";
+            if (!name) return "U";
             const parts = name.trim().split(" ");
             if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
             return name.substring(0, 2).toUpperCase();
+        }
+
+        function escapeHTML(str) {
+            if (typeof str !== 'string') return '';
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Fetch user profiles (matching entergroup.html caching)
+        async function getUserProfile(uid) {
+            if (!uid) return null;
+            if (profileCache.has(uid)) return profileCache.get(uid);
+            try {
+                const pSnap = await getDoc(doc(db, "profiles", uid));
+                if (pSnap.exists()) {
+                    const data = pSnap.data();
+                    profileCache.set(uid, data);
+                    return data;
+                }
+            } catch(e) {
+                console.error("Profile fetch error:", e);
+            }
+            return null;
         }
 
         async function fetchGroupDetails(currentUser) {
@@ -324,8 +427,6 @@
 
                 currentGroupData = snap.data();
 
-                // Admin Permissions Logic:
-                // If creatorName / admin is missing or empty string -> ANYONE CAN EDIT
                 const adminName = currentGroupData.creatorName || currentGroupData.admin;
                 const userIdentifier = currentUser.displayName || (currentUser.email ? currentUser.email.split("@")[0] : "");
 
@@ -337,11 +438,11 @@
                 
                 const canEdit = isAdminUndefined || isUserAdmin;
 
-                // Render Header Avatar
+                // Render Header Group Avatar
                 const avatarEl = document.getElementById("group-avatar");
                 if (currentGroupData.icon) {
                     avatarEl.style.backgroundColor = "transparent";
-                    avatarEl.innerHTML = `<img src="${currentGroupData.icon}" alt="${currentGroupData.name}">`;
+                    avatarEl.innerHTML = `<img src="${escapeHTML(currentGroupData.icon)}" alt="${escapeHTML(currentGroupData.name)}">`;
                 } else {
                     avatarEl.style.backgroundColor = getAvatarColor(currentGroupData.name);
                     avatarEl.innerText = getInitials(currentGroupData.name);
@@ -351,7 +452,7 @@
                 document.getElementById("view-desc").innerText = currentGroupData.description || "No description provided.";
                 document.getElementById("view-admin").innerText = adminName || "None (Open Edit Access)";
 
-                // Update Role Badge
+                // Role Badge
                 const badgeEl = document.getElementById("user-role-badge");
                 if (canEdit) {
                     badgeEl.innerText = isAdminUndefined ? "Open Edit Access" : "Admin";
@@ -361,7 +462,7 @@
                     badgeEl.className = "role-badge badge-member";
                 }
 
-                // Toggle Read-Only vs Edit Form
+                // Toggle Edit / Read-only Forms
                 if (canEdit) {
                     document.getElementById("edit-section").style.display = "block";
                     document.getElementById("read-only-section").style.display = "none";
@@ -381,25 +482,109 @@
             }
         }
 
+        // Updated Member Loading with Count, Profiles & Photos
         async function loadGroupMembers() {
             const container = document.getElementById("members-container");
+            const countSpan = document.getElementById("member-count");
+
             try {
                 const snap = await getDocs(collection(db, "groups", groupId, "members"));
+                
+                // Update total number count
+                const totalCount = snap.size;
+                countSpan.innerText = totalCount;
+
                 if (snap.empty) {
                     container.innerHTML = `<div style="color: var(--subtext); font-size: 0.85rem;">No registered member list yet.</div>`;
                     return;
                 }
                 
-                let html = "";
-                snap.forEach(docSnap => {
+                let memberDocs = snap.docs;
+                
+                // Pre-fetch profiles for all member UIDs
+                await Promise.all(memberDocs.map(docSnap => {
                     const data = docSnap.data();
-                    html += `<div class="member-item">👤 <span>UID: ${data.uid ? data.uid.substring(0, 8) : 'Member'}...</span></div>`;
+                    const uid = data.uid || docSnap.id;
+                    return getUserProfile(uid);
+                }));
+
+                let html = "";
+                memberDocs.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const memberUid = data.uid || docSnap.id;
+                    const profile = profileCache.get(memberUid);
+
+                    let displayName = profile?.displayName || profile?.name || data.displayName || data.name || data.email || "Student";
+                    if (displayName.includes("@")) {
+                        displayName = displayName.split("@")[0];
+                    }
+
+                    const photoURL = profile?.photoURL || data.photoURL || "";
+                    const bgColor = getAvatarColor(displayName);
+                    const initials = getInitials(displayName);
+
+                    let avatarHTML = "";
+                    if (photoURL) {
+                        avatarHTML = `<div class="member-avatar"><img src="${escapeHTML(photoURL)}" alt="Avatar"></div>`;
+                    } else {
+                        avatarHTML = `<div class="member-avatar" style="background-color: ${bgColor};">${escapeHTML(initials)}</div>`;
+                    }
+
+                    const isGroupAdmin = currentGroupData && (currentGroupData.admin === memberUid || currentGroupData.creatorName === displayName);
+
+                    html += `
+                        <div class="member-item profile-link" data-uid="${escapeHTML(memberUid)}">
+                            ${avatarHTML}
+                            <div class="member-info">
+                                <span class="member-name">${escapeHTML(displayName)}</span>
+                                ${isGroupAdmin ? `<span class="member-role" style="color: #0369a1; font-weight: 600;">Admin</span>` : `<span class="member-role">Member</span>`}
+                            </div>
+                        </div>
+                    `;
                 });
+
                 container.innerHTML = html;
+                attachProfileClickEvents();
+
             } catch (err) {
+                console.error("Error loading members:", err);
                 container.innerHTML = `<div style="color: var(--subtext); font-size: 0.85rem;">Could not load members.</div>`;
             }
         }
+
+        function attachProfileClickEvents() {
+            document.querySelectorAll('.profile-link').forEach(el => {
+                el.addEventListener('click', () => {
+                    const uid = el.getAttribute('data-uid');
+                    if (uid) {
+                        window.location.href = `chat_info.html?uid=${encodeURIComponent(uid)}`;
+                    }
+                });
+            });
+        }
+
+        window.handleExitGroup = async () => {
+            if (!currentUserObj || !groupId) return;
+
+            const confirmed = confirm("Are you sure you want to exit this group? You will stop receiving updates and messages.");
+            if (!confirmed) return;
+
+            const btnExit = document.getElementById("btn-exit-group");
+            btnExit.disabled = true;
+            btnExit.innerText = "Leaving group...";
+
+            try {
+                // Delete user's member document from group subcollection
+                await deleteDoc(doc(db, "groups", groupId, "members", currentUserObj.uid));
+                alert("You have left the group.");
+                window.location.href = "groups.html";
+            } catch (err) {
+                console.error("Error exiting group: ", err);
+                alert("Failed to exit group. Please try again.");
+                btnExit.disabled = false;
+                btnExit.innerText = "🚪 Exit Group";
+            }
+        };
 
         window.handleFileSelect = (e) => {
             const file = e.target.files[0];
@@ -427,7 +612,6 @@
             try {
                 let finalIconUrl = currentGroupData.icon || "";
 
-                // Upload selected image to Cloudinary
                 if (selectedFileObj) {
                     const formData = new FormData();
                     formData.append("file", selectedFileObj);
@@ -446,7 +630,6 @@
                     }
                 }
 
-                // Update Firestore group document
                 await updateDoc(doc(db, "groups", groupId), {
                     name: newName,
                     description: newDesc,
