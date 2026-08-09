@@ -8,8 +8,42 @@
         :root { --blue: #003366; --green: #2E8B57; }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #fff; padding-bottom: 90px; }
-        header { height: 60px; background: var(--blue); color: #fff; display: flex; align-items: center; padding: 0 15px; gap: 15px; border-bottom: 4px solid var(--green); position: sticky; top:0; z-index: 100; }
-        .back-btn { font-size: 1.4rem; cursor: pointer; text-decoration: none; color: #fff; }
+        
+        /* HEADER & BLUE BAR NAVIGATION */
+        header { 
+            height: 60px; 
+            background: var(--blue); 
+            color: #fff; 
+            display: flex; 
+            align-items: center; 
+            padding: 0 15px; 
+            gap: 12px; 
+            border-bottom: 4px solid var(--green); 
+            position: sticky; 
+            top:0; 
+            z-index: 100; 
+            cursor: pointer;
+            user-select: none;
+        }
+        .back-btn { font-size: 1.4rem; cursor: pointer; text-decoration: none; color: #fff; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
+        
+        .header-info { flex: 1; display: flex; align-items: center; gap: 10px; overflow: hidden; }
+        .header-avatar-small {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        .header-avatar-small img { width: 100%; height: 100%; object-fit: cover; }
         
         #comment-feed { padding: 15px; display: flex; flex-direction: column; gap: 12px; }
         .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-start; position: relative; }
@@ -136,9 +170,16 @@
 </head>
 <body>
 
-    <header>
-        <a href="groups.html" class="back-btn">❮</a>
-        <h3 id="group-title">Group Chat</h3>
+    <!-- BLUE HEADER BAR (CLICK TO OPEN GINFO.HTML) -->
+    <header id="group-header">
+        <a href="groups.html" class="back-btn" id="btn-back">❮</a>
+        <div class="header-info">
+            <div id="header-avatar" class="header-avatar-small">G</div>
+            <div style="overflow: hidden;">
+                <h3 id="group-title" style="margin: 0; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Group Chat</h3>
+                <span style="font-size: 0.72rem; opacity: 0.85; display: block;">Tap for group info</span>
+            </div>
+        </div>
     </header>
 
     <div id="comment-feed"></div>
@@ -237,7 +278,11 @@
         let currentGalleryImages = [];
         let currentGalleryIndex = 0;
 
+        const groupHeaderEl = document.getElementById('group-header');
+        const backBtnEl = document.getElementById('btn-back');
         const groupTitleEl = document.getElementById('group-title');
+        const headerAvatarEl = document.getElementById('header-avatar');
+        
         const attachToggleBtn = document.getElementById('btn-attach-toggle');
         const attachMenu = document.getElementById('attach-menu');
         const fileInput = document.getElementById('file-upload');
@@ -260,6 +305,45 @@
 
         if (groupTitleEl) {
             groupTitleEl.textContent = groupName || "Group Discussion";
+        }
+
+        /* 0. HEADER CLICK -> NAVIGATE TO GINFO.HTML */
+        if (groupHeaderEl) {
+            groupHeaderEl.addEventListener('click', (e) => {
+                // Ignore if back button was clicked specifically
+                if (e.target.closest('#btn-back')) return;
+
+                if (groupId) {
+                    window.location.href = `ginfo.html?id=${groupId}`;
+                }
+            });
+        }
+
+        if (backBtnEl) {
+            backBtnEl.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevents triggering header redirect
+            });
+        }
+
+        // Fetch live group metadata for the header icon/title
+        async function loadGroupHeaderDetails() {
+            if (!groupId) return;
+            try {
+                const groupSnap = await getDoc(doc(db, "groups", groupId));
+                if (groupSnap.exists()) {
+                    const data = groupSnap.data();
+                    if (data.name && groupTitleEl) {
+                        groupTitleEl.textContent = data.name;
+                    }
+                    if (data.icon && headerAvatarEl) {
+                        headerAvatarEl.innerHTML = `<img src="${escapeHTML(data.icon)}" alt="Icon">`;
+                    } else if (data.name && headerAvatarEl) {
+                        headerAvatarEl.textContent = data.name.charAt(0).toUpperCase();
+                    }
+                }
+            } catch (err) {
+                console.error("Header group fetch error:", err);
+            }
         }
 
         /* TOGGLE POPUP MENU */
@@ -313,6 +397,7 @@
         onAuthStateChanged(auth, (user) => {
             currentAuthUser = user;
             if (groupId) {
+                loadGroupHeaderDetails();
                 initMessageListener();
             } else {
                 console.error("Missing group ID in URL parameters.");
