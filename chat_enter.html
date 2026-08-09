@@ -44,11 +44,22 @@
         .preview-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .remove-thumb { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
 
-        /* INPUT BAR */
+        /* INPUT BAR & ATTACHMENT POPUP MENU */
+        .input-container { position: relative; width: 100%; }
         .input-bar { display: flex; gap: 8px; padding: 10px; align-items: center; }
         .input-bar input[type="text"] { flex: 1; border: 1px solid #ccc; border-radius: 25px; padding: 10px 15px; outline: none; }
-        .btn-post, .btn-file { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; user-select: none; -webkit-tap-highlight-color: transparent; }
-        .btn-file { background: #eee; color: var(--blue); }
+        .btn-post, .btn-attach { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; user-select: none; -webkit-tap-highlight-color: transparent; flex-shrink: 0; transition: transform 0.2s ease; }
+        .btn-attach { background: #eee; color: var(--blue); font-weight: bold; font-size: 1.5rem; }
+        .btn-attach.active { transform: rotate(45deg); background: #ddd; }
+
+        /* POPUP ATTACHMENT MENU */
+        .attach-menu { display: none; position: absolute; bottom: 65px; left: 10px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); padding: 8px 0; z-index: 20; min-width: 150px; }
+        .attach-menu.active { display: block; animation: popUp 0.15s ease-out; }
+        @keyframes popUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .attach-option { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; font-size: 0.95rem; color: #333; transition: background 0.2s; user-select: none; }
+        .attach-option:hover { background: #f5f5f5; }
+        .attach-option svg { width: 20px; height: 20px; fill: var(--blue); flex-shrink: 0; }
 
         /* LIGHTBOX OVERLAY */
         .lightbox-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; overflow: hidden; touch-action: none; }
@@ -75,14 +86,35 @@
         <!-- Live Image Previews -->
         <div id="preview-bar" class="preview-bar"></div>
 
-        <div class="input-bar">
-            <label for="file-upload" class="btn-file">+</label>
-            <input id="chat-msg-input" type="text" placeholder="Type your message...">
-            <button id="send-btn" type="button" class="btn-post">➤</button>
+        <div class="input-container">
+            <!-- POPUP ATTACHMENT MENU -->
+            <div id="attach-menu" class="attach-menu">
+                <label for="camera-upload" class="attach-option">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
+                    </svg>
+                    <span>Camera</span>
+                </label>
+                <label for="file-upload" class="attach-option">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                    </svg>
+                    <span>Gallery</span>
+                </label>
+            </div>
+
+            <!-- INPUT BAR -->
+            <div class="input-bar">
+                <button type="button" id="btn-attach-toggle" class="btn-attach" title="Attach media">+</button>
+                <input id="chat-msg-input" type="text" placeholder="Type your message...">
+                <button id="send-btn" type="button" class="btn-post">➤</button>
+            </div>
         </div>
     </div>
 
+    <!-- Hidden File Inputs -->
     <input type="file" id="file-upload" accept="image/*" multiple style="display:none;">
+    <input type="file" id="camera-upload" accept="image/*" capture="environment" style="display:none;">
 
     <!-- LIGHTBOX OVERLAY -->
     <div id="lightbox" class="lightbox-modal">
@@ -128,7 +160,10 @@
         let currentGalleryIndex = 0;
 
         const chatTitleEl = document.getElementById('chat-title');
+        const attachToggleBtn = document.getElementById('btn-attach-toggle');
+        const attachMenu = document.getElementById('attach-menu');
         const fileInput = document.getElementById('file-upload');
+        const cameraInput = document.getElementById('camera-upload');
         const sendBtn = document.getElementById('send-btn');
         const chatInput = document.getElementById('chat-msg-input');
         const feed = document.getElementById("comment-feed");
@@ -146,6 +181,28 @@
         if (chatTitleEl) {
             chatTitleEl.textContent = chatName || "Chat";
         }
+
+        /* TOGGLE POPUP MENU */
+        function toggleAttachMenu() {
+            attachMenu.classList.toggle('active');
+            attachToggleBtn.classList.toggle('active');
+        }
+
+        function closeAttachMenu() {
+            attachMenu.classList.remove('active');
+            attachToggleBtn.classList.remove('active');
+        }
+
+        attachToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleAttachMenu();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!attachMenu.contains(e.target) && e.target !== attachToggleBtn) {
+                closeAttachMenu();
+            }
+        });
 
         const getUsername = () => {
             if (!currentAuthUser) return "User";
@@ -186,7 +243,6 @@
         function initMessageListener() {
             if (unsubscribeListener) return;
 
-            // Pointing to chats/{chatId}/messages
             const q = query(collection(db, "chats", chatId, "messages"), orderBy("timestamp", "asc"));
 
             unsubscribeListener = onSnapshot(q, async (snapshot) => {
@@ -429,15 +485,21 @@
         });
 
         /* 5. PREVIEW & FILE HANDLING */
+        function handleFileSelection(files) {
+            closeAttachMenu();
+            const validFiles = Array.from(files).filter(f => f.type.startsWith('image/') && f.size <= MAX_FILE_SIZE_MB * 1024 * 1024);
+            selectedFiles = [...selectedFiles, ...validFiles];
+            renderPreviews();
+        }
+
         if (fileInput) {
             fileInput.addEventListener('click', (e) => { e.target.value = null; });
-            fileInput.addEventListener('change', (e) => {
-                const files = Array.from(e.target.files || []);
-                const validFiles = files.filter(f => f.type.startsWith('image/') && f.size <= MAX_FILE_SIZE_MB * 1024 * 1024);
-                
-                selectedFiles = [...selectedFiles, ...validFiles];
-                renderPreviews();
-            });
+            fileInput.addEventListener('change', (e) => handleFileSelection(e.target.files || []));
+        }
+
+        if (cameraInput) {
+            cameraInput.addEventListener('click', (e) => { e.target.value = null; });
+            cameraInput.addEventListener('change', (e) => handleFileSelection(e.target.files || []));
         }
 
         function renderPreviews() {
@@ -509,7 +571,6 @@
                     }
                 }
 
-                // Saves to chats/{chatId}/messages
                 await addDoc(collection(db, "chats", chatId, "messages"), {
                     sender: getUsername(),
                     senderUid: currentAuthUser.uid,
