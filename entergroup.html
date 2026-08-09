@@ -12,17 +12,76 @@
         .back-btn { font-size: 1.4rem; cursor: pointer; text-decoration: none; color: #fff; }
         
         #comment-feed { padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-        .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-start; }
+        .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-start; position: relative; }
         .msg-row.sent { justify-content: flex-end; }
         
         .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0; overflow: hidden; cursor: pointer; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         
-        .msg-bubble { padding: 10px 14px; border-radius: 14px; max-width: 80%; font-size: 0.95rem; }
+        .msg-bubble { padding: 10px 14px; border-radius: 14px; max-width: 80%; font-size: 0.95rem; position: relative; }
         .sent .msg-bubble { background: var(--blue); color: #fff; border-bottom-right-radius: 2px; }
         .received .msg-bubble { background: #f1f3f5; color: #222; border-bottom-left-radius: 2px; }
         .msg-name { font-size: 0.75rem; font-weight: bold; color: var(--blue); margin-bottom: 4px; cursor: pointer; }
         .msg-name:hover { text-decoration: underline; }
+
+        .msg-deleted { font-style: italic; opacity: 0.75; font-size: 0.88rem; }
+        .edited-tag { font-size: 0.7rem; opacity: 0.7; margin-left: 5px; font-style: italic; }
+
+        /* MESSAGE OPTIONS MENU */
+        .msg-menu-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0 4px;
+            line-height: 1;
+            margin-left: 6px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        .msg-menu-btn:hover { color: #fff; }
+
+        .msg-dropdown {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 100%;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 50;
+            min-width: 160px;
+            overflow: hidden;
+        }
+        .msg-dropdown.active { display: block; animation: popUp 0.15s ease-out; }
+        .msg-dropdown-item {
+            padding: 10px 14px;
+            font-size: 0.88rem;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.15s;
+        }
+        .msg-dropdown-item:hover { background: #f5f5f5; }
+        .msg-dropdown-item.danger { color: #d9534f; }
+
+        /* EDIT BANNER */
+        .edit-banner {
+            display: none;
+            background: #eef4f8;
+            border-left: 4px solid var(--blue);
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            color: #333;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .edit-banner.active { display: flex; }
+        .edit-cancel-btn { background: none; border: none; color: #d9534f; font-weight: bold; cursor: pointer; font-size: 1rem; }
 
         /* IMAGE GRID LAYOUTS */
         .img-grid { display: grid; gap: 4px; margin-top: 6px; border-radius: 8px; overflow: hidden; cursor: pointer; }
@@ -88,6 +147,12 @@
         <!-- Live Image Previews -->
         <div id="preview-bar" class="preview-bar"></div>
 
+        <!-- Live Editing Banner -->
+        <div id="edit-banner" class="edit-banner">
+            <span>Editing message...</span>
+            <button id="cancel-edit-btn" class="edit-cancel-btn">✕</button>
+        </div>
+
         <div class="input-container">
             <!-- POPUP ATTACHMENT MENU -->
             <div id="attach-menu" class="attach-menu">
@@ -139,7 +204,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, doc, getDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, arrayUnion, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = { 
@@ -165,6 +230,9 @@
         const profileCache = new Map();
         let currentAuthUser = null;
 
+        // Edit state
+        let editingMsgId = null;
+
         // Lightbox state
         let currentGalleryImages = [];
         let currentGalleryIndex = 0;
@@ -178,6 +246,8 @@
         const chatInput = document.getElementById('chat-msg-input');
         const feed = document.getElementById("comment-feed");
         const previewBar = document.getElementById("preview-bar");
+        const editBanner = document.getElementById("edit-banner");
+        const cancelEditBtn = document.getElementById("cancel-edit-btn");
 
         // Lightbox Elements
         const lightbox = document.getElementById('lightbox');
@@ -211,6 +281,10 @@
         document.addEventListener('click', (e) => {
             if (!attachMenu.contains(e.target) && !attachToggleBtn.contains(e.target)) {
                 closeAttachMenu();
+            }
+            // Close open message dropdown menus when clicking elsewhere
+            if (!e.target.classList.contains('msg-menu-btn')) {
+                document.querySelectorAll('.msg-dropdown.active').forEach(d => d.classList.remove('active'));
             }
         });
 
@@ -266,7 +340,14 @@
                     let completeFeedHTML = "";
 
                     for (const docSnap of snapshot.docs) {
+                        const msgId = docSnap.id;
                         const msg = docSnap.data();
+
+                        // SKIP IF "DELETED FOR ME"
+                        if (currentAuthUser && msg.deletedFor && msg.deletedFor.includes(currentAuthUser.uid)) {
+                            continue;
+                        }
+
                         const isSent = currentAuthUser && msg.senderUid === currentAuthUser.uid;
                         const images = msg.imageUrls || (msg.imageUrl ? [msg.imageUrl] : []);
                         
@@ -283,12 +364,37 @@
 
                         const serializedImages = encodeURIComponent(JSON.stringify(images));
 
+                        // Check if message was deleted for everyone
+                        if (msg.isDeleted) {
+                            completeFeedHTML += `
+                                <div class="msg-row ${isSent ? 'sent' : 'received'}">
+                                    ${avatarHTML}
+                                    <div class="msg-bubble">
+                                        <div class="msg-text msg-deleted">🚫 This message was deleted</div>
+                                    </div>
+                                </div>
+                            `;
+                            continue;
+                        }
+
+                        // Options dropdown for sent messages
+                        const menuBtnHTML = isSent ? `
+                            <button class="msg-menu-btn" data-msg-id="${msgId}">⋮</button>
+                            <div class="msg-dropdown" id="dropdown-${msgId}">
+                                <div class="msg-dropdown-item btn-edit-msg" data-msg-id="${msgId}" data-text="${escapeHTML(msg.text || '')}">✏️ Edit</div>
+                                <div class="msg-dropdown-item btn-delete-me" data-msg-id="${msgId}">🗑️ Delete for me</div>
+                                <div class="msg-dropdown-item danger btn-delete-everyone" data-msg-id="${msgId}">🗑️ Delete for everyone</div>
+                            </div>
+                        ` : '';
+
+                        const editedTagHTML = msg.isEdited ? `<span class="edited-tag">(edited)</span>` : '';
+
                         completeFeedHTML += `
                             <div class="msg-row ${isSent ? 'sent' : 'received'}">
                                 ${avatarHTML}
                                 <div class="msg-bubble">
                                     ${!isSent ? `<div class="msg-name profile-link" data-uid="${escapeHTML(msg.senderUid)}">${escapeHTML(msg.sender || 'Anonymous')}</div>` : ''}
-                                    ${msg.text ? `<div class="msg-text">${escapeHTML(msg.text)}</div>` : ''}
+                                    ${msg.text ? `<div class="msg-text">${escapeHTML(msg.text)}${editedTagHTML}${menuBtnHTML}</div>` : `${menuBtnHTML}`}
                                     ${renderImageGrid(images, serializedImages)}
                                 </div>
                             </div>
@@ -298,6 +404,7 @@
                     feed.innerHTML = completeFeedHTML;
                     attachImageClickEvents();
                     attachProfileClickEvents();
+                    attachMessageActionEvents();
                     window.scrollTo(0, document.body.scrollHeight);
                 } catch (err) {
                     console.error("Snapshot render error:", err);
@@ -332,7 +439,92 @@
             return gridHTML;
         }
 
-        /* 3. PROFILE NAVIGATION */
+        /* 3. MESSAGE EDIT & DELETE ACTIONS */
+        function attachMessageActionEvents() {
+            // Toggle dropdown
+            document.querySelectorAll('.msg-menu-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const msgId = btn.getAttribute('data-msg-id');
+                    const dropdown = document.getElementById(`dropdown-${msgId}`);
+                    
+                    document.querySelectorAll('.msg-dropdown.active').forEach(d => {
+                        if (d !== dropdown) d.classList.remove('active');
+                    });
+
+                    if (dropdown) dropdown.classList.toggle('active');
+                });
+            });
+
+            // Edit message click
+            document.querySelectorAll('.btn-edit-msg').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const msgId = item.getAttribute('data-msg-id');
+                    const text = item.getAttribute('data-text');
+                    startEditingMessage(msgId, text);
+                });
+            });
+
+            // Delete for me
+            document.querySelectorAll('.btn-delete-me').forEach(item => {
+                item.addEventListener('click', async (e) => {
+                    const msgId = item.getAttribute('data-msg-id');
+                    await deleteForMe(msgId);
+                });
+            });
+
+            // Delete for everyone
+            document.querySelectorAll('.btn-delete-everyone').forEach(item => {
+                item.addEventListener('click', async (e) => {
+                    const msgId = item.getAttribute('data-msg-id');
+                    await deleteForEveryone(msgId);
+                });
+            });
+        }
+
+        function startEditingMessage(msgId, currentText) {
+            editingMsgId = msgId;
+            chatInput.value = currentText;
+            chatInput.focus();
+            editBanner.classList.add("active");
+        }
+
+        function cancelEditing() {
+            editingMsgId = null;
+            chatInput.value = "";
+            editBanner.classList.remove("active");
+        }
+
+        cancelEditBtn.addEventListener("click", cancelEditing);
+
+        async function deleteForMe(msgId) {
+            if (!currentAuthUser || !groupId || !msgId) return;
+            try {
+                const msgRef = doc(db, "groups", groupId, "messages", msgId);
+                await updateDoc(msgRef, {
+                    deletedFor: arrayUnion(currentAuthUser.uid)
+                });
+            } catch (err) {
+                console.error("Error deleting for me:", err);
+            }
+        }
+
+        async function deleteForEveryone(msgId) {
+            if (!currentAuthUser || !groupId || !msgId) return;
+            if (!confirm("Delete this message for everyone in the group?")) return;
+            try {
+                const msgRef = doc(db, "groups", groupId, "messages", msgId);
+                await updateDoc(msgRef, {
+                    isDeleted: true,
+                    text: "",
+                    imageUrls: []
+                });
+            } catch (err) {
+                console.error("Error deleting for everyone:", err);
+            }
+        }
+
+        /* 4. PROFILE NAVIGATION */
         function attachProfileClickEvents() {
             document.querySelectorAll('.profile-link').forEach(el => {
                 el.addEventListener('click', (e) => {
@@ -344,7 +536,7 @@
             });
         }
 
-        /* 4. LIGHTBOX & TOUCH GESTURES (SWIPE + PINCH-ZOOM) */
+        /* 5. LIGHTBOX & TOUCH GESTURES (SWIPE + PINCH-ZOOM) */
         let scale = 1;
         let startDist = 0;
         let startScale = 1;
@@ -418,7 +610,6 @@
             return Math.sqrt(dx * dx + dy * dy);
         }
 
-        // TOUCH GESTURES (Pinch, Double-Tap, Swipe)
         lightboxWrapper.addEventListener('touchstart', (e) => {
             touchStartTime = Date.now();
 
@@ -491,7 +682,7 @@
             updateLightboxView();
         });
 
-        /* 5. PREVIEW & FILE HANDLING */
+        /* 6. PREVIEW & FILE HANDLING */
         function handleFileSelection(files) {
             closeAttachMenu();
             const validFiles = Array.from(files).filter(f => f.type.startsWith('image/') && f.size <= MAX_FILE_SIZE_MB * 1024 * 1024);
@@ -540,7 +731,7 @@
             });
         }
 
-        /* 6. POST LOGIC */
+        /* 7. POST & EDIT LOGIC */
         async function sendChatMessage() {
             if (isPosting) return;
 
@@ -548,6 +739,27 @@
                 if (!groupId || !currentAuthUser) return;
 
                 const message = chatInput ? chatInput.value.trim() : "";
+
+                // IF IN EDIT MODE
+                if (editingMsgId) {
+                    if (!message) return;
+                    isPosting = true;
+                    if (sendBtn) {
+                        sendBtn.disabled = true;
+                        sendBtn.textContent = "...";
+                    }
+
+                    const msgRef = doc(db, "groups", groupId, "messages", editingMsgId);
+                    await updateDoc(msgRef, {
+                        text: message,
+                        isEdited: true
+                    });
+
+                    cancelEditing();
+                    return;
+                }
+
+                // NORMAL NEW MESSAGE
                 if (!message && selectedFiles.length === 0) return;
 
                 isPosting = true;
@@ -591,7 +803,7 @@
                 renderPreviews();
 
             } catch (e) {
-                console.error("Message send error:", e);
+                console.error("Message send/edit error:", e);
             } finally {
                 isPosting = false; 
                 if (sendBtn) {
@@ -601,7 +813,7 @@
             }
         }
 
-        /* 7. SEND EVENTS */
+        /* 8. SEND EVENTS */
         if (sendBtn) {
             sendBtn.addEventListener("click", (e) => {
                 e.preventDefault();
