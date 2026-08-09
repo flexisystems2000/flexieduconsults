@@ -9,6 +9,8 @@
             --blue: #003366; 
             --green: #2E8B57; 
             --bg: #f4f6f8;
+            --danger: #dc3545;
+            --warning: #ffc107;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -123,11 +125,12 @@
 
         .action-btns {
             display: flex;
+            flex-direction: column;
             gap: 10px;
         }
 
         .btn {
-            flex: 1;
+            width: 100%;
             padding: 12px;
             border: none;
             border-radius: 25px;
@@ -144,6 +147,14 @@
             background: #eee;
             color: #333;
         }
+        .btn-warning {
+            background: var(--warning);
+            color: #222;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
         .btn:active {
             opacity: 0.8;
         }
@@ -152,6 +163,47 @@
             padding: 40px 20px;
             text-align: center;
             color: #666;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--blue);
+            margin-bottom: 12px;
+        }
+        .modal-textarea {
+            width: 100%;
+            height: 90px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            resize: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
         }
     </style>
 </head>
@@ -168,9 +220,24 @@
         </div>
     </div>
 
+    <!-- Reason Action Modal -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <div id="modalTitle" class="modal-title">Action Reason</div>
+            <textarea id="modalReason" class="modal-textarea" placeholder="Provide a reason..."></textarea>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button id="modalSubmitBtn" class="btn btn-danger">Submit</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { 
+            getFirestore, doc, getDoc, setDoc, deleteDoc, 
+            updateDoc, increment, collection, addDoc, serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = { 
@@ -187,7 +254,14 @@
         const profileUid = params.get('uid');
         const cardEl = document.getElementById('profile-card');
 
+        let activeUser = null;
+        let targetUserName = "";
+        let targetUserEmail = "";
+        let isBlocked = false;
+
         onAuthStateChanged(auth, async (currentUser) => {
+            activeUser = currentUser;
+
             if (!profileUid) {
                 cardEl.innerHTML = `<div class="error-state">No user specified in URL.</div>`;
                 return;
@@ -200,10 +274,8 @@
                 let bio = "No bio provided.";
                 let role = "Member";
 
-                // 1. Try checking the 'profiles' collection
+                // 1. Fetch Profile Data
                 let pSnap = await getDoc(doc(db, "profiles", profileUid));
-                
-                // 2. If not found in 'profiles', try 'users' collection
                 if (!pSnap.exists()) {
                     pSnap = await getDoc(doc(db, "users", profileUid));
                 }
@@ -217,25 +289,32 @@
                     role = data.role || role;
                 }
 
-                // 3. Fallback: If this is the logged-in user viewing their own profile
                 if (currentUser && currentUser.uid === profileUid) {
                     if (!name) name = currentUser.displayName || (currentUser.email ? currentUser.email.split("@")[0] : "");
                     if (!email) email = currentUser.email || "";
                     if (!photoURL) photoURL = currentUser.photoURL || null;
                 }
 
-                // 4. Ultimate fallback if no document or name exists in Firestore
-                if (!name) {
-                    name = email ? email.split("@")[0] : "Member";
-                }
-                if (!email) {
-                    email = "Hidden or not provided";
+                if (!name) name = email ? email.split("@")[0] : "Member";
+                if (!email) email = "Hidden or not provided";
+
+                targetUserName = name;
+                targetUserEmail = email;
+
+                // 2. Check if currently blocked
+                if (currentUser && currentUser.uid !== profileUid) {
+                    const blockSnap = await getDoc(doc(db, "users", currentUser.uid, "blockedUsers", profileUid));
+                    isBlocked = blockSnap.exists();
                 }
 
                 const initial = name.charAt(0).toUpperCase();
                 const avatarHTML = photoURL 
                     ? `<div class="avatar-large"><img src="${escapeHTML(photoURL)}" alt="${escapeHTML(name)}"></div>`
                     : `<div class="avatar-large">${initial}</div>`;
+
+                // Self vs Other User Controls
+                const isSelf = currentUser && currentUser.uid === profileUid;
+                const blockText = isBlocked ? `Unblock ${escapeHTML(name)}` : `Block ${escapeHTML(name)}`;
 
                 cardEl.innerHTML = `
                     ${avatarHTML}
@@ -249,15 +328,168 @@
                     </div>
 
                     <div class="action-btns">
+                        ${!isSelf ? `
+                            <button class="btn btn-warning" id="reportBtn">Report ${escapeHTML(name)}</button>
+                            <button class="btn btn-danger" id="blockBtn">${blockText}</button>
+                        ` : ''}
                         <button class="btn btn-secondary" onclick="history.back()">Go Back</button>
                     </div>
                 `;
+
+                if (!isSelf) {
+                    document.getElementById('reportBtn').addEventListener('click', () => openModal('report'));
+                    document.getElementById('blockBtn').addEventListener('click', () => {
+                        if (isBlocked) {
+                            toggleBlockUser(""); // Direct unblock without asking reason
+                        } else {
+                            openModal('block');
+                        }
+                    });
+                }
 
             } catch (err) {
                 console.error("Profile load error:", err);
                 cardEl.innerHTML = `<div class="error-state">Failed to load user profile.</div>`;
             }
         });
+
+        // --- Modal & Action Handlers ---
+        let currentAction = null;
+
+        window.openModal = function(action) {
+            if (!activeUser) {
+                alert("You must be logged in to perform this action.");
+                return;
+            }
+            currentAction = action;
+            const titleEl = document.getElementById('modalTitle');
+            const submitBtn = document.getElementById('modalSubmitBtn');
+            document.getElementById('modalReason').value = "";
+
+            if (action === 'report') {
+                titleEl.textContent = `Report ${targetUserName}`;
+                submitBtn.textContent = "Submit Report";
+                submitBtn.className = "btn btn-warning";
+            } else {
+                titleEl.textContent = `Block ${targetUserName}`;
+                submitBtn.textContent = "Block User";
+                submitBtn.className = "btn btn-danger";
+            }
+
+            document.getElementById('actionModal').style.display = 'flex';
+        };
+
+        window.closeModal = function() {
+            document.getElementById('actionModal').style.display = 'none';
+        };
+
+        document.getElementById('modalSubmitBtn').addEventListener('click', async () => {
+            const reason = document.getElementById('modalReason').value.trim();
+            if (!reason) {
+                alert("Please provide a reason.");
+                return;
+            }
+
+            closeModal();
+            if (currentAction === 'report') {
+                await handleReport(reason);
+            } else if (currentAction === 'block') {
+                await toggleBlockUser(reason);
+            }
+        });
+
+        // --- Core Firestore & Email Trigger Handlers ---
+
+        async function handleReport(reason) {
+            try {
+                // 1. Add Report Entry
+                await addDoc(collection(db, "reports"), {
+                    reportedUid: profileUid,
+                    reportedName: targetUserName,
+                    reportedEmail: targetUserEmail,
+                    reporterUid: activeUser.uid,
+                    reporterEmail: activeUser.email || "Unknown",
+                    reason: reason,
+                    timestamp: serverTimestamp()
+                });
+
+                // 2. Increment Report Count on Profile Document (Max 10 limit context)
+                const targetRef = doc(db, "users", profileUid);
+                await updateDoc(targetRef, {
+                    reportCount: increment(1)
+                }).catch(async (e) => {
+                    // Fallback if user doc doesn't exist yet
+                    await setDoc(targetRef, { reportCount: 1 }, { merge: true });
+                });
+
+                // 3. Send Notification Email Template via Mailto Trigger
+                sendEmailTemplate("Report", reason);
+
+                alert(`${targetUserName} has been reported successfully.`);
+            } catch (err) {
+                console.error("Report process error:", err);
+                alert("An error occurred while reporting.");
+            }
+        }
+
+        async function toggleBlockUser(reason) {
+            try {
+                const blockRef = doc(db, "users", activeUser.uid, "blockedUsers", profileUid);
+
+                if (isBlocked) {
+                    await deleteDoc(blockRef);
+                    isBlocked = false;
+                    alert(`${targetUserName} has been unblocked.`);
+                } else {
+                    await setDoc(blockRef, {
+                        blockedUid: profileUid,
+                        blockedName: targetUserName,
+                        reason: reason,
+                        timestamp: serverTimestamp()
+                    });
+                    isBlocked = true;
+
+                    // Send Notification Email Template for Blocking Action
+                    sendEmailTemplate("Block", reason);
+                    alert(`${targetUserName} has been blocked.`);
+                }
+
+                // Update UI button text dynamically
+                const blockBtn = document.getElementById('blockBtn');
+                if (blockBtn) {
+                    blockBtn.textContent = isBlocked ? `Unblock ${escapeHTML(targetUserName)}` : `Block ${escapeHTML(targetUserName)}`;
+                }
+            } catch (err) {
+                console.error("Block/Unblock error:", err);
+                alert("Could not update block state.");
+            }
+        }
+
+        function sendEmailTemplate(actionType, reason) {
+            const recipient = "support@flexieduconsult.com.ng";
+            const subject = encodeURIComponent(`User ${actionType} Notification: ${targetUserName}`);
+            const body = encodeURIComponent(
+`Hello Support Team,
+
+A user action has been recorded on the platform:
+
+Action Type: ${actionType.toUpperCase()}
+Target User: ${targetUserName} (UID: ${profileUid}, Email: ${targetUserEmail})
+Initiated By: ${activeUser.email || 'User'} (UID: ${activeUser.uid})
+Reason Provided:
+"${reason}"
+
+Timestamp: ${new Date().toISOString()}
+
+Please review this user account accordingly.
+
+Regards,
+FlexiEdu System Automation`
+            );
+
+            // Opens default mail client pre-populated with the generated template
+            window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+        }
 
         function escapeHTML(str) {
             if (typeof str !== 'string') return '';
