@@ -15,17 +15,28 @@
         #chat-title.profile-link:hover { text-decoration: underline; }
 
         #comment-feed { padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-        .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-start; }
+        .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-start; position: relative; }
         .msg-row.sent { justify-content: flex-end; }
         
         .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0; overflow: hidden; cursor: pointer; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         
-        .msg-bubble { padding: 10px 14px; border-radius: 14px; max-width: 80%; font-size: 0.95rem; }
+        .msg-bubble { padding: 10px 14px; border-radius: 14px; max-width: 80%; font-size: 0.95rem; position: relative; }
         .sent .msg-bubble { background: var(--blue); color: #fff; border-bottom-right-radius: 2px; }
         .received .msg-bubble { background: #f1f3f5; color: #222; border-bottom-left-radius: 2px; }
         .msg-name { font-size: 0.75rem; font-weight: bold; color: var(--blue); margin-bottom: 4px; cursor: pointer; }
         .msg-name:hover { text-decoration: underline; }
+        .edited-tag { font-size: 0.7rem; opacity: 0.7; font-style: italic; margin-left: 5px; }
+        .deleted-msg { font-style: italic; opacity: 0.8; }
+
+        /* SENDER ACTIONS MENU */
+        .msg-actions-btn { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 1.1rem; padding: 0 4px; margin-left: 6px; float: right; line-height: 1; }
+        .msg-actions-btn:hover { color: #fff; }
+        .msg-menu { display: none; position: absolute; top: 100%; right: 0; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 50; min-width: 110px; overflow: hidden; }
+        .msg-menu.active { display: block; }
+        .msg-menu-item { padding: 8px 14px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .msg-menu-item:hover { background: #f5f5f5; }
+        .msg-menu-item.danger { color: #dc3545; }
 
         /* IMAGE GRID LAYOUTS */
         .img-grid { display: grid; gap: 4px; margin-top: 6px; border-radius: 8px; overflow: hidden; cursor: pointer; }
@@ -46,6 +57,11 @@
         .preview-thumb { position: relative; width: 60px; height: 60px; border-radius: 8px; overflow: hidden; flex-shrink: 0; border: 1px solid #ccc; }
         .preview-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .remove-thumb { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+
+        /* EDIT BANNER */
+        .edit-banner { display: none; background: #eef4f8; padding: 6px 12px; font-size: 0.85rem; color: var(--blue); align-items: center; justify-content: space-between; border-bottom: 1px solid #d0dce5; }
+        .edit-banner.active { display: flex; }
+        .cancel-edit-btn { background: none; border: none; color: #888; font-size: 1.1rem; cursor: pointer; }
 
         /* INPUT BAR & ATTACHMENT POPUP MENU */
         .input-container { position: relative; width: 100%; }
@@ -74,6 +90,16 @@
         .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: #fff; font-size: 2.5rem; background: rgba(255,255,255,0.15); border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; z-index: 1001; }
         .lightbox-nav.prev { left: 15px; }
         .lightbox-nav.next { right: 15px; }
+
+        /* DELETE OPTIONS MODAL */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #fff; border-radius: 12px; width: 85%; max-width: 320px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .modal-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 12px; color: #222; }
+        .modal-btn { width: 100%; padding: 12px; border: none; background: #f1f3f5; border-radius: 8px; font-size: 0.95rem; margin-bottom: 8px; cursor: pointer; text-align: left; transition: background 0.2s; }
+        .modal-btn:hover { background: #e4e7eb; }
+        .modal-btn.danger { color: #dc3545; }
+        .modal-cancel { width: 100%; padding: 10px; border: none; background: none; color: #666; font-size: 0.9rem; cursor: pointer; text-align: center; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -88,6 +114,12 @@
     <div class="bottom-container">
         <!-- Live Image Previews -->
         <div id="preview-bar" class="preview-bar"></div>
+
+        <!-- Edit Indicator Banner -->
+        <div id="edit-banner" class="edit-banner">
+            <span>Editing message...</span>
+            <button id="cancel-edit-btn" class="cancel-edit-btn">✕</button>
+        </div>
 
         <div class="input-container">
             <!-- POPUP ATTACHMENT MENU -->
@@ -130,9 +162,19 @@
         <button class="lightbox-nav next" id="lightbox-next">&#10095;</button>
     </div>
 
+    <!-- DELETE MODAL -->
+    <div id="delete-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-title">Delete Message</div>
+            <button id="btn-delete-me" class="modal-btn">Delete for me</button>
+            <button id="btn-delete-everyone" class="modal-btn danger">Delete for everyone</button>
+            <button id="btn-delete-cancel" class="modal-cancel">Cancel</button>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, doc, getDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, arrayUnion, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = { 
@@ -159,6 +201,10 @@
         const profileCache = new Map();
         let currentAuthUser = null;
 
+        // Edit/Delete state
+        let editingMessageId = null;
+        let deletingMessageId = null;
+
         // Lightbox state
         let currentGalleryImages = [];
         let currentGalleryIndex = 0;
@@ -172,6 +218,14 @@
         const chatInput = document.getElementById('chat-msg-input');
         const feed = document.getElementById("comment-feed");
         const previewBar = document.getElementById("preview-bar");
+        const editBanner = document.getElementById("edit-banner");
+        const cancelEditBtn = document.getElementById("cancel-edit-btn");
+
+        // Delete Modal Elements
+        const deleteModal = document.getElementById('delete-modal');
+        const btnDeleteMe = document.getElementById('btn-delete-me');
+        const btnDeleteEveryone = document.getElementById('btn-delete-everyone');
+        const btnDeleteCancel = document.getElementById('btn-delete-cancel');
 
         // Lightbox Elements
         const lightbox = document.getElementById('lightbox');
@@ -210,6 +264,10 @@
         document.addEventListener('click', (e) => {
             if (!attachMenu.contains(e.target) && e.target !== attachToggleBtn) {
                 closeAttachMenu();
+            }
+            // Close open message option dropdowns when clicking outside
+            if (!e.target.closest('.msg-actions-btn')) {
+                document.querySelectorAll('.msg-menu.active').forEach(m => m.classList.remove('active'));
             }
         });
 
@@ -268,9 +326,16 @@
                     let completeFeedHTML = "";
 
                     for (const docSnap of snapshot.docs) {
+                        const msgId = docSnap.id;
                         const msg = docSnap.data();
+
+                        // Skip message if deleted for current user
+                        if (msg.deletedFor && currentAuthUser && msg.deletedFor.includes(currentAuthUser.uid)) {
+                            continue;
+                        }
+
                         const isSent = currentAuthUser && msg.senderUid === currentAuthUser.uid;
-                        const images = msg.imageUrls || (msg.imageUrl ? [msg.imageUrl] : []);
+                        const images = msg.isDeleted ? [] : (msg.imageUrls || (msg.imageUrl ? [msg.imageUrl] : []));
                         
                         let avatarHTML = "";
                         if (!isSent) {
@@ -286,12 +351,33 @@
 
                         const serializedImages = encodeURIComponent(JSON.stringify(images));
 
+                        // Build Message Menu Options for Sender
+                        let actionsHTML = "";
+                        if (isSent && !msg.isDeleted) {
+                            const canEdit = msg.text ? 'true' : 'false';
+                            actionsHTML = `
+                                <button class="msg-actions-btn" data-msg-id="${msgId}">⋮</button>
+                                <div class="msg-menu" id="msg-menu-${msgId}">
+                                    ${msg.text ? `<div class="msg-menu-item btn-action-edit" data-msg-id="${msgId}" data-text="${escapeHTML(msg.text)}">✏️ Edit</div>` : ''}
+                                    <div class="msg-menu-item danger btn-action-delete" data-msg-id="${msgId}">🗑️ Delete</div>
+                                </div>
+                            `;
+                        }
+
+                        let textHTML = "";
+                        if (msg.isDeleted) {
+                            textHTML = `<div class="msg-text deleted-msg">🚫 This message was deleted</div>`;
+                        } else if (msg.text) {
+                            textHTML = `<div class="msg-text">${escapeHTML(msg.text)}${msg.isEdited ? '<span class="edited-tag">(edited)</span>' : ''}</div>`;
+                        }
+
                         completeFeedHTML += `
-                            <div class="msg-row ${isSent ? 'sent' : 'received'}">
+                            <div class="msg-row ${isSent ? 'sent' : 'received'}" id="msg-row-${msgId}">
                                 ${avatarHTML}
                                 <div class="msg-bubble">
+                                    ${actionsHTML}
                                     ${!isSent ? `<div class="msg-name profile-link" data-uid="${escapeHTML(msg.senderUid)}">${escapeHTML(msg.sender || 'Anonymous')}</div>` : ''}
-                                    ${msg.text ? `<div class="msg-text">${escapeHTML(msg.text)}</div>` : ''}
+                                    ${textHTML}
                                     ${renderImageGrid(images, serializedImages)}
                                 </div>
                             </div>
@@ -301,6 +387,7 @@
                     feed.innerHTML = completeFeedHTML;
                     attachImageClickEvents();
                     attachProfileClickEvents();
+                    attachMessageMenuEvents();
                     window.scrollTo(0, document.body.scrollHeight);
                 } catch (err) {
                     console.error("Snapshot render error:", err);
@@ -335,10 +422,98 @@
             return gridHTML;
         }
 
-        /* 3. PROFILE NAVIGATION */
+        /* 3. MESSAGE EDIT & DELETE ACTIONS */
+        function attachMessageMenuEvents() {
+            // Toggle dropdown menu
+            document.querySelectorAll('.msg-actions-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const msgId = btn.getAttribute('data-msg-id');
+                    const menu = document.getElementById(`msg-menu-${msgId}`);
+                    
+                    document.querySelectorAll('.msg-menu.active').forEach(m => {
+                        if (m !== menu) m.classList.remove('active');
+                    });
+                    if (menu) menu.classList.toggle('active');
+                });
+            });
+
+            // Edit Action
+            document.querySelectorAll('.btn-action-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const msgId = btn.getAttribute('data-msg-id');
+                    const text = btn.getAttribute('data-text');
+                    
+                    editingMessageId = msgId;
+                    chatInput.value = text;
+                    chatInput.focus();
+                    editBanner.classList.add('active');
+                    
+                    document.querySelectorAll('.msg-menu.active').forEach(m => m.classList.remove('active'));
+                });
+            });
+
+            // Delete Action
+            document.querySelectorAll('.btn-action-delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deletingMessageId = btn.getAttribute('data-msg-id');
+                    deleteModal.classList.add('active');
+                    document.querySelectorAll('.msg-menu.active').forEach(m => m.classList.remove('active'));
+                });
+            });
+        }
+
+        cancelEditBtn.addEventListener('click', clearEditState);
+
+        function clearEditState() {
+            editingMessageId = null;
+            chatInput.value = "";
+            editBanner.classList.remove('active');
+        }
+
+        // Modal Handlers
+        btnDeleteCancel.addEventListener('click', () => {
+            deleteModal.classList.remove('active');
+            deletingMessageId = null;
+        });
+
+        btnDeleteMe.addEventListener('click', async () => {
+            if (!deletingMessageId || !currentAuthUser) return;
+            try {
+                const msgRef = doc(db, "chats", chatId, "messages", deletingMessageId);
+                await updateDoc(msgRef, {
+                    deletedFor: arrayUnion(currentAuthUser.uid)
+                });
+            } catch (err) {
+                console.error("Delete for me error:", err);
+            } finally {
+                deleteModal.classList.remove('active');
+                deletingMessageId = null;
+            }
+        });
+
+        btnDeleteEveryone.addEventListener('click', async () => {
+            if (!deletingMessageId) return;
+            try {
+                const msgRef = doc(db, "chats", chatId, "messages", deletingMessageId);
+                await updateDoc(msgRef, {
+                    isDeleted: true,
+                    text: "",
+                    imageUrls: []
+                });
+            } catch (err) {
+                console.error("Delete for everyone error:", err);
+            } finally {
+                deleteModal.classList.remove('active');
+                deletingMessageId = null;
+            }
+        });
+
+        /* 4. PROFILE NAVIGATION */
         function attachProfileClickEvents() {
             document.querySelectorAll('.profile-link').forEach(el => {
-                // Prevent duplicate listener attachments
                 if (el.dataset.hasProfileListener) return;
                 el.dataset.hasProfileListener = "true";
 
@@ -351,10 +526,9 @@
             });
         }
 
-        // Attach static events (like the header profile click) on initial load
         attachProfileClickEvents();
 
-        /* 4. LIGHTBOX & TOUCH GESTURES */
+        /* 5. LIGHTBOX & TOUCH GESTURES */
         let scale = 1;
         let startDist = 0;
         let startScale = 1;
@@ -500,7 +674,7 @@
             updateLightboxView();
         });
 
-        /* 5. PREVIEW & FILE HANDLING */
+        /* 6. PREVIEW & FILE HANDLING */
         function handleFileSelection(files) {
             closeAttachMenu();
             const validFiles = Array.from(files).filter(f => f.type.startsWith('image/') && f.size <= MAX_FILE_SIZE_MB * 1024 * 1024);
@@ -549,7 +723,7 @@
             });
         }
 
-        /* 6. POST LOGIC */
+        /* 7. POST / UPDATE LOGIC */
         async function sendChatMessage() {
             if (isPosting) return;
 
@@ -557,6 +731,23 @@
                 if (!chatId || !currentAuthUser) return;
 
                 const message = chatInput ? chatInput.value.trim() : "";
+
+                // EDIT MODE
+                if (editingMessageId) {
+                    if (!message) return;
+                    isPosting = true;
+                    
+                    const msgRef = doc(db, "chats", chatId, "messages", editingMessageId);
+                    await updateDoc(msgRef, {
+                        text: message,
+                        isEdited: true
+                    });
+
+                    clearEditState();
+                    return;
+                }
+
+                // NEW MESSAGE MODE
                 if (!message && selectedFiles.length === 0) return;
 
                 isPosting = true;
@@ -600,7 +791,7 @@
                 renderPreviews();
 
             } catch (e) {
-                console.error("Message send error:", e);
+                console.error("Message send/update error:", e);
             } finally {
                 isPosting = false; 
                 if (sendBtn) {
@@ -610,7 +801,7 @@
             }
         }
 
-        /* 7. SEND EVENTS */
+        /* 8. SEND EVENTS */
         if (sendBtn) {
             sendBtn.addEventListener("click", (e) => {
                 e.preventDefault();
