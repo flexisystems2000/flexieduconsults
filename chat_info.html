@@ -223,7 +223,7 @@
     <div id="actionModal" class="modal">
         <div class="modal-content">
             <div id="modalTitle" class="modal-title">Action Reason</div>
-            <textarea id="modalReason" class="modal-textarea" placeholder="Provide a reason..."></textarea>
+            <textarea id="modalReason" class="modal-textarea" placeholder="Provide a detailed reason..."></textarea>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                 <button id="modalSubmitBtn" class="btn btn-danger">Submit</button>
@@ -393,36 +393,42 @@
             }
         });
 
-        // --- Core Action Logic ---
-
         async function handleReport(reason) {
             try {
-                // 1. Add Report Entry to Firestore
+                // 1. Submit Report Entry into 'reports' collection for Admin Panel
                 await addDoc(collection(db, "reports"), {
                     reportedUid: profileUid,
                     reportedName: targetUserName,
                     reportedEmail: targetUserEmail,
                     reporterUid: activeUser.uid,
-                    reporterEmail: activeUser.email || "Unknown",
+                    reporterEmail: activeUser.email || "Unknown User",
                     reason: reason,
+                    status: "pending",
                     timestamp: serverTimestamp()
                 });
 
-                // 2. Increment Report Counter
+                // 2. Increment target user report count
                 const targetRef = doc(db, "users", profileUid);
-                await updateDoc(targetRef, {
-                    reportCount: increment(1)
-                }).catch(async () => {
-                    await setDoc(targetRef, { reportCount: 1 }, { merge: true });
-                });
+                const userDoc = await getDoc(targetRef);
 
-                // 3. Queue Background Email Document
-                await sendBackgroundEmail("Report", reason);
+                let currentReports = 1;
+                if (userDoc.exists()) {
+                    currentReports = (userDoc.data().reportCount || 0) + 1;
+                    await updateDoc(targetRef, {
+                        reportCount: increment(1),
+                        flaggedForReview: currentReports >= 10
+                    });
+                } else {
+                    await setDoc(targetRef, { 
+                        reportCount: 1, 
+                        flaggedForReview: false 
+                    }, { merge: true });
+                }
 
-                alert(`${targetUserName} has been reported.`);
+                alert(`Thank you. ${targetUserName} has been reported to administration.`);
             } catch (err) {
-                console.error("Report process error:", err);
-                alert("An error occurred while reporting.");
+                console.error("Report submission error:", err);
+                alert("Could not complete report. Please try again.");
             }
         }
 
@@ -443,8 +449,15 @@
                     });
                     isBlocked = true;
 
-                    // Queue Background Email Document
-                    await sendBackgroundEmail("Block", reason);
+                    // Log block event for admin tracking
+                    await addDoc(collection(db, "user_blocks"), {
+                        blockedUid: profileUid,
+                        blockedName: targetUserName,
+                        blockedByUid: activeUser.uid,
+                        reason: reason,
+                        timestamp: serverTimestamp()
+                    });
+
                     alert(`${targetUserName} has been blocked.`);
                 }
 
@@ -455,29 +468,6 @@
             } catch (err) {
                 console.error("Block/Unblock error:", err);
                 alert("Could not update block state.");
-            }
-        }
-
-        // Silent Background Email Queue via Firestore
-        async function sendBackgroundEmail(actionType, reason) {
-            try {
-                await addDoc(collection(db, "mail"), {
-                    to: ["support@flexieduconsult.com.ng"],
-                    message: {
-                        subject: `User ${actionType} Notification: ${targetUserName}`,
-                        text: `Action: ${actionType}\nTarget: ${targetUserName} (${profileUid})\nBy: ${activeUser.email || activeUser.uid}\nReason: ${reason}`,
-                        html: `
-                            <h3>User ${actionType} Recorded</h3>
-                            <p><strong>Target User:</strong> ${targetUserName} (${targetUserEmail})</p>
-                            <p><strong>Target UID:</strong> ${profileUid}</p>
-                            <p><strong>Action By:</strong> ${activeUser.email || 'User'} (${activeUser.uid})</p>
-                            <p><strong>Reason:</strong> ${reason}</p>
-                            <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
-                        `
-                    }
-                });
-            } catch (e) {
-                console.error("Error writing background mail document:", e);
             }
         }
 
