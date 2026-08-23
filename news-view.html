@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
+
     <!-- Google AdSense Auto Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9836330764964180"
          crossorigin="anonymous"></script>
@@ -11,415 +11,567 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Read verified educational news updates, admission announcements, and exam prep guides on Flexi Educational Consult.">
-    <meta name="keywords" content="flexieduconsult, Flexi Educational Consult, news updates, jamb news, waec news, education nigeria">
-
-    <!-- Dynamic Meta Target placeholders handled by JS, with safe static defaults -->
-    <title id="page-title">News Article | Flexi Educational Consult</title>
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <title id="page-title">Flexi Tutors | News Update</title>
     
-<style>
-    :root{
-        --blue:#003366;
-        --green:#2E8B57;
-        --yellow:#FFD700;
-        --bg:#f4f7f6;
-    }
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        :root { --blue: #003366; --green: #2E8B57; --yellow: #FFD700; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
 
-    body{
-        font-family:'Segoe UI',sans-serif;
-        background:var(--bg);
-        margin:0;
-        padding:0;
-        color:#333;
-    }
+        header { 
+            background: var(--blue); color: white; height: 1cm; 
+            display: flex; align-items: center; padding: 0 15px;
+            border-bottom: 3px solid var(--green); position: sticky; top: 0; z-index: 1000;
+        }
+        .back-btn { color: white; text-decoration: none; font-size: 20px; margin-right: 15px; cursor: pointer; }
 
-    header{
-        background:var(--blue);
-        color:white;
-        height:1cm;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding:0 15px;
-        border-bottom:3px solid var(--green);
-        position:sticky;
-        top:0;
-        z-index:1000;
-    }
+        .container { max-width: 700px; margin: 15px auto; width: 95%; padding-bottom: 40px; }
 
-    .header-left{
-        display:flex;
-        align-items:center;
-        gap:10px;
-    }
+        .content-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .main-img { width: 100%; max-height: 400px; object-fit: contain; background: #001f3f; display: block; }
+        .article-body { padding: 20px; }
+        .article-title { color: var(--blue); font-size: 22px; margin: 0 0 8px 0; }
+        .article-date { color: #888; font-size: 13px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .article-text { color: #333; line-height: 1.8; font-size: 15px; white-space: pre-wrap; }
 
-    .logo-img{
-        height:.8cm;
-        width:.8cm;
-        object-fit:contain;
-    }
+        /* Table Styling */
+        .data-table-container { margin-top: 20px; overflow-x: auto; border-top: 1px solid #eee; padding-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: var(--blue); color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
 
-    .container{
-        max-width:700px;
-        margin:20px auto;
-        width:95%;
-        background:white;
-        padding:20px;
-        border-radius:10px;
-        box-shadow:0 2px 10px rgba(0,0,0,.05);
-    }
+        /* PDF Section Styling */
+        .pdf-section { margin-top: 25px; padding-top: 20px; border-top: 2px dashed #eee; }
+        .pdf-preview { 
+            width: 100%; 
+            max-height: 550px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            margin-bottom: 12px; 
+            background: #f0f0f0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .download-btn { 
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--green); color: white; padding: 8px 16px; 
+            text-decoration: none; border-radius: 4px; font-weight: bold; 
+            font-size: 14px; transition: opacity 0.2s;
+        }
+        .download-btn:hover { opacity: 0.9; }
+        .download-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
-    .back-btn{
-        display:inline-block;
-        margin-bottom:15px;
-        color:var(--blue);
-        text-decoration:none;
-        font-weight:600;
-        font-size:14px;
-    }
+        /* Comments Section */
+        .comment-section { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .comment-box { border-bottom: 1px solid #eee; padding: 10px 0; }
+        .comment-name { font-weight: bold; color: var(--blue); font-size: 14px; }
+        .comment-text { font-size: 14px; color: #555; margin: 4px 0; }
+        .comment-date { font-size: 11px; color: #aaa; }
 
-    .back-btn:hover{
-        text-decoration:underline;
-    }
+        .add-comment { margin-top: 20px; }
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+        .comment-btn { background: var(--blue); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-    #loader{
-        text-align:center;
-        padding:40px 20px;
-        color:#666;
-    }
+        /* Crawler-Friendly Loader Container */
+        #loader { 
+            text-align: left; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            color: var(--blue); 
+        }
+        #loader h2 { color: var(--blue); margin-top: 0; }
+        #loader p { color: #555; line-height: 1.6; }
+    
+        /* MODERN FOOTER STYLES */
+        .footer {
+            background: linear-gradient(135deg, #011627 0%, #032038 100%);
+            color: #e2e8f0;
+            padding: 60px 20px 30px 20px;
+            margin-top: 60px;
+            border-top: 4px solid var(--green, #22c55e);
+            font-size: 14px;
+        }
 
-    #loader h2 {
-        color: var(--blue);
-        margin-bottom: 10px;
-    }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+            gap: 35px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    #article-container{
-        display:none;
-    }
+        .footer h4 {
+            color: var(--yellow, #fbbf24);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0 0 16px 0;
+            position: relative;
+            padding-bottom: 6px;
+        }
 
-    .article-title{
-        font-size:22px;
-        color:var(--blue);
-        margin-bottom:10px;
-        line-height:1.3;
-    }
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 24px;
+            height: 2px;
+            background: var(--yellow, #fbbf24);
+            opacity: 0.7;
+            border-radius: 2px;
+        }
 
-    .article-meta{
-        font-size:12px;
-        color:#777;
-        margin-bottom:20px;
-        border-bottom:1px solid #eee;
-        padding-bottom:10px;
-    }
+        .footer-about {
+            line-height: 1.7;
+            color: #94a3b8;
+            margin: 0;
+        }
 
-    .article-img{
-        width:100%;
-        max-height:350px;
-        object-fit:cover;
-        border-radius:8px;
-        margin-bottom:20px;
-        border:1px solid #ddd;
-    }
+        .footer-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-    .article-body{
-        font-size:15px;
-        line-height:1.6;
-        color:#444;
-        word-break:break-word;
-    }
+        .footer-links-list li {
+            margin-bottom: 10px;
+        }
 
-    .article-body p {
-        margin-bottom: 15px;
-    }
+        .footer a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
 
-    .share-box{
-        margin-top:30px;
-        padding-top:15px;
-        border-top:1px solid #eee;
-        display:flex;
-        gap:10px;
-        align-items:center;
-    }
+        .footer-links-list a:hover {
+            color: var(--yellow, #fbbf24);
+            transform: translateX(4px);
+            display: inline-block;
+        }
 
-    .share-btn{
-        background:var(--green);
-        color:white;
-        border:none;
-        padding:10px 15px;
-        border-radius:5px;
-        cursor:pointer;
-        font-weight:bold;
-        font-size:13px;
-        text-decoration:none;
-        display:inline-block;
-    }
+        .whatsapp-channel-link {
+            color: #25D366 !important;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
 
-    .menu-container{
-        position:relative;
-    }
+        .whatsapp-channel-link:hover {
+            opacity: 0.85;
+            transform: translateX(4px);
+        }
 
-    .menu-btn{
-        width:30px;
-        height:30px;
-        cursor:pointer;
-        background:none;
-        border:1px solid rgba(255,255,255,.3);
-        border-radius:4px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        gap:3px;
-    }
+        .contact-group {
+            margin-bottom: 16px;
+        }
 
-    .menu-btn span{
-        width:18px;
-        height:2px;
-        background:white;
-    }
+        .contact-group h5 {
+            color: #ffffff;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0 0 6px 0;
+            opacity: 0.9;
+        }
 
-    .square-menu{
-        display:none;
-        position:absolute;
-        top:45px;
-        right:0;
-        width:220px;
-        background:var(--blue);
-        border:2px solid var(--green);
-        border-radius:8px;
-        z-index:2000;
-        box-shadow:0 10px 30px rgba(0,0,0,.3);
-    }
+        .contact-group a {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-bottom: 4px;
+        }
 
-    .square-menu a{
-        display:block;
-        padding:15px;
-        color:white;
-        text-decoration:none;
-        font-size:14px;
-        border-bottom:1px solid rgba(255,255,255,.1);
-    }
+        .contact-group a:hover {
+            color: #ffffff;
+        }
 
-    .square-menu a:last-child{
-        border-bottom:none;
-    }
-</style>
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <div class="header-left">
-        <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Flexi Educational Consult Official Logo" class="logo-img">
-        <span style="font-size:14px;font-weight:bold;">
-            Flexi Educational Consult
-        </span>
-    </div>
-
-    <div class="menu-container">
-        <button class="menu-btn" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <div class="square-menu" id="squareMenu">
-            <a href="index.html">Home</a>
-            <a href="videos.html">Watch Video Lessons</a>
-            <a href="syllabus.html">Access the JAMB and WAEC syllabus here</a>
-            <a href="brochure.html">Access JAMB Brochure</a>
-            <a href="cbt.html">CBT Simulator</a>
-            <a href="groups.html">Classroom (Groups and chats)</a>
-            <a href="purchase.html">Purchase Scratch Cards</a>
-            <a href="pdf.html">Get your PDFs from here</a>
-            <a href="location.html">Tutorial Centers Near You</a>
-            <a href="profile.html">User Profile</a>
-            <a href="#" id="auth-menu-btn">Login</a>
-        </div>
-    </div>
+<header>
+    <a href="index.html" class="back-btn">❮</a>
+    <span style="font-weight: bold; font-size: 14px;">Full Update</span>
 </header>
 
 <div class="container">
-    <a href="index.html" class="back-btn">← Back to Home / News List</a>
-
-    <!-- AD-FRIENDLY CRAWLABLE FALLBACK LOADER CONTAINER -->
+    <!-- Crawlable AdSense-Friendly Loader Fallback -->
     <div id="loader">
         <h2>Flexi Educational Consult News Portal</h2>
-        <p>Loading verified educational news updates, admission bulletins, and exam notices. If the article does not appear automatically, please browse our latest announcements on the <a href="index.html" style="color:var(--blue);">homepage</a> or check our <a href="cbt.html" style="color:var(--blue);">CBT portal</a>.</p>
+        <p>Loading official admission news updates, JAMB/WAEC notices, and study announcements. If the article content does not load instantly, please view our verified announcements index directly on the <a href="index.html" style="color:var(--blue); font-weight:bold;">homepage</a>.</p>
     </div>
 
-    <div id="article-container">
-        <h1 class="article-title" id="art-title"></h1>
-        <div class="article-meta" id="art-meta"></div>
-        <img id="art-img" src="" alt="News banner image" class="article-img" style="display:none;">
-        <div class="article-body" id="art-body"></div>
+    <div id="article-container" style="display: none;">
+        <div class="content-card">
+            <img id="news-image" class="main-img" src="" alt="" style="display: none;">
+            <div class="article-body">
+                <h1 id="news-title" class="article-title"></h1>
+                <div id="news-date" class="article-date"></div>
+                <div id="news-content" class="article-text"></div>
 
-        <div class="share-box">
-            <span style="font-size:13px; font-weight:bold; color:#555;">Share this update:</span>
-            <button class="share-btn" onclick="shareArticle()">Copy Link</button>
-            <a id="whatsapp-share" href="#" target="_blank" class="share-btn" style="background:#25D366;">WhatsApp</a>
+                <div id="table-container" class="data-table-container" style="display: none;"></div>
+
+                <div id="pdf-container" class="pdf-section" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4 style="color: var(--blue); margin: 0;">📎 Attached Document</h4>
+                        <a id="pdf-download-link" href="#" class="download-btn" download>
+                            <svg viewBox="0 0 24 24"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg>
+                            Download Full PDF
+                        </a>
+                    </div>
+                    <div id="pdf-viewer-container" class="pdf-preview"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comment-section">
+            <h3 style="color: var(--blue); margin-top: 0;">Discussion</h3>
+            <div id="comments-list">
+                <p style="color: #999; font-size: 14px;">No comments yet. Be the first!</p>
+            </div>
+
+            <div class="add-comment">
+                <h4 style="margin-bottom: 10px;">Leave a Comment</h4>
+                <input type="text" id="comm-name" placeholder="Your Name" required>
+                <textarea id="comm-text" rows="2" placeholder="Write your thoughts..." required></textarea>
+                <button class="comment-btn" id="post-comm-btn" onclick="postComment()">Post Comment</button>
+            </div>
         </div>
     </div>
 </div>
 
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <p class="footer-about">
+               We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul class="footer-links-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
+                <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="brochure.html">Access JAMB Brochure</a></li>
+                <li><a href="videos.html">Video Lessons</a></li>
+                <li><a href="pdf.html">Past Questions & PDFs</a></li>
+                <li><a href="cbt.html">CBT Simulator</a></li>
+                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="location.html">Tutorial Centres</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Support & Community</h4>
+            
+            <div class="contact-group">
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
+                   target="_blank" 
+                   class="whatsapp-channel-link">
+                   Join our WhatsApp Channel
+                </a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Contact Us</h5>
+                <a href="tel:+2349034159839">(+234) 903 415 9839</a>
+                <a href="tel:+2347033855206">(+234) 703 385 5206</a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Email Us</h5>
+                <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
+                <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
+            </div>
+        </div>
+
+        <div class="footer-col social-links">
+            <h4>Follow Us</h4>
+            <ul class="footer-links-list">
+                <li><a href="https://www.facebook.com/profile.php?id=61589793118693" target="_blank">Facebook @flexieduconsult</a></li>
+                <li><a href="https://instagram.com/flexieduconsult2000" target="_blank">Instagram @flexieduconsult2000</a></li>
+                <li><a href="https://www.tiktok.com/@flexieduconsult" target="_blank">TikTok @flexieduconsult</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
+    </div>
+</footer>
+    
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, addDoc, getDocs, query, where, limit, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig = {
-   apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
-   authDomain: "auth.flexieduconsult.com.ng",
-   projectId: "waec2026jamb2027"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+        authDomain: "waec2026jamb2027.firebaseapp.com",
+        projectId: "waec2026jamb2027",
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-onAuthStateChanged(auth, (user) => {
-    const authMenuBtn = document.getElementById('auth-menu-btn');
-    if(user){
-        authMenuBtn.innerText = "Logout";
-        authMenuBtn.style.color = "#ff4d4d";
-        authMenuBtn.onclick = async (e)=>{
-            e.preventDefault();
-            await signOut(auth);
-            window.location.reload();
-        };
-    }else{
-        authMenuBtn.innerText = "Login";
-        authMenuBtn.style.color = "white";
-        authMenuBtn.onclick = ()=>{
-            window.location.href = "login.html";
-        };
-    }
-});
-
-async function fetchArticle() {
     const urlParams = new URLSearchParams(window.location.search);
-    const slug = urlParams.get('slug');
-    const id = urlParams.get('id');
+    const slug = urlParams.get("slug");
+    const articleId = urlParams.get("id");
 
-    if (!slug && !id) {
-        document.getElementById('loader').innerHTML = `
-            <h2>Flexi Educational Consult News Portal</h2>
-            <p>No article specified. Please select a post from the <a href="index.html" style="color:var(--blue);">homepage news directory</a>.</p>
-        `;
-        return;
-    }
+    let currentArticleId = articleId;
 
-    try {
-        let articleDoc = null;
-        let docRef = null;
-
-        if (slug) {
-            const q = query(collection(db, "news"), where("slug", "==", slug));
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-                articleDoc = querySnapshot.docs[0];
-                docRef = doc(db, "news", articleDoc.id);
-            }
-        } else if (id) {
-            docRef = doc(db, "news", id);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                articleDoc = docSnap;
-            }
-        }
-
-        if (!articleDoc || !articleDoc.exists()) {
+    async function loadPageData() {
+        if (!slug && !articleId) {
             document.getElementById('loader').innerHTML = `
-                <h2>Article Not Found</h2>
-                <p>The requested update may have been removed or updated. Return to the <a href="index.html" style="color:var(--blue);">homepage</a>.</p>
+                <h2>No Article Specified</h2>
+                <p>Please select an update from our <a href="index.html" style="color:var(--blue);">news archive</a>.</p>
             `;
             return;
         }
 
-        const data = articleDoc.data();
-
-        // Update view count safely
         try {
-            await updateDoc(docRef, { views: increment(1) });
-        } catch(err) {
-            console.log("View count increment skipped", err);
-        }
+            let data;
+            if (slug) {
+                const q = query(
+                    collection(db, "news"),
+                    where("slug", "==", slug),
+                    limit(1)
+                );
+                const snap = await getDocs(q);
+                if (snap.empty) {
+                    document.getElementById("loader").innerHTML = `<h2>Article Not Found</h2><p>Return to <a href="index.html" style="color:var(--blue);">Home</a>.</p>`;
+                    return;
+                }
+                const article = snap.docs[0];
+                data = article.data();
+                currentArticleId = article.id;
+            } else {
+                const docSnap = await getDoc(doc(db, "news", articleId));
+                if (!docSnap.exists()) {
+                    document.getElementById("loader").innerHTML = `<h2>Article Not Found</h2><p>Return to <a href="index.html" style="color:var(--blue);">Home</a>.</p>`;
+                    return;
+                }
+                data = docSnap.data();
+                currentArticleId = docSnap.id;
+            }
 
-        // Populate Content
-        document.getElementById('page-title').innerText = `${data.title} | Flexi Educational Consult`;
-        document.getElementById('art-title').innerText = data.title;
+            // SEO Titles & Metadata
+            document.getElementById('page-title').innerText = `${data.seoTitle || data.title || 'News'} | Flexi Educational Consult`;
+
+            let metaDesc = document.querySelector('meta[name="description"]');
+            if (!metaDesc) {
+                metaDesc = document.createElement("meta");
+                metaDesc.name = "description";
+                document.head.appendChild(metaDesc);
+            }
+            metaDesc.content = data.metaDescription || `${data.title} | Read the latest educational update from Flexi Educational Consult.`;
+
+            let keywords = document.querySelector('meta[name="keywords"]');
+            if (!keywords) {
+                keywords = document.createElement("meta");
+                keywords.name = "keywords";
+                document.head.appendChild(keywords);
+            }
+            keywords.content = data.focusKeyword || "Flexi Educational Consult, Education News";
+
+            let canonical = document.querySelector("link[rel='canonical']");
+            if (!canonical) {
+                canonical = document.createElement("link");
+                canonical.rel = "canonical";
+                document.head.appendChild(canonical);
+            }
+            canonical.href = window.location.href;
+
+            function setMeta(property, content, isProperty = true) {
+                let tag = document.querySelector(`${isProperty ? "meta[property='" : "meta[name='"}${property}']`);
+                if (!tag) {
+                    tag = document.createElement("meta");
+                    if (isProperty) tag.setAttribute("property", property);
+                    else tag.setAttribute("name", property);
+                    document.head.appendChild(tag);
+                }
+                tag.content = content;
+            }
+
+            setMeta("og:title", data.seoTitle || data.title);
+            setMeta("og:description", data.metaDescription || "");
+            setMeta("og:image", data.imageUrl || "");
+            setMeta("og:url", canonical.href);
+            setMeta("og:type", "article");
+
+            setMeta("twitter:card", "summary_large_image", false);
+            setMeta("twitter:title", data.seoTitle || data.title, false);
+            setMeta("twitter:description", data.metaDescription || "", false);
+            setMeta("twitter:image", data.imageUrl || "", false);
+
+            const schema = {
+              "@context": "https://schema.org",
+              "@type": "NewsArticle",
+              "headline": data.seoTitle || data.title,
+              "description": data.metaDescription || "",
+              "image": [data.imageUrl || ""],
+              "datePublished": data.timestamp ? data.timestamp.toDate().toISOString() : new Date().toISOString(),
+              "author": { "@type": "Organization", "name": "Flexi Educational Consult" },
+              "publisher": {
+                  "@type": "Organization",
+                  "name": "Flexi Educational Consult",
+                  "logo": { "@type": "ImageObject", "url": "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" }
+              },
+              "mainEntityOfPage": { "@type": "WebPage", "@id": canonical.href }
+            };
+
+            let script = document.getElementById("news-schema");
+            if (!script) {
+                script = document.createElement("script");
+                script.type = "application/ld+json";
+                script.id = "news-schema";
+                document.head.appendChild(script);
+            }
+            script.text = JSON.stringify(schema);
+
+            // Populate Article Elements
+            document.getElementById('news-title').innerText = data.title || "";
+            document.getElementById('news-content').innerText = data.content || data.body || "";
+            
+            if(data.imageUrl) {
+                const imgEl = document.getElementById('news-image');
+                imgEl.src = data.imageUrl;
+                imgEl.style.display = "block";
+            } else {
+                document.getElementById('news-image').style.display = "none";
+            }
+
+            if(data.timestamp) {
+                document.getElementById('news-date').innerText = "Posted: " + data.timestamp.toDate().toDateString();
+            }
+
+            // Table Logic
+            const tableCont = document.getElementById('table-container');
+            if (data.tableData && data.tableData.trim() !== "") {
+                tableCont.innerHTML = data.tableData;
+                tableCont.style.display = "block";
+            } else {
+                tableCont.style.display = "none";
+            }
+
+            // PDF Logic
+            const pdfCont = document.getElementById('pdf-container');
+            if (data.pdfUrl && data.pdfUrl.trim() !== "") {
+                const pdfViewerCont = document.getElementById('pdf-viewer-container');
+                const pdfLink = document.getElementById('pdf-download-link');
+                
+                const originalUrl = data.pdfUrl;
+                let downloadUrl = originalUrl;
+                let previewImageUrl = originalUrl;
+
+                if (originalUrl.includes("res.cloudinary.com")) {
+                    downloadUrl = originalUrl.replace('/upload/', '/upload/fl_attachment/');
+                    previewImageUrl = originalUrl.replace('/upload/', '/upload/w_800,c_limit,q_auto,f_jpg/pg_1/').replace('.pdf', '.jpg');
+                }
+
+                pdfLink.href = downloadUrl;
+                pdfViewerCont.innerHTML = `<img src="${previewImageUrl}" alt="Document Preview" style="width:100%; height:auto; display:block;">`;
+                pdfCont.style.display = "block";
+            } else {
+                pdfCont.style.display = "none";
+            }
+
+            // Hide loader and show article content container
+            document.getElementById('loader').style.display = "none";
+            document.getElementById('article-container').style.display = "block";
+
+            loadComments();
+
+        } catch (e) {
+            console.error(e);
+            document.getElementById('loader').innerHTML = `<h2>Connection Error</h2><p>Could not load the article text. Please check your connection.</p>`;
+        }
+    }
+
+    async function loadComments() {
+        if (!currentArticleId) return;
+        const cList = document.getElementById('comments-list');
+        const q = query(collection(db, "news", currentArticleId, "comments"), orderBy("timestamp", "desc"));
+        const snap = await getDocs(q);
         
-        let dateStr = "";
-        if (data.timestamp && data.timestamp.seconds) {
-            dateStr = new Date(data.timestamp.seconds * 1000).toLocaleDateString();
+        if (!snap.empty) {
+            cList.innerHTML = "";
+            snap.forEach(d => {
+                const c = d.data();
+                const date = c.timestamp ? c.timestamp.toDate().toLocaleString() : "Just now";
+                cList.innerHTML += `
+                    <div class="comment-box">
+                        <div class="comment-name">${c.name}</div>
+                        <div class="comment-text">${c.text}</div>
+                        <div class="comment-date">${date}</div>
+                    </div>
+                `;
+            });
         }
-        document.getElementById('art-meta').innerText = `Published: ${dateStr}`;
+    }
 
-        if (data.imageUrl) {
-            const imgEl = document.getElementById('art-img');
-            imgEl.src = data.imageUrl;
-            imgEl.style.display = "block";
+    window.postComment = async () => {
+        const name = document.getElementById('comm-name').value;
+        const text = document.getElementById('comm-text').value;
+        const btn = document.getElementById('post-comm-btn');
+
+        if(!name || !text) return alert("Please fill both fields");
+
+        btn.disabled = true;
+        btn.innerText = "Posting...";
+
+        try {
+            await addDoc(collection(db, "news", currentArticleId, "comments"), {
+                name: name,
+                text: text,
+                timestamp: serverTimestamp()
+            });
+            Toastify({ text: "Comment posted!", style: { background: "#2E8B57" } }).showToast();
+            document.getElementById('comm-text').value = "";
+            loadComments();
+        } catch (e) {
+            alert("Error posting comment.");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Post Comment";
         }
+    };
 
-        // Format body content preserving line breaks safely
-        const bodyEl = document.getElementById('art-body');
-        if (data.body) {
-            bodyEl.innerHTML = data.body.replace(/\n/g, '<br>');
-        } else {
-            bodyEl.innerHTML = "<p>No content available for this post.</p>";
-        }
-
-        // Setup share links
-        const currentUrl = window.location.href;
-        document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(data.title + " - " + currentUrl)}`;
-
-        // Hide loader, show article
-        document.getElementById('loader').style.display = "none";
-        document.getElementById('article-container').style.display = "block";
-
-    } catch (e) {
-        console.error("Error loading article:", e);
-        document.getElementById('loader').innerHTML = `
-            <h2>Connection Error</h2>
-            <p>Could not load the article. Please check your internet connection and try again.</p>
-        `;
-    }
-}
-
-window.shareArticle = () => {
-    if (navigator.share) {
-        navigator.share({
-            title: document.getElementById('art-title').innerText,
-            url: window.location.href
-        }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(window.location.href);
-        Toastify({
-            text: "Link copied to clipboard!",
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            style: { background: "#2E8B57" }
-        }).showToast();
-    }
-};
-
-window.toggleMenu = () => {
-    const m = document.getElementById('squareMenu');
-    m.style.display = (m.style.display === "block") ? "none" : "block";
-};
-
-document.addEventListener('click', (e) => {
-    const m = document.getElementById('squareMenu');
-    const b = document.querySelector('.menu-btn');
-    if(m && m.style.display === "block" && !m.contains(e.target) && !b.contains(e.target)){
-        m.style.display = "none";
-    }
-});
-
-fetchArticle();
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    loadPageData();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 </html>
