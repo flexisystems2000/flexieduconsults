@@ -17,7 +17,6 @@
     <!-- Canonical URL declaration to resolve index.html duplication issue -->
     <link rel="canonical" href="https://flexieduconsult.com.ng/" />
 
-    <!-- FIXED ISSUE 1: Shortened title under 60 characters -->
     <title>Flexi Tutors | JAMB, WAEC & CBT Prep Nigeria</title>
     
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -66,7 +65,6 @@
         padding:0;
     }
 
-    /* Screen reader only utility class for clean H1 accessibility */
     .sr-only {
         position: absolute;
         width: 1px;
@@ -132,8 +130,6 @@
             transform:translateY(0);
         }
     }
-
-    /* NEW SLIDER */
 
     .slider-container{
         position:relative;
@@ -222,16 +218,16 @@
     }
  
     .pagination-bar{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:5px;
-margin:25px 0;
-padding:10px;
-background:white;
-border-radius:30px;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:5px;
+        margin:25px 0;
+        padding:10px;
+        background:white;
+        border-radius:30px;
+        box-shadow:0 2px 8px rgba(0,0,0,.1);
+    }
 
     .pg-btn{
         min-width:35px;
@@ -332,7 +328,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
         border-bottom:none;
     }
 
-/* NEW MODERN FOOTER */
 .footer {
     background: linear-gradient(135deg, #011627 0%, #032038 100%);
     color: #e2e8f0;
@@ -350,7 +345,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     margin: 0 auto;
 }
 
-/* Headings */
 .footer h4 {
     color: var(--yellow, #fbbf24);
     font-size: 0.9rem;
@@ -379,7 +373,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     margin: 0;
 }
 
-/* Links List */
 .footer-links-list {
     list-style: none;
     padding: 0;
@@ -402,7 +395,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     display: inline-block;
 }
 
-/* WhatsApp Channel Text Link */
 .whatsapp-channel-link {
     color: #25D366 !important;
     font-weight: 600;
@@ -415,10 +407,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     transform: translateX(4px);
 }
 
-
-
-
-/* Contacts & Emails Subheadings */
 .contact-group {
     margin-bottom: 16px;
 }
@@ -443,7 +431,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     color: #ffffff;
 }
 
-/* Bottom Bar */
 .footer-bottom {
     max-width: 1200px;
     margin: 40px auto 0 auto;
@@ -454,7 +441,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     color: #64748b;
 }
 
-/* Responsive Styles */
 @media (max-width: 900px) {
     .footer-grid {
         grid-template-columns: 1fr 1fr;
@@ -469,7 +455,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     }
 }
 
-/* TESTIMONIALS SLIDER */
 .testimonials-section {
     margin-top: 40px;
     margin-bottom: 25px;
@@ -483,12 +468,11 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     font-size: 1.2rem;
 }
 
-/* UPDATED PHYSICAL SLIDER MOTION */
 .testimonial-slider-container {
     position: relative;
     width: 100%;
     height: 140px; 
-    overflow: hidden; /* Important: Hides the slides waiting off-screen */
+    overflow: hidden;
     background: white;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,.05);
@@ -503,28 +487,17 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
-    /* This handles the sliding physics */
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    transform: translateX(100%); /* Default: Keep all slides hidden to the extreme right */
+    transform: translateX(100%);
 }
 
-/* Active slide sits perfectly center stage */
 .testimonial-slide.active {
     transform: translateX(0);
 }
 
-/* Old slide exits smoothly off to the left side */
 .testimonial-slide.exit {
     transform: translateX(-100%);
 }
-
-@media (max-width: 480px) {
-    .testimonial-slider-container {
-        height: 160px;
-    }
-}
-
 
 .student-info {
     display: flex;
@@ -567,7 +540,6 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     font-style: italic;
 }
 
-/* QUOTE SLIDER STYLES */
 .quote-slider-container {
     position: relative;
     width: 100%;
@@ -622,20 +594,16 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     text-align: right;
 }
 
-/* Make it responsive if text gets longer on tight mobile devices */
 @media (max-width: 480px) {
     .testimonial-slider-container {
         height: 160px;
     }
 }
-
 </style>
-
 </head>
 <body>
   <header>
     <div class="header-left">
-        <!-- FIXED ISSUE 2 (IMAGE 1): Added alt attribute -->
         <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Flexi Educational Consult Official Logo" class="logo-img">
         <span style="font-size:14px;font-weight:bold;">
             Flexi Educational Consult
@@ -643,44 +611,33 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     </div>
 
 <div class="menu-container">
-
-    <button class="menu-btn"
-            onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
-
+    <button class="menu-btn" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
         <span></span>
         <span></span>
         <span></span>
-
     </button>
 
     <div class="square-menu" id="squareMenu">
-    <a href="index.html">Home</a> <!-- Added Home for better navigation -->
-    <a href="videos.html">Watch Video Lessons</a> <!-- NEW LINK -->
-    <a href="syllabus.html">Access the JAMB and WAEC syllabus here</a> <!-- NEW LINK -->
-    <a href="brochure.html">Access JAMB Brochure</a>
-    <a href="cbt.html">CBT Simulator</a>
-    <a href="groups.html">Classroom (Groups and chats)</a>
-    <a href="purchase.html">Purchase Scratch Cards</a>
-    <a href="pdf.html">Get your PDFs from here</a>
-    <a href="location.html">Tutorial Centers Near You</a>
-    <a href="profile.html">User Profile</a>
-    <a href="#" id="auth-menu-btn">Login</a>
+        <a href="index.html">Home</a>
+        <a href="videos.html">Watch Video Lessons</a>
+        <a href="syllabus.html">Access the JAMB and WAEC syllabus here</a>
+        <a href="brochure.html">Access JAMB Brochure</a>
+        <a href="cbt.html">CBT Simulator</a>
+        <a href="groups.html">Classroom (Groups and chats)</a>
+        <a href="purchase.html">Purchase Scratch Cards</a>
+        <a href="pdf.html">Get your PDFs from here</a>
+        <a href="location.html">Tutorial Centers Near You</a>
+        <a href="profile.html">User Profile</a>
+        <a href="#" id="auth-menu-btn">Login</a>
+    </div>
 </div>
-</div>
-
 </header>
 
 <div class="container">
-
-    <!-- FIXED ISSUE 3: Added clean H1 tag for main topic declaration -->
     <h1 class="sr-only">Flexi Educational Consult - Online JAMB WAEC CBT Exam Practice Portal</h1>
 
     <div id="welcome-banner">
-        <span id="user-greeting"
-              style="font-weight:bold;
-              color:var(--blue);
-              font-size:1.1rem;">
-        </span>
+        <span id="user-greeting" style="font-weight:bold; color:var(--blue); font-size:1.1rem;"></span>
     </div>
 
 <!-- Announcement Banner -->
@@ -696,12 +653,7 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     <div id="quote-dots" class="slider-dots"></div>
 </div>
 
-
-<!-- NEW SLIDER -->
-
 <div class="slider-container">
-
-    <!-- FIXED ISSUE 2 (IMAGES 2, 3, 4): Added descriptive alt attributes to slider images -->
     <div class="slider-slide active">
         <img src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg" alt="JAMB UTME CBT Online Exam Practice Banner">
     </div>
@@ -719,24 +671,24 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
         <span class="dot"></span>
         <span class="dot"></span>
     </div>
-
 </div>
 
-<h2 style="
-    color:var(--blue);
-    border-left:5px solid var(--green);
-    padding-left:10px;
-    font-size:1.2rem;
-    margin-top:20px;">
+<h2 style="color:var(--blue); border-left:5px solid var(--green); padding-left:10px; font-size:1.2rem; margin-top:20px;">
     News Updates
 </h2>
 
+<!-- AD-FRIENDLY CRAWLABLE FALLBACK TABLE CONTENT -->
 <table class="news-table">
-    <tbody id="news-table-body"></tbody>
+    <tbody id="news-table-body">
+        <tr>
+            <td colspan="3" style="padding: 15px; color: #555; font-size: 14px;">
+                Loading latest educational news updates, admission guidelines, and exam notices for JAMB and WAEC candidates. Explore our <a href="cbt.html" style="color: var(--blue);">CBT Simulator</a> or review the <a href="syllabus.html" style="color: var(--blue);">Syllabus Guide</a>.
+            </td>
+        </tr>
+    </tbody>
 </table>
 
-<div class="pagination-bar"
-     id="pagination-controls"></div>
+<div class="pagination-bar" id="pagination-controls"></div>
 
 <div class="testimonials-section">
     <h2 class="testimonials-heading">What Our Students Say</h2>
@@ -783,61 +735,34 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     </div>
 </div>
 
-
 <div class="card">
-
-    <h3 style="
-        margin:0 0 15px 0;
-        color:var(--blue);">
-
+    <h3 style="margin:0 0 15px 0; color:var(--blue);">
         Customer Care
-
     </h3>
 
     <form id="contact-form">
-
-        <input
-            type="email"
-            name="email"
-            id="contact-email"
-            placeholder="Your Email Address"
-            required>
-
-        <textarea
-            name="message"
-            rows="3"
-            placeholder="How can we help you?"
-            required></textarea>
-
-        <button
-            type="submit"
-            id="submit-btn"
-            class="btn-green">
-
+        <input type="email" name="email" id="contact-email" placeholder="Your Email Address" required>
+        <textarea name="message" rows="3" placeholder="How can we help you?" required></textarea>
+        <button type="submit" id="submit-btn" class="btn-green">
             Submit Inquiry
-
         </button>
-
     </form>
-
 </div>
 
 </div>
+
 <footer class="footer">
     <div class="footer-grid">
-        <!-- Column 1: About -->
         <div class="footer-col">
             <p class="footer-about">
                We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
             </p>
         </div>
 
-        <!-- Column 2: Quick Links -->
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
                 <li><a href="index.html">Home</a></li>
-                <!-- Shortened text retaining WhatsApp, Masterclass, and E-Learning -->
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
                 <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
                 <li><a href="syllabus.html">Access JAMB Brochure</a></li>
@@ -849,33 +774,27 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
             </ul>
         </div>
 
-        <!-- Column 3: Support & Community -->
-<div class="footer-col">
-    <h4>Support & Community</h4>
-    
-    <div class="contact-group">
-        <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
-           target="_blank" 
-           class="whatsapp-channel-link">
-           Join our WhatsApp Channel
-        </a>
-    </div>
+        <div class="footer-col">
+            <h4>Support & Community</h4>
+            <div class="contact-group">
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" target="_blank" class="whatsapp-channel-link">
+                   Join our WhatsApp Channel
+                </a>
+            </div>
 
-    <div class="contact-group">
-        <h5>Contact Us</h5>
-        <a href="tel:+2349034159839">(+234) 903 415 9839</a>
-        <a href="tel:+2347033855206">(+234) 703 385 5206</a>
-    </div>
+            <div class="contact-group">
+                <h5>Contact Us</h5>
+                <a href="tel:+2349034159839">(+234) 903 415 9839</a>
+                <a href="tel:+2347033855206">(+234) 703 385 5206</a>
+            </div>
 
-    <div class="contact-group">
-        <h5>Email Us</h5>
-        <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
-        <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
-    </div>
-</div>
+            <div class="contact-group">
+                <h5>Email Us</h5>
+                <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
+                <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
+            </div>
+        </div>
 
-
-        <!-- Column 4: Social Links -->
         <div class="footer-col social-links">
             <h4>Follow Us</h4>
             <ul class="footer-links-list">
@@ -890,12 +809,11 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
         &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
 </footer>
+
 <div id="support-widget" style="position:fixed; bottom:20px; right:20px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
-    
     <div id="support-tooltip" style="background:#003366; color:white; padding:10px 15px; border-radius:20px 20px 0px 20px; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); animation: fadeIn 0.5s; opacity: 1;">
     Chat with Jarvis AI for support
     </div>
-    
 
     <button id="support-btn" onclick="window.location.href='contactsupport.html'" aria-label="Support Chat" style="background:#2E8B57; border:none; width:60px; height:60px; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.3s;">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
@@ -908,22 +826,12 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     #support-btn:hover { transform: scale(1.1); }
 </style>
-    
-<div id="seo-crawler-map" style="display: none !important; visibility: hidden;" aria-hidden="true">
-    <h2>Latest Educational News Updates Index</h2>
-    <div id="seo-links-holder"></div>
-</div>
 
-<script
-src="https://cdn.jsdelivr.net/npm/toastify-js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script type="module">
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit}
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut}
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
    apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
@@ -934,8 +842,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-
-/* AUTH OBSERVER */
 
 onAuthStateChanged(auth, (user) => {
     const welcomeBanner = document.getElementById('welcome-banner');
@@ -979,11 +885,9 @@ async function loadAnnouncement() {
         
         if (!snap.empty) {
             const data = snap.docs[0].data();
-            
             document.getElementById('ann-title').innerText = data.title;
             document.getElementById('ann-content').innerText = data.content;
             document.getElementById('ann-date').innerText = `Posted: ${new Date(data.createdAt.seconds * 1000).toLocaleDateString()}`;
-            
             annBanner.style.display = "block";
         }
     } catch (e) {
@@ -991,7 +895,6 @@ async function loadAnnouncement() {
     }
 }
 
-/* DYNAMIC QUOTES SLIDER ENGINE */
 let quoteSlides = [];
 let currentQuoteIndex = 0;
 let quoteInterval = null;
@@ -1002,7 +905,6 @@ async function loadMotivationalQuote() {
         const wrapper = document.getElementById('quote-slides-wrapper');
         const dotsContainer = document.getElementById('quote-dots');
 
-        // Retrieve all published quotes from Firestore
         const q = query(collection(db, "quotes"), orderBy("createdAt", "desc"));
         const snap = await getDocs(q);
 
@@ -1017,8 +919,6 @@ async function loadMotivationalQuote() {
         let index = 0;
         snap.forEach(docSnap => {
             const data = docSnap.data();
-
-            // Create Slide
             const slide = document.createElement('div');
             slide.className = `quote-slide ${index === 0 ? 'active' : ''}`;
             if (data.bgImage) {
@@ -1033,17 +933,13 @@ async function loadMotivationalQuote() {
             `;
             wrapper.appendChild(slide);
 
-            // Create Indicator Dot
             const dot = document.createElement('span');
             dot.className = `dot ${index === 0 ? 'active-dot' : ''}`;
             dotsContainer.appendChild(dot);
-
             index++;
         });
 
         container.style.display = 'block';
-
-        // Start auto-swiping if there is more than 1 quote
         quoteSlides = document.querySelectorAll('.quote-slide');
         const quoteDots = dotsContainer.querySelectorAll('.dot');
 
@@ -1057,7 +953,7 @@ async function loadMotivationalQuote() {
 
                 quoteSlides[currentQuoteIndex].classList.add('active');
                 if (quoteDots[currentQuoteIndex]) quoteDots[currentQuoteIndex].classList.add('active-dot');
-            }, 5000); // Swipes smoothly every 5 seconds
+            }, 5000);
         }
     } catch (e) {
         console.error("Error loading quotes slider:", e);
@@ -1068,13 +964,10 @@ function escapeHtml(str) {
     return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
 }
 
-/* NEWS */
-
 let allNews = [];
 let currentPage = 1;
 const itemsPerPage = 5;
 
-/* BULLETPROOF NEWS FETCH WITH ISOLATED SEO ENGINE */
 async function loadNews(){
     try {
         const q = query(
@@ -1093,30 +986,10 @@ async function loadNews(){
         });
 
         renderTablePage(1);
-
-        try {
-            const sepHolder = document.getElementById('seo-links-holder');
-            if (sepHolder) {
-                sepHolder.innerHTML = ""; 
-                allNews.forEach(item => {
-                    const seoAnchor = document.createElement('a');
-                    seoAnchor.href = item.slug
-                        ? `news-view.html?slug=${item.slug}`
-                        : `news-view.html?id=${item.id}`;
-                    seoAnchor.innerText = `${item.title || 'News'} - Flexi Educational Consult Updates`;
-                    sepHolder.appendChild(seoAnchor);
-                });
-            }
-        } catch (seoError) {
-            console.warn("SEO background map skipped:", seoError);
-        }
-
     } catch(e) {
         console.error("Error loading news:", e);
     }
 }
-
-/* NEWS RENDER */
 
 function renderTablePage(page){
     currentPage = page;
@@ -1133,7 +1006,6 @@ function renderTablePage(page){
                 window.location.href = `news-view.html?id=${item.id}`;
             }
         };
-        /* Added alt tag dynamically for news thumbnails */
         row.innerHTML = `
             <td style="width:80px;">
                 <img src="${item.imageUrl || 'https://via.placeholder.com/80'}" alt="${item.title || 'News thumbnail'}" class="td-img">
@@ -1150,7 +1022,6 @@ function renderTablePage(page){
     renderPaginationUI();
 }
 
-/* FIXED 5-ELEMENT BOUNDED PAGINATION */
 function renderPaginationUI(){
     const controls = document.getElementById('pagination-controls');
     controls.innerHTML = "";
@@ -1201,8 +1072,6 @@ function renderPaginationUI(){
     controls.appendChild(next);
 }
 
-/* CONTACT FORM */
-
 const contactForm = document.getElementById('contact-form');
 const submitBtn = document.getElementById('submit-btn');
 contactForm.addEventListener('submit', async (e) => {
@@ -1243,8 +1112,6 @@ contactForm.addEventListener('submit', async (e) => {
     }
 });
 
-/* MENU TOGGLE */
-
 window.toggleMenu = () => {
     const m = document.getElementById('squareMenu');
     m.style.display = (m.style.display === "block") ? "none" : "block";
@@ -1257,8 +1124,6 @@ document.addEventListener('click', (e) => {
         m.style.display = "none";
     }
 });
-
-/* SLIDER */
 
 const slides = document.querySelectorAll('.slider-slide');
 const dots = document.querySelectorAll('.dot');
@@ -1279,15 +1144,12 @@ setInterval(() => {
     showSlide(currentSlide);
 }, 5000);
 
-/* INIT */
-
 loadNews();
 loadAnnouncement();
-loadMotivationalQuote(); // <-- Loads quote from Firestore on startup
+loadMotivationalQuote();
 
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
-/* UPDATED TESTIMONIALS SLIDER ENGINE */
 const tSlides = document.querySelectorAll('.testimonial-slide');
 let currentTSlide = 0;
 
