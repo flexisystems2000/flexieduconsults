@@ -34,6 +34,29 @@
         .article-date { color: #888; font-size: 13px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .article-text { color: #333; line-height: 1.8; font-size: 15px; white-space: pre-wrap; }
 
+        /* Share Box Styling */
+        .share-box{
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .share-btn{
+            background: var(--green);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
         /* Table Styling */
         .data-table-container { margin-top: 20px; overflow-x: auto; border-top: 1px solid #eee; padding-top: 15px; }
         table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -238,6 +261,13 @@
                 <h1 id="news-title" class="article-title"></h1>
                 <div id="news-date" class="article-date"></div>
                 <div id="news-content" class="article-text"></div>
+
+                <!-- SHARE BUTTONS -->
+                <div class="share-box">
+                    <span style="font-size:13px; font-weight:bold; color:#555;">Share update:</span>
+                    <button class="share-btn" onclick="shareArticle()">Copy Link</button>
+                    <a id="whatsapp-share" href="#" target="_blank" class="share-btn" style="background:#25D366;">WhatsApp</a>
+                </div>
 
                 <div id="table-container" class="data-table-container" style="display: none;"></div>
 
@@ -478,6 +508,10 @@
                 document.getElementById('news-date').innerText = "Posted: " + data.timestamp.toDate().toDateString();
             }
 
+            // Setup Share Links
+            const currentUrl = window.location.href;
+            document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${encodeURIComponent((data.title || 'News') + " - " + currentUrl)}`;
+
             // Table Logic
             const tableCont = document.getElementById('table-container');
             if (data.tableData && data.tableData.trim() !== "") {
@@ -520,6 +554,25 @@
             document.getElementById('loader').innerHTML = `<h2>Connection Error</h2><p>Could not load the article text. Please check your connection.</p>`;
         }
     }
+
+    // Share action implementation
+    window.shareArticle = () => {
+        if (navigator.share) {
+            navigator.share({
+                title: document.getElementById('news-title').innerText,
+                url: window.location.href
+            }).catch(() => {});
+        } else {
+            navigator.clipboard.writeText(window.location.href);
+            Toastify({
+                text: "Link copied to clipboard!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                style: { background: "#2E8B57" }
+            }).showToast();
+        }
+    };
 
     async function loadComments() {
         if (!currentArticleId) return;
