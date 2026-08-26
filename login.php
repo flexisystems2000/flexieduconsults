@@ -8,29 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flexi Tutors | Secure Portal</title>
     <style>
-        :root { 
-            --blue: #003366; 
-            --green: #2E8B57; 
-            --white: #ffffff; 
-            --error-bg: #fdf2f2; 
-            --error-text: #d9534f; 
-            --success-bg: #e8f5e9; 
-            --success-text: #2e7d32; 
+        :root {
+            --blue: #003366;
+            --green: #2E8B57;
+            --white: #ffffff;
+            --error-bg: #fdf2f2;
+            --error-text: #d9534f;
+            --success-bg: #e8f5e9;
+            --success-text: #2e7d32;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f7f6; margin: 0; overflow-x: hidden; }
 
-        header { 
-            background: var(--blue); color: white; height: 1cm; 
-            display: flex; align-items: center; padding: 0 15px; 
+        header {
+            background: var(--blue); color: white; height: 52px;
+            display: flex; align-items: center; padding: 0 20px;
             border-bottom: 4px solid var(--green);
         }
-        .brand { font-size: 0.85rem; font-weight: bold; letter-spacing: 1px; }
+        .brand { font-size: 0.9rem; font-weight: bold; letter-spacing: 1px; }
 
-        .auth-container { max-width: 400px; margin: 40px auto; width: 90%; }
+        .auth-container { max-width: 420px; margin: 40px auto; width: 90%; }
         .auth-form-view { width: 100%; box-sizing: border-box; }
-        
+
         h2 { color: var(--blue); margin-top: 0; text-align: center; font-size: 1.4rem; font-weight: 700; }
-        
+
         .input-group { margin-bottom: 15px; position: relative; }
         label { display: block; font-size: 0.85rem; color: #333; margin-bottom: 5px; font-weight: 600; }
         input { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 1rem; color: #333; }
@@ -45,22 +45,20 @@
         }
         .toggle-password svg { width: 20px; height: 20px; }
 
-        /* Password Strength Bar Layout */
         .strength-container { margin-top: 8px; margin-bottom: 10px; display: none; }
         .strength-bar { height: 4px; width: 100%; background: #eee; border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
         .strength-fill { height: 100%; width: 0%; transition: 0.3s ease; }
         .strength-text { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; text-align: right; display: block; }
 
-        /* Checklist requirements layout rules */
         .requirements-box { display: none; margin-bottom: 15px; text-align: left; }
         .criteria { font-size: 0.78rem; color: #777; margin: 4px 0; display: flex; align-items: center; }
         .criteria::before { content: "•"; margin-right: 6px; font-size: 14px; }
         .criteria.valid { color: var(--green); font-weight: 600; }
         .criteria.invalid { color: var(--error-text); }
 
-        #status-box { 
-            font-size: 0.85rem; text-align: center; margin-top: 15px; 
-            display: none; padding: 12px; border-radius: 8px; 
+        #status-box {
+            font-size: 0.85rem; text-align: center; margin-top: 15px;
+            display: none; padding: 12px; border-radius: 8px;
             animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             word-wrap: break-word;
         }
@@ -73,8 +71,8 @@
         .btn-auth:disabled { background: #ccc; cursor: not-allowed; }
 
         .btn-google {
-            width: 100%; padding: 12px; background: white; color: #444; 
-            border: 1px solid #ddd; border-radius: 8px; font-weight: 600; 
+            width: 100%; padding: 12px; background: white; color: #444;
+            border: 1px solid #ddd; border-radius: 8px; font-weight: 600;
             cursor: pointer; margin-top: 15px; display: flex; align-items: center; justify-content: center;
         }
         .btn-google img { width: 18px; margin-right: 10px; }
@@ -85,143 +83,134 @@
 
         .toggle-text { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #555; }
         .toggle-text span { color: var(--green); cursor: pointer; font-weight: bold; }
-        
+
         .step-indicator { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; text-align: center; }
-  
-    /* MODERN FOOTER STYLES */
-.footer {
-    background: linear-gradient(135deg, #011627 0%, #032038 100%);
-    color: #e2e8f0;
-    padding: 60px 20px 30px 20px;
-    margin-top: 60px;
-    border-top: 4px solid var(--green, #22c55e);
-    font-size: 14px;
-}
 
-.footer-grid {
-    display: grid;
-    grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
-    gap: 35px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+        .footer {
+            background: linear-gradient(135deg, #011627 0%, #032038 100%);
+            color: #e2e8f0;
+            padding: 60px 20px 30px 20px;
+            margin-top: 60px;
+            border-top: 4px solid var(--green, #22c55e);
+            font-size: 14px;
+        }
 
-/* Headings */
-.footer h4 {
-    color: var(--yellow, #fbbf24);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin: 0 0 16px 0;
-    position: relative;
-    padding-bottom: 6px;
-}
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+            gap: 35px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.footer h4::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 24px;
-    height: 2px;
-    background: var(--yellow, #fbbf24);
-    opacity: 0.7;
-    border-radius: 2px;
-}
+        .footer h4 {
+            color: var(--yellow, #fbbf24);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0 0 16px 0;
+            position: relative;
+            padding-bottom: 6px;
+        }
 
-.footer-about {
-    line-height: 1.7;
-    color: #94a3b8;
-    margin: 0;
-}
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 24px;
+            height: 2px;
+            background: var(--yellow, #fbbf24);
+            opacity: 0.7;
+            border-radius: 2px;
+        }
 
-/* Links List */
-.footer-links-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        .footer-about {
+            line-height: 1.7;
+            color: #94a3b8;
+            margin: 0;
+        }
 
-.footer-links-list li {
-    margin-bottom: 10px;
-}
+        .footer-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.footer a {
-    color: #cbd5e0;
-    text-decoration: none;
-    transition: all 0.25s ease;
-}
+        .footer-links-list li { margin-bottom: 10px; }
 
-.footer-links-list a:hover {
-    color: var(--yellow, #fbbf24);
-    transform: translateX(4px);
-    display: inline-block;
-}
+        .footer a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
 
-/* WhatsApp Channel Text Link */
-.whatsapp-channel-link {
-    color: #25D366 !important;
-    font-weight: 600;
-    display: inline-block;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-}
+        .footer-links-list a:hover {
+            color: var(--yellow, #fbbf24);
+            transform: translateX(4px);
+            display: inline-block;
+        }
 
-.whatsapp-channel-link:hover {
-    opacity: 0.85;
-    transform: translateX(4px);
-}
+        .whatsapp-channel-link {
+            color: #25D366 !important;
+            font-weight: 600;
+            display: inline-block;
+        }
 
-/* Contacts & Emails Subheadings */
-.contact-group {
-    margin-bottom: 16px;
-}
+        .whatsapp-channel-link:hover {
+            opacity: 0.85;
+            transform: translateX(4px);
+        }
 
-.contact-group h5 {
-    color: #ffffff;
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin: 0 0 6px 0;
-    opacity: 0.9;
-}
+        .contact-group { margin-bottom: 16px; }
 
-.contact-group a {
-    display: block;
-    color: #94a3b8;
-    font-size: 0.88rem;
-    margin-bottom: 4px;
-}
+        .contact-group h5 {
+            color: #ffffff;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0 0 6px 0;
+            opacity: 0.9;
+        }
 
-.contact-group a:hover {
-    color: #ffffff;
-}
+        .contact-group a {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-bottom: 4px;
+        }
 
-/* Bottom Bar */
-.footer-bottom {
-    max-width: 1200px;
-    margin: 40px auto 0 auto;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    text-align: center;
-    font-size: 13px;
-    color: #64748b;
-}
+        .contact-group a:hover { color: #ffffff; }
 
-/* Responsive Styles */
-@media (max-width: 900px) {
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-    }
-}
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+        }
 
-@media (max-width: 550px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-}
-</style>
+        @media (min-width: 768px) {
+            .auth-container { margin: 56px auto; }
+            header { height: 56px; padding: 0 28px; }
+        }
+
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -232,8 +221,7 @@
 <div class="auth-container">
     <div class="auth-form-view">
         <h2 id="auth-title">Welcome Back</h2>
-        
-        <!-- STEP INDICATOR FOR RESET OTP FLOW -->
+
         <div id="otp-step-indicator" class="step-indicator" style="display: none;">Step 1 of 2: Enter Email</div>
 
         <div id="name-field-group" style="display: none;">
@@ -248,7 +236,6 @@
             <input type="email" id="auth-email" placeholder="student@example.com">
         </div>
 
-        <!-- OTP CODE FIELD FOR RESET STEP 2 -->
         <div id="otp-field-group" style="display: none;">
             <div class="input-group">
                 <label>6-Digit OTP Code</label>
@@ -265,7 +252,7 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     </div>
                 </div>
-                
+
                 <div style="text-align: right; margin-top: 5px;" id="forgot-link-container">
                     <span id="forgot-pass-link" style="font-size: 0.75rem; color: var(--blue); cursor: pointer; font-weight: 600;">Forgot Password?</span>
                 </div>
@@ -314,38 +301,35 @@
     </div>
 </div>
 
-    <footer class="footer">
+<footer class="footer">
     <div class="footer-grid">
-        <!-- Column 1: About -->
         <div class="footer-col">
             <p class="footer-about">
                We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
             </p>
         </div>
 
-        <!-- Column 2: Quick Links -->
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
                 <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
                 <li><a href="brochure.html">Access JAMB Brochure</a></li>
                 <li><a href="videos.html">Video Lessons</a></li>
                 <li><a href="pdf.html">Past Questions & PDFs</a></li>
                 <li><a href="cbt.html">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="groups.html">Classroom</a></li>
                 <li><a href="location.html">Tutorial Centres</a></li>
             </ul>
         </div>
 
-        <!-- Column 3: Support & Community -->
         <div class="footer-col">
             <h4>Support & Community</h4>
-            
+
             <div class="contact-group">
-                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
-                   target="_blank" 
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u"
+                   target="_blank"
                    class="whatsapp-channel-link">
                    Join our WhatsApp Channel
                 </a>
@@ -364,7 +348,6 @@
             </div>
         </div>
 
-        <!-- Column 4: Social Links -->
         <div class="footer-col social-links">
             <h4>Follow Us</h4>
             <ul class="footer-links-list">
@@ -378,14 +361,14 @@
     <div class="footer-bottom">
         &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
-    </footer>
-    
+</footer>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { 
-        getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
-        updateProfile, GoogleAuthProvider, signInWithPopup, 
-        onAuthStateChanged 
+    import {
+        getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+        updateProfile, GoogleAuthProvider, signInWithPopup,
+        onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     import {
@@ -395,7 +378,6 @@
         serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // LIVE RENDER BACKEND URL
     const RENDER_BASE_URL = "https://flexieduconsult-email-server.onrender.com";
 
     const firebaseConfig = {
@@ -409,92 +391,58 @@
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    /*
-     * Creates or repairs profiles/{uid}.
-     * merge:true preserves existing custom profile fields.
-     */
     async function ensureUserProfile(user) {
         if (!user || !user.uid) return;
 
         const profileRef = doc(db, "profiles", user.uid);
-
         const displayName = (user.displayName || "").trim();
         const email = user.email || "";
         const photoURL = user.photoURL || "";
 
         await setDoc(profileRef, {
             uid: user.uid,
-
             displayName: displayName,
             name: displayName,
             userName: displayName,
             username: displayName,
             fullName: displayName,
-
             email: email,
             photoURL: photoURL,
-
             unreadCount: 0,
-
             updatedAt: serverTimestamp(),
             createdAt: serverTimestamp()
-        }, {
-            merge: true
-        });
+        }, { merge: true });
     }
 
-    /*
-     * Runs for new users, existing users and Google users.
-     * Existing accounts with no profiles/{uid} document are
-     * automatically repaired when they log in.
-     */
     onAuthStateChanged(auth, async (user) => {
         if (!user) return;
 
         try {
             await ensureUserProfile(user);
 
-            const urlParams =
-                new URLSearchParams(window.location.search);
-
-            const redirect =
-                urlParams.get("redirect");
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get("redirect");
 
             if (redirect) {
-                window.location.replace(
-                    decodeURIComponent(redirect)
-                );
+                window.location.replace(decodeURIComponent(redirect));
             } else {
-                window.location.replace("index.html");
+                window.location.replace("index.php");
             }
 
         } catch (error) {
-            console.error(
-                "Unable to create/update user profile:",
-                error
-            );
+            console.error("Unable to create/update user profile:", error);
 
-            /*
-             * Authentication succeeded even if Firestore failed.
-             * Continue with the normal navigation.
-             */
-            const urlParams =
-                new URLSearchParams(window.location.search);
-
-            const redirect =
-                urlParams.get("redirect");
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get("redirect");
 
             if (redirect) {
-                window.location.replace(
-                    decodeURIComponent(redirect)
-                );
+                window.location.replace(decodeURIComponent(redirect));
             } else {
-                window.location.replace("index.html");
+                window.location.replace("index.php");
             }
         }
     });
 
-    // DOM References
     const statusBox = document.getElementById('status-box');
     const mainBtn = document.getElementById('main-auth-btn');
     const passInput = document.getElementById('auth-pass');
@@ -503,32 +451,31 @@
     const emailInput = document.getElementById('auth-email');
     const nameInput = document.getElementById('auth-name');
     const otpInput = document.getElementById('auth-otp');
-    
+
     const eyeIcon = document.getElementById('eye-icon');
     const confirmEyeIcon = document.getElementById('confirm-eye-icon');
-    
+
     const nameFieldGroup = document.getElementById('name-field-group');
     const passwordFieldGroup = document.getElementById('password-field-group');
     const confirmPasswordFieldGroup = document.getElementById('confirm-password-field-group');
     const emailFieldGroup = document.getElementById('email-field-group');
     const otpFieldGroup = document.getElementById('otp-field-group');
     const otpStepIndicator = document.getElementById('otp-step-indicator');
-    
+
     const forgotLinkContainer = document.getElementById('forgot-link-container');
     const googleBlock = document.getElementById('google-block');
     const authTitle = document.getElementById('auth-title');
     const toggleArea = document.getElementById('toggle-area');
     const forgotPassLink = document.getElementById('forgot-pass-link');
-    
+
     const strengthMeter = document.getElementById('strength-meter');
     const strengthFill = document.getElementById('strength-fill');
     const strengthText = document.getElementById('strength-text');
     const reqBox = document.getElementById('requirements-box');
 
     let currentView = "login";
-    let resetStep = 1; // 1 = Request OTP, 2 = Verify OTP & Update Password
+    let resetStep = 1;
 
-    // View Switching Logic
     const switchView = (view) => {
         currentView = view;
         resetStep = 1;
@@ -537,7 +484,7 @@
         confirmPassInput.value = "";
         otpInput.value = "";
         passLabel.innerText = "Password";
-        
+
         strengthMeter.style.display = "none";
         reqBox.style.display = "none";
         otpStepIndicator.style.display = "none";
@@ -553,7 +500,7 @@
             googleBlock.style.display = "block";
             mainBtn.innerText = "LOGIN";
             toggleArea.innerHTML = `Don't have an account? <span id="toggle-action" style="color:var(--green); font-weight:bold; cursor:pointer;">Sign Up</span>`;
-        } 
+        }
         else if (view === "signup") {
             authTitle.innerText = "Create Account";
             nameFieldGroup.style.display = "block";
@@ -563,7 +510,7 @@
             googleBlock.style.display = "block";
             mainBtn.innerText = "SIGN UP";
             toggleArea.innerHTML = `Already have an account? <span id="toggle-action" style="color:var(--green); font-weight:bold; cursor:pointer;">Login</span>`;
-        } 
+        }
         else if (view === "forgot") {
             authTitle.innerText = "Reset Password";
             otpStepIndicator.innerText = "Step 1 of 2: Enter Email";
@@ -577,24 +524,21 @@
             toggleArea.innerHTML = `Back to <span id="toggle-action" style="color:var(--green); font-weight:bold; cursor:pointer;">Login</span>`;
         }
 
-        // Re-attach toggle click handler
         document.getElementById('toggle-action').onclick = () => {
             if (currentView === "login") switchView("signup");
             else switchView("login");
         };
     };
 
-    // View Navigation Binds
     forgotPassLink.onclick = () => switchView("forgot");
     document.getElementById('toggle-action').onclick = () => switchView("signup");
 
-    // Eye Toggles
     eyeIcon.onclick = () => {
         const isProtected = passInput.type === "password";
         passInput.type = isProtected ? "text" : "password";
         eyeIcon.style.color = isProtected ? "var(--blue)" : "#888";
     };
-    
+
     confirmEyeIcon.onclick = () => {
         const isProtected = confirmPassInput.type === "password";
         confirmPassInput.type = isProtected ? "text" : "password";
@@ -603,11 +547,10 @@
 
     const showStatus = (msg, type) => {
         statusBox.innerText = msg;
-        statusBox.className = type; 
+        statusBox.className = type;
         statusBox.style.display = "block";
     };
 
-    // Google Sign-In
     document.getElementById('google-auth-btn').onclick = async () => {
         try {
             await signInWithPopup(auth, googleProvider);
@@ -616,7 +559,6 @@
         }
     };
 
-    // Password Validation
     passInput.addEventListener('input', () => {
         if (currentView !== "signup") {
             strengthMeter.style.display = "none";
@@ -672,7 +614,6 @@
         }
     });
 
-    // Central Submission Handler
     mainBtn.onclick = async () => {
         const email = emailInput.value.trim();
         const pass = passInput.value;
@@ -683,20 +624,18 @@
         if (!email) return showStatus("Please enter your email address.", "error");
 
         try {
-            // 1. LOGIN VIEW
             if (currentView === "login") {
                 if (!pass) return showStatus("Please enter your password.", "error");
                 mainBtn.disabled = true;
                 showStatus("Logging in...", "info");
                 await signInWithEmailAndPassword(auth, email, pass);
-                window.location.href = "index.html";
-            } 
-            // 2. SIGNUP VIEW
+                window.location.href = "index.php";
+            }
             else if (currentView === "signup") {
                 if (!pass) return showStatus("Please enter your password.", "error");
                 const name = nameInput.value.trim();
                 if (!name) return showStatus("Please enter your full name.", "error");
-                
+
                 const passesAllRules = pass.length >= 6 && /[a-z]/.test(pass) && /[A-Z]/.test(pass) && /[0-9]/.test(pass);
                 if (!passesAllRules) return showStatus("Please fulfill all password criteria rules.", "error");
 
@@ -706,19 +645,12 @@
                 showStatus("Creating account...", "info");
                 const res = await createUserWithEmailAndPassword(auth, email, pass);
 
-                await updateProfile(res.user, {
-                    displayName: name
-                });
-
-                // Immediately create profiles/{uid}.
+                await updateProfile(res.user, { displayName: name });
                 await ensureUserProfile(res.user);
 
-                window.location.href = "index.html";
-            } 
-            // 3. FORGOT PASSWORD (OTP FLOW)
+                window.location.href = "index.php";
+            }
             else if (currentView === "forgot") {
-                
-                // --- STEP 1: SEND OTP ---
                 if (resetStep === 1) {
                     mainBtn.disabled = true;
                     showStatus("Sending OTP code to your email...", "info");
@@ -743,8 +675,7 @@
                     } else {
                         showStatus(data.message || "Failed to send OTP.", "error");
                     }
-                } 
-                // --- STEP 2: VERIFY OTP & RESET PASSWORD ---
+                }
                 else if (resetStep === 2) {
                     if (otp.length !== 6) return showStatus("Please enter the 6-digit OTP code.", "error");
                     if (!pass || pass.length < 6) return showStatus("New password must be at least 6 characters.", "error");
@@ -763,9 +694,7 @@
 
                     if (response.ok && data.success) {
                         showStatus("Password updated successfully! Redirecting to login...", "success");
-                        setTimeout(() => {
-                            switchView("login");
-                        }, 2500);
+                        setTimeout(() => { switchView("login"); }, 2500);
                     } else {
                         showStatus(data.message || "Failed to reset password.", "error");
                     }
@@ -776,8 +705,8 @@
             showStatus(e.message.replace('auth/', '').replace(/-/g, ' '), "error");
         }
     };
-   
-    document.getElementById('current-year').textContent = new Date().getFullYear();    
+
+    document.getElementById('current-year').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
