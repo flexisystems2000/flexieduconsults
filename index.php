@@ -1059,7 +1059,7 @@ async function loadMotivationalQuote() {
 
             slide.innerHTML = `
                 <div class="quote-content-box">
-                    <blockquote style="color: \( {data.textColor || '#ffffff'};">" \){escapeHtml(data.text)}"</blockquote>
+                    <blockquote style="color: ${data.textColor || '#ffffff'};">"${escapeHtml(data.text)}"</blockquote>
                     <cite style="color: ${data.authorColor || '#f1f5f9'};">— ${escapeHtml(data.author)}</cite>
                 </div>
             `;
