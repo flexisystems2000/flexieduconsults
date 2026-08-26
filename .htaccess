@@ -4,36 +4,41 @@
     RewriteBase /
 
     # ------------------------------------------------------------
-    # Legacy .html → .php (301 permanent)
+    # Legacy .html → .php  (ONLY pages that already exist as .php)
     # ------------------------------------------------------------
-    RewriteRule ^index\.html$           /index.php [R=301,L]
-    RewriteRule ^login\.html$           /login.php [R=301,L]
-    RewriteRule ^profile\.html$         /profile.php [R=301,L]
-    RewriteRule ^videos\.html$          /videos.php [R=301,L]
-    RewriteRule ^brochure\.html$        /brochure.php [R=301,L]
-    RewriteRule ^syllabus\.html$        /syllabus.php [R=301,L]
-    RewriteRule ^cbt\.html$             /cbt.php [R=301,L]
-    RewriteRule ^pdf\.html$             /pdf.php [R=301,L]
-    RewriteRule ^location\.html$        /location.php [R=301,L]
-    RewriteRule ^purchase\.html$        /purchase.php [R=301,L]
-    RewriteRule ^exam\.html$            /exam.php [R=301,L]
-    RewriteRule ^results\.html$         /results.php [R=301,L]
-    RewriteRule ^corrections\.html$     /corrections.php [R=301,L]
-    RewriteRule ^requirements\.html$    /requirements.php [R=301,L]
-    RewriteRule ^page2\.html$           /page2.php [R=301,L]
-    RewriteRule ^page2_putme\.html$     /page2_putme.php [R=301,L]
-    RewriteRule ^page2_waec\.html$      /page2_waec.php [R=301,L]
-    RewriteRule ^page3\.html$           /page3.php [R=301,L]
-    RewriteRule ^groups\.html$          /groups.php [R=301,L]
-    RewriteRule ^chat\.html$            /chat.php [R=301,L]
-    RewriteRule ^chat_enter\.html$      /chat_enter.php [R=301,L]
-    RewriteRule ^chat_info\.html$       /chat_info.php [R=301,L]
-    RewriteRule ^entergroup\.html$      /entergroup.php [R=301,L]
-    RewriteRule ^ginfo\.html$           /ginfo.php [R=301,L]
-    RewriteRule ^contactsupport\.html$  /contactsupport.php [R=301,L]
-    RewriteRule ^prep\.html$            /prep.php [R=301,L]
-    RewriteRule ^news-view\.html$       /news-view.php [R=301,L]
-    RewriteRule ^classroom\.html$       /groups.php [R=301,L]
+    RewriteRule ^index\.html$        /index.php [R=301,L]
+    RewriteRule ^login\.html$        /login.php [R=301,L]
+    RewriteRule ^profile\.html$      /profile.php [R=301,L]
+    RewriteRule ^videos\.html$       /videos.php [R=301,L]
+    RewriteRule ^brochure\.html$     /brochure.php [R=301,L]
+    RewriteRule ^syllabus\.html$     /syllabus.php [R=301,L]
+    RewriteRule ^cbt\.html$          /cbt.php [R=301,L]
+    RewriteRule ^pdf\.html$          /pdf.php [R=301,L]
+    RewriteRule ^news-view\.html$    /news-view.php [R=301,L]
+
+    # ------------------------------------------------------------
+    # NOT redirected yet (files still .html on server)
+    # Uncomment each line AFTER you rename that file to .php
+    # ------------------------------------------------------------
+    # RewriteRule ^groups\.html$           /groups.php [R=301,L]
+    # RewriteRule ^classroom\.html$        /groups.php [R=301,L]
+    # RewriteRule ^location\.html$         /location.php [R=301,L]
+    # RewriteRule ^purchase\.html$         /purchase.php [R=301,L]
+    # RewriteRule ^exam\.html$             /exam.php [R=301,L]
+    # RewriteRule ^results\.html$          /results.php [R=301,L]
+    # RewriteRule ^corrections\.html$      /corrections.php [R=301,L]
+    # RewriteRule ^requirements\.html$     /requirements.php [R=301,L]
+    # RewriteRule ^page2\.html$            /page2.php [R=301,L]
+    # RewriteRule ^page2_putme\.html$      /page2_putme.php [R=301,L]
+    # RewriteRule ^page2_waec\.html$       /page2_waec.php [R=301,L]
+    # RewriteRule ^page3\.html$            /page3.php [R=301,L]
+    # RewriteRule ^chat\.html$             /chat.php [R=301,L]
+    # RewriteRule ^chat_enter\.html$       /chat_enter.php [R=301,L]
+    # RewriteRule ^chat_info\.html$        /chat_info.php [R=301,L]
+    # RewriteRule ^entergroup\.html$       /entergroup.php [R=301,L]
+    # RewriteRule ^ginfo\.html$            /ginfo.php [R=301,L]
+    # RewriteRule ^contactsupport\.html$   /contactsupport.php [R=301,L]
+    # RewriteRule ^prep\.html$             /prep.php [R=301,L]
 
     # ------------------------------------------------------------
     # Don't rewrite real files or directories
@@ -44,15 +49,10 @@
 
     # ------------------------------------------------------------
     # Clean news URLs
-    # /news/{slug}  →  news-view.php?slug={slug}
-    # /news/id/{id} →  news-view.php?id={id}
     # ------------------------------------------------------------
     RewriteRule ^news/([a-zA-Z0-9][a-zA-Z0-9_-]*)/?$   news-view.php?slug=$1 [L,QSA]
     RewriteRule ^news/id/([a-zA-Z0-9_-]+)/?$            news-view.php?id=$1 [L,QSA]
 </IfModule>
 
-# Prefer PHP homepage when both exist
 DirectoryIndex index.php index.html
-
-# Optional: block directory listing
 Options -Indexes
