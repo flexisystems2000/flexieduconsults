@@ -21,7 +21,7 @@
     # Uncomment each line AFTER you rename that file to .php
     # ------------------------------------------------------------
     # RewriteRule ^groups\.html$           /groups.php [R=301,L]
-    # RewriteRule ^classroom\.html$        /groups.php [R=301,L]
+    # RewriteRule ^classroom\.html$        /groups.html [R=301,L]
     # RewriteRule ^location\.html$         /location.php [R=301,L]
     # RewriteRule ^purchase\.html$         /purchase.php [R=301,L]
     # RewriteRule ^exam\.html$             /exam.php [R=301,L]
