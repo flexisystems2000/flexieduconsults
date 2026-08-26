@@ -21,7 +21,10 @@ if ($response) {
             $docNameParts = explode('/', $doc['name']);
             $docId = end($docNameParts);
             
-            $targetUrl = $slug ? "news-view.php?slug=" . urlencode($slug) : "news-view.php?id=" . urlencode($docId);
+            // Clean URLs: /news/{slug} or /news/id/{docId}
+            $targetUrl = $slug
+                ? "/news/" . rawurlencode($slug)
+                : "/news/id/" . rawurlencode($docId);
 
             $serverNewsHtml .= '<tr onclick="window.location.href=\'' . $targetUrl . '\'">';
             $serverNewsHtml .= '<td style="width:80px;"><img src="' . htmlspecialchars($imageUrl) . '" alt="' . htmlspecialchars($title) . '" class="td-img"></td>';
@@ -974,7 +977,7 @@ async function loadMotivationalQuote() {
 
             slide.innerHTML = `
                 <div class="quote-content-box">
-                    <blockquote style="color: ${data.textColor || '#ffffff'};">"${escapeHtml(data.text)}"</blockquote>
+                    <blockquote style="color: \( {data.textColor || '#ffffff'};">" \){escapeHtml(data.text)}"</blockquote>
                     <cite style="color: ${data.authorColor || '#f1f5f9'};">— ${escapeHtml(data.author)}</cite>
                 </div>
             `;
