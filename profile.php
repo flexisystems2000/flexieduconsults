@@ -3,25 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <title>My Profile | Flexi Tutors</title>
    <style>
-        :root { --blue: #003366; --green: #2E8B57; --bg: #f4f7f6; --white: #ffffff; --yellow: #FFD700; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        :root {
+            --blue: #003366;
+            --green: #2E8B57;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+            --yellow: #FFD700;
+            --radius: 12px;
+            --shadow: 0 4px 18px rgba(0,0,0,0.06);
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 0; }
 
-        header { 
-            background: var(--blue); color: white; height: 1cm; 
-            display: flex; align-items: center; padding: 0 15px; 
+        header {
+            background: var(--blue); color: white; height: 52px;
+            display: flex; align-items: center; padding: 0 20px;
             border-bottom: 4px solid var(--green);
             position: sticky; top: 0; z-index: 1000;
         }
         .back-btn { color: white; text-decoration: none; font-size: 0.9rem; font-weight: bold; }
 
-        .profile-container { max-width: 600px; margin: 20px auto; width: 95%; padding-bottom: 40px; }
-        
-        /* PROFILE HEADER */
-        .profile-card { 
-            background: var(--white); border-radius: 15px; overflow: hidden; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center;
+        .profile-container {
+            max-width: 640px;
+            margin: 24px auto;
+            width: 94%;
+            padding-bottom: 40px;
+        }
+
+        .profile-card {
+            background: var(--white); border-radius: 15px; overflow: hidden;
+            box-shadow: var(--shadow); text-align: center;
             padding-bottom: 20px; margin-bottom: 15px;
         }
         .profile-cover { height: 80px; background: linear-gradient(45deg, var(--blue), var(--green)); }
@@ -30,34 +44,46 @@
         .user-name { margin: 10px 0 5px 0; color: var(--blue); font-size: 1.3rem; }
         .user-email { color: #888; font-size: 0.85rem; margin-bottom: 15px; }
 
-        /* SECTION CARDS */
-        .section-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .section-title { font-size: 1rem; color: var(--blue); font-weight: bold; border-left: 4px solid var(--green); padding-left: 10px; margin-bottom: 15px; }
+        .section-card {
+            background: white; border-radius: var(--radius); padding: 20px;
+            margin-bottom: 15px; box-shadow: var(--shadow);
+        }
+        .section-title {
+            font-size: 1rem; color: var(--blue); font-weight: bold;
+            border-left: 4px solid var(--green); padding-left: 10px; margin-bottom: 15px;
+        }
 
-        /* FORM STYLES FOR ACADEMIC GOALS */
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--blue); margin-bottom: 5px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #d1d9e6; border-radius: 8px; font-family: inherit; font-size: 0.9rem; box-sizing: border-box; }
+        .form-control {
+            width: 100%; padding: 10px; border: 1px solid #d1d9e6; border-radius: 8px;
+            font-family: inherit; font-size: 0.9rem;
+        }
         .form-control:focus { outline: none; border-color: var(--green); }
         textarea.form-control { resize: vertical; min-height: 80px; }
-        .btn-save { background: var(--green); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 0.9rem; transition: background 0.2s; }
+        .btn-save {
+            background: var(--green); color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 0.9rem;
+        }
         .btn-save:hover { background: #236c43; }
+        .btn-save:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        /* TOAST NOTIFICATION */
-        #status-toast { position: fixed; bottom: 20px; right: 20px; background: var(--green); color: white; padding: 12px 20px; border-radius: 8px; font-size: 0.85rem; display: none; z-index: 10000; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        #status-toast {
+            position: fixed; bottom: 20px; right: 20px; background: var(--green); color: white;
+            padding: 12px 20px; border-radius: 8px; font-size: 0.85rem; display: none;
+            z-index: 10000; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
 
-        /* GROUPS JOINED STYLES (CLICKABLE) */
         .group-list { display: flex; flex-wrap: wrap; gap: 8px; }
-        .group-tag { 
-            background: #eef2f7; color: var(--blue); padding: 8px 14px; 
-            border-radius: 20px; font-size: 0.8rem; font-weight: 600; 
+        .group-tag {
+            background: #eef2f7; color: var(--blue); padding: 8px 14px;
+            border-radius: 20px; font-size: 0.8rem; font-weight: 600;
             border: 1px solid #d1d9e6; cursor: pointer; transition: 0.2s;
             display: flex; align-items: center; gap: 5px;
         }
         .group-tag:hover { background: var(--green); color: white; border-color: var(--green); transform: translateY(-2px); }
         .group-tag::after { content: '❯'; font-size: 0.6rem; opacity: 0.5; }
 
-        /* CBT PERFORMANCE STYLES */
         .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .stat-box { background: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; border-bottom: 3px solid #eee; }
         .stat-val { display: block; font-size: 1.4rem; font-weight: bold; color: var(--blue); }
@@ -67,9 +93,11 @@
         .performance-table th { text-align: left; color: #999; padding-bottom: 8px; font-weight: 500; }
         .performance-table td { padding: 12px 0; border-top: 1px solid #f0f0f0; }
 
-        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999;
+        }
 
-        /* MODERN FOOTER STYLES */
         .footer {
             background: linear-gradient(135deg, #011627 0%, #032038 100%);
             color: #e2e8f0;
@@ -114,13 +142,25 @@
         .footer-links-list li { margin-bottom: 10px; }
         .footer a { color: #cbd5e0; text-decoration: none; transition: all 0.25s ease; }
         .footer-links-list a:hover { color: var(--yellow, #fbbf24); transform: translateX(4px); display: inline-block; }
-        .whatsapp-channel-link { color: #25D366 !important; font-weight: 600; display: inline-block; transition: transform 0.25s ease, opacity 0.25s ease; }
+        .whatsapp-channel-link { color: #25D366 !important; font-weight: 600; display: inline-block; }
         .whatsapp-channel-link:hover { opacity: 0.85; transform: translateX(4px); }
         .contact-group { margin-bottom: 16px; }
         .contact-group h5 { color: #ffffff; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 6px 0; opacity: 0.9; }
         .contact-group a { display: block; color: #94a3b8; font-size: 0.88rem; margin-bottom: 4px; }
         .contact-group a:hover { color: #ffffff; }
-        .footer-bottom { max-width: 1200px; margin: 40px auto 0 auto; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center; font-size: 13px; color: #64748b; }
+        .footer-bottom {
+            max-width: 1200px; margin: 40px auto 0 auto; padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center; font-size: 13px; color: #64748b;
+        }
+
+        @media (min-width: 768px) {
+            .profile-container { max-width: 720px; margin: 32px auto; }
+            header { height: 56px; padding: 0 28px; }
+            .section-card { padding: 24px 28px; }
+            .profile-cover { height: 100px; }
+            .profile-img { width: 100px; height: 100px; }
+        }
 
         @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; } }
         @media (max-width: 550px) { .footer-grid { grid-template-columns: 1fr; gap: 28px; } }
@@ -132,21 +172,21 @@
 <div id="status-toast"></div>
 
 <header>
-    <a href="index.html" class="back-btn">❮ Back to Portal</a>
+    <a href="index.php" class="back-btn">❮ Back to Portal</a>
 </header>
 
 <div class="profile-container">
     <div class="profile-card">
         <div class="profile-cover"></div>
         <div class="avatar-container">
-            <img id="display-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" 
-                 class="profile-img" style="cursor:pointer" onclick="document.getElementById('pic-upload').click()">
+            <img id="display-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                 class="profile-img" style="cursor:pointer" alt="Profile picture"
+                 onclick="document.getElementById('pic-upload').click()">
         </div>
         <h2 id="display-name" class="user-name">---</h2>
         <p id="display-email" class="user-email">---</p>
     </div>
 
-    <!-- NEW SECTION: ACADEMIC GOALS & BIO -->
     <div class="section-card">
         <div class="section-title">Academic Profile & Goals</div>
         <form id="academic-form">
@@ -217,14 +257,14 @@
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
                 <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
                 <li><a href="brochure.html">Access JAMB Brochure</a></li>
                 <li><a href="videos.html">Video Lessons</a></li>
                 <li><a href="pdf.html">Past Questions & PDFs</a></li>
                 <li><a href="cbt.html">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="groups.html">Classroom</a></li>
                 <li><a href="location.html">Tutorial Centres</a></li>
             </ul>
         </div>
@@ -263,18 +303,18 @@
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy"; 
-    const CLOUDINARY_UPLOAD_PRESET = "my_preset_123"; 
+    const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy";
+    const CLOUDINARY_UPLOAD_PRESET = "my_preset_123";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
-        authDomain: "flexieduconsult.com.ng",
+        authDomain: "auth.flexieduconsult.com.ng",
         projectId: "waec2026jamb2027",
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app); 
+    const db = getFirestore(app);
 
     let currentUid = null;
     let currentPhotoURL = "";
@@ -284,7 +324,6 @@
             currentUid = user.uid;
             document.getElementById('display-email').innerText = user.email;
 
-            // 1. Fetch Profile Data (Name, Image, Target Exam, Bio/Goals)
             try {
                 let userDoc = await getDoc(doc(db, "profiles", currentUid));
                 if (!userDoc.exists()) {
@@ -314,30 +353,28 @@
                 console.error("Error loading user profile:", e);
             }
 
-            // 2. Fetch CBT Performance
             try {
                 const q = query(collection(db, "leaderboard"), where("name", "==", user.displayName));
                 const snapshot = await getDocs(q);
                 const tbody = document.getElementById('performance-body');
                 tbody.innerHTML = "";
-                
+
                 let totalScore = 0, count = 0;
                 snapshot.forEach(docSnap => {
                     const r = docSnap.data();
                     totalScore += r.score; count++;
                     const date = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleDateString() : "N/A";
-                    tbody.innerHTML += `<tr><td>${r.exam || 'Test'}</td><td>${r.score}%</td><td>${date}</td></tr>`;
+                    tbody.innerHTML += `<tr><td>\( {r.exam || 'Test'}</td><td> \){r.score}%</td><td>${date}</td></tr>`;
                 });
 
                 document.getElementById('exams-taken').innerText = count;
                 document.getElementById('avg-score').innerText = count > 0 ? Math.round(totalScore/count) + "%" : "0%";
             } catch (e) { console.error("Performance load error:", e); }
 
-            // 3. Fetch Joined Groups
             try {
                 const groupContainer = document.getElementById('group-container');
                 groupContainer.innerHTML = "";
-                
+
                 const groupsSnap = await getDocs(collection(db, "groups"));
                 let found = false;
 
@@ -346,7 +383,7 @@
                     if (memberDoc.exists()) {
                         found = true;
                         groupContainer.innerHTML += `
-                            <div class="group-tag" onclick="window.location.href='classroom.html'">
+                            <div class="group-tag" onclick="window.location.href='groups.html'">
                                 ${gDoc.data().name}
                             </div>`;
                     }
@@ -359,11 +396,11 @@
 
             document.getElementById('loading-overlay').style.display = "none";
         } else {
-            window.location.href = "login.html";
+            // Not logged in → login.php (with redirect back here after auth)
+            window.location.href = "login.php?redirect=" + encodeURIComponent("profile.php");
         }
     });
 
-    // Save Academic Goals and Profile Info
     document.getElementById('academic-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!currentUid) return;
@@ -396,7 +433,6 @@
         }
     });
 
-    // Image Upload Logic
     document.getElementById('pic-upload').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -418,8 +454,8 @@
             } else {
                 throw new Error("Upload failed");
             }
-        } catch (err) { 
-            showToast("Upload failed.", true); 
+        } catch (err) {
+            showToast("Upload failed.", true);
         }
     });
 
@@ -430,7 +466,7 @@
         toast.style.display = 'block';
         setTimeout(() => { toast.style.display = 'none'; }, 3500);
     }
-    
+
     document.getElementById('current-year').textContent = new Date().getFullYear();
 </script>
 </body>
