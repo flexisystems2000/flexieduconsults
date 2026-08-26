@@ -16,12 +16,14 @@
     RewriteRule ^pdf\.html$          /pdf.php [R=301,L]
     RewriteRule ^news-view\.html$    /news-view.php [R=301,L]
 
+    # classroom.html was never a real file — send to groups
+    RewriteRule ^classroom\.html$    /groups.html [R=301,L]
+
     # ------------------------------------------------------------
     # NOT redirected yet (files still .html on server)
     # Uncomment each line AFTER you rename that file to .php
     # ------------------------------------------------------------
     # RewriteRule ^groups\.html$           /groups.php [R=301,L]
-    # RewriteRule ^classroom\.html$        /groups.html [R=301,L]
     # RewriteRule ^location\.html$         /location.php [R=301,L]
     # RewriteRule ^purchase\.html$         /purchase.php [R=301,L]
     # RewriteRule ^exam\.html$             /exam.php [R=301,L]
@@ -39,6 +41,8 @@
     # RewriteRule ^ginfo\.html$            /ginfo.php [R=301,L]
     # RewriteRule ^contactsupport\.html$   /contactsupport.php [R=301,L]
     # RewriteRule ^prep\.html$             /prep.php [R=301,L]
+    # After groups.html → groups.php, change classroom line above to:
+    # RewriteRule ^classroom\.html$        /groups.php [R=301,L]
 
     # ------------------------------------------------------------
     # Don't rewrite real files or directories
