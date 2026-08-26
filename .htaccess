@@ -1,0 +1,18 @@
+# Flexi Educational Consult — clean news URLs
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Don't rewrite real files or directories
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # /news/{slug} → news-view.php?slug={slug}
+    RewriteRule ^news/([a-zA-Z0-9][a-zA-Z0-9_-]*)/?$ news-view.php?slug=$1 [L,QSA]
+
+    # Fallback for articles without a slug: /news/id/{docId}
+    RewriteRule ^news/id/([a-zA-Z0-9_-]+)/?$ news-view.php?id=$1 [L,QSA]
+</IfModule>
+
+DirectoryIndex index.php index.html
