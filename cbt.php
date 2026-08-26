@@ -14,6 +14,7 @@
             --green: #2E8B57;
             --gray: #f8f9fa;
             --text: #333;
+            --yellow: #FFD700;
         }
 
         * {
@@ -28,12 +29,11 @@
             color: var(--text);
         }
 
-        /* HEADER */
         header {
             background: var(--blue);
             color: white;
             padding: 12px 15px;
-            border-bottom: 10px solid var(--green);
+            border-bottom: 4px solid var(--green);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
@@ -63,36 +63,37 @@
             font-weight: 700;
         }
 
-        /* MAIN CONTAINER */
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             margin: 0 auto;
             padding: 15px;
         }
 
-        /* AD BANNERS */
-        .ad-banner{
-            width:100%;
-            background:white;
-            border-radius:8px;
-            overflow:hidden;
-            margin-bottom:12px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:5px;
+        @media (min-width: 768px) {
+            .container { max-width: 600px; margin-top: 12px; }
         }
 
-        .ad-banner img{
-            width:100%;
-            height:auto;
-            display:block;
-            object-fit:contain;
-            border-radius:6px;
+        .ad-banner {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
         }
 
-        /* WELCOME */
+        .ad-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
         .welcome-msg {
             text-align: center;
             margin-bottom: 25px;
@@ -110,7 +111,6 @@
             margin-top: 5px;
         }
 
-        /* EXAM CARDS */
         .exam-card {
             display: flex;
             align-items: center;
@@ -121,9 +121,10 @@
             cursor: pointer;
             border: 1px solid #eee;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, background 0.15s;
         }
 
+        .exam-card:hover { background: #f8faf9; }
         .exam-card:active {
             transform: scale(0.97);
             background: #f0f7ff;
@@ -139,9 +140,7 @@
             flex-shrink: 0;
         }
 
-        .card-info {
-            flex-grow: 1;
-        }
+        .card-info { flex-grow: 1; }
 
         .card-info b {
             display: block;
@@ -162,13 +161,12 @@
             font-size: 1.1rem;
         }
 
-        /* MODERN FOOTER STYLES */
         .footer {
             background: linear-gradient(135deg, #011627 0%, #032038 100%);
             color: #e2e8f0;
             padding: 60px 20px 30px 20px;
             margin-top: 60px;
-            border-top: 4px solid var(--green, #22c55e);
+            border-top: 4px solid var(--green);
             font-size: 14px;
         }
 
@@ -180,9 +178,8 @@
             margin: 0 auto;
         }
 
-        /* Headings */
         .footer h4 {
-            color: var(--yellow, #fbbf24);
+            color: var(--yellow);
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1.2px;
@@ -198,7 +195,7 @@
             bottom: 0;
             width: 24px;
             height: 2px;
-            background: var(--yellow, #fbbf24);
+            background: var(--yellow);
             opacity: 0.7;
             border-radius: 2px;
         }
@@ -209,16 +206,13 @@
             margin: 0;
         }
 
-        /* Links List */
         .footer-links-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        .footer-links-list li {
-            margin-bottom: 10px;
-        }
+        .footer-links-list li { margin-bottom: 10px; }
 
         .footer a {
             color: #cbd5e0;
@@ -227,17 +221,15 @@
         }
 
         .footer-links-list a:hover {
-            color: var(--yellow, #fbbf24);
+            color: var(--yellow);
             transform: translateX(4px);
             display: inline-block;
         }
 
-        /* WhatsApp Channel Text Link */
         .whatsapp-channel-link {
             color: #25D366 !important;
             font-weight: 600;
             display: inline-block;
-            transition: transform 0.25s ease, opacity 0.25s ease;
         }
 
         .whatsapp-channel-link:hover {
@@ -245,10 +237,7 @@
             transform: translateX(4px);
         }
 
-        /* Contacts & Emails Subheadings */
-        .contact-group {
-            margin-bottom: 16px;
-        }
+        .contact-group { margin-bottom: 16px; }
 
         .contact-group h5 {
             color: #ffffff;
@@ -266,11 +255,8 @@
             margin-bottom: 4px;
         }
 
-        .contact-group a:hover {
-            color: #ffffff;
-        }
+        .contact-group a:hover { color: #ffffff; }
 
-        /* Bottom Bar */
         .footer-bottom {
             max-width: 1200px;
             margin: 40px auto 0 auto;
@@ -281,7 +267,6 @@
             color: #64748b;
         }
 
-        /* Responsive Styles */
         @media (max-width: 900px) {
             .footer-grid {
                 grid-template-columns: 1fr 1fr;
@@ -309,7 +294,6 @@
 
 <div class="container">
 
-    <!-- ADS -->
     <div class="ad-banner">
         <img src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg" alt="Advertisement">
     </div>
@@ -318,81 +302,62 @@
         <img src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg" alt="Advertisement">
     </div>
 
-    <!-- WELCOME -->
     <div class="welcome-msg">
         <h2>Select Examination</h2>
         <p>Choose your target simulator to begin</p>
     </div>
 
-    <!-- JAMB -->
     <div class="exam-card" onclick="selectExam('JAMB')">
         <img src="https://i.postimg.cc/651CKsfF/images-(2).jpg" alt="JAMB Logo" class="img-placeholder">
-
         <div class="card-info">
             <b>JAMB CBT Simulator</b>
             <span>Unified Tertiary Matriculation Examination Mode</span>
         </div>
-
         <div class="arrow">›</div>
     </div>
 
-    <!-- POST UTME -->
     <div class="exam-card" onclick="selectExam('POST_UTME')">
         <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Post UTME Logo" class="img-placeholder">
-
         <div class="card-info">
             <b>Post UTME Simulator</b>
             <span>University Screening & Aptitude Practice Mode</span>
         </div>
-
         <div class="arrow">›</div>
     </div>
 
-    <!-- WAEC -->
     <div class="exam-card" onclick="selectExam('WAEC')">
         <img src="https://i.postimg.cc/PxZSpX2Q/images-2.png" alt="WAEC Logo" class="img-placeholder">
-
         <div class="card-info">
             <b>WAEC CBT Simulator</b>
             <span>West African Senior School Certificate Mode</span>
         </div>
-
         <div class="arrow">›</div>
     </div>
 
-    <!-- NECO -->
     <div class="exam-card" onclick="selectExam('NECO')">
         <img src="https://i.postimg.cc/9Xr6RywM/681e17db-dde3-4b21-846b-0c25d3da9ee8.jpg" alt="NECO Logo" class="img-placeholder">
-
         <div class="card-info">
             <b>NECO CBT Simulator</b>
             <span>National Examination Council Practice Mode</span>
         </div>
-
         <div class="arrow">›</div>
     </div>
 
-    <!-- FLEXI -->
     <div class="exam-card" onclick="selectExam('FLEXI')">
         <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Flexi Logo" class="img-placeholder">
-
         <div class="card-info">
             <b>Custom CBT Simulator</b>
             <span>Internal School Mock & Special Assignments</span>
         </div>
-
         <div class="arrow">›</div>
     </div>
 
-    <!-- FLEXI CBT CHALLENGE -->
     <div class="exam-card" onclick="selectExam('CHALLENGE')">
         <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Flexi Challenge Logo" class="img-placeholder">
-
         <div class="card-info">
             <b>Flexi CBT Challenge</b>
             <span>Compete live with peers in national mock tests</span>
         </div>
-
         <div class="arrow">›</div>
     </div>
 
@@ -400,47 +365,41 @@
 
 <footer class="footer">
     <div class="footer-grid">
-        <!-- Column 1: About -->
         <div class="footer-col">
             <p class="footer-about">
                We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
             </p>
         </div>
 
-        <!-- Column 2: Quick Links -->
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
-                <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
-                <li><a href="brochure.html">Access JAMB Brochure</a></li>
-                <li><a href="videos.html">Video Lessons</a></li>
+                <li><a href="syllabus.php">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="brochure.php">Access JAMB Brochure</a></li>
+                <li><a href="videos.php">Video Lessons</a></li>
                 <li><a href="pdf.html">Past Questions & PDFs</a></li>
-                <li><a href="cbt.html">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="cbt.php">CBT Simulator</a></li>
+                <li><a href="groups.html">Classroom</a></li>
                 <li><a href="location.html">Tutorial Centres</a></li>
             </ul>
         </div>
 
-        <!-- Column 3: Support & Community -->
         <div class="footer-col">
             <h4>Support & Community</h4>
-            
             <div class="contact-group">
-                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
-                   target="_blank" 
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u"
+                   target="_blank"
                    class="whatsapp-channel-link">
                    Join our WhatsApp Channel
                 </a>
             </div>
-
             <div class="contact-group">
                 <h5>Contact Us</h5>
                 <a href="tel:+2349034159839">(+234) 903 415 9839</a>
                 <a href="tel:+2347033855206">(+234) 703 385 5206</a>
             </div>
-
             <div class="contact-group">
                 <h5>Email Us</h5>
                 <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
@@ -448,7 +407,6 @@
             </div>
         </div>
 
-        <!-- Column 4: Social Links -->
         <div class="footer-col social-links">
             <h4>Follow Us</h4>
             <ul class="footer-links-list">
@@ -463,14 +421,14 @@
         &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
 </footer>
-    
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
-        authDomain: "flexieduconsult.com.ng",
+        authDomain: "auth.flexieduconsult.com.ng",
         projectId: "waec2026jamb2027",
     };
 
@@ -478,9 +436,8 @@
     const auth = getAuth(app);
 
     window.selectExam = (type) => {
-        // Redirect external challenge
         if (type === 'CHALLENGE') {
-            window.location.href = "https://flexisystems2000.github.io/weeklycbtmock/"; // Replace with your target URL
+            window.location.href = "https://flexisystems2000.github.io/weeklycbtmock/";
             return;
         }
 
@@ -495,7 +452,7 @@
 
         if (type === 'JAMB') {
             window.location.href = "page2.html";
-        } else if (type === 'POST UTME') {
+        } else if (type === 'POST_UTME') {
             window.location.href = "page2_putme.html";
         } else {
             window.location.href = "page2_waec.html";
