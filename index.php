@@ -8,9 +8,7 @@ $response = @file_get_contents($apiUrl);
 if ($response) {
     $data = json_decode($response, true);
     if (isset($data['documents'])) {
-        // Sort documents by timestamp descending if possible, or take first few
         $docs = $data['documents'];
-        // Limit to 5 items for the initial table view
         $count = 0;
         foreach ($docs as $doc) {
             if ($count >= 5) break;
@@ -20,16 +18,15 @@ if ($response) {
             $slug = isset($fields['slug']['stringValue']) ? $fields['slug']['stringValue'] : '';
             $docNameParts = explode('/', $doc['name']);
             $docId = end($docNameParts);
-            
-            // Clean URLs: /news/{slug} or /news/id/{docId}
+
             $targetUrl = $slug
                 ? "/news/" . rawurlencode($slug)
                 : "/news/id/" . rawurlencode($docId);
 
             $serverNewsHtml .= '<tr onclick="window.location.href=\'' . $targetUrl . '\'">';
-            $serverNewsHtml .= '<td style="width:80px;"><img src="' . htmlspecialchars($imageUrl) . '" alt="' . htmlspecialchars($title) . '" class="td-img"></td>';
+            $serverNewsHtml .= '<td style="width:88px;"><img src="' . htmlspecialchars($imageUrl) . '" alt="' . htmlspecialchars($title) . '" class="td-img"></td>';
             $serverNewsHtml .= '<td class="td-title">' . htmlspecialchars($title) . '</td>';
-            $serverNewsHtml .= '<td style="text-align:right;color:#999;">❯</td>';
+            $serverNewsHtml .= '<td class="td-arrow">❯</td>';
             $serverNewsHtml .= '</tr>';
             $count++;
         }
@@ -43,8 +40,7 @@ if (empty($serverNewsHtml)) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
-    <!-- Google AdSense Auto Ads -->
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9836330764964180"
          crossorigin="anonymous"></script>
 
@@ -55,26 +51,23 @@ if (empty($serverNewsHtml)) {
     <meta name="description" content="Flexi Educational Consult (Flexi Tutors) is an online CBT exam practice portal for JAMB, WAEC, NECO, and JUPEB.">
     <meta name="keywords" content="flexieduconsult, Flexi Educational Consult, Flexi Tutors, JAMB, WAEC, NECO, Flexi, CBT, jamb tutorials, waec tutorials, ssce tutorials, tutorials in shomolu, tutorials in bariga">
 
-    <!-- Open Graph Meta Tags for Homepage Social Sharing (WhatsApp / Facebook) -->
     <meta property="og:title" content="Flexi Tutors | JAMB, WAEC & CBT Prep Nigeria">
     <meta property="og:description" content="Flexi Educational Consult (Flexi Tutors) is an online CBT exam practice portal for JAMB, WAEC, NECO, and JUPEB.">
     <meta property="og:image" content="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <meta property="og:url" content="https://flexieduconsult.com.ng/">
     <meta property="og:type" content="website">
 
-    <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Flexi Tutors | JAMB, WAEC & CBT Prep Nigeria">
     <meta name="twitter:description" content="Flexi Educational Consult (Flexi Tutors) is an online CBT exam practice portal for JAMB, WAEC, NECO, and JUPEB.">
     <meta name="twitter:image" content="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
 
-    <!-- Canonical URL declaration to resolve index duplication issue -->
     <link rel="canonical" href="https://flexieduconsult.com.ng/" />
 
     <title>Flexi Tutors | JAMB, WAEC & CBT Prep Nigeria</title>
-    
+
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -103,20 +96,25 @@ if (empty($serverNewsHtml)) {
       ]
     }
     </script>
-    
+
 <style>
-    :root{
-        --blue:#003366;
-        --green:#2E8B57;
-        --yellow:#FFD700;
-        --bg:#f4f7f6;
+    :root {
+        --blue: #003366;
+        --green: #2E8B57;
+        --yellow: #FFD700;
+        --bg: #f4f7f6;
+        --radius: 12px;
+        --shadow: 0 4px 18px rgba(0,0,0,0.06);
     }
 
-    body{
-        font-family:'Segoe UI',sans-serif;
-        background:var(--bg);
-        margin:0;
-        padding:0;
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        margin: 0;
+        padding: 0;
+        color: #333;
     }
 
     .sr-only {
@@ -131,560 +129,662 @@ if (empty($serverNewsHtml)) {
         border: 0;
     }
 
-    header{
-        background:var(--blue);
-        color:white;
-        height:1cm;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding:0 15px;
-        border-bottom:3px solid var(--green);
-        position:sticky;
-        top:0;
-        z-index:1000;
+    header {
+        background: var(--blue);
+        color: white;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        border-bottom: 3px solid var(--green);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
     }
 
-    .header-left{
-        display:flex;
-        align-items:center;
-        gap:10px;
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
 
-    .logo-img{
-        height:.8cm;
-        width:.8cm;
-        object-fit:contain;
+    .logo-img {
+        height: 34px;
+        width: 34px;
+        object-fit: contain;
+        border-radius: 4px;
     }
 
-    .container{
-        max-width:700px;
-        margin:15px auto;
-        width:95%;
+    .brand-name {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
     }
 
-    #welcome-banner{
-        margin-bottom:15px;
-        padding:15px;
-        background:white;
-        border-radius:10px;
-        box-shadow:0 2px 10px rgba(0,0,0,.05);
-        border-left:5px solid var(--blue);
-        display:none;
-        animation:fadeIn .5s ease-in;
+    /* Wider content on desktop — matches news-view */
+    .container {
+        max-width: 920px;
+        margin: 24px auto;
+        width: 94%;
     }
 
-    @keyframes fadeIn{
-        from{
-            opacity:0;
-            transform:translateY(-5px);
-        }
-        to{
-            opacity:1;
-            transform:translateY(0);
-        }
+    #welcome-banner {
+        margin-bottom: 16px;
+        padding: 16px 18px;
+        background: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border-left: 5px solid var(--blue);
+        display: none;
+        animation: fadeIn .5s ease-in;
     }
 
-    .slider-container{
-        position:relative;
-        width:100%;
-        height:3cm;
-        margin-bottom:15px;
-        border-radius:8px;
-        overflow:hidden;
-        box-shadow:0 2px 8px rgba(0,0,0,.1);
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .slider-slide{
-        position:absolute;
-        width:100%;
-        height:100%;
-        opacity:0;
-        transition:opacity .6s ease;
+    .slider-container {
+        position: relative;
+        width: 100%;
+        height: 140px;
+        margin-bottom: 18px;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        background: #001f3f;
     }
 
-    .slider-slide.active{
-        opacity:1;
+    .slider-slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity .6s ease;
     }
 
-    .slider-slide img{
-        width:100%;
-        height:100%;
-        object-fit:contain;
-        background:#001f3f;
+    .slider-slide.active { opacity: 1; }
+
+    .slider-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: #001f3f;
     }
 
-    .slider-dots{
-        position:absolute;
-        bottom:8px;
-        width:100%;
-        text-align:center;
+    .slider-dots {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
     }
 
-    .dot{
-        display:inline-block;
-        width:8px;
-        height:8px;
-        border-radius:50%;
-        background:rgba(255,255,255,.5);
-        margin:0 4px;
+    .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.45);
+        margin: 0 4px;
     }
 
-    .active-dot{
-        background:white;
+    .active-dot { background: white; }
+
+    .section-heading {
+        color: var(--blue);
+        border-left: 5px solid var(--green);
+        padding-left: 12px;
+        font-size: 1.25rem;
+        margin: 28px 0 14px;
+        font-weight: 700;
     }
 
-    .news-table{
-        width:100%;
-        border-collapse:collapse;
-        background:white;
-        border-radius:8px;
-        overflow:hidden;
-        box-shadow:0 2px 10px rgba(0,0,0,.05);
+    .news-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
     }
 
-    .news-table tr{
-        border-bottom:1px solid #eee;
-        cursor:pointer;
+    .news-table tr {
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background 0.2s;
     }
 
-    .news-table tr:hover{
-        background:#f1f1f1;
+    .news-table tr:last-child { border-bottom: none; }
+
+    .news-table tr:hover { background: #f8faf9; }
+
+    .news-table td {
+        padding: 14px 16px;
+        vertical-align: middle;
     }
 
-    .news-table td{
-        padding:12px;
-        vertical-align:middle;
+    .td-img {
+        width: 88px;
+        height: 66px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #e5e5e5;
+        display: block;
+        background: #001f3f;
     }
 
-    .td-img{
-        width:80px;
-        height:60px;
-        object-fit:cover;
-        border-radius:4px;
-        border:1px solid #ddd;
+    .td-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--blue);
+        line-height: 1.4;
     }
 
-    .td-title{
-        font-size:14px;
-        font-weight:600;
-        color:var(--blue);
-    }
- 
-    .pagination-bar{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        gap:5px;
-        margin:25px 0;
-        padding:10px;
-        background:white;
-        border-radius:30px;
-        box-shadow:0 2px 8px rgba(0,0,0,.1);
+    .td-arrow {
+        text-align: right;
+        color: #aaa;
+        width: 28px;
+        font-size: 16px;
     }
 
-    .pg-btn{
-        min-width:35px;
-        height:35px;
-        border:1px solid #ddd;
-        background:white;
-        color:var(--blue);
-        border-radius:4px;
-        cursor:pointer;
-        font-weight:bold;
-        font-size:14px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
+    .pagination-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        margin: 22px 0;
+        padding: 10px;
+        background: white;
+        border-radius: 30px;
+        box-shadow: var(--shadow);
     }
 
-    .pg-active{
-        background:var(--blue)!important;
-        color:white!important;
+    .pg-btn {
+        min-width: 36px;
+        height: 36px;
+        border: 1px solid #ddd;
+        background: white;
+        color: var(--blue);
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .card{
-        background:white;
-        padding:20px;
-        border-radius:10px;
-        border-top:5px solid var(--green);
-        margin-top:10px;
+    .pg-active {
+        background: var(--blue) !important;
+        color: white !important;
+        border-color: var(--blue);
+    }
+
+    .card {
+        background: white;
+        padding: 24px 28px;
+        border-radius: var(--radius);
+        border-top: 5px solid var(--green);
+        margin-top: 12px;
+        box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+        margin: 0 0 16px 0;
+        color: var(--blue);
+        font-size: 1.15rem;
     }
 
     input,
-    textarea{
-        width:100%;
-        padding:12px;
-        margin-bottom:10px;
-        border:1px solid #ccc;
-        border-radius:6px;
-        box-sizing:border-box;
+    textarea {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 14px;
     }
 
-    .btn-green{
-        background:var(--green);
-        color:white;
-        border:none;
-        padding:14px;
-        width:100%;
-        border-radius:6px;
-        font-weight:bold;
-        cursor:pointer;
+    .btn-green {
+        background: var(--green);
+        color: white;
+        border: none;
+        padding: 14px;
+        width: 100%;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 15px;
     }
 
-    .menu-container{
-        position:relative;
+    .btn-green:hover { opacity: 0.92; }
+
+    .menu-container { position: relative; }
+
+    .menu-btn {
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        background: none;
+        border: 1px solid rgba(255,255,255,.3);
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
     }
 
-    .menu-btn{
-        width:30px;
-        height:30px;
-        cursor:pointer;
-        background:none;
-        border:1px solid rgba(255,255,255,.3);
-        border-radius:4px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        gap:3px;
+    .menu-btn span {
+        width: 18px;
+        height: 2px;
+        background: white;
     }
 
-    .menu-btn span{
-        width:18px;
-        height:2px;
-        background:white;
+    .square-menu {
+        display: none;
+        position: absolute;
+        top: 48px;
+        right: 0;
+        width: 240px;
+        background: var(--blue);
+        border: 2px solid var(--green);
+        border-radius: 10px;
+        z-index: 2000;
+        box-shadow: 0 12px 32px rgba(0,0,0,.35);
+        overflow: hidden;
     }
 
-    .square-menu{
-        display:none;
-        position:absolute;
-        top:45px;
-        right:0;
-        width:220px;
-        background:var(--blue);
-        border:2px solid var(--green);
-        border-radius:8px;
-        z-index:2000;
-        box-shadow:0 10px 30px rgba(0,0,0,.3);
+    .square-menu a {
+        display: block;
+        padding: 14px 16px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        transition: background 0.15s;
     }
 
-    .square-menu a{
-        display:block;
-        padding:15px;
-        color:white;
-        text-decoration:none;
-        font-size:14px;
-        border-bottom:1px solid rgba(255,255,255,.1);
+    .square-menu a:hover { background: rgba(255,255,255,0.08); }
+
+    .square-menu a:last-child { border-bottom: none; }
+
+    /* Testimonials */
+    .testimonials-section {
+        margin-top: 36px;
+        margin-bottom: 28px;
     }
 
-    .square-menu a:last-child{
-        border-bottom:none;
+    .testimonials-heading {
+        color: var(--blue);
+        border-left: 5px solid var(--green);
+        padding-left: 12px;
+        margin-bottom: 14px;
+        font-size: 1.25rem;
+        font-weight: 700;
     }
 
-.footer {
-    background: linear-gradient(135deg, #011627 0%, #032038 100%);
-    color: #e2e8f0;
-    padding: 60px 20px 30px 20px;
-    margin-top: 60px;
-    border-top: 4px solid var(--green, #22c55e);
-    font-size: 14px;
-}
-
-.footer-grid {
-    display: grid;
-    grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
-    gap: 35px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.footer h4 {
-    color: var(--yellow, #fbbf24);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin: 0 0 16px 0;
-    position: relative;
-    padding-bottom: 6px;
-}
-
-.footer h4::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 24px;
-    height: 2px;
-    background: var(--yellow, #fbbf24);
-    opacity: 0.7;
-    border-radius: 2px;
-}
-
-.footer-about {
-    line-height: 1.7;
-    color: #94a3b8;
-    margin: 0;
-}
-
-.footer-links-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-links-list li {
-    margin-bottom: 10px;
-}
-
-.footer a {
-    color: #cbd5e0;
-    text-decoration: none;
-    transition: all 0.25s ease;
-}
-
-.footer-links-list a:hover {
-    color: var(--yellow, #fbbf24);
-    transform: translateX(4px);
-    display: inline-block;
-}
-
-.whatsapp-channel-link {
-    color: #25D366 !important;
-    font-weight: 600;
-    display: inline-block;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-}
-
-.whatsapp-channel-link:hover {
-    opacity: 0.85;
-    transform: translateX(4px);
-}
-
-.contact-group {
-    margin-bottom: 16px;
-}
-
-.contact-group h5 {
-    color: #ffffff;
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin: 0 0 6px 0;
-    opacity: 0.9;
-}
-
-.contact-group a {
-    display: block;
-    color: #94a3b8;
-    font-size: 0.88rem;
-    margin-bottom: 4px;
-}
-
-.contact-group a:hover {
-    color: #ffffff;
-}
-
-.footer-bottom {
-    max-width: 1200px;
-    margin: 40px auto 0 auto;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    text-align: center;
-    font-size: 13px;
-    color: #64748b;
-}
-
-@media (max-width: 900px) {
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-    }
-}
-
-@media (max-width: 550px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-}
-
-.testimonials-section {
-    margin-top: 40px;
-    margin-bottom: 25px;
-}
-
-.testimonials-heading {
-    color: var(--blue);
-    border-left: 5px solid var(--green);
-    padding-left: 10px;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-}
-
-.testimonial-slider-container {
-    position: relative;
-    width: 100%;
-    height: 140px; 
-    overflow: hidden;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.05);
-}
-
-.testimonial-slide {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    transform: translateX(100%);
-}
-
-.testimonial-slide.active {
-    transform: translateX(0);
-}
-
-.testimonial-slide.exit {
-    transform: translateX(-100%);
-}
-
-.student-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.student-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #e1e7ec;
-    color: var(--blue);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 1rem;
-    border: 2px solid var(--green);
-}
-
-.student-details h4 {
-    margin: 0;
-    color: var(--blue);
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.student-details span {
-    font-size: 12px;
-    color: #666;
-}
-
-.testimonial-text {
-    margin: 0;
-    font-size: 13px;
-    color: #4a5568;
-    line-height: 1.5;
-    font-style: italic;
-}
-
-.quote-slider-container {
-    position: relative;
-    width: 100%;
-    min-height: 180px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,.08);
-    background: #001f3f;
-}
-
-.quote-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-}
-
-.quote-slide.active {
-    opacity: 1;
-}
-
-.quote-content-box {
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-}
-
-.quote-content-box blockquote {
-    margin: 0 0 8px 0;
-    font-style: italic;
-    font-size: 1rem;
-    line-height: 1.4;
-}
-
-.quote-content-box cite {
-    display: block;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 0.85rem;
-    text-align: right;
-}
-
-@media (max-width: 480px) {
     .testimonial-slider-container {
-        height: 160px;
+        position: relative;
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+        background: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
     }
-}
+
+    .testimonial-slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 22px 24px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        transform: translateX(100%);
+    }
+
+    .testimonial-slide.active { transform: translateX(0); }
+    .testimonial-slide.exit { transform: translateX(-100%); }
+
+    .student-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+
+    .student-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #e1e7ec;
+        color: var(--blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1rem;
+        border: 2px solid var(--green);
+    }
+
+    .student-details h4 {
+        margin: 0;
+        color: var(--blue);
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .student-details span {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .testimonial-text {
+        margin: 0;
+        font-size: 14px;
+        color: #4a5568;
+        line-height: 1.55;
+        font-style: italic;
+    }
+
+    /* Quotes */
+    .quote-slider-container {
+        position: relative;
+        width: 100%;
+        min-height: 180px;
+        margin-bottom: 16px;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        background: #001f3f;
+    }
+
+    .quote-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .quote-slide.active { opacity: 1; }
+
+    .quote-content-box {
+        padding: 24px 28px;
+        width: 100%;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    }
+
+    .quote-content-box blockquote {
+        margin: 0 0 10px 0;
+        font-style: italic;
+        font-size: 1.05rem;
+        line-height: 1.45;
+    }
+
+    .quote-content-box cite {
+        display: block;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 0.9rem;
+        text-align: right;
+    }
+
+    /* Announcement */
+    #announcement-banner {
+        display: none;
+        margin-bottom: 16px;
+        padding: 16px 18px;
+        background: #003366;
+        color: white;
+        border-radius: var(--radius);
+        border-left: 5px solid #FFD700;
+        box-shadow: var(--shadow);
+    }
+
+    /* ========== DESKTOP ========== */
+    @media (min-width: 768px) {
+        .container {
+            max-width: 980px;
+            margin: 32px auto;
+        }
+
+        header {
+            height: 56px;
+            padding: 0 28px;
+        }
+
+        .brand-name { font-size: 16px; }
+
+        .logo-img {
+            height: 36px;
+            width: 36px;
+        }
+
+        .slider-container {
+            height: 220px;
+        }
+
+        .quote-slider-container {
+            min-height: 220px;
+        }
+
+        .quote-content-box blockquote {
+            font-size: 1.2rem;
+        }
+
+        .section-heading,
+        .testimonials-heading {
+            font-size: 1.35rem;
+        }
+
+        .td-title { font-size: 16px; }
+
+        .news-table td { padding: 16px 18px; }
+
+        .td-img {
+            width: 100px;
+            height: 72px;
+        }
+
+        .testimonial-slider-container {
+            height: 160px;
+        }
+
+        .testimonial-text { font-size: 15px; }
+
+        .card {
+            padding: 28px 32px;
+        }
+    }
+
+    @media (min-width: 1100px) {
+        .container {
+            max-width: 1040px;
+        }
+
+        .slider-container {
+            height: 260px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .testimonial-slider-container { height: 165px; }
+        .slider-container { height: 120px; }
+        .container { margin: 16px auto; }
+        .card { padding: 18px 16px; }
+        .news-table td { padding: 12px; }
+        .td-img {
+            width: 72px;
+            height: 54px;
+        }
+        .td-title { font-size: 14px; }
+    }
+
+    /* Footer */
+    .footer {
+        background: linear-gradient(135deg, #011627 0%, #032038 100%);
+        color: #e2e8f0;
+        padding: 60px 20px 30px;
+        margin-top: 50px;
+        border-top: 4px solid var(--green);
+        font-size: 14px;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+        gap: 35px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer h4 {
+        color: var(--yellow);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin: 0 0 16px 0;
+        position: relative;
+        padding-bottom: 6px;
+    }
+
+    .footer h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 24px;
+        height: 2px;
+        background: var(--yellow);
+        opacity: 0.7;
+        border-radius: 2px;
+    }
+
+    .footer-about {
+        line-height: 1.7;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    .footer-links-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-links-list li { margin-bottom: 10px; }
+
+    .footer a {
+        color: #cbd5e0;
+        text-decoration: none;
+        transition: all 0.25s ease;
+    }
+
+    .footer-links-list a:hover {
+        color: var(--yellow);
+        transform: translateX(4px);
+        display: inline-block;
+    }
+
+    .whatsapp-channel-link {
+        color: #25D366 !important;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .whatsapp-channel-link:hover {
+        opacity: 0.85;
+        transform: translateX(4px);
+    }
+
+    .contact-group { margin-bottom: 16px; }
+
+    .contact-group h5 {
+        color: #ffffff;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin: 0 0 6px 0;
+        opacity: 0.9;
+    }
+
+    .contact-group a {
+        display: block;
+        color: #94a3b8;
+        font-size: 0.88rem;
+        margin-bottom: 4px;
+    }
+
+    .contact-group a:hover { color: #ffffff; }
+
+    .footer-bottom {
+        max-width: 1200px;
+        margin: 40px auto 0;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        text-align: center;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    @media (max-width: 900px) {
+        .footer-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+    }
 </style>
 </head>
 <body>
   <header>
     <div class="header-left">
         <img src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg" alt="Flexi Educational Consult Official Logo" class="logo-img">
-        <span style="font-size:14px;font-weight:bold;">
-            Flexi Educational Consult
-        </span>
+        <span class="brand-name">Flexi Educational Consult</span>
     </div>
 
-<div class="menu-container">
-    <button class="menu-btn" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
+    <div class="menu-container">
+        <button class="menu-btn" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-    <div class="square-menu" id="squareMenu">
-        <a href="index.php">Home</a>
-        <a href="videos.html">Watch Video Lessons</a>
-        <a href="syllabus.html">Access the JAMB and WAEC syllabus here</a>
-        <a href="brochure.html">Access JAMB Brochure</a>
-        <a href="cbt.html">CBT Simulator</a>
-        <a href="groups.html">Classroom (Groups and chats)</a>
-        <a href="purchase.html">Purchase Scratch Cards</a>
-        <a href="pdf.html">Get your PDFs from here</a>
-        <a href="location.html">Tutorial Centers Near You</a>
-        <a href="profile.html">User Profile</a>
-        <a href="#" id="auth-menu-btn">Login</a>
+        <div class="square-menu" id="squareMenu">
+            <a href="index.php">Home</a>
+            <a href="videos.html">Watch Video Lessons</a>
+            <a href="syllabus.html">Access the JAMB and WAEC syllabus here</a>
+            <a href="brochure.html">Access JAMB Brochure</a>
+            <a href="cbt.html">CBT Simulator</a>
+            <a href="groups.html">Classroom (Groups and chats)</a>
+            <a href="purchase.html">Purchase Scratch Cards</a>
+            <a href="pdf.html">Get your PDFs from here</a>
+            <a href="location.html">Tutorial Centers Near You</a>
+            <a href="profile.html">User Profile</a>
+            <a href="#" id="auth-menu-btn">Login</a>
+        </div>
     </div>
-</div>
 </header>
 
 <div class="container">
@@ -694,111 +794,97 @@ if (empty($serverNewsHtml)) {
         <span id="user-greeting" style="font-weight:bold; color:var(--blue); font-size:1.1rem;"></span>
     </div>
 
-<!-- Announcement Banner -->
-<div id="announcement-banner" style="display: none; margin-bottom: 15px; padding: 15px; background: #003366; color: white; border-radius: 10px; border-left: 5px solid #FFD700;">
-    <h4 id="ann-title" style="margin: 0 0 5px 0;"></h4>
-    <p id="ann-content" style="margin: 0; font-size: 0.9rem;"></p>
-    <small id="ann-date" style="display: block; margin-top: 8px; opacity: 0.8;"></small>
-</div>
-
-<!-- MOTIVATIONAL QUOTES SLIDER -->
-<div id="quote-slider-container" class="quote-slider-container" style="display: none;">
-    <div id="quote-slides-wrapper" class="quote-slides-wrapper"></div>
-    <div id="quote-dots" class="slider-dots"></div>
-</div>
-
-<div class="slider-container">
-    <div class="slider-slide active">
-        <img src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg" alt="JAMB UTME CBT Online Exam Practice Banner">
+    <div id="announcement-banner">
+        <h4 id="ann-title" style="margin: 0 0 5px 0;"></h4>
+        <p id="ann-content" style="margin: 0; font-size: 0.95rem;"></p>
+        <small id="ann-date" style="display: block; margin-top: 8px; opacity: 0.8;"></small>
     </div>
 
-    <div class="slider-slide">
-        <img src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg" alt="WAEC NECO SSCE Preparation Tutorials Banner">
+    <div id="quote-slider-container" class="quote-slider-container" style="display: none;">
+        <div id="quote-slides-wrapper" class="quote-slides-wrapper"></div>
+        <div id="quote-dots" class="slider-dots"></div>
     </div>
 
-    <div class="slider-slide">
-        <img src="https://i.postimg.cc/76p3Srkc/Screenshot-20260418-191139-2.png" alt="Flexi Educational Consult Academic Registration Banner">
-    </div>
-
-    <div class="slider-dots">
-        <span class="dot active-dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-    </div>
-</div>
-
-<h2 style="color:var(--blue); border-left:5px solid var(--green); padding-left:10px; font-size:1.2rem; margin-top:20px;">
-    News Updates
-</h2>
-
-<!-- SERVER-RENDERED CRAWLABLE NEWS TABLE FOR ADSENSE -->
-<table class="news-table">
-    <tbody id="news-table-body">
-        <?php echo $serverNewsHtml; ?>
-    </tbody>
-</table>
-
-<div class="pagination-bar" id="pagination-controls"></div>
-
-<div class="testimonials-section">
-    <h2 class="testimonials-heading">What Our Students Say</h2>
-    
-    <div class="testimonial-slider-container">
-        <div class="testimonial-slide active">
-            <div class="student-info">
-                <div class="student-avatar">CO</div>
-                <div class="student-details">
-                    <h4>Chidi O.</h4>
-                    <span>JAMB Candidate (Score: 312)</span>
-                </div>
-            </div>
-            <p class="testimonial-text">
-                "The CBT Simulator on Flexi Tutors is the closest thing to the actual JAMB exam. It gave me the speed and accuracy I needed to score over 300!"
-            </p>
+    <div class="slider-container">
+        <div class="slider-slide active">
+            <img src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg" alt="JAMB UTME CBT Online Exam Practice Banner">
         </div>
-
-        <div class="testimonial-slide">
-            <div class="student-info">
-                <div class="student-avatar">AA</div>
-                <div class="student-details">
-                    <h4>Amina A.</h4>
-                    <span>WAEC Student (5 A1s)</span>
-                </div>
-            </div>
-            <p class="testimonial-text">
-                "I downloaded all my past questions in PDF here. The online classroom groups kept me accountable during my final revisions. Thank you, Flexi!"
-            </p>
+        <div class="slider-slide">
+            <img src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg" alt="WAEC NECO SSCE Preparation Tutorials Banner">
         </div>
-
-        <div class="testimonial-slide">
-            <div class="student-info">
-                <div class="student-avatar">TE</div>
-                <div class="student-details">
-                    <h4>Tunde E.</h4>
-                    <span>Post-UTME Student</span>
-                </div>
-            </div>
-            <p class="testimonial-text">
-                "Highly recommended! The instant admission updates kept me from missing important post-UTME screening dates. Exceptional platform."
-            </p>
+        <div class="slider-slide">
+            <img src="https://i.postimg.cc/76p3Srkc/Screenshot-20260418-191139-2.png" alt="Flexi Educational Consult Academic Registration Banner">
+        </div>
+        <div class="slider-dots">
+            <span class="dot active-dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
     </div>
-</div>
 
-<div class="card">
-    <h3 style="margin:0 0 15px 0; color:var(--blue);">
-        Customer Care
-    </h3>
+    <h2 class="section-heading">News Updates</h2>
 
-    <form id="contact-form">
-        <input type="email" name="email" id="contact-email" placeholder="Your Email Address" required>
-        <textarea name="message" rows="3" placeholder="How can we help you?" required></textarea>
-        <button type="submit" id="submit-btn" class="btn-green">
-            Submit Inquiry
-        </button>
-    </form>
-</div>
+    <table class="news-table">
+        <tbody id="news-table-body">
+            <?php echo $serverNewsHtml; ?>
+        </tbody>
+    </table>
 
+    <div class="pagination-bar" id="pagination-controls"></div>
+
+    <div class="testimonials-section">
+        <h2 class="testimonials-heading">What Our Students Say</h2>
+
+        <div class="testimonial-slider-container">
+            <div class="testimonial-slide active">
+                <div class="student-info">
+                    <div class="student-avatar">CO</div>
+                    <div class="student-details">
+                        <h4>Chidi O.</h4>
+                        <span>JAMB Candidate (Score: 312)</span>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "The CBT Simulator on Flexi Tutors is the closest thing to the actual JAMB exam. It gave me the speed and accuracy I needed to score over 300!"
+                </p>
+            </div>
+
+            <div class="testimonial-slide">
+                <div class="student-info">
+                    <div class="student-avatar">AA</div>
+                    <div class="student-details">
+                        <h4>Amina A.</h4>
+                        <span>WAEC Student (5 A1s)</span>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "I downloaded all my past questions in PDF here. The online classroom groups kept me accountable during my final revisions. Thank you, Flexi!"
+                </p>
+            </div>
+
+            <div class="testimonial-slide">
+                <div class="student-info">
+                    <div class="student-avatar">TE</div>
+                    <div class="student-details">
+                        <h4>Tunde E.</h4>
+                        <span>Post-UTME Student</span>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "Highly recommended! The instant admission updates kept me from missing important post-UTME screening dates. Exceptional platform."
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Customer Care</h3>
+        <form id="contact-form">
+            <input type="email" name="email" id="contact-email" placeholder="Your Email Address" required>
+            <textarea name="message" rows="3" placeholder="How can we help you?" required></textarea>
+            <button type="submit" id="submit-btn" class="btn-green">Submit Inquiry</button>
+        </form>
+    </div>
 </div>
 
 <footer class="footer">
@@ -815,11 +901,11 @@ if (empty($serverNewsHtml)) {
                 <li><a href="index.php">Home</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
                 <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
-                <li><a href="syllabus.html">Access JAMB Brochure</a></li>
+                <li><a href="brochure.html">Access JAMB Brochure</a></li>
                 <li><a href="videos.html">Video Lessons</a></li>
                 <li><a href="pdf.html">Past Questions & PDFs</a></li>
                 <li><a href="cbt.html">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom Groups and chats</a></li>
+                <li><a href="groups.html">Classroom Groups and chats</a></li>
                 <li><a href="location.html">Tutorial Centres</a></li>
             </ul>
         </div>
@@ -831,13 +917,11 @@ if (empty($serverNewsHtml)) {
                    Join our WhatsApp Channel
                 </a>
             </div>
-
             <div class="contact-group">
                 <h5>Contact Us</h5>
                 <a href="tel:+2349034159839">(+234) 903 415 9839</a>
                 <a href="tel:+2347033855206">(+234) 703 385 5206</a>
             </div>
-
             <div class="contact-group">
                 <h5>Email Us</h5>
                 <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
@@ -864,7 +948,6 @@ if (empty($serverNewsHtml)) {
     <div id="support-tooltip" style="background:#003366; color:white; padding:10px 15px; border-radius:20px 20px 0px 20px; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); animation: fadeIn 0.5s; opacity: 1;">
     Chat with Jarvis AI for support
     </div>
-
     <button id="support-btn" onclick="window.location.href='contactsupport.html'" aria-label="Support Chat" style="background:#2E8B57; border:none; width:60px; height:60px; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.3s;">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
@@ -873,15 +956,14 @@ if (empty($serverNewsHtml)) {
 </div>
 
 <style>
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     #support-btn:hover { transform: scale(1.1); }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
    apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
@@ -898,25 +980,23 @@ onAuthStateChanged(auth, (user) => {
     const userGreeting = document.getElementById('user-greeting');
     const authMenuBtn = document.getElementById('auth-menu-btn');
     const contactEmail = document.getElementById('contact-email');
-    if(user){
+    if (user) {
         welcomeBanner.style.display = "block";
         const name = user.displayName || user.email.split('@')[0];
         userGreeting.innerHTML = `Welcome back, <span style="color:var(--green)">${name}</span> 👋`;
         authMenuBtn.innerText = "Logout";
         authMenuBtn.style.color = "#ff4d4d";
-        authMenuBtn.onclick = async (e)=>{
+        authMenuBtn.onclick = async (e) => {
             e.preventDefault();
             await signOut(auth);
             window.location.reload();
         };
-        if(contactEmail){
-            contactEmail.value = user.email;
-        }
-    }else{
+        if (contactEmail) contactEmail.value = user.email;
+    } else {
         welcomeBanner.style.display = "none";
         authMenuBtn.innerText = "Login";
         authMenuBtn.style.color = "white";
-        authMenuBtn.onclick = ()=>{
+        authMenuBtn.onclick = () => {
             window.location.href = "login.html";
         };
     }
@@ -926,13 +1006,11 @@ async function loadAnnouncement() {
     try {
         const annBanner = document.getElementById('announcement-banner');
         const q = query(
-            collection(db, "announcements"), 
-            orderBy("createdAt", "desc"), 
+            collection(db, "announcements"),
+            orderBy("createdAt", "desc"),
             limit(1)
         );
-
         const snap = await getDocs(q);
-        
         if (!snap.empty) {
             const data = snap.docs[0].data();
             document.getElementById('ann-title').innerText = data.title;
@@ -948,6 +1026,10 @@ async function loadAnnouncement() {
 let quoteSlides = [];
 let currentQuoteIndex = 0;
 let quoteInterval = null;
+
+function escapeHtml(str) {
+    return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;") : '';
+}
 
 async function loadMotivationalQuote() {
     try {
@@ -998,9 +1080,7 @@ async function loadMotivationalQuote() {
             quoteInterval = setInterval(() => {
                 quoteSlides[currentQuoteIndex].classList.remove('active');
                 if (quoteDots[currentQuoteIndex]) quoteDots[currentQuoteIndex].classList.remove('active-dot');
-
                 currentQuoteIndex = (currentQuoteIndex + 1) % quoteSlides.length;
-
                 quoteSlides[currentQuoteIndex].classList.add('active');
                 if (quoteDots[currentQuoteIndex]) quoteDots[currentQuoteIndex].classList.add('active-dot');
             }, 5000);
@@ -1010,10 +1090,6 @@ async function loadMotivationalQuote() {
     }
 }
 
-function escapeHtml(str) {
-    return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
-}
-
 const contactForm = document.getElementById('contact-form');
 const submitBtn = document.getElementById('submit-btn');
 contactForm.addEventListener('submit', async (e) => {
@@ -1021,34 +1097,33 @@ contactForm.addEventListener('submit', async (e) => {
     submitBtn.disabled = true;
     submitBtn.innerText = "Sending...";
     const formData = new FormData(contactForm);
-    try{
+    try {
         const response = await fetch("https://formspree.io/f/xojywaeg", {
-            method:"POST",
-            body:formData,
-            headers:{ "Accept":"application/json" }
+            method: "POST",
+            body: formData,
+            headers: { "Accept": "application/json" }
         });
-
-        if(response.ok){
+        if (response.ok) {
             Toastify({
-                text:"Inquiry sent successfully!",
-                duration:4000,
-                gravity:"top",
-                position:"right",
-                style:{ background:"#2E8B57" }
+                text: "Inquiry sent successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                style: { background: "#2E8B57" }
             }).showToast();
             contactForm.reset();
-        }else{
+        } else {
             throw new Error();
         }
-    }catch(error){
+    } catch (error) {
         Toastify({
-            text:"Failed to send. Try again.",
-            duration:4000,
-            gravity:"top",
-            position:"right",
-            style:{ background:"#b22222" }
+            text: "Failed to send. Try again.",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            style: { background: "#b22222" }
         }).showToast();
-    }finally{
+    } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = "Submit Inquiry";
     }
@@ -1062,27 +1137,25 @@ window.toggleMenu = () => {
 document.addEventListener('click', (e) => {
     const m = document.getElementById('squareMenu');
     const b = document.querySelector('.menu-btn');
-    if(m && m.style.display === "block" && !m.contains(e.target) && !b.contains(e.target)){
+    if (m && m.style.display === "block" && !m.contains(e.target) && !b.contains(e.target)) {
         m.style.display = "none";
     }
 });
 
 const slides = document.querySelectorAll('.slider-slide');
-const dots = document.querySelectorAll('.dot');
+const dots = document.querySelectorAll('.slider-container > .slider-dots .dot');
 let currentSlide = 0;
 
-function showSlide(index){
+function showSlide(index) {
     slides.forEach(s => s.classList.remove('active'));
     dots.forEach(d => d.classList.remove('active-dot'));
     slides[index].classList.add('active');
-    dots[index].classList.add('active-dot');
+    if (dots[index]) dots[index].classList.add('active-dot');
 }
 
 setInterval(() => {
     currentSlide++;
-    if(currentSlide >= slides.length){
-        currentSlide = 0;
-    }
+    if (currentSlide >= slides.length) currentSlide = 0;
     showSlide(currentSlide);
 }, 5000);
 
@@ -1098,17 +1171,12 @@ function showNextTestimonial() {
     const oldSlide = tSlides[currentTSlide];
     oldSlide.classList.remove('active');
     oldSlide.classList.add('exit');
-
     currentTSlide = (currentTSlide + 1) % tSlides.length;
-
     const nextSlide = tSlides[currentTSlide];
     nextSlide.classList.remove('exit');
     nextSlide.classList.add('active');
-
     setTimeout(() => {
-        if (!oldSlide.classList.contains('active')) {
-            oldSlide.classList.remove('exit');
-        }
+        if (!oldSlide.classList.contains('active')) oldSlide.classList.remove('exit');
     }, 600);
 }
 
@@ -1120,9 +1188,7 @@ window.addEventListener('load', () => {
         if (tooltip) {
             tooltip.style.transition = 'opacity 0.5s ease';
             tooltip.style.opacity = '0';
-            setTimeout(() => {
-                tooltip.style.display = 'none';
-            }, 500);
+            setTimeout(() => { tooltip.style.display = 'none'; }, 500);
         }
     }, 5000);
 });
