@@ -905,7 +905,7 @@ if ($newsId || $newsSlug) {
                     : `/news/id/${encodeURIComponent(item.id)}`;
                 return `
                     <a class="other-news-item" href="${href}">
-                        <img src="\( {escapeHtml(item.imageUrl)}" alt=" \){escapeHtml(item.title)}" loading="lazy">
+                        <img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy">
                         <span class="on-title">${escapeHtml(item.title)}</span>
                         <span class="on-arrow">❯</span>
                     </a>
