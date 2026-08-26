@@ -99,7 +99,6 @@ if ($newsId || $newsSlug) {
         .article-date { color: #888; font-size: 13px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .article-text { color: #333; line-height: 1.8; font-size: 15px; white-space: pre-wrap; }
 
-        /* Share Box Styling */
         .share-box{
             margin-top: 25px;
             padding-top: 15px;
@@ -122,14 +121,12 @@ if ($newsId || $newsSlug) {
             display: inline-block;
         }
 
-        /* Table Styling */
         .data-table-container { margin-top: 20px; overflow-x: auto; border-top: 1px solid #eee; padding-top: 15px; }
         table { width: 100%; border-collapse: collapse; font-size: 14px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
         th { background: var(--blue); color: white; }
         tr:nth-child(even) { background: #f9f9f9; }
 
-        /* PDF Section Styling */
         .pdf-section { margin-top: 25px; padding-top: 20px; border-top: 2px dashed #eee; }
         .pdf-preview { 
             width: 100%; 
@@ -153,7 +150,6 @@ if ($newsId || $newsSlug) {
         .download-btn:hover { opacity: 0.9; }
         .download-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
-        /* Comments Section */
         .comment-section { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .comment-box { border-bottom: 1px solid #eee; padding: 10px 0; }
         .comment-name { font-weight: bold; color: var(--blue); font-size: 14px; }
@@ -164,7 +160,6 @@ if ($newsId || $newsSlug) {
         input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
         .comment-btn { background: var(--blue); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-        /* Crawler-Friendly Loader Container */
         #loader { 
             text-align: left; 
             background: white; 
@@ -176,7 +171,6 @@ if ($newsId || $newsSlug) {
         #loader h2 { color: var(--blue); margin-top: 0; }
         #loader p { color: #555; line-height: 1.6; }
     
-        /* MODERN FOOTER STYLES */
         .footer {
             background: linear-gradient(135deg, #011627 0%, #032038 100%);
             color: #e2e8f0;
@@ -308,7 +302,7 @@ if ($newsId || $newsSlug) {
 <body>
 
 <header>
-    <a href="index.html" class="back-btn">❮</a>
+    <a href="index.php" class="back-btn">❮</a>
     <span style="font-weight: bold; font-size: 14px;">Full Update</span>
 </header>
 
@@ -316,7 +310,7 @@ if ($newsId || $newsSlug) {
     <!-- Crawlable AdSense-Friendly Loader Fallback -->
     <div id="loader">
         <h2>Flexi Educational Consult News Portal</h2>
-        <p>Loading official admission news updates, JAMB/WAEC notices, and study announcements. If the article content does not load instantly, please view our verified announcements index directly on the <a href="index.html" style="color:var(--blue); font-weight:bold;">homepage</a>.</p>
+        <p>Loading official admission news updates, JAMB/WAEC notices, and study announcements. If the article content does not load instantly, please view our verified announcements index directly on the <a href="index.php" style="color:var(--blue); font-weight:bold;">homepage</a>.</p>
     </div>
 
     <div id="article-container" style="display: none;">
@@ -376,7 +370,7 @@ if ($newsId || $newsSlug) {
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
                 <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
                 <li><a href="brochure.html">Access JAMB Brochure</a></li>
@@ -452,7 +446,7 @@ if ($newsId || $newsSlug) {
         if (!slug && !articleId) {
             document.getElementById('loader').innerHTML = `
                 <h2>No Article Specified</h2>
-                <p>Please select an update from our <a href="index.html" style="color:var(--blue);">news archive</a>.</p>
+                <p>Please select an update from our <a href="index.php" style="color:var(--blue);">news archive</a>.</p>
             `;
             return;
         }
@@ -467,7 +461,7 @@ if ($newsId || $newsSlug) {
                 );
                 const snap = await getDocs(q);
                 if (snap.empty) {
-                    document.getElementById("loader").innerHTML = `<h2>Article Not Found</h2><p>Return to <a href="index.html" style="color:var(--blue);">Home</a>.</p>`;
+                    document.getElementById("loader").innerHTML = `<h2>Article Not Found</h2><p>Return to <a href="index.php" style="color:var(--blue);">Home</a>.</p>`;
                     return;
                 }
                 const article = snap.docs[0];
@@ -476,7 +470,7 @@ if ($newsId || $newsSlug) {
             } else {
                 const docSnap = await getDoc(doc(db, "news", articleId));
                 if (!docSnap.exists()) {
-                    document.getElementById("loader").innerHTML = `<h2>Article Not Found</h2><p>Return to <a href="index.html" style="color:var(--blue);">Home</a>.</p>`;
+                    document.getElementById("loader").innerHTML = `<h2>Article Not Found</h2><p>Return to <a href="index.php" style="color:var(--blue);">Home</a>.</p>`;
                     return;
                 }
                 data = docSnap.data();
