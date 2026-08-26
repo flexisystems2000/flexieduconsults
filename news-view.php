@@ -2,18 +2,45 @@
 // SERVER-SIDE PHP: Generates dynamic Open Graph meta tags for WhatsApp & Social crawlers
 $firebaseProjectId = "waec2026jamb2027";
 
-$newsId = isset($_GET['id']) ? trim($_GET['id']) : '';
+$newsId   = isset($_GET['id'])   ? trim($_GET['id'])   : '';
 $newsSlug = isset($_GET['slug']) ? trim($_GET['slug']) : '';
 
+// Support clean path URLs: /news/{slug} and /news/id/{docId}
+$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
+if (preg_match('#^/news/([a-zA-Z0-9][a-zA-Z0-9_-]*)/?$#', $requestPath, $m)) {
+    $newsSlug = $m[1];
+} elseif (preg_match('#^/news/id/([a-zA-Z0-9_-]+)/?$#', $requestPath, $m)) {
+    $newsId = $m[1];
+}
+
+// 301 redirect old query-style URLs to clean paths
+$script = basename($_SERVER['SCRIPT_NAME'] ?? '');
+if ($script === 'news-view.php' && strpos($requestPath, 'news-view.php') !== false && ($newsSlug || $newsId)) {
+    $clean = $newsSlug
+        ? '/news/' . rawurlencode($newsSlug)
+        : '/news/id/' . rawurlencode($newsId);
+    header('Location: ' . $clean, true, 301);
+    exit;
+}
+
 $pageTitle = "Flexi Tutors | News Update";
-$pageDesc = "Read the latest educational news, JAMB updates, WAEC notices, and admission guides on Flexi Educational Consult.";
+$pageDesc  = "Read the latest educational news, JAMB updates, WAEC notices, and admission guides on Flexi Educational Consult.";
 $pageImage = "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg";
-$pageUrl = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+$host   = $_SERVER['HTTP_HOST'] ?? 'flexieduconsult.com.ng';
+$scheme = 'https';
+if ($newsSlug) {
+    $pageUrl = $scheme . '://' . $host . '/news/' . rawurlencode($newsSlug);
+} elseif ($newsId) {
+    $pageUrl = $scheme . '://' . $host . '/news/id/' . rawurlencode($newsId);
+} else {
+    $pageUrl = $scheme . '://' . $host . ($_SERVER['REQUEST_URI'] ?? '/');
+}
 
 if ($newsId || $newsSlug) {
     $apiUrl = "https://firestore.googleapis.com/v1/projects/{$firebaseProjectId}/databases/(default)/documents/news";
     $response = @file_get_contents($apiUrl);
-    
+
     if ($response) {
         $data = json_decode($response, true);
         if (isset($data['documents'])) {
@@ -22,20 +49,20 @@ if ($newsId || $newsSlug) {
                 $docId = end($docNameParts);
                 $fields = isset($doc['fields']) ? $doc['fields'] : [];
                 $slug = isset($fields['slug']['stringValue']) ? $fields['slug']['stringValue'] : '';
-                
+
                 if (($newsId && $docId === $newsId) || ($newsSlug && $slug === $newsSlug)) {
                     if (isset($fields['seoTitle']['stringValue'])) {
                         $pageTitle = $fields['seoTitle']['stringValue'] . " | Flexi Educational Consult";
                     } elseif (isset($fields['title']['stringValue'])) {
                         $pageTitle = $fields['title']['stringValue'] . " | Flexi Educational Consult";
                     }
-                    
+
                     if (isset($fields['metaDescription']['stringValue'])) {
                         $pageDesc = $fields['metaDescription']['stringValue'];
                     } elseif (isset($fields['content']['stringValue'])) {
                         $pageDesc = mb_substr(strip_tags($fields['content']['stringValue']), 0, 150) . "...";
                     }
-                    
+
                     if (isset($fields['imageUrl']['stringValue'])) {
                         $pageImage = $fields['imageUrl']['stringValue'];
                     }
@@ -59,7 +86,7 @@ if ($newsId || $newsSlug) {
     <link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Dynamic SEO Meta Tags Generated via PHP for Instant Social Previews -->
     <title id="page-title"><?php echo htmlspecialchars($pageTitle); ?></title>
     <meta name="description" content="<?php echo htmlspecialchars($pageDesc); ?>">
@@ -77,14 +104,14 @@ if ($newsId || $newsSlug) {
     <meta name="twitter:title" content="<?php echo htmlspecialchars($pageTitle); ?>">
     <meta name="twitter:description" content="<?php echo htmlspecialchars($pageDesc); ?>">
     <meta name="twitter:image" content="<?php echo htmlspecialchars($pageImage); ?>">
-    
+
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
         :root { --blue: #003366; --green: #2E8B57; --yellow: #FFD700; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
 
-        header { 
-            background: var(--blue); color: white; height: 1cm; 
+        header {
+            background: var(--blue); color: white; height: 1cm;
             display: flex; align-items: center; padding: 0 15px;
             border-bottom: 3px solid var(--green); position: sticky; top: 0; z-index: 1000;
         }
@@ -128,23 +155,23 @@ if ($newsId || $newsSlug) {
         tr:nth-child(even) { background: #f9f9f9; }
 
         .pdf-section { margin-top: 25px; padding-top: 20px; border-top: 2px dashed #eee; }
-        .pdf-preview { 
-            width: 100%; 
-            max-height: 550px; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            margin-bottom: 12px; 
+        .pdf-preview {
+            width: 100%;
+            max-height: 550px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 12px;
             background: #f0f0f0;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        
-        .download-btn { 
+
+        .download-btn {
             display: inline-flex; align-items: center; gap: 8px;
-            background: var(--green); color: white; padding: 8px 16px; 
-            text-decoration: none; border-radius: 4px; font-weight: bold; 
+            background: var(--green); color: white; padding: 8px 16px;
+            text-decoration: none; border-radius: 4px; font-weight: bold;
             font-size: 14px; transition: opacity 0.2s;
         }
         .download-btn:hover { opacity: 0.9; }
@@ -160,17 +187,17 @@ if ($newsId || $newsSlug) {
         input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
         .comment-btn { background: var(--blue); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-        #loader { 
-            text-align: left; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 10px; 
+        #loader {
+            text-align: left;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            color: var(--blue); 
+            color: var(--blue);
         }
         #loader h2 { color: var(--blue); margin-top: 0; }
         #loader p { color: #555; line-height: 1.6; }
-    
+
         .footer {
             background: linear-gradient(135deg, #011627 0%, #032038 100%);
             color: #e2e8f0;
@@ -384,10 +411,10 @@ if ($newsId || $newsSlug) {
 
         <div class="footer-col">
             <h4>Support & Community</h4>
-            
+
             <div class="contact-group">
-                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
-                   target="_blank" 
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u"
+                   target="_blank"
                    class="whatsapp-channel-link">
                    Join our WhatsApp Channel
                 </a>
@@ -420,7 +447,7 @@ if ($newsId || $newsSlug) {
         &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
 </footer>
-    
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <script type="module">
@@ -437,8 +464,18 @@ if ($newsId || $newsSlug) {
     const db = getFirestore(app);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const slug = urlParams.get("slug");
-    const articleId = urlParams.get("id");
+    let slug = urlParams.get("slug");
+    let articleId = urlParams.get("id");
+
+    // Support clean paths: /news/{slug} and /news/id/{id}
+    // (browser URL stays clean after Apache rewrite, so search params are empty)
+    if (!slug && !articleId) {
+        const path = window.location.pathname;
+        const slugMatch = path.match(/^\/news\/([a-zA-Z0-9][a-zA-Z0-9_-]*)\/?$/);
+        const idMatch = path.match(/^\/news\/id\/([a-zA-Z0-9_-]+)\/?$/);
+        if (slugMatch) slug = slugMatch[1];
+        else if (idMatch) articleId = idMatch[1];
+    }
 
     let currentArticleId = articleId;
 
@@ -480,8 +517,8 @@ if ($newsId || $newsSlug) {
             // Populate Article Elements
             document.getElementById('news-title').innerText = data.title || "";
             document.getElementById('news-content').innerText = data.content || data.body || "";
-            
-            if(data.imageUrl) {
+
+            if (data.imageUrl) {
                 const imgEl = document.getElementById('news-image');
                 imgEl.src = data.imageUrl;
                 imgEl.style.display = "block";
@@ -489,11 +526,11 @@ if ($newsId || $newsSlug) {
                 document.getElementById('news-image').style.display = "none";
             }
 
-            if(data.timestamp) {
+            if (data.timestamp) {
                 document.getElementById('news-date').innerText = "Posted: " + data.timestamp.toDate().toDateString();
             }
 
-            // Setup Share Links
+            // Setup Share Links (uses the clean URL currently in the address bar)
             const currentUrl = window.location.href;
             document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${encodeURIComponent((data.title || 'News') + " - " + currentUrl)}`;
 
@@ -511,7 +548,7 @@ if ($newsId || $newsSlug) {
             if (data.pdfUrl && data.pdfUrl.trim() !== "") {
                 const pdfViewerCont = document.getElementById('pdf-viewer-container');
                 const pdfLink = document.getElementById('pdf-download-link');
-                
+
                 const originalUrl = data.pdfUrl;
                 let downloadUrl = originalUrl;
                 let previewImageUrl = originalUrl;
@@ -564,7 +601,7 @@ if ($newsId || $newsSlug) {
         const cList = document.getElementById('comments-list');
         const q = query(collection(db, "news", currentArticleId, "comments"), orderBy("timestamp", "desc"));
         const snap = await getDocs(q);
-        
+
         if (!snap.empty) {
             cList.innerHTML = "";
             snap.forEach(d => {
@@ -586,7 +623,7 @@ if ($newsId || $newsSlug) {
         const text = document.getElementById('comm-text').value;
         const btn = document.getElementById('post-comm-btn');
 
-        if(!name || !text) return alert("Please fill both fields");
+        if (!name || !text) return alert("Please fill both fields");
 
         btn.disabled = true;
         btn.innerText = "Posting...";
