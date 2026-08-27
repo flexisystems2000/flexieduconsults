@@ -4,7 +4,7 @@
     RewriteBase /
      
     # Sitemap
-    # RewriteRule ^sitemap\.xml$ sitemap.php [L]
+    RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
     # ------------------------------------------------------------
     # Legacy .html → .php  (ONLY pages that already exist as .php)
