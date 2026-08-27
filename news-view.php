@@ -257,7 +257,6 @@ function h($str) {
             color: #333;
             line-height: 1.85;
             font-size: 16px;
-            white-space: pre-wrap;
         }
 
         .share-box {
