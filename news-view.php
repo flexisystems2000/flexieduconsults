@@ -657,7 +657,7 @@ function h($str) {
                                 $preview = $article['pdfUrl'];
                                 if (strpos($preview, 'res.cloudinary.com') !== false) {
                                     $preview = str_replace('/upload/', '/upload/w_800,c_limit,q_auto,f_jpg/pg_1/', $preview);
-                                    \( preview = preg_replace('/\.pdf \)/i', '.jpg', $preview);
+                                    $preview = preg_replace('/\.pdf\b/i', '.jpg', $preview);
                                 }
                                 ?>
                                 <img src="<?php echo h($preview); ?>" alt="Document Preview" style="width:100%; height:auto; display:block;">
@@ -856,7 +856,7 @@ function h($str) {
                     : `/news/id/${encodeURIComponent(item.id)}`;
                 return `
                     <a class="other-news-item" href="${href}">
-                        <img src="\( {escapeHtml(item.imageUrl)}" alt=" \){escapeHtml(item.title)}" loading="lazy">
+                        <img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy">
                         <span class="on-title">${escapeHtml(item.title)}</span>
                         <span class="on-arrow">❯</span>
                     </a>
