@@ -183,7 +183,14 @@ $paginationHtml = buildPagination($currentPage, $totalPages);
         --shadow: 0 4px 18px rgba(0,0,0,0.06);
     }
 
-    * { box-sizing: border-box; }
+    * { 
+        box-sizing: border-box; 
+        /* Disable text selection logic globally to make clicking interactive elements smooth */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 
     body {
         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -427,6 +434,8 @@ $paginationHtml = buildPagination($currentPage, $totalPages);
         border-radius: 8px;
         font-family: inherit;
         font-size: 14px;
+        -webkit-user-select: text;
+        user-select: text; /* Allow typing/selecting inside input fields */
     }
 
     .btn-green {
@@ -1009,6 +1018,11 @@ $paginationHtml = buildPagination($currentPage, $totalPages);
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+// Disable copy/paste and selection behaviors programmatically
+document.addEventListener('copy', (e) => e.preventDefault());
+document.addEventListener('cut', (e) => e.preventDefault());
+document.addEventListener('paste', (e) => e.preventDefault());
 
 const firebaseConfig = {
    apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
