@@ -749,12 +749,10 @@ function h($str) {
         &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
     </div>
 </footer>
-
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, collection, addDoc, getDocs, query, where, limit, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
@@ -765,8 +763,8 @@ function h($str) {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Use the ID that was already rendered by PHP
-    let currentArticleId = "<?php echo h($article['id']); ?>";
+    // Safe way – no backslash issues
+    const currentArticleId = <?php echo json_encode($article['id'] ?? ''); ?>;
 
     function escapeHtml(str) {
         if (!str) return '';
@@ -800,22 +798,29 @@ function h($str) {
         const cList = document.getElementById('comments-list');
         if (!cList) return;
 
-        const q = query(collection(db, "news", currentArticleId, "comments"), orderBy("timestamp", "desc"));
-        const snap = await getDocs(q);
+        try {
+            const q = query(
+                collection(db, "news", currentArticleId, "comments"),
+                orderBy("timestamp", "desc")
+            );
+            const snap = await getDocs(q);
 
-        if (!snap.empty) {
-            cList.innerHTML = "";
-            snap.forEach(d => {
-                const c = d.data();
-                const date = c.timestamp ? c.timestamp.toDate().toLocaleString() : "Just now";
-                cList.innerHTML += `
-                    <div class="comment-box">
-                        <div class="comment-name">${escapeHtml(c.name)}</div>
-                        <div class="comment-text">${escapeHtml(c.text)}</div>
-                        <div class="comment-date">${escapeHtml(date)}</div>
-                    </div>
-                `;
-            });
+            if (!snap.empty) {
+                cList.innerHTML = "";
+                snap.forEach(d => {
+                    const c = d.data();
+                    const date = c.timestamp ? c.timestamp.toDate().toLocaleString() : "Just now";
+                    cList.innerHTML += `
+                        <div class="comment-box">
+                            <div class="comment-name">${escapeHtml(c.name)}</div>
+                            <div class="comment-text">${escapeHtml(c.text)}</div>
+                            <div class="comment-date">${escapeHtml(date)}</div>
+                        </div>
+                    `;
+                });
+            }
+        } catch (e) {
+            console.error("Error loading comments:", e);
         }
     }
 
@@ -869,7 +874,10 @@ function h($str) {
         const text = document.getElementById('comm-text').value.trim();
         const btn = document.getElementById('post-comm-btn');
 
-        if (!name || !text) return alert("Please fill both fields");
+        if (!name || !text) {
+            alert("Please fill both fields");
+            return;
+        }
 
         btn.disabled = true;
         btn.innerText = "Posting...";
