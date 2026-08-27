@@ -1102,10 +1102,13 @@ async function loadMotivationalQuote() {
                 slide.style.backgroundImage = `url('${data.bgImage}')`;
             }
 
+            const textColor = data.textColor || '#ffffff';
+            const authorColor = data.authorColor || '#f1f5f9';
+
             slide.innerHTML = `
                 <div class="quote-content-box">
-                    <blockquote style="color: \( {data.textColor || '#ffffff'};">" \){escapeHtml(data.text)}"</blockquote>
-                    <cite style="color: ${data.authorColor || '#f1f5f9'};">— ${escapeHtml(data.author)}</cite>
+                    <blockquote style="color: ${textColor};">"${escapeHtml(data.text)}"</blockquote>
+                    <cite style="color: ${authorColor};">— ${escapeHtml(data.author)}</cite>
                 </div>
             `;
             wrapper.appendChild(slide);
