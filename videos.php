@@ -21,7 +21,14 @@
       --brand-green: #2E8B57;
       --yellow: #FFD700;
     }
-    * { box-sizing: border-box; }
+    * { 
+      box-sizing: border-box; 
+      /* Disable text selection logic globally to make clicking interactive elements smooth */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
     body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: #f4f7f6; }
 
     header {
@@ -92,6 +99,13 @@
       gap: 6px;
       font-weight: bold;
       font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.02);
+      transition: background 0.2s;
+    }
+    .btn-icon:active {
+      background: rgba(0,0,0,0.08);
     }
 
     .comment-box { display: flex; gap: 10px; margin-top: 15px; }
@@ -101,6 +115,8 @@
       border: 1px solid #ddd;
       border-radius: 20px;
       font-family: inherit;
+      -webkit-user-select: text;
+      user-select: text; /* Allow typing/selecting inside input fields */
     }
     .post-btn {
       background: var(--brand-blue);
@@ -114,7 +130,7 @@
 
     .separator { border-top: 2px solid #eee; margin: 20px 0; }
 
-    svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
+    svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
 
     .footer {
       background: linear-gradient(135deg, #011627 0%, #032038 100%);
@@ -280,6 +296,11 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
   import { getFirestore, collection, onSnapshot, query, orderBy, doc, increment, updateDoc, addDoc, serverTimestamp, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+  // Disable copy/paste and selection behaviors programmatically
+  document.addEventListener('copy', (e) => e.preventDefault());
+  document.addEventListener('cut', (e) => e.preventDefault());
+  document.addEventListener('paste', (e) => e.preventDefault());
 
   const firebaseConfig = {
     apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
