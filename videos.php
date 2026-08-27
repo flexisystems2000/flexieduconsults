@@ -332,7 +332,7 @@
     }
     const userId = auth.currentUser.uid;
     const videoId = selectedVideo.id;
-    const interactionRef = doc(db, "interactions", `\( {videoId}_ \){userId}`);
+    const interactionRef = doc(db, "interactions", `${videoId}_${userId}`);
     const videoRef = doc(db, "videos", videoId);
     const docSnap = await getDoc(interactionRef);
 
@@ -392,7 +392,7 @@
         window.location.href = `login.php?redirect=${encodeURIComponent(window.location.href)}`;
         return;
     }
-    const input = document.getElementById(`reply-input-\( {commentId} \){suffix}`);
+    const input = document.getElementById(`reply-input-${commentId}${suffix}`);
     const text = input.value;
     if (!text.trim()) return;
 
@@ -409,7 +409,7 @@
         });
 
         input.value = "";
-        document.getElementById(`reply-box-\( {commentId} \){suffix}`).style.display = "none";
+        document.getElementById(`reply-box-${commentId}${suffix}`).style.display = "none";
         alert("Reply posted!");
     } catch (e) {
         console.error("Error posting reply: ", e);
@@ -417,7 +417,7 @@
   };
 
   window.toggleReplies = (commentId, suffix = "") => {
-    const list = document.getElementById(`replies-list-\( {commentId} \){suffix}`);
+    const list = document.getElementById(`replies-list-${commentId}${suffix}`);
     if (list.style.display === "none") {
         list.style.display = "block";
         const videoId = selectedVideo.id;
@@ -425,7 +425,7 @@
             list.innerHTML = "";
             snap.forEach(r => {
                 const rData = r.data();
-                list.innerHTML += `<div style="margin-bottom:5px;"><strong style="font-size:11px;">\( {rData.userName}:</strong> <span style="font-size:12px;"> \){rData.text}</span></div>`;
+                list.innerHTML += `<div style="margin-bottom:5px;"><strong style="font-size:11px;">${rData.userName}:</strong> <span style="font-size:12px;">${rData.text}</span></div>`;
             });
         });
     } else {
@@ -477,16 +477,16 @@
         <div style="font-weight: bold; font-size: 13px;">${data.userName || "Anonymous"}</div>
         <div style="font-size: 14px; margin: 4px 0;">${data.text}</div>
         <div style="font-size: 12px; display: flex; gap: 15px; color: #475569; font-weight: 600; flex-wrap: wrap;">
-            <span style="cursor:pointer;" onclick="reactToComment('\( {docSnap.id}', 'likes')">Like ( \){data.likes || 0})</span>
-            <span style="cursor:pointer;" onclick="reactToComment('\( {docSnap.id}', 'dislikes')">Dislike ( \){data.dislikes || 0})</span>
-            <span style="cursor:pointer; color:#1e3a8a;" onclick="showReplyBox('\( {docSnap.id} \){suffix}')">Reply</span>
-            <span style="cursor:pointer; color:#475569;" onclick="toggleReplies('\( {docSnap.id}', ' \){suffix}')">View Replies (${data.replyCount || 0})</span>
+            <span style="cursor:pointer;" onclick="reactToComment('${docSnap.id}', 'likes')">Like (${data.likes || 0})</span>
+            <span style="cursor:pointer;" onclick="reactToComment('${docSnap.id}', 'dislikes')">Dislike (${data.dislikes || 0})</span>
+            <span style="cursor:pointer; color:#1e3a8a;" onclick="showReplyBox('${docSnap.id}${suffix}')">Reply</span>
+            <span style="cursor:pointer; color:#475569;" onclick="toggleReplies('${docSnap.id}', '${suffix}')">View Replies (${data.replyCount || 0})</span>
         </div>
-        <div id="reply-box-\( {docSnap.id} \){suffix}" style="display:none; margin-top:10px; background:white; padding:5px; border-radius:20px; border:1px solid #d1d5db; align-items:center; width: 100%; box-sizing: border-box;">
-            <input type="text" id="reply-input-\( {docSnap.id} \){suffix}" placeholder="Reply..." style="flex-grow:1; border:none; padding:8px 12px; outline:none; background:transparent; font-size:13px; width: 60%;">
-            <button onclick="postReply('\( {docSnap.id}', ' \){suffix}')" style="background:#003366; color:white; border:none; padding:6px 15px; border-radius:20px; cursor:pointer; font-size:11px; font-weight:bold;">Send</button>
+        <div id="reply-box-${docSnap.id}${suffix}" style="display:none; margin-top:10px; background:white; padding:5px; border-radius:20px; border:1px solid #d1d5db; align-items:center; width: 100%; box-sizing: border-box;">
+            <input type="text" id="reply-input-${docSnap.id}${suffix}" placeholder="Reply..." style="flex-grow:1; border:none; padding:8px 12px; outline:none; background:transparent; font-size:13px; width: 60%;">
+            <button onclick="postReply('${docSnap.id}', '${suffix}')" style="background:#003366; color:white; border:none; padding:6px 15px; border-radius:20px; cursor:pointer; font-size:11px; font-weight:bold;">Send</button>
         </div>
-        <div id="replies-list-\( {docSnap.id} \){suffix}" style="display:none; margin-top:10px; margin-left:20px; border-left:2px solid #cbd5e1; padding-left:10px;"></div>
+        <div id="replies-list-${docSnap.id}${suffix}" style="display:none; margin-top:10px; margin-left:20px; border-left:2px solid #cbd5e1; padding-left:10px;"></div>
     `;
     container.appendChild(div);
   };
@@ -567,7 +567,7 @@
 
     container.innerHTML = `
       <div class="card">
-        <iframe src="https://www.youtube.com/embed/\( {id}" width="100%" height="315" allowfullscreen title=" \){v.title || 'Video'}"></iframe>
+        <iframe src="https://www.youtube.com/embed/${id}" width="100%" height="315" allowfullscreen title="${v.title || 'Video'}"></iframe>
         <h3>${v.title}</h3>
         <p>${v.desc || ''}</p>
 
