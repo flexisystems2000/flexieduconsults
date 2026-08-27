@@ -182,6 +182,10 @@ function h($str) {
             padding: 0;
             color: var(--text);
             line-height: 1.6;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         header {
@@ -357,6 +361,10 @@ function h($str) {
             border-radius: 6px;
             font-family: inherit;
             font-size: 14px;
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
         }
 
         .comment-btn {
@@ -587,7 +595,7 @@ function h($str) {
         }
     </style>
 </head>
-<body>
+<body oncopy="return false" oncut="return false" onpaste="return false" oncontextmenu="return false">
 
 <header>
     <a href="/index.php" class="back-btn" aria-label="Back to home">❮</a>
