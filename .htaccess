@@ -2,6 +2,9 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
+     
+    # Sitemap
+    # RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
     # ------------------------------------------------------------
     # Legacy .html → .php  (ONLY pages that already exist as .php)
@@ -43,8 +46,7 @@
     # RewriteRule ^prep\.html$             /prep.php [R=301,L]
     # After groups.html → groups.php, change classroom line above to:
     # RewriteRule ^classroom\.html$        /groups.php [R=301,L]
-    # RewriteRule ^sitemap\.xml$ sitemap.php [L]
-
+    
     # ------------------------------------------------------------
     # Don't rewrite real files or directories
     # ------------------------------------------------------------
