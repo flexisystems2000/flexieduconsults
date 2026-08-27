@@ -2,7 +2,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
-     
+
     # Sitemap
     RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
@@ -17,7 +17,9 @@
     RewriteRule ^syllabus\.html$     /syllabus.php [R=301,L]
     RewriteRule ^cbt\.html$          /cbt.php [R=301,L]
     RewriteRule ^pdf\.html$          /pdf.php [R=301,L]
-    RewriteRule ^news-view\.html$    /news-view.php [R=301,L]
+
+    # Important: Keep the ?id= query string so old Google links still work
+    RewriteRule ^news-view\.html$    /news-view.php [R=301,L,QSA]
 
     # classroom.html was never a real file — send to groups
     RewriteRule ^classroom\.html$    /groups.html [R=301,L]
@@ -46,7 +48,7 @@
     # RewriteRule ^prep\.html$             /prep.php [R=301,L]
     # After groups.html → groups.php, change classroom line above to:
     # RewriteRule ^classroom\.html$        /groups.php [R=301,L]
-    
+
     # ------------------------------------------------------------
     # Don't rewrite real files or directories
     # ------------------------------------------------------------
