@@ -1,40 +1,116 @@
 <?php
-// Server-side fetch for Google AdSense crawlers
+// SERVER-SIDE: Fetch news + pagination
 $firebaseProjectId = "waec2026jamb2027";
 $apiUrl = "https://firestore.googleapis.com/v1/projects/{$firebaseProjectId}/databases/(default)/documents/news";
-$serverNewsHtml = '';
 
+$perPage = 10; // Change this if you want more/less items per page
+$currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+
+$allNews = [];
 $response = @file_get_contents($apiUrl);
+
 if ($response) {
     $data = json_decode($response, true);
     if (isset($data['documents'])) {
-        $docs = $data['documents'];
-        $count = 0;
-        foreach ($docs as $doc) {
-            if ($count >= 5) break;
-            $fields = isset($doc['fields']) ? $doc['fields'] : [];
-            $title = isset($fields['title']['stringValue']) ? $fields['title']['stringValue'] : 'News Update';
-            $imageUrl = isset($fields['imageUrl']['stringValue']) ? $fields['imageUrl']['stringValue'] : 'https://via.placeholder.com/80';
-            $slug = isset($fields['slug']['stringValue']) ? $fields['slug']['stringValue'] : '';
+        foreach ($data['documents'] as $doc) {
+            $fields = $doc['fields'] ?? [];
             $docNameParts = explode('/', $doc['name']);
             $docId = end($docNameParts);
 
-            $targetUrl = $slug
-                ? "/news/" . rawurlencode($slug)
-                : "/news/id/" . rawurlencode($docId);
+            $timestamp = 0;
+            if (!empty($fields['timestamp']['timestampValue'])) {
+                $timestamp = strtotime($fields['timestamp']['timestampValue']);
+            }
 
-            $serverNewsHtml .= '<tr onclick="window.location.href=\'' . $targetUrl . '\'">';
-            $serverNewsHtml .= '<td style="width:88px;"><img src="' . htmlspecialchars($imageUrl) . '" alt="' . htmlspecialchars($title) . '" class="td-img"></td>';
-            $serverNewsHtml .= '<td class="td-title">' . htmlspecialchars($title) . '</td>';
-            $serverNewsHtml .= '<td class="td-arrow">❯</td>';
-            $serverNewsHtml .= '</tr>';
-            $count++;
+            $allNews[] = [
+                'id'        => $docId,
+                'title'     => $fields['title']['stringValue'] ?? 'News Update',
+                'imageUrl'  => $fields['imageUrl']['stringValue'] ?? 'https://via.placeholder.com/88x66',
+                'slug'      => $fields['slug']['stringValue'] ?? '',
+                'timestamp' => $timestamp,
+            ];
         }
     }
 }
-if (empty($serverNewsHtml)) {
-    $serverNewsHtml = '<tr><td colspan="3" style="padding: 15px; color: #555; font-size: 14px;">Loading latest educational news updates, admission guidelines, and exam notices for JAMB and WAEC candidates.</td></tr>';
+
+// Sort newest first
+usort($allNews, function($a, $b) {
+    return $b['timestamp'] <=> $a['timestamp'];
+});
+
+$totalItems = count($allNews);
+$totalPages = max(1, ceil($totalItems / $perPage));
+$currentPage = min($currentPage, $totalPages);
+
+$offset = ($currentPage - 1) * $perPage;
+$newsForPage = array_slice($allNews, $offset, $perPage);
+
+// Build the news table HTML
+$serverNewsHtml = '';
+if (empty($newsForPage)) {
+    $serverNewsHtml = '<tr><td colspan="3" style="padding: 15px; color: #555; font-size: 14px;">No news updates available at the moment.</td></tr>';
+} else {
+    foreach ($newsForPage as $item) {
+        $targetUrl = $item['slug']
+            ? "/news/" . rawurlencode($item['slug'])
+            : "/news/id/" . rawurlencode($item['id']);
+
+        $serverNewsHtml .= '<tr onclick="window.location.href=\'' . $targetUrl . '\'">';
+        $serverNewsHtml .= '<td style="width:88px;"><img src="' . htmlspecialchars($item['imageUrl']) . '" alt="' . htmlspecialchars($item['title']) . '" class="td-img" loading="lazy"></td>';
+        $serverNewsHtml .= '<td class="td-title">' . htmlspecialchars($item['title']) . '</td>';
+        $serverNewsHtml .= '<td class="td-arrow">❯</td>';
+        $serverNewsHtml .= '</tr>';
+    }
 }
+
+// Build pagination HTML
+function buildPagination($currentPage, $totalPages) {
+    if ($totalPages <= 1) return '';
+
+    $html = '<div class="pagination-bar" id="pagination-controls">';
+
+    // Previous button
+    if ($currentPage > 1) {
+        $html .= '<a href="?page=' . ($currentPage - 1) . '" class="pg-btn" aria-label="Previous page">‹</a>';
+    } else {
+        $html .= '<span class="pg-btn" style="opacity:0.4; cursor:default;">‹</span>';
+    }
+
+    // Page numbers
+    $range = 2; // how many pages to show around current
+    $start = max(1, $currentPage - $range);
+    $end   = min($totalPages, $currentPage + $range);
+
+    if ($start > 1) {
+        $html .= '<a href="?page=1" class="pg-btn">1</a>';
+        if ($start > 2) $html .= '<span class="pg-btn" style="cursor:default;">…</span>';
+    }
+
+    for ($i = $start; $i <= $end; $i++) {
+        if ($i == $currentPage) {
+            $html .= '<span class="pg-btn pg-active">' . $i . '</span>';
+        } else {
+            $html .= '<a href="?page=' . $i . '" class="pg-btn">' . $i . '</a>';
+        }
+    }
+
+    if ($end < $totalPages) {
+        if ($end < $totalPages - 1) $html .= '<span class="pg-btn" style="cursor:default;">…</span>';
+        $html .= '<a href="?page=' . $totalPages . '" class="pg-btn">' . $totalPages . '</a>';
+    }
+
+    // Next button
+    if ($currentPage < $totalPages) {
+        $html .= '<a href="?page=' . ($currentPage + 1) . '" class="pg-btn" aria-label="Next page">›</a>';
+    } else {
+        $html .= '<span class="pg-btn" style="opacity:0.4; cursor:default;">›</span>';
+    }
+
+    $html .= '</div>';
+    return $html;
+}
+
+$paginationHtml = buildPagination($currentPage, $totalPages);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,9 +138,9 @@ if (empty($serverNewsHtml)) {
     <meta name="twitter:description" content="Flexi Educational Consult (Flexi Tutors) is an online CBT exam practice portal for JAMB, WAEC, NECO, and JUPEB.">
     <meta name="twitter:image" content="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
 
-    <link rel="canonical" href="https://flexieduconsult.com.ng/" />
+    <link rel="canonical" href="https://flexieduconsult.com.ng/<?php echo $currentPage > 1 ? '?page=' . $currentPage : ''; ?>" />
 
-    <title>Flexi Tutors | JAMB, WAEC & CBT Prep Nigeria</title>
+    <title>Flexi Tutors | JAMB, WAEC & CBT Prep Nigeria<?php echo $currentPage > 1 ? ' - Page ' . $currentPage : ''; ?></title>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
@@ -162,7 +238,6 @@ if (empty($serverNewsHtml)) {
         letter-spacing: 0.2px;
     }
 
-    /* Wider content on desktop — matches news-view */
     .container {
         max-width: 920px;
         margin: 24px auto;
@@ -256,7 +331,6 @@ if (empty($serverNewsHtml)) {
     }
 
     .news-table tr:last-child { border-bottom: none; }
-
     .news-table tr:hover { background: #f8faf9; }
 
     .news-table td {
@@ -298,6 +372,7 @@ if (empty($serverNewsHtml)) {
         background: white;
         border-radius: 30px;
         box-shadow: var(--shadow);
+        flex-wrap: wrap;
     }
 
     .pg-btn {
@@ -310,15 +385,23 @@ if (empty($serverNewsHtml)) {
         cursor: pointer;
         font-weight: bold;
         font-size: 14px;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .pg-btn:hover {
+        background: #f0f4f8;
+        border-color: var(--blue);
     }
 
     .pg-active {
         background: var(--blue) !important;
         color: white !important;
-        border-color: var(--blue);
+        border-color: var(--blue) !important;
+        cursor: default;
     }
 
     .card {
@@ -336,8 +419,7 @@ if (empty($serverNewsHtml)) {
         font-size: 1.15rem;
     }
 
-    input,
-    textarea {
+    input, textarea {
         width: 100%;
         padding: 12px 14px;
         margin-bottom: 12px;
@@ -408,10 +490,8 @@ if (empty($serverNewsHtml)) {
     }
 
     .square-menu a:hover { background: rgba(255,255,255,0.08); }
-
     .square-menu a:last-child { border-bottom: none; }
 
-    /* Testimonials */
     .testimonials-section {
         margin-top: 36px;
         margin-bottom: 28px;
@@ -493,7 +573,6 @@ if (empty($serverNewsHtml)) {
         font-style: italic;
     }
 
-    /* Quotes */
     .quote-slider-container {
         position: relative;
         width: 100%;
@@ -544,7 +623,6 @@ if (empty($serverNewsHtml)) {
         text-align: right;
     }
 
-    /* Announcement */
     #announcement-banner {
         display: none;
         margin-bottom: 16px;
@@ -556,70 +634,38 @@ if (empty($serverNewsHtml)) {
         box-shadow: var(--shadow);
     }
 
-    /* ========== DESKTOP ========== */
     @media (min-width: 768px) {
         .container {
             max-width: 980px;
             margin: 32px auto;
         }
-
         header {
             height: 56px;
             padding: 0 28px;
         }
-
         .brand-name { font-size: 16px; }
-
         .logo-img {
             height: 36px;
             width: 36px;
         }
-
-        .slider-container {
-            height: 220px;
-        }
-
-        .quote-slider-container {
-            min-height: 220px;
-        }
-
-        .quote-content-box blockquote {
-            font-size: 1.2rem;
-        }
-
-        .section-heading,
-        .testimonials-heading {
-            font-size: 1.35rem;
-        }
-
+        .slider-container { height: 220px; }
+        .quote-slider-container { min-height: 220px; }
+        .quote-content-box blockquote { font-size: 1.2rem; }
+        .section-heading, .testimonials-heading { font-size: 1.35rem; }
         .td-title { font-size: 16px; }
-
         .news-table td { padding: 16px 18px; }
-
         .td-img {
             width: 100px;
             height: 72px;
         }
-
-        .testimonial-slider-container {
-            height: 160px;
-        }
-
+        .testimonial-slider-container { height: 160px; }
         .testimonial-text { font-size: 15px; }
-
-        .card {
-            padding: 28px 32px;
-        }
+        .card { padding: 28px 32px; }
     }
 
     @media (min-width: 1100px) {
-        .container {
-            max-width: 1040px;
-        }
-
-        .slider-container {
-            height: 260px;
-        }
+        .container { max-width: 1040px; }
+        .slider-container { height: 260px; }
     }
 
     @media (max-width: 480px) {
@@ -635,7 +681,6 @@ if (empty($serverNewsHtml)) {
         .td-title { font-size: 14px; }
     }
 
-    /* Footer */
     .footer {
         background: linear-gradient(135deg, #011627 0%, #032038 100%);
         color: #e2e8f0;
@@ -772,16 +817,16 @@ if (empty($serverNewsHtml)) {
         </button>
 
         <div class="square-menu" id="squareMenu">
-            <a href="index.php">Home</a>
-            <a href="videos.html">Watch Video Lessons</a>
-            <a href="syllabus.html">Access the JAMB and WAEC syllabus here</a>
-            <a href="brochure.html">Access JAMB Brochure</a>
-            <a href="cbt.html">CBT Simulator</a>
-            <a href="groups.html">Classroom (Groups and chats)</a>
-            <a href="purchase.html">Purchase Scratch Cards</a>
-            <a href="pdf.html">Get your PDFs from here</a>
-            <a href="location.html">Tutorial Centers Near You</a>
-            <a href="profile.html">User Profile</a>
+            <a href="/index.php">Home</a>
+            <a href="/videos.html">Watch Video Lessons</a>
+            <a href="/syllabus.html">Access the JAMB and WAEC syllabus here</a>
+            <a href="/brochure.html">Access JAMB Brochure</a>
+            <a href="/cbt.html">CBT Simulator</a>
+            <a href="/groups.html">Classroom (Groups and chats)</a>
+            <a href="/purchase.html">Purchase Scratch Cards</a>
+            <a href="/pdf.html">Get your PDFs from here</a>
+            <a href="/location.html">Tutorial Centers Near You</a>
+            <a href="/profile.html">User Profile</a>
             <a href="#" id="auth-menu-btn">Login</a>
         </div>
     </div>
@@ -830,7 +875,7 @@ if (empty($serverNewsHtml)) {
         </tbody>
     </table>
 
-    <div class="pagination-bar" id="pagination-controls"></div>
+    <?php echo $paginationHtml; ?>
 
     <div class="testimonials-section">
         <h2 class="testimonials-heading">What Our Students Say</h2>
@@ -898,15 +943,15 @@ if (empty($serverNewsHtml)) {
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
-                <li><a href="index.php">Home</a></li>
+                <li><a href="/index.php">Home</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
-                <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
-                <li><a href="brochure.html">Access JAMB Brochure</a></li>
-                <li><a href="videos.html">Video Lessons</a></li>
-                <li><a href="pdf.html">Past Questions & PDFs</a></li>
-                <li><a href="cbt.html">CBT Simulator</a></li>
-                <li><a href="groups.html">Classroom Groups and chats</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="/syllabus.html">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="/brochure.html">Access JAMB Brochure</a></li>
+                <li><a href="/videos.html">Video Lessons</a></li>
+                <li><a href="/pdf.html">Past Questions & PDFs</a></li>
+                <li><a href="/cbt.html">CBT Simulator</a></li>
+                <li><a href="/groups.html">Classroom Groups and chats</a></li>
+                <li><a href="/location.html">Tutorial Centres</a></li>
             </ul>
         </div>
 
@@ -948,7 +993,7 @@ if (empty($serverNewsHtml)) {
     <div id="support-tooltip" style="background:#003366; color:white; padding:10px 15px; border-radius:20px 20px 0px 20px; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); animation: fadeIn 0.5s; opacity: 1;">
     Chat with Jarvis AI for support
     </div>
-    <button id="support-btn" onclick="window.location.href='contactsupport.html'" aria-label="Support Chat" style="background:#2E8B57; border:none; width:60px; height:60px; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.3s;">
+    <button id="support-btn" onclick="window.location.href='/contactsupport.html'" aria-label="Support Chat" style="background:#2E8B57; border:none; width:60px; height:60px; border-radius:50%; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.3s;">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
         </svg>
@@ -997,7 +1042,7 @@ onAuthStateChanged(auth, (user) => {
         authMenuBtn.innerText = "Login";
         authMenuBtn.style.color = "white";
         authMenuBtn.onclick = () => {
-            window.location.href = "login.html";
+            window.location.href = "/login.html";
         };
     }
 });
@@ -1059,7 +1104,7 @@ async function loadMotivationalQuote() {
 
             slide.innerHTML = `
                 <div class="quote-content-box">
-                    <blockquote style="color: ${data.textColor || '#ffffff'};">"${escapeHtml(data.text)}"</blockquote>
+                    <blockquote style="color: \( {data.textColor || '#ffffff'};">" \){escapeHtml(data.text)}"</blockquote>
                     <cite style="color: ${data.authorColor || '#f1f5f9'};">— ${escapeHtml(data.author)}</cite>
                 </div>
             `;
