@@ -437,7 +437,7 @@
 
     window.selectExam = (type) => {
         if (type === 'CHALLENGE') {
-            window.location.href = "https://flexisystems2000.github.io/weeklycbtmock/";
+            window.location.href = "https://flexisystems2000.github.io/Weekly-CBT-Mock-/";
             return;
         }
 
