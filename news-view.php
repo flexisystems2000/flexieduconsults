@@ -1,918 +1,2071 @@
 <?php
-// SERVER-SIDE PHP: Full article data for crawlers + Open Graph meta tags
+
+/*
+|--------------------------------------------------------------------------
+| Flexi Educational Consult
+| News Article Viewer
+|--------------------------------------------------------------------------
+| Shared layout:
+|   includes/head.php
+|   includes/header.php
+|   includes/footer.php
+|
+| Page-specific functionality:
+|   - Firestore article retrieval
+|   - Clean news URLs
+|   - SEO metadata
+|   - Article rendering
+|   - HTML tables
+|   - PDF attachments
+|   - Comments
+|   - Related news
+|   - Sharing
+|--------------------------------------------------------------------------
+*/
+
 $firebaseProjectId = "waec2026jamb2027";
 
-$newsId   = isset($_GET['id'])   ? trim($_GET['id'])   : '';
+/*
+|--------------------------------------------------------------------------
+| Get News Identifier
+|--------------------------------------------------------------------------
+*/
+
+$newsId   = isset($_GET['id']) ? trim($_GET['id']) : '';
 $newsSlug = isset($_GET['slug']) ? trim($_GET['slug']) : '';
 
-// Support clean path URLs: /news/{slug} and /news/id/{docId}
-$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
-if (preg_match('#^/news/([a-zA-Z0-9][a-zA-Z0-9_-]*)/?$#', $requestPath, $m)) {
-    $newsSlug = $m[1];
-} elseif (preg_match('#^/news/id/([a-zA-Z0-9_-]+)/?$#', $requestPath, $m)) {
-    $newsId = $m[1];
+/*
+|--------------------------------------------------------------------------
+| Detect Clean URL
+|--------------------------------------------------------------------------
+|
+| Supported:
+|   /news/{slug}
+|   /news/id/{documentId}
+|
+*/
+
+$requestPath = parse_url(
+    $_SERVER['REQUEST_URI'] ?? '',
+    PHP_URL_PATH
+) ?: '';
+
+if (
+    preg_match(
+        '#^/news/([a-zA-Z0-9][a-zA-Z0-9_-]*)/?$#',
+        $requestPath,
+        $matches
+    )
+) {
+    $newsSlug = $matches[1];
+
+} elseif (
+    preg_match(
+        '#^/news/id/([a-zA-Z0-9_-]+)/?$#',
+        $requestPath,
+        $matches
+    )
+) {
+    $newsId = $matches[1];
 }
 
-// 301 redirect old query-style URLs to clean paths
-$script = basename($_SERVER['SCRIPT_NAME'] ?? '');
-if ($script === 'news-view.php' && strpos($requestPath, 'news-view.php') !== false && ($newsSlug || $newsId)) {
-    $clean = $newsSlug
+/*
+|--------------------------------------------------------------------------
+| Redirect Old Query URLs to Clean URLs
+|--------------------------------------------------------------------------
+|
+| Example:
+|   /news-view.php?id=ABC
+|
+| becomes:
+|   /news/id/ABC
+|
+| Example:
+|   /news-view.php?slug=my-news
+|
+| becomes:
+|   /news/my-news
+|
+*/
+
+$scriptName = basename(
+    $_SERVER['SCRIPT_NAME'] ?? ''
+);
+
+if (
+    $scriptName === 'news-view.php' &&
+    strpos($requestPath, 'news-view.php') !== false &&
+    ($newsSlug || $newsId)
+) {
+    $cleanUrl = $newsSlug
         ? '/news/' . rawurlencode($newsSlug)
         : '/news/id/' . rawurlencode($newsId);
-    header('Location: ' . $clean, true, 301);
+
+    header(
+        'Location: ' . $cleanUrl,
+        true,
+        301
+    );
+
     exit;
 }
 
-// Defaults
-$pageTitle = "Flexi Tutors | News Update";
-$pageDesc  = "Read the latest educational news, JAMB updates, WAEC notices, and admission guides on Flexi Educational Consult.";
-$pageImage = "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg";
-$host   = $_SERVER['HTTP_HOST'] ?? 'flexieduconsult.com.ng';
-$scheme = 'https';
-$pageUrl = $scheme . '://' . $host . ($_SERVER['REQUEST_URI'] ?? '/');
+/*
+|--------------------------------------------------------------------------
+| Default SEO Values
+|--------------------------------------------------------------------------
+*/
 
-// Full article data that will be rendered in HTML (visible to Google)
+$pageTitle =
+    'Flexi Tutors | News Update';
+
+$pageDescription =
+    'Read the latest educational news, JAMB updates, WAEC notices, admission guides and important educational updates on Flexi Educational Consult.';
+
+$pageImage =
+    'https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg';
+
+/*
+|--------------------------------------------------------------------------
+| Official Website URL
+|--------------------------------------------------------------------------
+*/
+
+$siteUrl =
+    'https://www.flexieduconsult.com.ng';
+
+/*
+|--------------------------------------------------------------------------
+| Article URL
+|--------------------------------------------------------------------------
+*/
+
+$pageUrl = $siteUrl . '/';
+
+if ($newsSlug) {
+
+    $pageUrl =
+        $siteUrl .
+        '/news/' .
+        rawurlencode($newsSlug);
+
+} elseif ($newsId) {
+
+    $pageUrl =
+        $siteUrl .
+        '/news/id/' .
+        rawurlencode($newsId);
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| Article Data
+|--------------------------------------------------------------------------
+*/
+
 $article = [
-    'title'       => '',
-    'content'     => '',
-    'imageUrl'    => '',
-    'tableData'   => '',
-    'pdfUrl'      => '',
-    'timestamp'   => null,
-    'slug'        => $newsSlug,
-    'id'          => $newsId,
+    'title'     => '',
+    'content'   => '',
+    'imageUrl'  => '',
+    'tableData' => '',
+    'pdfUrl'    => '',
+    'timestamp' => null,
+    'slug'      => $newsSlug,
+    'id'        => $newsId,
 ];
 
+/*
+|--------------------------------------------------------------------------
+| Retrieve Article from Firestore
+|--------------------------------------------------------------------------
+*/
+
 if ($newsId || $newsSlug) {
-    $apiUrl = "https://firestore.googleapis.com/v1/projects/{$firebaseProjectId}/databases/(default)/documents/news";
+
+    $apiUrl =
+        "https://firestore.googleapis.com/v1/projects/" .
+        $firebaseProjectId .
+        "/databases/(default)/documents/news";
+
     $response = @file_get_contents($apiUrl);
 
     if ($response) {
-        $data = json_decode($response, true);
-        if (isset($data['documents'])) {
+
+        $data = json_decode(
+            $response,
+            true
+        );
+
+        if (
+            isset($data['documents']) &&
+            is_array($data['documents'])
+        ) {
+
             foreach ($data['documents'] as $doc) {
-                $docNameParts = explode('/', $doc['name']);
-                $docId = end($docNameParts);
-                $fields = $doc['fields'] ?? [];
 
-                $slug = $fields['slug']['stringValue'] ?? '';
+                $docNameParts =
+                    explode(
+                        '/',
+                        $doc['name'] ?? ''
+                    );
 
-                if (($newsId && $docId === $newsId) || ($newsSlug && $slug === $newsSlug)) {
-                    // SEO / meta
-                    if (!empty($fields['seoTitle']['stringValue'])) {
-                        $pageTitle = $fields['seoTitle']['stringValue'] . " | Flexi Educational Consult";
-                    } elseif (!empty($fields['title']['stringValue'])) {
-                        $pageTitle = $fields['title']['stringValue'] . " | Flexi Educational Consult";
-                    }
+                $docId =
+                    end($docNameParts);
 
-                    if (!empty($fields['metaDescription']['stringValue'])) {
-                        $pageDesc = $fields['metaDescription']['stringValue'];
-                    } elseif (!empty($fields['content']['stringValue'])) {
-                        $pageDesc = mb_substr(strip_tags($fields['content']['stringValue']), 0, 155) . "...";
-                    }
+                $fields =
+                    $doc['fields'] ?? [];
 
-                    if (!empty($fields['imageUrl']['stringValue'])) {
-                        $pageImage = $fields['imageUrl']['stringValue'];
-                    }
+                $slug =
+                    $fields['slug']['stringValue'] ?? '';
 
-                    // Full article data for HTML
-                    $article['title']     = $fields['title']['stringValue'] ?? '';
-                    $article['content']   = $fields['content']['stringValue'] ?? ($fields['body']['stringValue'] ?? '');
-                    $article['imageUrl']  = $fields['imageUrl']['stringValue'] ?? '';
-                    $article['tableData'] = $fields['tableData']['stringValue'] ?? '';
-                    $article['pdfUrl']    = $fields['pdfUrl']['stringValue'] ?? '';
-                    $article['id']        = $docId;
-                    $article['slug']      = $slug;
+                /*
+                |--------------------------------------------------------------------------
+                | Match Article
+                |--------------------------------------------------------------------------
+                */
 
-                    // Timestamp
-                    if (!empty($fields['timestamp']['timestampValue'])) {
-                        $article['timestamp'] = $fields['timestamp']['timestampValue'];
-                    }
+                $matchesId =
+                    $newsId &&
+                    $docId === $newsId;
 
-                    // Canonical URL
-                    if ($slug) {
-                        $pageUrl = $scheme . '://' . $host . '/news/' . rawurlencode($slug);
-                    } else {
-                        $pageUrl = $scheme . '://' . $host . '/news/id/' . rawurlencode($docId);
-                    }
-                    break;
+                $matchesSlug =
+                    $newsSlug &&
+                    $slug === $newsSlug;
+
+                if (
+                    !$matchesId &&
+                    !$matchesSlug
+                ) {
+                    continue;
                 }
+
+                /*
+                |--------------------------------------------------------------------------
+                | SEO Information
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    !empty(
+                        $fields['seoTitle']['stringValue']
+                    )
+                ) {
+
+                    $pageTitle =
+                        $fields['seoTitle']['stringValue'] .
+                        ' | Flexi Educational Consult';
+
+                } elseif (
+                    !empty(
+                        $fields['title']['stringValue']
+                    )
+                ) {
+
+                    $pageTitle =
+                        $fields['title']['stringValue'] .
+                        ' | Flexi Educational Consult';
+                }
+
+                if (
+                    !empty(
+                        $fields['metaDescription']['stringValue']
+                    )
+                ) {
+
+                    $pageDescription =
+                        $fields['metaDescription']['stringValue'];
+
+                } elseif (
+                    !empty(
+                        $fields['content']['stringValue']
+                    )
+                ) {
+
+                    $plainDescription =
+                        trim(
+                            preg_replace(
+                                '/\s+/',
+                                ' ',
+                                strip_tags(
+                                    $fields['content']['stringValue']
+                                )
+                            )
+                        );
+
+                    $pageDescription =
+                        mb_substr(
+                            $plainDescription,
+                            0,
+                            155
+                        );
+
+                    if (
+                        mb_strlen(
+                            $plainDescription
+                        ) > 155
+                    ) {
+                        $pageDescription .= '...';
+                    }
+                }
+
+                if (
+                    !empty(
+                        $fields['imageUrl']['stringValue']
+                    )
+                ) {
+
+                    $pageImage =
+                        $fields['imageUrl']['stringValue'];
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Full Article Data
+                |--------------------------------------------------------------------------
+                */
+
+                $article['title'] =
+                    $fields['title']['stringValue']
+                    ?? '';
+
+                $article['content'] =
+                    $fields['content']['stringValue']
+                    ?? (
+                        $fields['body']['stringValue']
+                        ?? ''
+                    );
+
+                $article['imageUrl'] =
+                    $fields['imageUrl']['stringValue']
+                    ?? '';
+
+                $article['tableData'] =
+                    $fields['tableData']['stringValue']
+                    ?? '';
+
+                $article['pdfUrl'] =
+                    $fields['pdfUrl']['stringValue']
+                    ?? '';
+
+                $article['id'] =
+                    $docId;
+
+                $article['slug'] =
+                    $slug;
+
+                /*
+                |--------------------------------------------------------------------------
+                | Timestamp
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    !empty(
+                        $fields['timestamp']['timestampValue']
+                    )
+                ) {
+
+                    $article['timestamp'] =
+                        $fields['timestamp']['timestampValue'];
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Canonical URL
+                |--------------------------------------------------------------------------
+                */
+
+                if ($slug) {
+
+                    $pageUrl =
+                        $siteUrl .
+                        '/news/' .
+                        rawurlencode($slug);
+
+                } else {
+
+                    $pageUrl =
+                        $siteUrl .
+                        '/news/id/' .
+                        rawurlencode($docId);
+                }
+
+                break;
             }
         }
     }
 }
 
-function h($str) {
-    return htmlspecialchars((string)$str, ENT_QUOTES, 'UTF-8');
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+/*
+|--------------------------------------------------------------------------
+| Safe HTML Escaping
+|--------------------------------------------------------------------------
+|
+| Deliberately named uniquely so it does not conflict with other
+| page-level helper functions.
+|--------------------------------------------------------------------------
+*/
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9836330764964180"
-         crossorigin="anonymous"></script>
+if (!function_exists('flexiNewsEscape')) {
 
-    <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title id="page-title"><?php echo h($pageTitle); ?></title>
-    <meta name="description" content="<?php echo h($pageDesc); ?>">
-    <link rel="canonical" href="<?php echo h($pageUrl); ?>">
-
-    <meta property="og:title" content="<?php echo h($pageTitle); ?>">
-    <meta property="og:description" content="<?php echo h($pageDesc); ?>">
-    <meta property="og:image" content="<?php echo h($pageImage); ?>">
-    <meta property="og:url" content="<?php echo h($pageUrl); ?>">
-    <meta property="og:type" content="article">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<?php echo h($pageTitle); ?>">
-    <meta name="twitter:description" content="<?php echo h($pageDesc); ?>">
-    <meta name="twitter:image" content="<?php echo h($pageImage); ?>">
-
-    <?php if (!empty($article['title'])): ?>
-    <script type="application/ld+json">
+    function flexiNewsEscape($value)
     {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": "<?php echo h($article['title']); ?>",
-      "description": "<?php echo h($pageDesc); ?>",
-      "image": "<?php echo h($pageImage); ?>",
-      "datePublished": "<?php echo h($article['timestamp'] ?? date('c')); ?>",
-      "author": {
-        "@type": "Organization",
-        "name": "Flexi Educational Consult"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Flexi Educational Consult",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg"
-        }
-      },
-      "mainEntityOfPage": "<?php echo h($pageUrl); ?>"
+        return htmlspecialchars(
+            (string) $value,
+            ENT_QUOTES,
+            'UTF-8'
+        );
     }
-    </script>
-    <?php endif; ?>
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <style>
-        :root {
-            --blue: #003366;
-            --green: #2E8B57;
-            --yellow: #FFD700;
-            --bg: #f4f7f6;
-            --text: #333;
-            --muted: #888;
-            --radius: 12px;
-            --shadow: 0 4px 18px rgba(0,0,0,0.06);
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            margin: 0;
-            padding: 0;
-            color: var(--text);
-            line-height: 1.6;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        header {
-            background: var(--blue);
-            color: white;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            border-bottom: 3px solid var(--green);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .back-btn {
-            color: white;
-            text-decoration: none;
-            font-size: 22px;
-            margin-right: 14px;
-            line-height: 1;
-        }
-
-        .header-title {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .container {
-            max-width: 920px;
-            margin: 24px auto;
-            width: 94%;
-            padding-bottom: 48px;
-        }
-
-        .content-card {
-            background: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-        }
-
-        .main-img {
-            width: 100%;
-            max-height: 420px;
-            object-fit: contain;
-            background: #001f3f;
-            display: block;
-        }
-
-        .article-body {
-            padding: 24px 28px 28px;
-        }
-
-        .article-title {
-            color: var(--blue);
-            font-size: 1.65rem;
-            line-height: 1.3;
-            margin: 0 0 10px 0;
-            font-weight: 700;
-        }
-
-        .article-date {
-            color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 18px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 12px;
-        }
-
-        .article-text {
-            color: #333;
-            line-height: 1.85;
-            font-size: 16px;
-        }
-
-        .share-box {
-            margin-top: 28px;
-            padding-top: 18px;
-            border-top: 1px solid #eee;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .share-btn {
-            background: var(--green);
-            color: white;
-            border: none;
-            padding: 9px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .share-btn:hover { opacity: 0.92; }
-
-        .data-table-container {
-            margin-top: 22px;
-            overflow-x: auto;
-            border-top: 1px solid #eee;
-            padding-top: 16px;
-        }
-
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background: var(--blue); color: white; }
-        tr:nth-child(even) { background: #f9f9f9; }
-
-        .pdf-section {
-            margin-top: 28px;
-            padding-top: 22px;
-            border-top: 2px dashed #eee;
-        }
-
-        .pdf-preview {
-            width: 100%;
-            max-height: 550px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            background: #f0f0f0;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--green);
-            color: white;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .download-btn:hover { opacity: 0.9; }
-        .download-btn svg { width: 18px; height: 18px; fill: currentColor; }
-
-        .comment-section {
-            background: white;
-            border-radius: var(--radius);
-            padding: 24px 28px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-        }
-
-        .comment-box {
-            border-bottom: 1px solid #eee;
-            padding: 12px 0;
-        }
-
-        .comment-name { font-weight: bold; color: var(--blue); font-size: 14px; }
-        .comment-text { font-size: 14px; color: #555; margin: 4px 0; }
-        .comment-date { font-size: 11px; color: #aaa; }
-
-        .add-comment { margin-top: 20px; }
-
-        input, textarea {
-            width: 100%;
-            padding: 11px 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 14px;
-            -webkit-user-select: auto;
-            -moz-user-select: auto;
-            -ms-user-select: auto;
-            user-select: auto;
-        }
-
-        .comment-btn {
-            background: var(--blue);
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .comment-btn:hover { opacity: 0.92; }
-
-        #loader {
-            text-align: left;
-            background: white;
-            padding: 32px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            color: var(--blue);
-        }
-        #loader h2 { color: var(--blue); margin-top: 0; }
-        #loader p { color: #555; line-height: 1.6; }
-
-        .other-news-section {
-            background: white;
-            border-radius: var(--radius);
-            padding: 24px 28px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-        }
-
-        .other-news-section h3 {
-            color: var(--blue);
-            margin: 0 0 18px 0;
-            font-size: 1.2rem;
-            border-left: 4px solid var(--green);
-            padding-left: 12px;
-        }
-
-        .other-news-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .other-news-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            text-decoration: none;
-            color: inherit;
-            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
-        }
-
-        .other-news-item:hover {
-            background: #f8faf9;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            transform: translateY(-1px);
-        }
-
-        .other-news-item img {
-            width: 88px;
-            height: 66px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #e5e5e5;
-            flex-shrink: 0;
-            background: #001f3f;
-        }
-
-        .other-news-item .on-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--blue);
-            line-height: 1.4;
-            flex: 1;
-        }
-
-        .other-news-item .on-arrow {
-            color: #aaa;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                max-width: 980px;
-                margin: 32px auto;
-            }
-            .article-title { font-size: 1.85rem; }
-            .article-text { font-size: 17px; line-height: 1.9; }
-            .article-body { padding: 28px 36px 36px; }
-            .main-img { max-height: 480px; }
-            .other-news-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-            .comment-section, .other-news-section { padding: 28px 32px; }
-        }
-
-        @media (min-width: 1100px) {
-            .container { max-width: 1040px; }
-        }
-
-        @media (max-width: 550px) {
-            .article-body { padding: 18px 16px 22px; }
-            .article-title { font-size: 1.35rem; }
-            .article-text { font-size: 15px; }
-            .comment-section, .other-news-section { padding: 18px 16px; }
-            .other-news-item img { width: 72px; height: 54px; }
-        }
-
-        .footer {
-            background: linear-gradient(135deg, #011627 0%, #032038 100%);
-            color: #e2e8f0;
-            padding: 60px 20px 30px;
-            margin-top: 40px;
-            border-top: 4px solid var(--green);
-            font-size: 14px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
-            gap: 35px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer h4 {
-            color: var(--yellow);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin: 0 0 16px 0;
-            position: relative;
-            padding-bottom: 6px;
-        }
-
-        .footer h4::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 24px;
-            height: 2px;
-            background: var(--yellow);
-            opacity: 0.7;
-            border-radius: 2px;
-        }
-
-        .footer-about {
-            line-height: 1.7;
-            color: #94a3b8;
-            margin: 0;
-        }
-
-        .footer-links-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-links-list li { margin-bottom: 10px; }
-
-        .footer a {
-            color: #cbd5e0;
-            text-decoration: none;
-            transition: all 0.25s ease;
-        }
-
-        .footer-links-list a:hover {
-            color: var(--yellow);
-            transform: translateX(4px);
-            display: inline-block;
-        }
-
-        .whatsapp-channel-link {
-            color: #25D366 !important;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .whatsapp-channel-link:hover {
-            opacity: 0.85;
-            transform: translateX(4px);
-        }
-
-        .contact-group { margin-bottom: 16px; }
-
-        .contact-group h5 {
-            color: #ffffff;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin: 0 0 6px 0;
-            opacity: 0.9;
-        }
-
-        .contact-group a {
-            display: block;
-            color: #94a3b8;
-            font-size: 0.88rem;
-            margin-bottom: 4px;
-        }
-
-        .contact-group a:hover { color: #ffffff; }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 40px auto 0;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            text-align: center;
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        @media (max-width: 900px) {
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
-        }
-
-        @media (max-width: 550px) {
-            .footer-grid { grid-template-columns: 1fr; gap: 28px; }
-        }
-    </style>
-</head>
-<body oncopy="return false" oncut="return false" onpaste="return false" oncontextmenu="return false">
-
-<header>
-    <a href="/index.php" class="back-btn" aria-label="Back to home">❮</a>
-    <span class="header-title">Full Update</span>
-</header>
-
-<div class="container">
-    <?php if (empty($article['title'])): ?>
-        <div id="loader">
-            <h2>Article Not Found</h2>
-            <p>Please select an update from our <a href="/index.php" style="color:var(--blue); font-weight:bold;">news archive</a>.</p>
-        </div>
-    <?php else: ?>
-        <div id="article-container">
-            <div class="content-card">
-                <?php if (!empty($article['imageUrl'])): ?>
-                    <img id="news-image" class="main-img"
-                         src="<?php echo h($article['imageUrl']); ?>"
-                         alt="<?php echo h($article['title']); ?>">
-                <?php endif; ?>
-
-                <div class="article-body">
-                    <h1 id="news-title" class="article-title"><?php echo h($article['title']); ?></h1>
-
-                    <?php if (!empty($article['timestamp'])): ?>
-                        <div id="news-date" class="article-date">
-                            Posted: <?php echo date('D M j Y', strtotime($article['timestamp'])); ?>
-                        </div>
-                    <?php endif; ?>
-
-                    <!-- FULL CONTENT VISIBLE TO GOOGLE & CRAWLERS -->
-                    <div id="news-content" class="article-text">
-                        <?php echo nl2br(h($article['content'])); ?>
-                    </div>
-
-                    <div class="share-box">
-                        <span style="font-size:13px; font-weight:bold; color:#555;">Share update:</span>
-                        <button class="share-btn" onclick="shareArticle()">Copy Link</button>
-                        <a id="whatsapp-share"
-                           href="https://api.whatsapp.com/send?text=<?php echo rawurlencode($article['title'] . ' - ' . $pageUrl); ?>"
-                           target="_blank"
-                           class="share-btn"
-                           style="background:#25D366;">WhatsApp</a>
-                    </div>
-
-                    <?php if (!empty($article['tableData'])): ?>
-                        <div id="table-container" class="data-table-container">
-                            <?php echo $article['tableData']; // already HTML from admin ?>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if (!empty($article['pdfUrl'])): ?>
-                        <div id="pdf-container" class="pdf-section">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
-                                <h4 style="color: var(--blue); margin: 0;">📎 Attached Document</h4>
-                                <a id="pdf-download-link"
-                                   href="<?php echo h($article['pdfUrl']); ?>"
-                                   class="download-btn"
-                                   download>
-                                    <svg viewBox="0 0 24 24"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg>
-                                    Download Full PDF
-                                </a>
-                            </div>
-                            <div id="pdf-viewer-container" class="pdf-preview">
-                                <?php
-                                $preview = $article['pdfUrl'];
-                                if (strpos($preview, 'res.cloudinary.com') !== false) {
-                                    $preview = str_replace('/upload/', '/upload/w_800,c_limit,q_auto,f_jpg/pg_1/', $preview);
-                                    $preview = preg_replace('/\.pdf\b/i', '.jpg', $preview);
-                                }
-                                ?>
-                                <img src="<?php echo h($preview); ?>" alt="Document Preview" style="width:100%; height:auto; display:block;">
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <!-- Comments stay client-side -->
-            <div class="comment-section">
-                <h3 style="color: var(--blue); margin-top: 0;">Discussion</h3>
-                <div id="comments-list">
-                    <p style="color: #999; font-size: 14px;">No comments yet. Be the first!</p>
-                </div>
-
-                <div class="add-comment">
-                    <h4 style="margin-bottom: 10px;">Leave a Comment</h4>
-                    <input type="text" id="comm-name" placeholder="Your Name" required>
-                    <textarea id="comm-text" rows="2" placeholder="Write your thoughts..." required></textarea>
-                    <button class="comment-btn" id="post-comm-btn" onclick="postComment()">Post Comment</button>
-                </div>
-            </div>
-
-            <!-- Other News stays client-side -->
-            <div class="other-news-section" id="other-news-section" style="display: none;">
-                <h3>Other News</h3>
-                <div class="other-news-grid" id="other-news-list"></div>
-            </div>
-        </div>
-    <?php endif; ?>
-</div>
-
-<footer class="footer">
-    <div class="footer-grid">
-        <div class="footer-col">
-            <p class="footer-about">
-               We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
-            </p>
-        </div>
-
-        <div class="footer-col">
-            <h4>Quick Links</h4>
-            <ul class="footer-links-list">
-                <li><a href="/index.php">Home</a></li>
-                <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
-                <li><a href="/syllabus.html">Access the JAMB/WAEC syllabus</a></li>
-                <li><a href="/brochure.html">Access JAMB Brochure</a></li>
-                <li><a href="/videos.html">Video Lessons</a></li>
-                <li><a href="/pdf.html">Past Questions & PDFs</a></li>
-                <li><a href="/cbt.html">CBT Simulator</a></li>
-                <li><a href="/classroom.html">Classroom</a></li>
-                <li><a href="/location.html">Tutorial Centres</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-col">
-            <h4>Support & Community</h4>
-            <div class="contact-group">
-                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u"
-                   target="_blank"
-                   class="whatsapp-channel-link">
-                   Join our WhatsApp Channel
+}
+
+/*
+|--------------------------------------------------------------------------
+| Shared Head Configuration
+|--------------------------------------------------------------------------
+*/
+
+$includeToastify = true;
+$includeAdsense = true;
+
+/*
+|--------------------------------------------------------------------------
+| Load Shared Head
+|--------------------------------------------------------------------------
+*/
+
+include __DIR__ . '/includes/head.php';
+
+/*
+|--------------------------------------------------------------------------
+| NewsArticle Structured Data
+|--------------------------------------------------------------------------
+|
+| JSON-LD can safely be rendered in the document body.
+|--------------------------------------------------------------------------
+*/
+
+if (!empty($article['title'])) {
+
+    $schemaDate =
+        !empty($article['timestamp'])
+            ? $article['timestamp']
+            : date('c');
+
+    $newsSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'NewsArticle',
+        'headline' => $article['title'],
+        'description' => $pageDescription,
+        'image' => $pageImage,
+        'datePublished' => $schemaDate,
+        'dateModified' => $schemaDate,
+        'author' => [
+            '@type' => 'Organization',
+            'name' => 'Flexi Educational Consult',
+            'url' => $siteUrl
+        ],
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'Flexi Educational Consult',
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' =>
+                    'https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg'
+            ]
+        ],
+        'mainEntityOfPage' => [
+            '@type' => 'WebPage',
+            '@id' => $pageUrl
+        ]
+    ];
+
+    echo '<script type="application/ld+json">' .
+        json_encode(
+            $newsSchema,
+            JSON_UNESCAPED_SLASHES |
+            JSON_UNESCAPED_UNICODE |
+            JSON_PRETTY_PRINT
+        ) .
+        '</script>';
+}
+
+/*
+|--------------------------------------------------------------------------
+| Shared Header
+|--------------------------------------------------------------------------
+*/
+
+$currentPage = 'news-view.php';
+
+include __DIR__ . '/includes/header.php';
+?>
+
+<main class="news-view-page">
+
+    <div class="news-view-container">
+
+        <?php if (empty($article['title'])): ?>
+
+            <!-- Article Not Found -->
+
+            <section
+                id="loader"
+                class="news-not-found"
+                aria-labelledby="news-not-found-title"
+            >
+
+                <h1 id="news-not-found-title">
+                    Article Not Found
+                </h1>
+
+                <p>
+                    The news update you are looking for could not
+                    be found or may no longer be available.
+                </p>
+
+                <a
+                    href="/index.php"
+                    class="news-back-link"
+                >
+                    ← Back to News Archive
                 </a>
-            </div>
-            <div class="contact-group">
-                <h5>Contact Us</h5>
-                <a href="tel:+2349034159839">(+234) 903 415 9839</a>
-                <a href="tel:+2347033855206">(+234) 703 385 5206</a>
-            </div>
-            <div class="contact-group">
-                <h5>Email Us</h5>
-                <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
-                <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
-            </div>
-        </div>
 
-        <div class="footer-col social-links">
-            <h4>Follow Us</h4>
-            <ul class="footer-links-list">
-                <li><a href="https://www.facebook.com/profile.php?id=61589793118693" target="_blank">Facebook @flexieduconsult</a></li>
-                <li><a href="https://instagram.com/flexieduconsult2000" target="_blank">Instagram @flexieduconsult2000</a></li>
-                <li><a href="https://www.tiktok.com/@flexieduconsult" target="_blank">TikTok @flexieduconsult</a></li>
-            </ul>
-        </div>
-    </div>
+            </section>
 
-    <div class="footer-bottom">
-        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
-    </div>
-</footer>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        <?php else: ?>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
-        authDomain: "waec2026jamb2027.firebaseapp.com",
-        projectId: "waec2026jamb2027",
-    };
+            <article
+                id="article-container"
+                class="news-article"
+            >
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+                <!-- Article Card -->
 
-    // Safe way – no backslash issues
-    const currentArticleId = <?php echo json_encode($article['id'] ?? ''); ?>;
+                <section class="content-card">
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-    }
+                    <?php if (!empty($article['imageUrl'])): ?>
 
-    window.shareArticle = () => {
-        if (navigator.share) {
-            navigator.share({
-                title: document.getElementById('news-title')?.innerText || 'News',
-                url: window.location.href
-            }).catch(() => {});
-        } else {
-            navigator.clipboard.writeText(window.location.href);
-            Toastify({
-                text: "Link copied to clipboard!",
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                style: { background: "#2E8B57" }
-            }).showToast();
-        }
-    };
+                        <img
+                            id="news-image"
+                            class="main-img"
+                            src="<?= flexiNewsEscape($article['imageUrl']); ?>"
+                            alt="<?= flexiNewsEscape($article['title']); ?>"
+                            loading="eager"
+                        >
 
-    async function loadComments() {
-        if (!currentArticleId) return;
-        const cList = document.getElementById('comments-list');
-        if (!cList) return;
+                    <?php endif; ?>
 
-        try {
-            const q = query(
-                collection(db, "news", currentArticleId, "comments"),
-                orderBy("timestamp", "desc")
-            );
-            const snap = await getDocs(q);
+                    <div class="article-body">
 
-            if (!snap.empty) {
-                cList.innerHTML = "";
-                snap.forEach(d => {
-                    const c = d.data();
-                    const date = c.timestamp ? c.timestamp.toDate().toLocaleString() : "Just now";
-                    cList.innerHTML += `
-                        <div class="comment-box">
-                            <div class="comment-name">${escapeHtml(c.name)}</div>
-                            <div class="comment-text">${escapeHtml(c.text)}</div>
-                            <div class="comment-date">${escapeHtml(date)}</div>
+                        <h1
+                            id="news-title"
+                            class="article-title"
+                        >
+                            <?= flexiNewsEscape($article['title']); ?>
+                        </h1>
+
+                        <?php if (!empty($article['timestamp'])): ?>
+
+                            <?php
+                            $articleTimestamp =
+                                strtotime(
+                                    $article['timestamp']
+                                );
+                            ?>
+
+                            <?php if ($articleTimestamp !== false): ?>
+
+                                <div
+                                    id="news-date"
+                                    class="article-date"
+                                >
+                                    Posted:
+                                    <?= date(
+                                        'D M j Y',
+                                        $articleTimestamp
+                                    ); ?>
+                                </div>
+
+                            <?php endif; ?>
+
+                        <?php endif; ?>
+
+                        <!--
+                        |--------------------------------------------------------------------------
+                        | Full Article Content
+                        |--------------------------------------------------------------------------
+                        |
+                        | Content is escaped and converted from plain text
+                        | to HTML line breaks. This preserves the existing
+                        | security behaviour of the original page.
+                        |--------------------------------------------------------------------------
+                        -->
+
+                        <div
+                            id="news-content"
+                            class="article-text"
+                        >
+                            <?= nl2br(
+                                flexiNewsEscape(
+                                    $article['content']
+                                )
+                            ); ?>
                         </div>
-                    `;
-                });
-            }
-        } catch (e) {
-            console.error("Error loading comments:", e);
-        }
+
+                        <!-- Share -->
+
+                        <div class="share-box">
+
+                            <span class="share-label">
+                                Share update:
+                            </span>
+
+                            <button
+                                type="button"
+                                class="share-btn"
+                                id="copy-link-btn"
+                            >
+                                Copy Link
+                            </button>
+
+                            <a
+                                id="whatsapp-share"
+                                href="https://api.whatsapp.com/send?text=<?= rawurlencode(
+                                    $article['title'] .
+                                    ' - ' .
+                                    $pageUrl
+                                ); ?>"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="share-btn whatsapp-share-btn"
+                            >
+                                WhatsApp
+                            </a>
+
+                        </div>
+
+                        <!-- Article Table -->
+
+                        <?php if (!empty($article['tableData'])): ?>
+
+                            <div
+                                id="table-container"
+                                class="data-table-container"
+                            >
+
+                                <?php
+                                /*
+                                 * tableData is intentionally rendered
+                                 * as HTML because the F.E.C admin panel
+                                 * stores the table builder output as HTML.
+                                 */
+                                echo $article['tableData'];
+                                ?>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                        <!-- PDF Attachment -->
+
+                        <?php if (!empty($article['pdfUrl'])): ?>
+
+                            <section
+                                id="pdf-container"
+                                class="pdf-section"
+                                aria-labelledby="attached-document-heading"
+                            >
+
+                                <div class="pdf-heading-row">
+
+                                    <h2
+                                        id="attached-document-heading"
+                                        class="pdf-heading"
+                                    >
+                                        📎 Attached Document
+                                    </h2>
+
+                                    <a
+                                        id="pdf-download-link"
+                                        href="<?= flexiNewsEscape($article['pdfUrl']); ?>"
+                                        class="download-btn"
+                                        download
+                                    >
+
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                        >
+                                            <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/>
+                                        </svg>
+
+                                        Download Full PDF
+
+                                    </a>
+
+                                </div>
+
+                                <?php
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Cloudinary PDF Preview
+                                |--------------------------------------------------------------------------
+                                */
+
+                                $preview =
+                                    $article['pdfUrl'];
+
+                                if (
+                                    strpos(
+                                        $preview,
+                                        'res.cloudinary.com'
+                                    ) !== false
+                                ) {
+
+                                    $preview =
+                                        str_replace(
+                                            '/upload/',
+                                            '/upload/w_800,c_limit,q_auto,f_jpg/pg_1/',
+                                            $preview
+                                        );
+
+                                    $preview =
+                                        preg_replace(
+                                            '/\.pdf\b/i',
+                                            '.jpg',
+                                            $preview
+                                        );
+                                }
+
+                                ?>
+
+                                <div
+                                    id="pdf-viewer-container"
+                                    class="pdf-preview"
+                                >
+
+                                    <img
+                                        src="<?= flexiNewsEscape($preview); ?>"
+                                        alt="Preview of attached document"
+                                        loading="lazy"
+                                    >
+
+                                </div>
+
+                            </section>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                </section>
+
+                <!-- Comments -->
+
+                <section
+                    class="comment-section"
+                    aria-labelledby="discussion-heading"
+                >
+
+                    <h2
+                        id="discussion-heading"
+                        class="discussion-heading"
+                    >
+                        Discussion
+                    </h2>
+
+                    <div id="comments-list">
+
+                        <p class="no-comments">
+                            No comments yet. Be the first!
+                        </p>
+
+                    </div>
+
+                    <div class="add-comment">
+
+                        <h3>
+                            Leave a Comment
+                        </h3>
+
+                        <label
+                            for="comm-name"
+                            class="comment-label"
+                        >
+                            Your Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="comm-name"
+                            placeholder="Your Name"
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        >
+
+                        <label
+                            for="comm-text"
+                            class="comment-label"
+                        >
+                            Your Comment
+                        </label>
+
+                        <textarea
+                            id="comm-text"
+                            rows="3"
+                            placeholder="Write your thoughts..."
+                            maxlength="1000"
+                            required
+                        ></textarea>
+
+                        <button
+                            type="button"
+                            class="comment-btn"
+                            id="post-comm-btn"
+                        >
+                            Post Comment
+                        </button>
+
+                    </div>
+
+                </section>
+
+                <!-- Related News -->
+
+                <section
+                    class="other-news-section"
+                    id="other-news-section"
+                    style="display:none;"
+                    aria-labelledby="other-news-heading"
+                >
+
+                    <h2 id="other-news-heading">
+                        Other News
+                    </h2>
+
+                    <div
+                        class="other-news-grid"
+                        id="other-news-list"
+                    ></div>
+
+                </section>
+
+            </article>
+
+        <?php endif; ?>
+
+    </div>
+
+</main>
+
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Shared Footer
+|--------------------------------------------------------------------------
+*/
+
+include __DIR__ . '/includes/footer.php';
+
+?>
+
+<style>
+
+/*
+|--------------------------------------------------------------------------
+| NEWS VIEW — PAGE-SPECIFIC CSS ONLY
+|--------------------------------------------------------------------------
+|
+| Shared branding/header/footer CSS is handled by:
+|
+|   /assets/css/flexi-brand.css
+|
+| Nothing below styles the shared header or footer.
+|--------------------------------------------------------------------------
+*/
+
+.news-view-page {
+    --news-blue: var(--flexi-primary, #003366);
+    --news-green: var(--flexi-secondary, #2E8B57);
+    --news-yellow: var(--flexi-accent, #FFD700);
+    --news-bg: #f4f7f6;
+    --news-text: #333;
+    --news-muted: #888;
+    --news-radius: 12px;
+    --news-shadow: 0 4px 18px rgba(0, 0, 0, .06);
+
+    background: var(--news-bg);
+    min-height: 60vh;
+    padding: 1px 0 48px;
+}
+
+.news-view-container {
+    width: 94%;
+    max-width: 1040px;
+    margin: 24px auto 0;
+}
+
+/* Article */
+
+.content-card {
+    background: #fff;
+    border-radius: var(--news-radius);
+    overflow: hidden;
+    box-shadow: var(--news-shadow);
+    margin-bottom: 24px;
+}
+
+.main-img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: contain;
+    display: block;
+    background: #001f3f;
+}
+
+.article-body {
+    padding: 28px 36px 36px;
+}
+
+.article-title {
+    color: var(--news-blue);
+    font-size: 1.85rem;
+    line-height: 1.3;
+    margin: 0 0 10px;
+    font-weight: 700;
+}
+
+.article-date {
+    color: var(--news-muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+.article-text {
+    color: #333;
+    line-height: 1.9;
+    font-size: 17px;
+    overflow-wrap: anywhere;
+}
+
+.article-text img {
+    max-width: 100%;
+    height: auto;
+}
+
+.article-text a {
+    color: var(--news-green);
+}
+
+/* Share */
+
+.share-box {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.share-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+}
+
+.share-btn {
+    background: var(--news-green);
+    color: #fff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+}
+
+.share-btn:hover {
+    opacity: .92;
+}
+
+.whatsapp-share-btn {
+    background: #25D366;
+}
+
+/* Article table */
+
+.data-table-container {
+    margin-top: 22px;
+    overflow-x: auto;
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.data-table-container table {
+    width: 100%;
+    min-width: 500px;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.data-table-container th,
+.data-table-container td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.data-table-container th {
+    background: var(--news-blue);
+    color: #fff;
+}
+
+.data-table-container tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/*
+|--------------------------------------------------------------------------
+| PDF
+|--------------------------------------------------------------------------
+*/
+
+.pdf-section {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 2px dashed #eee;
+}
+
+.pdf-heading-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.pdf-heading {
+    color: var(--news-blue);
+    margin: 0;
+    font-size: 1rem;
+}
+
+.pdf-preview {
+    width: 100%;
+    max-height: 550px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    background: #f0f0f0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pdf-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--news-green);
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.download-btn:hover {
+    opacity: .9;
+}
+
+.download-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Comments
+|--------------------------------------------------------------------------
+*/
+
+.comment-section {
+    background: #fff;
+    border-radius: var(--news-radius);
+    padding: 28px 32px;
+    box-shadow: var(--news-shadow);
+    margin-bottom: 24px;
+}
+
+.discussion-heading {
+    color: var(--news-blue);
+    margin: 0 0 16px;
+}
+
+.comment-box {
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+}
+
+.comment-name {
+    font-weight: 700;
+    color: var(--news-blue);
+    font-size: 14px;
+}
+
+.comment-text {
+    font-size: 14px;
+    color: #555;
+    margin: 4px 0;
+    overflow-wrap: anywhere;
+}
+
+.comment-date {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.no-comments {
+    color: #999;
+    font-size: 14px;
+}
+
+.add-comment {
+    margin-top: 20px;
+}
+
+.add-comment h3 {
+    margin: 0 0 10px;
+    color: var(--news-blue);
+}
+
+.comment-label {
+    display: block;
+    margin: 8px 0 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+}
+
+.news-view-page input,
+.news-view-page textarea {
+    width: 100%;
+    padding: 11px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #fff;
+    color: #333;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.news-view-page input:focus,
+.news-view-page textarea:focus {
+    outline: none;
+    border-color: var(--news-green);
+    box-shadow: 0 0 0 3px rgba(46, 139, 87, .1);
+}
+
+.news-view-page textarea {
+    resize: vertical;
+}
+
+.comment-btn {
+    background: var(--news-blue);
+    color: #fff;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.comment-btn:hover {
+    opacity: .92;
+}
+
+.comment-btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Article Not Found
+|--------------------------------------------------------------------------
+*/
+
+.news-not-found {
+    text-align: left;
+    background: #fff;
+    padding: 32px;
+    border-radius: var(--news-radius);
+    box-shadow: var(--news-shadow);
+    color: var(--news-blue);
+}
+
+.news-not-found h1 {
+    margin-top: 0;
+    color: var(--news-blue);
+}
+
+.news-not-found p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.news-back-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 9px 15px;
+    border-radius: 7px;
+    background: var(--news-green);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.news-back-link:hover {
+    opacity: .9;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Other News
+|--------------------------------------------------------------------------
+*/
+
+.other-news-section {
+    background: #fff;
+    border-radius: var(--news-radius);
+    padding: 28px 32px;
+    box-shadow: var(--news-shadow);
+    margin-bottom: 24px;
+}
+
+.other-news-section h2 {
+    color: var(--news-blue);
+    margin: 0 0 18px;
+    font-size: 1.2rem;
+    border-left: 4px solid var(--news-green);
+    padding-left: 12px;
+}
+
+.other-news-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.other-news-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition:
+        background .2s,
+        box-shadow .2s,
+        transform .15s;
+}
+
+.other-news-item:hover {
+    background: #f8faf9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+    transform: translateY(-1px);
+}
+
+.other-news-item img {
+    width: 88px;
+    height: 66px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    flex-shrink: 0;
+    background: #001f3f;
+}
+
+.other-news-item .on-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--news-blue);
+    line-height: 1.4;
+    flex: 1;
+    overflow-wrap: anywhere;
+}
+
+.other-news-item .on-arrow {
+    color: #aaa;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Mobile
+|--------------------------------------------------------------------------
+*/
+
+@media (max-width: 767px) {
+
+    .news-view-container {
+        width: calc(100% - 20px);
+        margin-top: 14px;
     }
 
-    async function loadOtherNews() {
-        const section = document.getElementById('other-news-section');
-        const list = document.getElementById('other-news-list');
-        if (!section || !list) return;
+    .article-body {
+        padding: 18px 16px 22px;
+    }
 
-        try {
-            const snap = await getDocs(collection(db, "news"));
-            if (snap.empty) return;
+    .article-title {
+        font-size: 1.35rem;
+    }
 
-            const items = [];
-            snap.forEach(d => {
-                if (d.id === currentArticleId) return;
-                const data = d.data();
-                items.push({
-                    id: d.id,
-                    title: data.title || "News Update",
-                    imageUrl: data.imageUrl || "https://via.placeholder.com/88x66",
-                    slug: data.slug || "",
-                    timestamp: data.timestamp ? data.timestamp.toDate().getTime() : 0
-                });
+    .article-text {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .comment-section,
+    .other-news-section {
+        padding: 18px 16px;
+    }
+
+    .other-news-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .other-news-item img {
+        width: 72px;
+        height: 54px;
+    }
+
+    .pdf-heading-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .download-btn {
+        width: 100%;
+    }
+
+    .share-box {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .share-label {
+        width: 100%;
+    }
+
+    .share-btn {
+        width: 100%;
+    }
+
+    .main-img {
+        max-height: 320px;
+    }
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script type="module">
+
+/*
+|--------------------------------------------------------------------------
+| Firebase
+|--------------------------------------------------------------------------
+*/
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    query,
+    orderBy,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/*
+|--------------------------------------------------------------------------
+| Firebase Configuration
+|--------------------------------------------------------------------------
+*/
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
+
+    authDomain:
+        "auth.flexieduconsult.com.ng",
+
+    projectId:
+        "waec2026jamb2027"
+};
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+/*
+|--------------------------------------------------------------------------
+| Current Article ID
+|--------------------------------------------------------------------------
+*/
+
+const currentArticleId =
+    <?= json_encode(
+        $article['id'] ?? '',
+        JSON_UNESCAPED_SLASHES |
+        JSON_UNESCAPED_UNICODE
+    ); ?>;
+
+/*
+|--------------------------------------------------------------------------
+| HTML Escaping for Dynamic Firestore Content
+|--------------------------------------------------------------------------
+*/
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return '';
+    }
+
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/*
+|--------------------------------------------------------------------------
+| Copy / Share Article
+|--------------------------------------------------------------------------
+*/
+
+window.shareArticle = async function () {
+
+    const titleElement =
+        document.getElementById('news-title');
+
+    const title =
+        titleElement
+            ? titleElement.innerText
+            : 'Flexi Educational Consult News';
+
+    try {
+
+        if (
+            navigator.share &&
+            typeof navigator.share === 'function'
+        ) {
+
+            await navigator.share({
+                title: title,
+                url: window.location.href
             });
 
-            items.sort((a, b) => b.timestamp - a.timestamp);
-            const top = items.slice(0, 6);
-            if (top.length === 0) return;
-
-            list.innerHTML = top.map(item => {
-                const href = item.slug
-                    ? `/news/${encodeURIComponent(item.slug)}`
-                    : `/news/id/${encodeURIComponent(item.id)}`;
-                return `
-                    <a class="other-news-item" href="${href}">
-                        <img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy">
-                        <span class="on-title">${escapeHtml(item.title)}</span>
-                        <span class="on-arrow">❯</span>
-                    </a>
-                `;
-            }).join("");
-
-            section.style.display = "block";
-        } catch (e) {
-            console.error("Error loading other news:", e);
-        }
-    }
-
-    window.postComment = async () => {
-        const name = document.getElementById('comm-name').value.trim();
-        const text = document.getElementById('comm-text').value.trim();
-        const btn = document.getElementById('post-comm-btn');
-
-        if (!name || !text) {
-            alert("Please fill both fields");
             return;
         }
 
-        btn.disabled = true;
-        btn.innerText = "Posting...";
+        if (
+            navigator.clipboard &&
+            navigator.clipboard.writeText
+        ) {
 
-        try {
-            await addDoc(collection(db, "news", currentArticleId, "comments"), {
+            await navigator.clipboard.writeText(
+                window.location.href
+            );
+
+            showToast(
+                'Link copied to clipboard!'
+            );
+
+            return;
+        }
+
+        fallbackCopyLink();
+
+    } catch (error) {
+
+        /*
+         * Sharing cancelled by the user should not
+         * produce an error notification.
+         */
+
+        if (
+            error &&
+            error.name === 'AbortError'
+        ) {
+            return;
+        }
+
+        console.error(
+            'Share error:',
+            error
+        );
+
+        fallbackCopyLink();
+    }
+};
+
+/*
+|--------------------------------------------------------------------------
+| Fallback Copy
+|--------------------------------------------------------------------------
+*/
+
+function fallbackCopyLink() {
+
+    const temporaryInput =
+        document.createElement('input');
+
+    temporaryInput.value =
+        window.location.href;
+
+    temporaryInput.style.position =
+        'fixed';
+
+    temporaryInput.style.opacity =
+        '0';
+
+    document.body.appendChild(
+        temporaryInput
+    );
+
+    temporaryInput.select();
+
+    try {
+
+        document.execCommand(
+            'copy'
+        );
+
+        showToast(
+            'Link copied to clipboard!'
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Copy failed:',
+            error
+        );
+
+        showToast(
+            'Unable to copy link. Please copy the URL manually.'
+        );
+    }
+
+    document.body.removeChild(
+        temporaryInput
+    );
+}
+
+/*
+|--------------------------------------------------------------------------
+| Toast Helper
+|--------------------------------------------------------------------------
+*/
+
+function showToast(message) {
+
+    if (typeof Toastify === 'function') {
+
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            style: {
+                background: '#2E8B57'
+            }
+        }).showToast();
+
+    } else {
+
+        alert(message);
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Copy Link Button
+|--------------------------------------------------------------------------
+*/
+
+const copyLinkButton =
+    document.getElementById(
+        'copy-link-btn'
+    );
+
+if (copyLinkButton) {
+
+    copyLinkButton.addEventListener(
+        'click',
+        function () {
+
+            if (
+                navigator.share &&
+                typeof navigator.share === 'function'
+            ) {
+
+                window.shareArticle();
+
+            } else {
+
+                fallbackCopyLink();
+            }
+        }
+    );
+}
+
+/*
+|--------------------------------------------------------------------------
+| Load Comments
+|--------------------------------------------------------------------------
+*/
+
+async function loadComments() {
+
+    if (!currentArticleId) {
+        return;
+    }
+
+    const commentsList =
+        document.getElementById(
+            'comments-list'
+        );
+
+    if (!commentsList) {
+        return;
+    }
+
+    try {
+
+        const commentsQuery =
+            query(
+                collection(
+                    db,
+                    'news',
+                    currentArticleId,
+                    'comments'
+                ),
+                orderBy(
+                    'timestamp',
+                    'desc'
+                )
+            );
+
+        const snapshot =
+            await getDocs(
+                commentsQuery
+            );
+
+        if (snapshot.empty) {
+
+            commentsList.innerHTML = `
+                <p class="no-comments">
+                    No comments yet. Be the first!
+                </p>
+            `;
+
+            return;
+        }
+
+        commentsList.innerHTML = '';
+
+        snapshot.forEach(function (doc) {
+
+            const comment =
+                doc.data();
+
+            let dateText =
+                'Just now';
+
+            if (
+                comment.timestamp &&
+                typeof comment.timestamp.toDate ===
+                    'function'
+            ) {
+
+                try {
+
+                    dateText =
+                        comment.timestamp
+                            .toDate()
+                            .toLocaleString();
+
+                } catch (error) {
+
+                    console.warn(
+                        'Comment date error:',
+                        error
+                    );
+                }
+            }
+
+            const commentElement =
+                document.createElement('div');
+
+            commentElement.className =
+                'comment-box';
+
+            commentElement.innerHTML = `
+                <div class="comment-name">
+                    ${escapeHtml(comment.name || 'Anonymous')}
+                </div>
+
+                <div class="comment-text">
+                    ${escapeHtml(comment.text || '')}
+                </div>
+
+                <div class="comment-date">
+                    ${escapeHtml(dateText)}
+                </div>
+            `;
+
+            commentsList.appendChild(
+                commentElement
+            );
+        });
+
+    } catch (error) {
+
+        console.error(
+            'Error loading comments:',
+            error
+        );
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Load Other News
+|--------------------------------------------------------------------------
+*/
+
+async function loadOtherNews() {
+
+    const section =
+        document.getElementById(
+            'other-news-section'
+        );
+
+    const list =
+        document.getElementById(
+            'other-news-list'
+        );
+
+    if (!section || !list) {
+        return;
+    }
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    'news'
+                )
+            );
+
+        if (snapshot.empty) {
+            return;
+        }
+
+        const items = [];
+
+        snapshot.forEach(function (doc) {
+
+            if (
+                doc.id ===
+                currentArticleId
+            ) {
+                return;
+            }
+
+            const data =
+                doc.data();
+
+            let timestamp = 0;
+
+            if (
+                data.timestamp &&
+                typeof data.timestamp.toDate ===
+                    'function'
+            ) {
+
+                try {
+
+                    timestamp =
+                        data.timestamp
+                            .toDate()
+                            .getTime();
+
+                } catch (error) {
+
+                    timestamp = 0;
+                }
+            }
+
+            items.push({
+
+                id:
+                    doc.id,
+
+                title:
+                    data.title ||
+                    'News Update',
+
+                imageUrl:
+                    data.imageUrl ||
+                    'https://via.placeholder.com/88x66',
+
+                slug:
+                    data.slug ||
+                    '',
+
+                timestamp:
+                    timestamp
+            });
+        });
+
+        items.sort(
+            function (a, b) {
+                return b.timestamp -
+                    a.timestamp;
+            }
+        );
+
+        const topItems =
+            items.slice(0, 6);
+
+        if (!topItems.length) {
+            return;
+        }
+
+        list.innerHTML =
+            topItems
+                .map(function (item) {
+
+                    const href =
+                        item.slug
+                            ? '/news/' +
+                              encodeURIComponent(
+                                  item.slug
+                              )
+                            : '/news/id/' +
+                              encodeURIComponent(
+                                  item.id
+                              );
+
+                    return `
+                        <a
+                            class="other-news-item"
+                            href="${escapeHtml(href)}"
+                        >
+
+                            <img
+                                src="${escapeHtml(item.imageUrl)}"
+                                alt="${escapeHtml(item.title)}"
+                                loading="lazy"
+                            >
+
+                            <span class="on-title">
+                                ${escapeHtml(item.title)}
+                            </span>
+
+                            <span
+                                class="on-arrow"
+                                aria-hidden="true"
+                            >
+                                ❯
+                            </span>
+
+                        </a>
+                    `;
+                })
+                .join('');
+
+        section.style.display =
+            'block';
+
+    } catch (error) {
+
+        console.error(
+            'Error loading other news:',
+            error
+        );
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Post Comment
+|--------------------------------------------------------------------------
+*/
+
+window.postComment = async function () {
+
+    const nameInput =
+        document.getElementById(
+            'comm-name'
+        );
+
+    const textInput =
+        document.getElementById(
+            'comm-text'
+        );
+
+    const button =
+        document.getElementById(
+            'post-comm-btn'
+        );
+
+    if (
+        !nameInput ||
+        !textInput ||
+        !button
+    ) {
+        return;
+    }
+
+    const name =
+        nameInput.value.trim();
+
+    const text =
+        textInput.value.trim();
+
+    if (!currentArticleId) {
+
+        showToast(
+            'This article cannot receive comments right now.'
+        );
+
+        return;
+    }
+
+    if (!name || !text) {
+
+        showToast(
+            'Please fill in both your name and comment.'
+        );
+
+        return;
+    }
+
+    button.disabled = true;
+
+    button.innerText =
+        'Posting...';
+
+    try {
+
+        await addDoc(
+            collection(
+                db,
+                'news',
+                currentArticleId,
+                'comments'
+            ),
+            {
                 name: name,
                 text: text,
-                timestamp: serverTimestamp()
-            });
-            Toastify({ text: "Comment posted!", style: { background: "#2E8B57" } }).showToast();
-            document.getElementById('comm-text').value = "";
-            loadComments();
-        } catch (e) {
-            alert("Error posting comment.");
-        } finally {
-            btn.disabled = false;
-            btn.innerText = "Post Comment";
-        }
-    };
+                timestamp:
+                    serverTimestamp()
+            }
+        );
 
-    document.getElementById('current-year').textContent = new Date().getFullYear();
+        showToast(
+            'Comment posted!'
+        );
 
-    // Only load interactive parts — content is already in the HTML
-    if (currentArticleId) {
-        loadComments();
-        loadOtherNews();
+        textInput.value = '';
+
+        await loadComments();
+
+    } catch (error) {
+
+        console.error(
+            'Error posting comment:',
+            error
+        );
+
+        showToast(
+            'Error posting comment. Please try again.'
+        );
+
+    } finally {
+
+        button.disabled =
+            false;
+
+        button.innerText =
+            'Post Comment';
     }
+};
+
+/*
+|--------------------------------------------------------------------------
+| Initialise Interactive Features
+|--------------------------------------------------------------------------
+*/
+
+if (currentArticleId) {
+
+    loadComments();
+
+    loadOtherNews();
+}
+
 </script>
-</body>
-</html>
