@@ -39,20 +39,23 @@ if ($response) {
             $urls[] = [
                 'loc' => $loc,
                 'priority' => '0.8',
-                'lastmod' => $timestamp ? date('c', strtotime($timestamp)) : date('c')
+                'lastmod' => $timestamp
+                    ? date('c', strtotime($timestamp))
+                    : date('c')
             ];
         }
     }
 }
 
-// Optional: Add other important static pages
+// Important static pages
 $staticPages = [
-    '/syllabus.html'   => '0.7',
-    '/brochure.html'   => '0.7',
-    '/cbt.html'        => '0.7',
-    '/pdf.html'        => '0.6',
-    '/videos.html'     => '0.6',
-    '/location.html'   => '0.5',
+    '/syllabus.html'    => '0.7',
+    '/brochure.html'    => '0.7',
+    '/cbt.html'         => '0.7',
+    '/pdf.html'         => '0.6',
+    '/videos.html'      => '0.6',
+    '/location.html'    => '0.5',
+    '/download-app.php' => '0.8',
 ];
 
 foreach ($staticPages as $path => $priority) {
@@ -70,9 +73,11 @@ echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 foreach ($urls as $url) {
     echo "  <url>\n";
     echo "    <loc>" . htmlspecialchars($url['loc']) . "</loc>\n";
+
     if (!empty($url['lastmod'])) {
         echo "    <lastmod>" . $url['lastmod'] . "</lastmod>\n";
     }
+
     echo "    <priority>" . $url['priority'] . "</priority>\n";
     echo "  </url>\n";
 }
