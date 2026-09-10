@@ -1,967 +1,644 @@
-<?php
-
-$pageTitle = 'JAMB Brochure | Flexi Educational Consult';
-
-$pageDescription = 'Access the JAMB Brochure to explore university, polytechnic, college and other institution courses, faculties and admission requirements.';
-
-$pageKeywords = 'JAMB Brochure, JAMB courses, UTME courses, university courses, polytechnic courses, NCE courses, Flexi Educational Consult';
-
-$pageImage = 'https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg';
-
-$pageCanonical = 'https://www.flexieduconsult.com.ng/brochure.php';
-
-$includeToastify = false;
-$includeAdsense = false;
-
-$currentPage = 'brochure.php';
-
-require_once __DIR__ . '/includes/head.php';
-require_once __DIR__ . '/includes/header.php';
-
-?>
-
-<style>
-    /* =========================================================
-       FLEXI BROCHURE PAGE
-       Page-specific styles only
-       ========================================================= */
-
-    .flexi-brochure-page {
-        background: #f8f6f6;
-        color: #1f2937;
-        min-height: calc(100vh - 80px);
-        padding: 1.25rem 0 3rem;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAMB Brochure | Flexi Educational Consult</title>
+  <style>
+    :root {
+      --bg-color: #f8f6f6;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border-color: #e5e7eb;
+      --flexi-navy: #0f172a;
+      --flexi-green: #10b981;
+      --radius: 12px;
     }
 
-    .flexi-brochure-container {
-        width: 100%;
-        max-width: 700px;
-        margin: 0 auto;
-        padding: 0 16px;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* Back Navigation */
-
-    .flexi-brochure-nav {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 18px;
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
     }
 
-    .flexi-brochure-back {
-        width: 40px;
-        height: 40px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 50%;
-
-        color: #1f2937;
-        text-decoration: none;
-        font-size: 1.2rem;
-
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-
-        transition:
-            transform 0.15s ease,
-            border-color 0.2s ease;
+    /* Full-width header */
+    .header-wrapper {
+      width: 100%;
+      background-color: var(--flexi-navy);
+      border-bottom: 5px solid var(--flexi-green);
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
 
-    .flexi-brochure-back:hover {
-        border-color: var(--flexi-secondary, #2e8b57);
-        transform: translateX(-2px);
+    .header-content {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 28px 20px;
+      text-align: center;
+      color: #ffffff;
     }
 
-    .flexi-brochure-nav-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #1f2937;
+    .header-content h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
     }
 
-    /* Selectors */
-
-    .flexi-brochure-select-group {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 16px;
+    .header-content p {
+      font-size: 0.85rem;
+      color: #94a3b8;
     }
 
-    .flexi-brochure-select-box {
-        width: 100%;
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 16px 24px 16px;
     }
 
-    .flexi-brochure-select-box label {
-        display: block;
-
-        margin-bottom: 5px;
-
-        font-size: 0.8rem;
-        font-weight: 700;
-
-        color: #6b7280;
-
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+    .nav-bar {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .flexi-brochure-select-box select {
-        width: 100%;
-
-        padding: 12px 16px;
-
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-
-        background: #ffffff;
-        color: #1f2937;
-
-        font-size: 0.95rem;
-        font-weight: 600;
-
-        outline: none;
-
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
-
-        cursor: pointer;
-
-        transition: border-color 0.2s ease;
+    .back-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: var(--text-main);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
-    .flexi-brochure-select-box select:focus {
-        border-color: var(--flexi-secondary, #2e8b57);
+    .nav-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
     }
 
-    /* Search */
-
-    .flexi-brochure-search {
-        position: relative;
-        margin-bottom: 18px;
+    /* Dropdown Selectors */
+    .select-box-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
-    .flexi-brochure-search input {
-        width: 100%;
-
-        padding: 14px 16px 14px 46px;
-
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-
-        background: #ffffff;
-        color: #1f2937;
-
-        font-size: 0.95rem;
-
-        outline: none;
-
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
-
-        transition: border-color 0.2s ease;
+    .select-box {
+      width: 100%;
     }
 
-    .flexi-brochure-search input:focus {
-        border-color: var(--flexi-secondary, #2e8b57);
+    .select-box label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .flexi-brochure-search-icon {
-        position: absolute;
-
-        left: 16px;
-        top: 50%;
-
-        transform: translateY(-50%);
-
-        color: #6b7280;
-        font-size: 1.1rem;
-
-        pointer-events: none;
+    .select-box select {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      cursor: pointer;
     }
 
-    /* Section Heading */
-
-    .flexi-brochure-section-title {
-        font-size: 1rem;
-        font-weight: 700;
-
-        color: #1f2937;
-
-        margin-bottom: 14px;
+    .select-box select:focus {
+      border-color: var(--flexi-green);
     }
 
-    /* Course List */
-
-    .flexi-brochure-course-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+    /* Search Box */
+    .search-box {
+      position: relative;
+      margin-bottom: 16px;
     }
 
-    .flexi-brochure-course-card {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        width: 100%;
-
-        padding: 16px 20px;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-
-        text-decoration: none;
-
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-
-        transition:
-            transform 0.1s ease,
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
+    .search-box input {
+      width: 100%;
+      padding: 14px 16px 14px 46px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      transition: border-color 0.2s;
     }
 
-    .flexi-brochure-course-card:hover {
-        border-color: var(--flexi-secondary, #2e8b57);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    .search-box input:focus {
+      border-color: var(--flexi-green);
     }
 
-    .flexi-brochure-course-card:active {
-        transform: scale(0.98);
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.1rem;
     }
 
-    .flexi-brochure-course-name {
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: #1f2937;
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 14px;
     }
 
-    .flexi-brochure-arrow {
-        color: #6b7280;
-        font-size: 1rem;
-        font-weight: 700;
-        flex-shrink: 0;
-        margin-left: 12px;
+    .course-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    /* Empty State */
-
-    .flexi-brochure-no-results {
-        display: none;
-
-        padding: 24px 16px;
-
-        text-align: center;
-
-        color: #6b7280;
-
-        font-size: 0.9rem;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
+    .course-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-decoration: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: transform 0.1s ease, border-color 0.2s;
     }
 
-    /* Mobile */
-
-    @media (max-width: 600px) {
-
-        .flexi-brochure-page {
-            padding-top: 1rem;
-        }
-
-        .flexi-brochure-container {
-            padding-left: 12px;
-            padding-right: 12px;
-        }
-
-        .flexi-brochure-course-card {
-            padding: 15px 16px;
-        }
-
-        .flexi-brochure-course-name {
-            font-size: 0.9rem;
-        }
-
+    .course-card:active {
+      transform: scale(0.98);
     }
-</style>
 
+    .course-card:hover {
+      border-color: var(--flexi-green);
+    }
 
-<main class="flexi-brochure-page">
+    .course-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
 
-    <div class="flexi-brochure-container">
+    .arrow-icon {
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: bold;
+    }
 
-        <!-- Back Navigation -->
+    .no-results {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 20px;
+      font-size: 0.9rem;
+      display: none;
+    }
 
-        <div class="flexi-brochure-nav">
+    /* MODERN FOOTER STYLES */
+.footer {
+    background: linear-gradient(135deg, #011627 0%, #032038 100%);
+    color: #e2e8f0;
+    padding: 60px 20px 30px 20px;
+    margin-top: 60px;
+    border-top: 4px solid var(--green, #22c55e);
+    font-size: 14px;
+}
 
-            <a
-                class="flexi-brochure-back"
-                href="/index.php"
-                aria-label="Back to main page"
-            >
-                &#8592;
-            </a>
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+    gap: 35px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-            <div class="flexi-brochure-nav-title">
-                Back to Main
-            </div>
+/* Headings */
+.footer h4 {
+    color: var(--yellow, #fbbf24);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin: 0 0 16px 0;
+    position: relative;
+    padding-bottom: 6px;
+}
 
-        </div>
+.footer h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 24px;
+    height: 2px;
+    background: var(--yellow, #fbbf24);
+    opacity: 0.7;
+    border-radius: 2px;
+}
 
+.footer-about {
+    line-height: 1.7;
+    color: #94a3b8;
+    margin: 0;
+}
 
-        <!-- Institution & Faculty Selectors -->
+/* Links List */
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-        <div class="flexi-brochure-select-group">
+.footer-links-list li {
+    margin-bottom: 10px;
+}
 
-            <!-- Institution -->
+.footer a {
+    color: #cbd5e0;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
 
-            <div class="flexi-brochure-select-box">
+.footer-links-list a:hover {
+    color: var(--yellow, #fbbf24);
+    transform: translateX(4px);
+    display: inline-block;
+}
 
-                <label for="institutionSelect">
-                    Select Institution Type
-                </label>
+/* WhatsApp Channel Text Link */
+.whatsapp-channel-link {
+    color: #25D366 !important;
+    font-weight: 600;
+    display: inline-block;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
 
-                <select id="institutionSelect">
+.whatsapp-channel-link:hover {
+    opacity: 0.85;
+    transform: translateX(4px);
+}
 
-                    <option value="Universities">
-                        Degree (Universities)
-                    </option>
+/* Contacts & Emails Subheadings */
+.contact-group {
+    margin-bottom: 16px;
+}
 
-                    <option value="Polytechnics">
-                        ND / HND (Polytechnics & Monotechnics)
-                    </option>
+.contact-group h5 {
+    color: #ffffff;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0 0 6px 0;
+    opacity: 0.9;
+}
 
-                    <option value="Colleges">
-                        NCE (Colleges of Education)
-                    </option>
+.contact-group a {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    margin-bottom: 4px;
+}
 
-                    <option value="IEIs">
-                        Innovation Enterprise Institutions (IEIs)
-                    </option>
+.contact-group a:hover {
+    color: #ffffff;
+}
 
-                </select>
+/* Bottom Bar */
+.footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0 auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+}
 
-            </div>
+/* Responsive Styles */
+@media (max-width: 900px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+}
 
+@media (max-width: 550px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+      }
+        
+  </style>
+</head>
+<body>
 
-            <!-- Faculty -->
+  <!-- Flexi Navy Header -->
+  <div class="header-wrapper">
+    <div class="header-content">
+      <h1>Flexi Educational Consult</h1>
+      <p id="facultyHeaderTitle">Degree (Universities) - Faculty Courses</p>
+    </div>
+  </div>
 
-            <div class="flexi-brochure-select-box">
-
-                <label for="facultySelect">
-                    Select Faculty / Category
-                </label>
-
-                <select id="facultySelect">
-
-                    <option value="Administration">
-                        Administration
-                    </option>
-
-                    <option value="Agriculture">
-                        Agriculture
-                    </option>
-
-                    <option value="Engineering">
-                        Engineering, Environment & Technology
-                    </option>
-
-                    <option value="Education">
-                        Education
-                    </option>
-
-                    <option value="Law">
-                        Law
-                    </option>
-
-                    <option value="Medical">
-                        Medical, Pharmaceutical & Health Services
-                    </option>
-
-                    <option value="Sciences">
-                        Sciences
-                    </option>
-
-                    <option value="SocialSciences">
-                        Social Sciences
-                    </option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-
-        <!-- Search -->
-
-        <div class="flexi-brochure-search">
-
-            <span class="flexi-brochure-search-icon">
-                &#128269;
-            </span>
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search Course..."
-                autocomplete="off"
-            />
-
-        </div>
-
-
-        <!-- Courses -->
-
-        <div class="flexi-brochure-section-title">
-            Select a Course:
-        </div>
-
-        <div
-            class="flexi-brochure-course-list"
-            id="courseListContainer"
-        ></div>
-
-        <div
-            class="flexi-brochure-no-results"
-            id="noResultsMsg"
-        >
-            No courses found matching your search.
-        </div>
-
+  <div class="container">
+    <!-- Back Button -->
+    <div class="nav-bar">
+      <a class="back-btn" href="index.php">&#8592;</a>
+      <div class="nav-title">Back to Main</div>
     </div>
 
-</main>
+    <!-- Institution & Faculty Selectors -->
+    <div class="select-box-group">
+      <!-- Institution Category Switcher -->
+      <div class="select-box">
+        <label for="institutionSelect">Select Institution Type</label>
+        <select id="institutionSelect">
+          <option value="Universities">Degree (Universities)</option>
+          <option value="Polytechnics">ND / HND (Polytechnics & Monotechnics)</option>
+          <option value="Colleges">NCE (Colleges of Education)</option>
+          <option value="IEIs">Innovation Enterprise Institutions (IEIs)</option>
+        </select>
+      </div>
 
+      <!-- Faculty Switcher -->
+      <div class="select-box">
+        <label for="facultySelect">Select Faculty / Category</label>
+        <select id="facultySelect">
+          <option value="Administration">Administration</option>
+          <option value="Agriculture">Agriculture</option>
+          <option value="Engineering">Engineering, Environment & Technology</option>
+          <option value="Education">Education</option>
+          <option value="Law">Law</option>
+          <option value="Medical">Medical, Pharmaceutical & Health Services</option>
+          <option value="Sciences">Sciences</option>
+          <option value="SocialSciences">Social Sciences</option>
+        </select>
+      </div>
+    </div>
 
-<script>
-    /* =========================================================
-       FLEXI BROCHURE DATA
-       ========================================================= */
+    <!-- Real-time Search Filter -->
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Search Course..." />
+    </div>
 
+    <div class="section-title">Select a Course:</div>
+    
+    <div class="course-list" id="courseListContainer"></div>
+    <div class="no-results" id="noResultsMsg">No courses found matching your search.</div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+        <!-- Column 1: About -->
+        <div class="footer-col">
+            <p class="footer-about">
+               We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
+            </p>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul class="footer-links-list">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
+                <li><a href="syllabus.php">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="brochure.php">Access JAMB Brochure</a></li>
+                <li><a href="videos.php">Video Lessons</a></li>
+                <li><a href="pdf.html">Past Questions & PDFs</a></li>
+                <li><a href="cbt.php">CBT Simulator</a></li>
+                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="location.html">Tutorial Centres</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Support & Community -->
+        <div class="footer-col">
+            <h4>Support & Community</h4>
+            
+            <div class="contact-group">
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
+                   target="_blank" 
+                   class="whatsapp-channel-link">
+                   Join our WhatsApp Channel
+                </a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Contact Us</h5>
+                <a href="tel:+2349034159839">(+234) 903 415 9839</a>
+                <a href="tel:+2347033855206">(+234) 703 385 5206</a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Email Us</h5>
+                <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
+                <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
+            </div>
+        </div>
+
+        <!-- Column 4: Social Links -->
+        <div class="footer-col social-links">
+            <h4>Follow Us</h4>
+            <ul class="footer-links-list">
+                <li><a href="https://www.facebook.com/profile.php?id=61589793118693" target="_blank">Facebook @flexieduconsult</a></li>
+                <li><a href="https://instagram.com/flexieduconsult2000" target="_blank">Instagram @flexieduconsult2000</a></li>
+                <li><a href="https://www.tiktok.com/@flexieduconsult" target="_blank">TikTok @flexieduconsult</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
+    </div>
+  </footer>
+  
+  <script>
+    // Master Dataset for all 8 Faculties
     const brochureData = {
-
-        "Administration": [
-
-            "Accounting",
-            "Actuarial Science",
-            "Banking and Finance",
-            "Business Administration",
-            "Business Management",
-            "Cooperative and Rural Development",
-            "Entrepreneurship",
-            "Finance",
-            "Human Resource Management",
-            "Industrial Relations and Personnel Management",
-            "Insurance",
-            "International Relations",
-            "Local Government and Development Studies",
-            "Management",
-            "Marketing",
-            "Office and Information Management",
-            "Public Administration",
-            "Purchasing and Supply",
-            "Secretarial Administration",
-            "Taxation",
-            "Transport Management"
-
-        ],
-
-
-        "Agriculture": [
-
-            "Agricultural Economics",
-            "Agricultural Economics and Extension",
-            "Agricultural Extension",
-            "Agricultural Extension and Rural Development",
-            "Agronomy",
-            "Animal Science",
-            "Crop Science",
-            "Crop Science and Horticulture",
-            "Crop Protection",
-            "Crop Protection and Environmental Biology",
-            "Soil Science",
-            "Soil Resources Management",
-            "Food Science and Technology",
-            "Fisheries",
-            "Fisheries and Aquaculture",
-            "Forestry",
-            "Forestry and Wildlife Management",
-            "Forestry and Environmental Management",
-            "Home Science and Management",
-            "Horticulture",
-            "Water Resources and Agro-Meteorology",
-            "Agricultural Engineering",
-            "Agricultural Biochemistry",
-            "Agricultural Technology",
-            "Plant Science",
-            "Plant Breeding and Seed Science"
-
-        ],
-
-
-        "Engineering": [
-
-            "Agricultural Engineering",
-            "Architecture",
-            "Building",
-            "Chemical Engineering",
-            "Civil Engineering",
-            "Computer Engineering",
-            "Electrical Engineering",
-            "Electrical and Electronics Engineering",
-            "Electronics Engineering",
-            "Environmental Management",
-            "Estate Management",
-            "Geomatics",
-            "Industrial and Production Engineering",
-            "Industrial Design",
-            "Information and Communication Engineering",
-            "Mechanical Engineering",
-            "Mechatronics Engineering",
-            "Metallurgical and Materials Engineering",
-            "Mining Engineering",
-            "Petroleum Engineering",
-            "Polymer and Textile Engineering",
-            "Quantity Surveying",
-            "Surveying and Geoinformatics",
-            "Telecommunication Engineering",
-            "Urban and Regional Planning",
-            "Water Resources Engineering",
-            "Wood Products Engineering"
-
-        ],
-
-
-        "Education": [
-
-            "Adult Education",
-            "Adult and Continuing Education",
-            "Arts Education",
-            "Business Education",
-            "Curriculum and Instruction",
-            "Early Childhood Education",
-            "Educational Administration",
-            "Educational Foundations",
-            "Educational Management",
-            "Educational Psychology",
-            "Educational Technology",
-            "Guidance and Counselling",
-            "Health Education",
-            "Human Kinetics",
-            "Library and Information Science",
-            "Primary Education Studies",
-            "Science Education",
-            "Social Science Education",
-            "Special Education",
-            "Teacher Education",
-            "Technical Education",
-            "Vocational Education",
-            "Agricultural Education",
-            "Biology Education",
-            "Chemistry Education",
-            "Christian Religious Studies Education",
-            "Computer Education",
-            "Economics Education",
-            "English Education",
-            "French Education",
-            "Geography Education",
-            "History Education",
-            "Integrated Science Education",
-            "Islamic Studies Education",
-            "Mathematics Education",
-            "Music Education",
-            "Physical and Health Education",
-            "Physics Education",
-            "Political Science Education",
-            "Social Studies Education",
-            "Yoruba Education",
-            "Igbo Education",
-            "Hausa Education",
-            "Fine and Applied Arts Education"
-
-        ],
-
-
-        "Law": [
-
-            "Common Law",
-            "Civil Law",
-            "Commercial and Industrial Law",
-            "International Law and Jurisprudence",
-            "Private and Property Law",
-            "Public Law",
-            "Islamic Law",
-            "Customary Law",
-            "Jurisprudence and International Law",
-            "Business Law",
-            "Constitutional Law",
-            "Criminal Law",
-            "Law"
-
-        ],
-
-
-        "Medical": [
-
-            "Anatomy",
-            "Audiology",
-            "Dentistry",
-            "Dental Surgery",
-            "Dental Technology",
-            "Dental Therapy",
-            "Environmental Health Science",
-            "Epidemiology",
-            "Human Anatomy",
-            "Human Nutrition and Dietetics",
-            "Medical Biochemistry",
-            "Medical Laboratory Science",
-            "Medical Rehabilitation",
-            "Medicine and Surgery",
-            "Microbiology and Parasitology",
-            "Nursing",
-            "Nursing Science",
-            "Nutrition and Dietetics",
-            "Occupational Therapy",
-            "Optometry",
-            "Pharmaceutical Chemistry",
-            "Pharmaceutical Technology",
-            "Pharmacognosy",
-            "Pharmacology",
-            "Pharmacy",
-            "Physiology",
-            "Physiotherapy",
-            "Prosthetics and Orthotics",
-            "Public Health",
-            "Radiography",
-            "Radiography and Radiation Science",
-            "Speech and Language Therapy",
-            "Veterinary Anatomy",
-            "Veterinary Medicine",
-            "Veterinary Physiology",
-            "Veterinary Public Health",
-            "Veterinary Surgery"
-
-        ],
-
-
-        "Sciences": [
-
-            "Actuarial Science",
-            "Applied Biology",
-            "Applied Biophysics",
-            "Applied Geology",
-            "Applied Geophysics",
-            "Biochemistry",
-            "Biological Science",
-            "Biology",
-            "Biotechnology",
-            "Botany",
-            "Cell Biology and Genetics",
-            "Chemistry",
-            "Computer Science",
-            "Cyber Security",
-            "Data Science",
-            "Ecology",
-            "Environmental Biology",
-            "Environmental Science",
-            "Forensic Science",
-            "Geography",
-            "Geology",
-            "Geophysics",
-            "Industrial Chemistry",
-            "Industrial Mathematics",
-            "Industrial Physics",
-            "Information Technology",
-            "Marine Biology",
-            "Mathematics",
-            "Microbiology",
-            "Physics",
-            "Plant Science",
-            "Pure and Applied Biology",
-            "Pure and Applied Chemistry",
-            "Pure and Applied Mathematics",
-            "Statistics",
-            "Zoology"
-
-        ],
-
-
-        "SocialSciences": [
-
-            "Anthropology",
-            "Criminology and Security Studies",
-            "Demography and Social Statistics",
-            "Economics",
-            "Geography",
-            "Geography and Environmental Management",
-            "International Relations",
-            "Mass Communication",
-            "Peace and Conflict Studies",
-            "Political Science",
-            "Psychology",
-            "Public Administration",
-            "Sociology",
-            "Sociology and Anthropology",
-            "Social Work",
-            "Urban and Regional Planning",
-            "Development Studies",
-            "Intelligence and Security Studies",
-            "Population Studies",
-            "Gender Studies"
-
-        ]
-
+      "Administration": [
+        "Accounting", "Actuarial Science", "Banking and Finance", "Business Administration",
+        "Business Management", "Cooperative and Rural Development", "Entrepreneurship", "Finance",
+        "Human Resource Management", "Industrial Relations and Personnel Management", "Insurance",
+        "International Relations", "Local Government and Development Studies", "Management",
+        "Marketing", "Office and Information Management", "Public Administration",
+        "Purchasing and Supply", "Secretarial Administration", "Taxation", "Transport Management"
+      ],
+      "Agriculture": [
+        "Agricultural Economics", "Agricultural Economics and Extension", "Agricultural Extension",
+        "Agricultural Extension and Rural Development", "Agronomy", "Animal Science", "Crop Science",
+        "Crop Science and Horticulture", "Crop Protection", "Crop Protection and Environmental Biology",
+        "Soil Science", "Soil Resources Management", "Food Science and Technology", "Fisheries",
+        "Fisheries and Aquaculture", "Forestry", "Forestry and Wildlife Management",
+        "Forestry and Environmental Management", "Home Science and Management", "Horticulture",
+        "Water Resources and Agro-Meteorology", "Agricultural Engineering", "Agricultural Biochemistry",
+        "Agricultural Technology", "Plant Science", "Plant Breeding and Seed Science"
+      ],
+      "Engineering": [
+        "Agricultural Engineering", "Architecture", "Building", "Chemical Engineering",
+        "Civil Engineering", "Computer Engineering", "Electrical Engineering",
+        "Electrical and Electronics Engineering", "Electronics Engineering", "Environmental Management",
+        "Estate Management", "Geomatics", "Industrial and Production Engineering", "Industrial Design",
+        "Information and Communication Engineering", "Mechanical Engineering", "Mechatronics Engineering",
+        "Metallurgical and Materials Engineering", "Mining Engineering", "Petroleum Engineering",
+        "Polymer and Textile Engineering", "Quantity Surveying", "Surveying and Geoinformatics",
+        "Telecommunication Engineering", "Urban and Regional Planning", "Water Resources Engineering",
+        "Wood Products Engineering"
+      ],
+      "Education": [
+        "Adult Education", "Adult and Continuing Education", "Arts Education", "Business Education",
+        "Curriculum and Instruction", "Early Childhood Education", "Educational Administration",
+        "Educational Foundations", "Educational Management", "Educational Psychology",
+        "Educational Technology", "Guidance and Counselling", "Health Education", "Human Kinetics",
+        "Library and Information Science", "Primary Education Studies", "Science Education",
+        "Social Science Education", "Special Education", "Teacher Education", "Technical Education",
+        "Vocational Education", "Agricultural Education", "Biology Education", "Chemistry Education",
+        "Christian Religious Studies Education", "Computer Education", "Economics Education",
+        "English Education", "French Education", "Geography Education", "History Education",
+        "Integrated Science Education", "Islamic Studies Education", "Mathematics Education",
+        "Music Education", "Physical and Health Education", "Physics Education",
+        "Political Science Education", "Social Studies Education", "Yoruba Education", "Igbo Education",
+        "Hausa Education", "Fine and Applied Arts Education"
+      ],
+      "Law": [
+        "Common Law", "Civil Law", "Commercial and Industrial Law", "International Law and Jurisprudence",
+        "Private and Property Law", "Public Law", "Islamic Law", "Customary Law",
+        "Jurisprudence and International Law", "Business Law", "Constitutional Law", "Criminal Law", "Law"
+      ],
+      "Medical": [
+        "Anatomy", "Audiology", "Dentistry", "Dental Surgery", "Dental Technology", "Dental Therapy",
+        "Environmental Health Science", "Epidemiology", "Human Anatomy", "Human Nutrition and Dietetics",
+        "Medical Biochemistry", "Medical Laboratory Science", "Medical Rehabilitation",
+        "Medicine and Surgery", "Microbiology and Parasitology", "Nursing", "Nursing Science",
+        "Nutrition and Dietetics", "Occupational Therapy", "Optometry", "Pharmaceutical Chemistry",
+        "Pharmaceutical Technology", "Pharmacognosy", "Pharmacology", "Pharmacy", "Physiology",
+        "Physiotherapy", "Prosthetics and Orthotics", "Public Health", "Radiography",
+        "Radiography and Radiation Science", "Speech and Language Therapy", "Veterinary Anatomy",
+        "Veterinary Medicine", "Veterinary Physiology", "Veterinary Public Health", "Veterinary Surgery"
+      ],
+      "Sciences": [
+        "Actuarial Science", "Applied Biology", "Applied Biophysics", "Applied Geology",
+        "Applied Geophysics", "Biochemistry", "Biological Science", "Biology", "Biotechnology",
+        "Botany", "Cell Biology and Genetics", "Chemistry", "Computer Science", "Cyber Security",
+        "Data Science", "Ecology", "Environmental Biology", "Environmental Science", "Forensic Science",
+        "Geography", "Geology", "Geophysics", "Industrial Chemistry", "Industrial Mathematics",
+        "Industrial Physics", "Information Technology", "Marine Biology", "Mathematics",
+        "Microbiology", "Physics", "Plant Science", "Pure and Applied Biology",
+        "Pure and Applied Chemistry", "Pure and Applied Mathematics", "Statistics", "Zoology"
+      ],
+      "SocialSciences": [
+        "Anthropology", "Criminology and Security Studies", "Demography and Social Statistics",
+        "Economics", "Geography", "Geography and Environmental Management", "International Relations",
+        "Mass Communication", "Peace and Conflict Studies", "Political Science", "Psychology",
+        "Public Administration", "Sociology", "Sociology and Anthropology", "Social Work",
+        "Urban and Regional Planning", "Development Studies", "Intelligence and Security Studies",
+        "Population Studies", "Gender Studies"
+      ]
     };
 
+    const institutionSelect = document.getElementById('institutionSelect');
+    const facultySelect = document.getElementById('facultySelect');
+    const courseListContainer = document.getElementById('courseListContainer');
+    const searchInput = document.getElementById('searchInput');
+    const facultyHeaderTitle = document.getElementById('facultyHeaderTitle');
+    const noResultsMsg = document.getElementById('noResultsMsg');
 
-    /* =========================================================
-       DOM REFERENCES
-       ========================================================= */
-
-    const institutionSelect =
-        document.getElementById(
-            'institutionSelect'
-        );
-
-    const facultySelect =
-        document.getElementById(
-            'facultySelect'
-        );
-
-    const courseListContainer =
-        document.getElementById(
-            'courseListContainer'
-        );
-
-    const searchInput =
-        document.getElementById(
-            'searchInput'
-        );
-
-    const noResultsMsg =
-        document.getElementById(
-            'noResultsMsg'
-        );
-
-
-    /* =========================================================
-       RENDER COURSES
-       ========================================================= */
-
+    // Render courses based on selected institution and faculty
     function renderCourses() {
+      const facultyKey = facultySelect.value;
+      const institutionKey = institutionSelect.value;
+      const courses = brochureData[facultyKey] || [];
+      
+      courseListContainer.innerHTML = '';
+      
+      // Update sub-header title text dynamically
+      const selectedInstitutionText = institutionSelect.options[institutionSelect.selectedIndex].text;
+      const selectedFacultyText = facultySelect.options[facultySelect.selectedIndex].text;
+      facultyHeaderTitle.textContent = `${selectedInstitutionText} - Faculty of ${selectedFacultyText}`;
 
-        const facultyKey =
-            facultySelect.value;
+      courses.forEach(course => {
+        const a = document.createElement('a');
+        a.className = 'course-card';
+        a.href = `requirements.html?institution=${encodeURIComponent(institutionKey)}&faculty=${encodeURIComponent(facultyKey)}&course=${encodeURIComponent(course)}`;
+        
+        a.innerHTML = `
+          <span class="course-name">${course}</span>
+          <span class="arrow-icon">&#10095;</span>
+        `;
+        courseListContainer.appendChild(a);
+      });
 
-        const institutionKey =
-            institutionSelect.value;
-
-        const courses =
-            brochureData[facultyKey] || [];
-
-
-        courseListContainer.innerHTML = '';
-
-
-        courses.forEach(course => {
-
-            const link =
-                document.createElement('a');
-
-
-            link.className =
-                'flexi-brochure-course-card';
-
-
-            link.href =
-                `requirements.html?institution=${encodeURIComponent(institutionKey)}&faculty=${encodeURIComponent(facultyKey)}&course=${encodeURIComponent(course)}`;
-
-
-            const courseName =
-                document.createElement('span');
-
-            courseName.className =
-                'flexi-brochure-course-name';
-
-            courseName.textContent =
-                course;
-
-
-            const arrow =
-                document.createElement('span');
-
-            arrow.className =
-                'flexi-brochure-arrow';
-
-            arrow.innerHTML =
-                '&#10095;';
-
-
-            link.appendChild(courseName);
-            link.appendChild(arrow);
-
-
-            courseListContainer.appendChild(
-                link
-            );
-
-        });
-
-
-        filterCourses();
-
+      // Re-apply search filter
+      filterCourses();
     }
 
-
-    /* =========================================================
-       LIVE SEARCH
-       ========================================================= */
-
+    // Live search function
     function filterCourses() {
+      const term = searchInput.value.toLowerCase().trim();
+      const cards = courseListContainer.getElementsByClassName('course-card');
+      let visibleCount = 0;
 
-        const term =
-            searchInput.value
-                .toLowerCase()
-                .trim();
+      Array.from(cards).forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(term)) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
 
-
-        const cards =
-            courseListContainer
-                .getElementsByClassName(
-                    'flexi-brochure-course-card'
-                );
-
-
-        let visibleCount = 0;
-
-
-        Array.from(cards).forEach(card => {
-
-            const text =
-                card.textContent
-                    .toLowerCase();
-
-
-            if (text.includes(term)) {
-
-                card.style.display =
-                    'flex';
-
-                visibleCount++;
-
-            } else {
-
-                card.style.display =
-                    'none';
-
-            }
-
-        });
-
-
-        noResultsMsg.style.display =
-            visibleCount === 0
-                ? 'block'
-                : 'none';
-
+      noResultsMsg.style.display = visibleCount === 0 ? 'block' : 'none';
     }
 
-
-    /* =========================================================
-       URL PARAMETERS
-       ========================================================= */
-
-    const urlParams =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const institutionParam =
-        urlParams.get(
-            'institution'
-        );
-
-
-    const facultyParam =
-        urlParams.get(
-            'faculty'
-        );
-
+    // Read URL query parameters if present (e.g., page.html?institution=Polytechnics&faculty=Engineering)
+    const urlParams = new URLSearchParams(window.location.search);
+    const institutionParam = urlParams.get('institution');
+    const facultyParam = urlParams.get('faculty');
 
     if (institutionParam) {
-
-        const matchingInstitution =
-            Array.from(
-                institutionSelect.options
-            ).find(
-                option =>
-                    option.value.toLowerCase() ===
-                    institutionParam.toLowerCase()
-            );
-
-
-        if (matchingInstitution) {
-
-            institutionSelect.value =
-                matchingInstitution.value;
-
-        }
-
+      const matchingOption = Array.from(institutionSelect.options).find(opt => opt.value.toLowerCase() === institutionParam.toLowerCase());
+      if (matchingOption) institutionSelect.value = matchingOption.value;
     }
 
-
-    if (
-        facultyParam &&
-        brochureData[facultyParam]
-    ) {
-
-        facultySelect.value =
-            facultyParam;
-
+    if (facultyParam && brochureData[facultyParam]) {
+      facultySelect.value = facultyParam;
     }
 
+    // Event Listeners
+    institutionSelect.addEventListener('change', renderCourses);
+    facultySelect.addEventListener('change', renderCourses);
+    searchInput.addEventListener('input', filterCourses);
 
-    /* =========================================================
-       EVENTS
-       ========================================================= */
-
-    institutionSelect.addEventListener(
-        'change',
-        renderCourses
-    );
-
-
-    facultySelect.addEventListener(
-        'change',
-        renderCourses
-    );
-
-
-    searchInput.addEventListener(
-        'input',
-        filterCourses
-    );
-
-
-    /* =========================================================
-       INITIAL RENDER
-       ========================================================= */
-
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    // Initial Render
     renderCourses();
 
-</script>
-
-
-<?php
-
-require_once __DIR__ . '/includes/footer.php';
-
-?>
+  </script>
+</body>
+</html>
