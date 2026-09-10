@@ -1,2363 +1,911 @@
-<?php
-$pageTitle = 'JAMB & WAEC Syllabus | Flexi Educational Consult';
-
-$pageDescription = 'Access JAMB UTME and WAEC WASSCE examination syllabuses for different subjects on Flexi Educational Consult.';
-
-$pageKeywords = 'JAMB syllabus, UTME syllabus, WAEC syllabus, WASSCE syllabus, JAMB subjects, WAEC subjects, Flexi Educational Consult';
-
-$pageImage = 'https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg';
-
-$pageCanonical = 'https://www.flexieduconsult.com.ng/syllabus.php';
-
-$includeToastify = false;
-$includeAdsense = false;
-
-$currentPage = 'syllabus.php';
-
-require_once __DIR__ . '/includes/head.php';
-require_once __DIR__ . '/includes/header.php';
-?>
-
-<style>
-    /* =========================================================
-       FLEXI SYLLABUS PORTAL
-       Page-specific styles only
-       ========================================================= */
-
-    .flexi-syllabus-page {
-        background: #F8FAFC;
-        color: #1E293B;
-        min-height: calc(100vh - 80px);
-        line-height: 1.6;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexi Educational Consult - Syllabus Portal</title>
+  <style>
+    :root {
+      /* Flexi Educational Consult Brand Colors */
+      --flexi-blue: #0A2540;
+      --flexi-blue-light: #1E3A8A;
+      --flexi-green: #10B981;
+      --flexi-green-dark: #059669;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text: #1E293B;
+      --border: #E2E8F0;
     }
 
-    .flexi-syllabus-container {
-        max-width: 950px;
-        margin: 0 auto;
-        padding: 1.25rem 1.5rem 3rem;
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Brand Header - Reduced to ~0.8cm height */
+    .brand-header {
+      background: linear-gradient(135deg, var(--flexi-blue) 0%, var(--flexi-blue-light) 100%);
+      color: white;
+      padding: 0.8cm 1.5rem; /* Exactly 0.8cm high padding */
+      text-align: center;
+      border-bottom: 3px solid var(--flexi-green);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .brand-header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .brand-header p {
+      margin: 0.2rem 0 0;
+      opacity: 0.9;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem;
     }
 
     /* Portal Controls */
-
-    .flexi-syllabus-controls {
-        background: #FFFFFF;
-        padding: 1rem;
-        border-radius: 10px;
-        margin-bottom: 1.25rem;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    .portal-controls {
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
-    .flexi-syllabus-exam-buttons {
-        display: flex;
-        gap: 0.75rem;
-        margin-bottom: 0.85rem;
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
     }
 
-    .flexi-syllabus-toggle {
-        flex: 1;
-        padding: 0.65rem 1rem;
-        border: 2px solid var(--flexi-primary, #003366);
-        background: transparent;
-        color: var(--flexi-primary, #003366);
-        font-weight: 700;
-        font-size: 0.95rem;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .btn-toggle {
+      flex: 1;
+      padding: 0.65rem 1rem;
+      border: 2px solid var(--flexi-blue);
+      background: transparent;
+      color: var(--flexi-blue);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .flexi-syllabus-toggle:hover {
-        background: rgba(0, 51, 102, 0.05);
+    .btn-toggle:hover {
+      background: rgba(10, 37, 64, 0.05);
     }
 
-    .flexi-syllabus-toggle.active {
-        background: var(--flexi-primary, #003366);
-        color: #FFFFFF;
+    .btn-toggle.active {
+      background: var(--flexi-blue);
+      color: white;
     }
 
-    /* Subject Selector */
+/* Fixed Subject Select Container */
+.subject-select-wrap {
+  display: flex;
+  flex-direction: column; /* Stacks label & dropdown vertically on mobile */
+  align-items: stretch;
+  gap: 0.4rem;
+  width: 100%;
+}
 
-    .flexi-syllabus-subject-wrap {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.4rem;
-        width: 100%;
+/* Ensure label doesn't wrap weirdly */
+.subject-select-wrap label {
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* Prevent select element from breaking out of its container */
+select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 0.95rem;
+  background: var(--bg);
+  color: var(--text);
+  text-overflow: ellipsis; /* Truncates super long text smoothly */
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Force long file paths/urls inside code tags to break onto new lines */
+code {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 600px) {
+  .subject-select-wrap {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+
+
+    /* Content Cards & Containers */
+    .subject-title-card {
+      background: var(--card-bg);
+      border-left: 5px solid var(--flexi-green);
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 1.25rem;
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
-    .flexi-syllabus-subject-wrap label {
-        font-size: 0.95rem;
-        white-space: nowrap;
+    .subject-title-card h2 {
+      margin: 0 0 0.25rem 0;
+      color: var(--flexi-blue);
     }
 
-    .flexi-syllabus-subject-select {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-
-        padding: 0.65rem 0.85rem;
-        border-radius: 6px;
-        border: 1px solid #E2E8F0;
-
-        font-size: 0.95rem;
-        background: #F8FAFC;
-        color: #1E293B;
-
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-
-        outline: none;
-        cursor: pointer;
+    .subject-desc {
+      margin: 0.25rem 0 0;
+      font-size: 0.9rem;
+      color: #64748B;
     }
 
-    .flexi-syllabus-subject-select:focus {
-        border-color: var(--flexi-secondary, #2E8B57);
-        box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.08);
+    .badge-exam {
+      display: inline-block;
+      background: var(--flexi-green);
+      color: white;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
     }
 
-    /* Loading */
-
-    .flexi-syllabus-loading {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 10px;
-        padding: 2rem;
-        text-align: center;
-        color: #64748B;
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
     }
 
-    /* Subject Title */
-
-    .flexi-syllabus-subject-card {
-        background: #FFFFFF;
-        border-left: 5px solid var(--flexi-secondary, #2E8B57);
-
-        padding: 1.25rem;
-        border-radius: 8px;
-        margin-bottom: 1.25rem;
-
-        border-top: 1px solid #E2E8F0;
-        border-right: 1px solid #E2E8F0;
-        border-bottom: 1px solid #E2E8F0;
+    .section-title {
+      color: var(--flexi-blue);
+      font-size: 1.2rem;
+      margin-top: 0;
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 0.4rem;
     }
 
-    .flexi-syllabus-subject-card h2 {
-        margin: 0 0 0.25rem;
-        color: var(--flexi-primary, #003366);
-        font-size: 1.4rem;
-        line-height: 1.3;
+    .styled-list { padding-left: 1.25rem; margin: 0.5rem 0; }
+    .styled-list li { margin-bottom: 0.4rem; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+    th, td { border: 1px solid var(--border); padding: 0.65rem; text-align: left; }
+    th { background: #F1F5F9; color: var(--flexi-blue); }
+
+    .topic-block {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 0.85rem;
+      overflow: hidden;
     }
 
-    .flexi-syllabus-description {
-        margin: 0.25rem 0 0;
-        font-size: 0.9rem;
-        color: #64748B;
+    .topic-header {
+      background: #F8FAFC;
+      padding: 0.65rem 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
     }
 
-    .flexi-syllabus-exam-badge {
-        display: inline-block;
-        background: var(--flexi-secondary, #2E8B57);
-        color: #FFFFFF;
-
-        padding: 0.15rem 0.5rem;
-        border-radius: 4px;
-
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-
-        margin-bottom: 0.4rem;
+    .topic-number {
+      background: var(--flexi-green);
+      color: white;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-right: 0.4rem;
     }
 
-    /* Section Cards */
+    .topic-body { padding: 0.85rem; border-top: 1px solid var(--border); }
 
-    .flexi-syllabus-section-card {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 10px;
-
-        padding: 1.25rem;
-        margin-bottom: 1.25rem;
+    .subsection {
+      margin-top: 0.85rem;
+      padding-left: 0.85rem;
+      border-left: 3px solid var(--flexi-green);
     }
 
-    .flexi-syllabus-section-title {
-        color: var(--flexi-primary, #003366);
-        font-size: 1.2rem;
+    .subsection-title { font-weight: 600; color: var(--flexi-blue); margin-bottom: 0.25rem; }
 
-        margin-top: 0;
-        margin-bottom: 1rem;
+    .text-capitalize { text-transform: capitalize; }
 
-        border-bottom: 2px solid #F8FAFC;
-        padding-bottom: 0.4rem;
+    /* MODERN FOOTER STYLES */
+.footer {
+    background: linear-gradient(135deg, #011627 0%, #032038 100%);
+    color: #e2e8f0;
+    padding: 60px 20px 30px 20px;
+    margin-top: 60px;
+    border-top: 4px solid var(--green, #22c55e);
+    font-size: 14px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
+    gap: 35px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Headings */
+.footer h4 {
+    color: var(--yellow, #fbbf24);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin: 0 0 16px 0;
+    position: relative;
+    padding-bottom: 6px;
+}
+
+.footer h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 24px;
+    height: 2px;
+    background: var(--yellow, #fbbf24);
+    opacity: 0.7;
+    border-radius: 2px;
+}
+
+.footer-about {
+    line-height: 1.7;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Links List */
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-list li {
+    margin-bottom: 10px;
+}
+
+.footer a {
+    color: #cbd5e0;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.footer-links-list a:hover {
+    color: var(--yellow, #fbbf24);
+    transform: translateX(4px);
+    display: inline-block;
+}
+
+/* WhatsApp Channel Text Link */
+.whatsapp-channel-link {
+    color: #25D366 !important;
+    font-weight: 600;
+    display: inline-block;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.whatsapp-channel-link:hover {
+    opacity: 0.85;
+    transform: translateX(4px);
+}
+
+/* Contacts & Emails Subheadings */
+.contact-group {
+    margin-bottom: 16px;
+}
+
+.contact-group h5 {
+    color: #ffffff;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0 0 6px 0;
+    opacity: 0.9;
+}
+
+.contact-group a {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    margin-bottom: 4px;
+}
+
+.contact-group a:hover {
+    color: #ffffff;
+}
+
+/* Bottom Bar */
+.footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0 auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
     }
+}
 
-    .flexi-syllabus-list {
-        padding-left: 1.25rem;
-        margin: 0.5rem 0;
+@media (max-width: 550px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
     }
-
-    .flexi-syllabus-list li {
-        margin-bottom: 0.4rem;
-    }
-
-    /* Tables */
-
-    .flexi-syllabus-table-wrapper {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .flexi-syllabus-table {
-        width: 100%;
-        min-width: 600px;
-
-        border-collapse: collapse;
-        margin-top: 0.75rem;
-    }
-
-    .flexi-syllabus-table th,
-    .flexi-syllabus-table td {
-        border: 1px solid #E2E8F0;
-        padding: 0.65rem;
-        text-align: left;
-        vertical-align: top;
-    }
-
-    .flexi-syllabus-table th {
-        background: #F1F5F9;
-        color: var(--flexi-primary, #003366);
-    }
-
-    /* Topic Blocks */
-
-    .flexi-syllabus-topic {
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        margin-bottom: 0.85rem;
-        overflow: hidden;
-    }
-
-    .flexi-syllabus-topic-header {
-        background: #F8FAFC;
-        padding: 0.65rem 0.85rem;
-
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .flexi-syllabus-topic-body {
-        padding: 0.85rem;
-        border-top: 1px solid #E2E8F0;
-    }
-
-    .flexi-syllabus-subsection {
-        margin-top: 0.85rem;
-        padding-left: 0.85rem;
-        border-left: 3px solid var(--flexi-secondary, #2E8B57);
-    }
-
-    .flexi-syllabus-subsection-title {
-        font-weight: 600;
-        color: var(--flexi-primary, #003366);
-        margin-bottom: 0.25rem;
-    }
-
-    .flexi-syllabus-error {
-        background: #FFFFFF;
-        border: 1px solid #fecaca;
-        border-left: 4px solid #dc2626;
-
-        border-radius: 8px;
-        padding: 1rem;
-    }
-
-    .flexi-syllabus-error-title {
-        color: #dc2626;
-        font-weight: 700;
-        margin: 0;
-    }
-
-    .flexi-syllabus-error-text {
-        margin: 0.5rem 0 0;
-        font-size: 0.85rem;
-        color: #475569;
-    }
-
-    .flexi-syllabus-code {
-        word-break: break-word;
-        overflow-wrap: anywhere;
-    }
-
-    .flexi-syllabus-capitalize {
-        text-transform: capitalize;
-    }
-
-    /* Mobile */
-
-    @media (min-width: 600px) {
-        .flexi-syllabus-subject-wrap {
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .flexi-syllabus-subject-wrap label {
-            flex: 0 0 auto;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .flexi-syllabus-container {
-            padding: 1rem 0.85rem 2.5rem;
-        }
-
-        .flexi-syllabus-exam-buttons {
-            flex-direction: column;
-        }
-
-        .flexi-syllabus-toggle {
-            width: 100%;
-        }
-
-        .flexi-syllabus-subject-card h2 {
-            font-size: 1.2rem;
-        }
-
-        .flexi-syllabus-section-card {
-            padding: 1rem;
-        }
     }
 </style>
+</head>
+<body>
 
-<main class="flexi-syllabus-page">
+  <!-- Flexi Brand Header (~0.8cm Height) -->
+  <header class="brand-header">
+    <h1>Flexi Educational Consult</h1>
+    <p>Official Examination Syllabus Portal</p>
+  </header>
 
-    <div class="flexi-syllabus-container">
+  <div class="container">
+    <!-- Portal Controls -->
+    <div class="portal-controls">
+      <div class="btn-group">
+        <button id="btn-jamb" class="btn-toggle active" onclick="switchPortal('jamb')">
+          Check JAMB Syllabus
+        </button>
+        <button id="btn-waec" class="btn-toggle" onclick="switchPortal('waec')">
+          Check WAEC Syllabus
+        </button>
+      </div>
 
-        <!-- Portal Controls -->
-        <section class="flexi-syllabus-controls">
-
-            <div class="flexi-syllabus-exam-buttons">
-
-                <button
-                    id="btn-jamb"
-                    type="button"
-                    class="flexi-syllabus-toggle active"
-                    onclick="switchPortal('jamb')"
-                >
-                    Check JAMB Syllabus
-                </button>
-
-                <button
-                    id="btn-waec"
-                    type="button"
-                    class="flexi-syllabus-toggle"
-                    onclick="switchPortal('waec')"
-                >
-                    Check WAEC Syllabus
-                </button>
-
-            </div>
-
-            <div class="flexi-syllabus-subject-wrap">
-
-                <label for="subjectSelect">
-                    <strong>Select Subject:</strong>
-                </label>
-
-                <select
-                    id="subjectSelect"
-                    class="flexi-syllabus-subject-select"
-                    onchange="onSubjectChanged(this.value)"
-                ></select>
-
-            </div>
-
-        </section>
-
-
-        <!-- Main Syllabus View -->
-        <div id="syllabus-app">
-
-            <div class="flexi-syllabus-loading">
-                Loading syllabus data...
-            </div>
-
-        </div>
-
+      <div class="subject-select-wrap">
+        <label for="subjectSelect"><strong>Select Subject:</strong></label>
+        <select id="subjectSelect" onchange="onSubjectChanged(this.value)">
+          <!-- Options populated dynamically -->
+        </select>
+      </div>
     </div>
 
-</main>
-
-
-<script>
-    /* =========================================================
-       FLEXI SYLLABUS PORTAL
-       ========================================================= */
-
-    let currentExam = 'jamb';
-    let activeSubjectMeta = null;
-
-
-    /* =========================================================
-       SUBJECT REGISTRY
-       ========================================================= */
-
-    const subjectRegistry = {
-
-        jamb: [
-
-            {
-                id: "accounts",
-                name: "Principles of Accounts",
-                desc: "Bookkeeping, financial statements, and auditing basics.",
-                path: "data/account.json"
-            },
-
-            {
-                id: "arabic",
-                name: "Arabic",
-                desc: "Language studies and literary texts.",
-                path: "data/arabic.json"
-            },
-
-            {
-                id: "biology",
-                name: "Biology",
-                desc: "Diversity of organisms, Ecology, Genetics, and Physiology.",
-                path: "data/biology.json"
-            },
-
-            {
-                id: "chemistry",
-                name: "Chemistry",
-                desc: "Physical, Inorganic, and Organic Chemistry.",
-                path: "data/chemistry.json"
-            },
-
-            {
-                id: "commerce",
-                name: "Commerce",
-                desc: "Trade, business organizations, and financial systems.",
-                path: "data/commerce.json"
-            },
-
-            {
-                id: "computer",
-                name: "Computer Studies",
-                desc: "Computing systems, software development, and information networks.",
-                path: "data/computer.json"
-            },
-
-            {
-                id: "crk",
-                name: "CRK",
-                desc: "Christian Religious Knowledge: Study of the Bible and Christian ethics.",
-                path: "data/crk.json"
-            },
-
-            {
-                id: "economics",
-                name: "Economics",
-                desc: "Basic principles, consumer behavior, and national income.",
-                path: "data/economics.json"
-            },
-
-            {
-                id: "english",
-                name: "Use of English",
-                desc: "Compulsory for all candidates. Covers comprehension and structure.",
-                path: "data/english.json"
-            },
-
-            {
-                id: "art",
-                name: "Art",
-                desc: "History and theory of art, and design principles.",
-                path: "data/art.json"
-            },
-
-            {
-                id: "french",
-                name: "French",
-                desc: "Language structure, comprehension, and expression.",
-                path: "data/french.json"
-            },
-
-            {
-                id: "geography",
-                name: "Geography",
-                desc: "Physical geography, map reading, and economic geography.",
-                path: "data/geography.json"
-            },
-
-            {
-                id: "government",
-                name: "Government",
-                desc: "Political concepts, systems, and Nigerian government history.",
-                path: "data/government.json"
-            },
-
-            {
-                id: "hausa",
-                name: "Hausa",
-                desc: "Language study, literature, and culture.",
-                path: "data/hausa.json"
-            },
-
-            {
-                id: "history",
-                name: "History",
-                desc: "World history and key events in Nigerian history.",
-                path: "data/history.json"
-            },
-
-            {
-                id: "igbo",
-                name: "Igbo",
-                desc: "Language study, literature, and culture.",
-                path: "data/igbo.json"
-            },
-
-            {
-                id: "home-economics",
-                name: "Home Economics",
-                desc: "Family ecology, nutrition, food science, and consumer resource management.",
-                path: "data/home-economics.json"
-            },
-
-            {
-                id: "irk",
-                name: "IRS",
-                desc: "Islamic Religious Studies: Study of the Quran, Hadith, and jurisprudence.",
-                path: "data/irk.json"
-            },
-
-            {
-                id: "lit",
-                name: "Literature in English",
-                desc: "Analysis of African and non-African prose, drama, and poetry.",
-                path: "data/lit.json"
-            },
-
-            {
-                id: "math",
-                name: "Mathematics",
-                desc: "Algebra, Calculus, Geometry, Trigonometry, and Statistics.",
-                path: "data/math.json"
-            },
-
-            {
-                id: "music",
-                name: "Music",
-                desc: "Theory, history, and practice of music.",
-                path: "data/music.json"
-            },
-
-            {
-                id: "phe",
-                name: "Physical and Health Education",
-                desc: "Kinesiology, sports science, human anatomy, wellness, and community health systems.",
-                path: "data/phe.json"
-            },
-
-            {
-                id: "physics",
-                name: "Physics",
-                desc: "Mechanics, Heat, Optics, Waves, and Electromagnetism.",
-                path: "data/physics.json"
-            },
-
-            {
-                id: "yoruba",
-                name: "Yoruba",
-                desc: "Language study, literature, and culture.",
-                path: "data/yoruba.json"
-            }
-
-        ],
-
-
-        waec: [
-
-            {
-                id: "agric",
-                name: "Agricultural Science",
-                path: "data/waec/agric.json"
-            },
-
-            {
-                id: "animal_husbandry",
-                name: "Animal Husbandry",
-                path: "data/waec/animal_husbandry.json"
-            },
-
-            {
-                id: "arabic",
-                name: "Arabic",
-                path: "data/waec/arabic.json"
-            },
-
-            {
-                id: "biology",
-                name: "Biology",
-                path: "data/waec/biology.json"
-            },
-
-            {
-                id: "book_keeping",
-                name: "Book Keeping",
-                path: "data/waec/book_keeping.json"
-            },
-
-            {
-                id: "building",
-                name: "Building Construction",
-                path: "data/waec/building.json"
-            },
-
-            {
-                id: "business",
-                name: "Business Management",
-                path: "data/waec/business.json"
-            },
-
-            {
-                id: "catering",
-                name: "Catering Craft Practice",
-                path: "data/waec/catering.json"
-            },
-
-            {
-                id: "chemistry",
-                name: "Chemistry",
-                path: "data/waec/chemistry.json"
-            },
-
-            {
-                id: "civic",
-                name: "Civic Education",
-                path: "data/waec/civic.json"
-            },
-
-            {
-                id: "clerical",
-                name: "Clerical Office Duties",
-                path: "data/waec/clerical.json"
-            },
-
-            {
-                id: "commerce",
-                name: "Commerce",
-                path: "data/waec/commerce.json"
-            },
-
-            {
-                id: "computer",
-                name: "Computer Studies",
-                path: "data/waec/computer.json"
-            },
-
-            {
-                id: "crk",
-                name: "Christian Religious Studies (CRS)",
-                path: "data/waec/crk.json"
-            },
-
-            {
-                id: "data_processing",
-                name: "Data Processing",
-                path: "data/waec/data_processing.json"
-            },
-
-            {
-                id: "economics",
-                name: "Economics",
-                path: "data/waec/economics.json"
-            },
-
-            {
-                id: "edo",
-                name: "Edo",
-                path: "data/waec/edo.json"
-            },
-
-            {
-                id: "english",
-                name: "English Language",
-                path: "data/waec/english.json"
-            },
-
-            {
-                id: "financial_accounting",
-                name: "Financial Accounting",
-                path: "data/waec/financial_accounting.json"
-            },
-
-            {
-                id: "fishery",
-                name: "Fisheries",
-                path: "data/waec/fishery.json"
-            },
-
-            {
-                id: "food_and_nut",
-                name: "Foods and Nutrition",
-                path: "data/waec/food_and_nut.json"
-            },
-
-            {
-                id: "forestry",
-                name: "Forestry",
-                path: "data/waec/forestry.json"
-            },
-
-            {
-                id: "french",
-                name: "French",
-                path: "data/waec/french.json"
-            },
-
-            {
-                id: "further_maths",
-                name: "Further Mathematics",
-                path: "data/waec/further_maths.json"
-            },
-
-            {
-                id: "geography",
-                name: "Geography",
-                path: "data/waec/geography.json"
-            },
-
-            {
-                id: "government",
-                name: "Government",
-                path: "data/waec/government.json"
-            },
-
-            {
-                id: "hausa",
-                name: "Hausa",
-                path: "data/waec/hausa.json"
-            },
-
-            {
-                id: "health_education",
-                name: "Health Education",
-                path: "data/waec/health_education.json"
-            },
-
-            {
-                id: "history",
-                name: "History",
-                path: "data/waec/history.json"
-            },
-
-            {
-                id: "home_management",
-                name: "Home Management",
-                path: "data/waec/home_management.json"
-            },
-
-            {
-                id: "ict",
-                name: "ICT",
-                path: "data/waec/ict.json"
-            },
-
-            {
-                id: "igbo",
-                name: "Igbo",
-                path: "data/waec/igbo.json"
-            },
-
-            {
-                id: "insurance",
-                name: "Insurance",
-                path: "data/waec/insurance.json"
-            },
-
-            {
-                id: "islam",
-                name: "Islamic Studies (IRS)",
-                path: "data/waec/islam.json"
-            },
-
-            {
-                id: "literature",
-                name: "Literature in English",
-                path: "data/waec/literature.json"
-            },
-
-            {
-                id: "marketing",
-                name: "Marketing",
-                path: "data/waec/marketing.json"
-            },
-
-            {
-                id: "maths",
-                name: "Mathematics",
-                path: "data/waec/maths.json"
-            },
-
-            {
-                id: "music",
-                name: "Music",
-                path: "data/waec/music.json"
-            },
-
-            {
-                id: "office_practice",
-                name: "Office Practice",
-                path: "data/waec/office_practice.json"
-            },
-
-            {
-                id: "physical_education",
-                name: "Physical Education",
-                path: "data/waec/physical_education.json"
-            },
-
-            {
-                id: "physics",
-                name: "Physics",
-                path: "data/waec/physics.json"
-            },
-
-            {
-                id: "technical_drawing",
-                name: "Technical Drawing",
-                path: "data/waec/technical_drawing.json"
-            },
-
-            {
-                id: "visual_art",
-                name: "Visual Arts",
-                path: "data/waec/visual_art.json"
-            },
-
-            {
-                id: "yoruba",
-                name: "Yoruba",
-                path: "data/waec/yoruba.json"
-            }
-
-        ]
-
-    };
-
-
-    /* =========================================================
-       URL PARAMETERS
-       ========================================================= */
-
-    const urlParams =
-        new URLSearchParams(window.location.search);
-
-    const urlSubject =
-        urlParams.get('subject');
-
-    const urlExam =
-        (urlParams.get('exam') || 'jamb').toLowerCase();
-
-
-    /* =========================================================
-       HTML ESCAPE HELPER
-       ========================================================= */
-
-    function escapeHTML(value) {
-
-        return String(value ?? '')
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-
+    <!-- Main Syllabus View -->
+    <div id="syllabus-app"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+        <!-- Column 1: About -->
+        <div class="footer-col">
+            <p class="footer-about">
+               We empower Nigerian students with admission updates, CBT preparation, tutorials, past questions in PDF, and premium educational support.
+            </p>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul class="footer-links-list">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
+                <li><a href="syllabus.php">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="brochure.php">Access JAMB Brochure</a></li>
+                <li><a href="videos.php">Video Lessons</a></li>
+                <li><a href="pdf.php">Past Questions & PDFs</a></li>
+                <li><a href="cbt.php">CBT Simulator</a></li>
+                <li><a href="classroom.html">Classroom</a></li>
+                <li><a href="location.html">Tutorial Centres</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Support & Community -->
+        <div class="footer-col">
+            <h4>Support & Community</h4>
+            
+            <div class="contact-group">
+                <a href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u" 
+                   target="_blank" 
+                   class="whatsapp-channel-link">
+                   Join our WhatsApp Channel
+                </a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Contact Us</h5>
+                <a href="tel:+2349034159839">(+234) 903 415 9839</a>
+                <a href="tel:+2347033855206">(+234) 703 385 5206</a>
+            </div>
+
+            <div class="contact-group">
+                <h5>Email Us</h5>
+                <a href="mailto:support@flexieduconsult.com.ng">support@flexieduconsult.com.ng</a>
+                <a href="mailto:info@flexieduconsult.com.ng">info@flexieduconsult.com.ng</a>
+            </div>
+        </div>
+
+        <!-- Column 4: Social Links -->
+        <div class="footer-col social-links">
+            <h4>Follow Us</h4>
+            <ul class="footer-links-list">
+                <li><a href="https://www.facebook.com/profile.php?id=61589793118693" target="_blank">Facebook @flexieduconsult</a></li>
+                <li><a href="https://instagram.com/flexieduconsult2000" target="_blank">Instagram @flexieduconsult2000</a></li>
+                <li><a href="https://www.tiktok.com/@flexieduconsult" target="_blank">TikTok @flexieduconsult</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
+    </div>
+  </footer>
+  <script>
+  let currentExam = 'jamb';
+  let activeSubjectMeta = null;
+
+  // Registry for JAMB and WAEC Subjects
+  const subjectRegistry = {
+    jamb: [
+      { id: "accounts", name: "Principles of Accounts", desc: "Bookkeeping, financial statements, and auditing basics.", path: "data/account.json" },
+      { id: "arabic", name: "Arabic", desc: "Language studies and literary texts.", path: "data/arabic.json" },
+      { id: "biology", name: "Biology", desc: "Diversity of organisms, Ecology, Genetics, and Physiology.", path: "data/biology.json" },
+      { id: "chemistry", name: "Chemistry", desc: "Physical, Inorganic, and Organic Chemistry.", path: "data/chemistry.json" },
+      { id: "commerce", name: "Commerce", desc: "Trade, business organizations, and financial systems.", path: "data/commerce.json" },
+      { id: "computer", name: "Computer Studies", desc: "Computing systems, software development, and information networks.", path: "data/computer.json" },
+      { id: "crk", name: "CRK", desc: "Christian Religious Knowledge: Study of the Bible and Christian ethics.", path: "data/crk.json" },
+      { id: "economics", name: "Economics", desc: "Basic principles, consumer behavior, and national income.", path: "data/economics.json" },
+      { id: "english", name: "Use of English", desc: "Compulsory for all candidates. Covers comprehension and structure.", path: "data/english.json" },
+      { id: "art", name: "Art", desc: "History and theory of art, and design principles.", path: "data/art.json" },
+      { id: "french", name: "French", desc: "Language structure, comprehension, and expression.", path: "data/french.json" },
+      { id: "geography", name: "Geography", desc: "Physical geography, map reading, and economic geography.", path: "data/geography.json" },
+      { id: "government", name: "Government", desc: "Political concepts, systems, and Nigerian government history.", path: "data/government.json" },
+      { id: "hausa", name: "Hausa", desc: "Language study, literature, and culture.", path: "data/hausa.json" },
+      { id: "history", name: "History", desc: "World history and key events in Nigerian history.", path: "data/history.json" },
+      { id: "igbo", name: "Igbo", desc: "Language study, literature, and culture.", path: "data/igbo.json" },
+      { id: "home-economics", name: "Home Economics", desc: "Family ecology, nutrition, food science, and consumer resource management.", path: "data/home-economics.json" },
+      { id: "irk", name: "IRS", desc: "Islamic Religious Studies: Study of the Quran, Hadith, and jurisprudence.", path: "data/irk.json" },
+      { id: "lit", name: "Literature in English", desc: "Analysis of African and non-African prose, drama, and poetry.", path: "data/lit.json" },
+      { id: "math", name: "Mathematics", desc: "Algebra, Calculus, Geometry, Trigonometry, and Statistics.", path: "data/math.json" },
+      { id: "music", name: "Music", desc: "Theory, history, and practice of music.", path: "data/music.json" },
+      { id: "phe", name: "Physical and Health Education", desc: "Kinesiology, sports science, human anatomy, wellness, and community health systems.", path: "data/phe.json" },
+      { id: "physics", name: "Physics", desc: "Mechanics, Heat, Optics, Waves, and Electromagnetism.", path: "data/physics.json" },
+      { id: "yoruba", name: "Yoruba", desc: "Language study, literature, and culture.", path: "data/yoruba.json" }
+    ],
+    waec: [
+      { id: "agric", name: "Agricultural Science", path: "data/waec/agric.json" },
+      { id: "animal_husbandry", name: "Animal Husbandry", path: "data/waec/animal_husbandry.json" },
+      { id: "arabic", name: "Arabic", path: "data/waec/arabic.json" },
+      { id: "biology", name: "Biology", path: "data/waec/biology.json" },
+      { id: "book_keeping", name: "Book Keeping", path: "data/waec/book_keeping.json" },
+      { id: "building", name: "Building Construction", path: "data/waec/building.json" },
+      { id: "business", name: "Business Management", path: "data/waec/business.json" },
+      { id: "catering", name: "Catering Craft Practice", path: "data/waec/catering.json" },
+      { id: "chemistry", name: "Chemistry", path: "data/waec/chemistry.json" },
+      { id: "civic", name: "Civic Education", path: "data/waec/civic.json" },
+      { id: "clerical", name: "Clerical Office Duties", path: "data/waec/clerical.json" },
+      { id: "commerce", name: "Commerce", path: "data/waec/commerce.json" },
+      { id: "computer", name: "Computer Studies", path: "data/waec/computer.json" },
+      { id: "crk", name: "Christian Religious Studies (CRS)", path: "data/waec/crk.json" },
+      { id: "data_processing", name: "Data Processing", path: "data/waec/data_processing.json" },
+      { id: "economics", name: "Economics", path: "data/waec/economics.json" },
+      { id: "edo", name: "Edo", path: "data/waec/edo.json" },
+      { id: "english", name: "English Language", path: "data/waec/english.json" },
+      { id: "financial_accounting", name: "Financial Accounting", path: "data/waec/financial_accounting.json" },
+      { id: "fishery", name: "Fisheries", path: "data/waec/fishery.json" },
+      { id: "food_and_nut", name: "Foods and Nutrition", path: "data/waec/food_and_nut.json" },
+      { id: "forestry", name: "Forestry", path: "data/waec/forestry.json" },
+      { id: "french", name: "French", path: "data/waec/french.json" },
+      { id: "further_maths", name: "Further Mathematics", path: "data/waec/further_maths.json" },
+      { id: "geography", name: "Geography", path: "data/waec/geography.json" },
+      { id: "government", name: "Government", path: "data/waec/government.json" },
+      { id: "hausa", name: "Hausa", path: "data/waec/hausa.json" },
+      { id: "health_education", name: "Health Education", path: "data/waec/health_education.json" },
+      { id: "history", name: "History", path: "data/waec/history.json" },
+      { id: "home_management", name: "Home Management", path: "data/waec/home_management.json" },
+      { id: "ict", name: "ICT", path: "data/waec/ict.json" },
+      { id: "igbo", name: "Igbo", path: "data/waec/igbo.json" },
+      { id: "insurance", name: "Insurance", path: "data/waec/insurance.json" },
+      { id: "islam", name: "Islamic Studies (IRS)", path: "data/waec/islam.json" },
+      { id: "literature", name: "Literature in English", path: "data/waec/literature.json" },
+      { id: "marketing", name: "Marketing", path: "data/waec/marketing.json" },
+      { id: "maths", name: "Mathematics", path: "data/waec/maths.json" },
+      { id: "music", name: "Music", path: "data/waec/music.json" },
+      { id: "office_practice", name: "Office Practice", path: "data/waec/office_practice.json" },
+      { id: "physical_education", name: "Physical Education", path: "data/waec/physical_education.json" },
+      { id: "physics", name: "Physics", path: "data/waec/physics.json" },
+      { id: "technical_drawing", name: "Technical Drawing", path: "data/waec/technical_drawing.json" },
+      { id: "visual_art", name: "Visual Arts", path: "data/waec/visual_art.json" },
+      { id: "yoruba", name: "Yoruba", path: "data/waec/yoruba.json" }
+    ]
+  };
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlSubject = urlParams.get('subject');
+  const urlExam = (urlParams.get('exam') || 'jamb').toLowerCase();
+
+  function switchPortal(examType) {
+    currentExam = examType;
+    document.getElementById('btn-jamb').classList.toggle('active', examType === 'jamb');
+    document.getElementById('btn-waec').classList.toggle('active', examType === 'waec');
+
+    const select = document.getElementById('subjectSelect');
+    select.innerHTML = '';
+
+    const fileList = subjectRegistry[examType] || [];
+    fileList.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.path;
+      option.textContent = item.name;
+      select.appendChild(option);
+    });
+
+    if (fileList.length > 0) {
+      const match = fileList.find(f => f.id === urlSubject);
+      const targetItem = match || fileList[0];
+      select.value = targetItem.path;
+      activeSubjectMeta = targetItem;
+      loadSyllabus(targetItem.path);
+    } else {
+      document.getElementById('syllabus-app').innerHTML = `<p>No ${examType.toUpperCase()} syllabus files configured.</p>`;
+    }
+  }
+
+  function onSubjectChanged(filePath) {
+    const fileList = subjectRegistry[currentExam] || [];
+    activeSubjectMeta = fileList.find(f => f.path === filePath) || null;
+    loadSyllabus(filePath);
+  }
+
+  async function loadSyllabus(filePath) {
+    const app = document.getElementById('syllabus-app');
+    app.innerHTML = '<p>Loading syllabus data...</p>';
+
+    try {
+      const response = await fetch(filePath);
+      if (!response.ok) throw new Error("File not found");
+      
+      const rawData = await response.json();
+
+      if (currentExam === 'jamb') {
+        renderJAMBSyllabus(rawData);
+      } else {
+        renderWAECSyllabus(rawData);
+      }
+    } catch (err) {
+      console.error("Renderer Error:", err);
+      app.innerHTML = `
+        <div class="section-card" style="border-left: 4px solid #dc2626;">
+          <p style="color:#dc2626; font-weight:bold; margin:0;">Error: Could not load syllabus file (<code>${filePath}</code>).</p>
+          <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: #475569;">If opening locally, ensure you are running through a local web server (e.g., Live Server) rather than opening the file directly from disk.</p>
+        </div>
+      `;
+    }
+  }
+
+  // ============================================================
+  // 1. ADAPTIVE JAMB RENDERER
+  // ============================================================
+  function renderJAMBSyllabus(fullData) {
+    const data = fullData.syllabus ? fullData.syllabus : fullData;
+    const app = document.getElementById('syllabus-app');
+
+    let descHTML = activeSubjectMeta && activeSubjectMeta.desc 
+      ? `<p class="subject-desc">${activeSubjectMeta.desc}</p>` 
+      : '';
+
+    let html = `
+      <div class="subject-title-card">
+        <span class="badge-exam">JAMB / UTME</span>
+        <h2>${data.subject || (activeSubjectMeta ? activeSubjectMeta.name : 'Subject')} Syllabus</h2>
+        ${descHTML}
+      </div>
+    `;
+
+    // 1. Objectives (Handles general_objectives, objectives, or aims)
+    const objectives = data.general_objectives || data.objectives || data.aims;
+    if (Array.isArray(objectives) && objectives.length) {
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">General Objectives</h3>
+          <ul class="styled-list">
+            ${objectives.map(o => `<li>${o}</li>`).join('')}
+          </ul>
+        </div>
+      `;
     }
 
+    // 2. Syllabus Content / Topics (Handles structure, topics, contents, or sections)
+    const structureData = data.structure || data.topics || data.sections || data.syllabus_content;
+    if (Array.isArray(structureData) && structureData.length) {
+      html += `<div class="section-card"><h3 class="section-title">Syllabus Structure & Topics</h3>`;
+      structureData.forEach(s => {
+        const title = s.section || s.topic || s.title || "Section";
+        const notes = s.contents_notes || s.notes || s.content || s.details;
+        const subObjs = s.objectives || s.learning_objectives;
 
-    /* =========================================================
-       GENERIC VALUE FORMATTER
-       ========================================================= */
-
-    function formatValue(value) {
-
-        if (value === null || value === undefined) {
-            return '';
-        }
-
-        if (Array.isArray(value)) {
-            return value.join(', ');
-        }
-
-        if (typeof value === 'object') {
-            return Object.values(value).join(', ');
-        }
-
-        return String(value);
-
+        html += `
+          <div style="margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border);">
+            <h4 style="color:var(--flexi-blue); margin-bottom:0.4rem; font-size:1.05rem;">${title}</h4>
+            ${notes ? `<p style="margin:0.4rem 0; color:#334155; font-size:0.95rem;"><strong>Contents & Notes:</strong> ${Array.isArray(notes) ? notes.join(', ') : notes}</p>` : ''}
+            ${Array.isArray(subObjs) && subObjs.length ? `
+              <div style="margin-top:0.6rem;">
+                <strong style="font-size:0.85rem; color:#475569;">Learning Objectives:</strong>
+                <ul class="styled-list">
+                  ${subObjs.map(o => `<li>${o}</li>`).join('')}
+                </ul>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      });
+      html += `</div>`;
     }
 
+    // 3. Selected / Prescribed Texts (Language & Literature subjects like Arabic)
+    const selectedTexts = data.selected_texts || data.prescribed_texts || data.literature_texts;
+    if (selectedTexts && typeof selectedTexts === 'object') {
+      html += `<div class="section-card"><h3 class="section-title">Prescribed / Selected Texts</h3>`;
+      Object.keys(selectedTexts).forEach(genre => {
+        html += `<h4 class="text-capitalize" style="color:var(--flexi-blue); margin-bottom:0.25rem;">${genre.replace(/_/g, ' ')}</h4>`;
+        const categories = selectedTexts[genre];
+        if (Array.isArray(categories)) {
+          html += `<ul class="styled-list">${categories.map(b => `<li>${b}</li>`).join('')}</ul>`;
+        } else if (typeof categories === 'object' && categories !== null) {
+          Object.keys(categories).forEach(cat => {
+            const books = categories[cat];
+            if (Array.isArray(books) && books.length) {
+              html += `
+                <strong class="text-capitalize" style="font-size:0.85rem; color:#64748B;">${cat.replace(/_/g, ' ')}:</strong>
+                <ul class="styled-list">
+                  ${books.map(b => `<li>${b}</li>`).join('')}
+                </ul>
+              `;
+            }
+          });
+        }
+      });
+      html += `</div>`;
+    }
 
-    /* =========================================================
-       SWITCH JAMB / WAEC
-       ========================================================= */
+    // 4. Recommended Reading List
+    const readingList = data.recommended_texts || data.reading_list || data.recommended_books;
+    if (readingList) {
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">Recommended Reading List</h3>
+          <ol class="styled-list">
+      `;
 
-    function switchPortal(examType) {
-
-        currentExam =
-            examType === 'waec'
-                ? 'waec'
-                : 'jamb';
-
-
-        document
-            .getElementById('btn-jamb')
-            .classList.toggle(
-                'active',
-                currentExam === 'jamb'
-            );
-
-
-        document
-            .getElementById('btn-waec')
-            .classList.toggle(
-                'active',
-                currentExam === 'waec'
-            );
-
-
-        const select =
-            document.getElementById(
-                'subjectSelect'
-            );
-
-
-        select.innerHTML = '';
-
-
-        const fileList =
-            subjectRegistry[currentExam] || [];
-
-
-        fileList.forEach(item => {
-
-            const option =
-                document.createElement('option');
-
-            option.value =
-                item.path;
-
-            option.textContent =
-                item.name;
-
-            select.appendChild(option);
-
+      if (Array.isArray(readingList)) {
+        html += readingList.map(text => `<li>${text}</li>`).join('');
+      } else if (typeof readingList === 'object') {
+        Object.values(readingList).forEach(val => {
+          if (Array.isArray(val)) {
+            val.forEach(v => { html += `<li>${v}</li>`; });
+          } else if (typeof val === 'object' && val !== null) {
+            Object.values(val).forEach(v => { html += `<li>${v}</li>`; });
+          } else {
+            html += `<li>${val}</li>`;
+          }
         });
+      }
 
+      html += `</ol></div>`;
+    }
 
-        if (fileList.length > 0) {
+    app.innerHTML = html;
+  }
 
-            const match =
-                fileList.find(
-                    f => f.id === urlSubject
-                );
+  // ============================================================
+  // 2. ADAPTIVE WAEC RENDERER
+  // ============================================================
+  function renderWAECSyllabus(fullData) {
+  // Ensure data resolves properly even if there's no wrapper
+  const data = (fullData && fullData.syllabus) ? fullData.syllabus : fullData;
+    const app = document.getElementById('syllabus-app');
 
+    let html = `
+      <div class="subject-title-card">
+        <span class="badge-exam">WAEC / WASSCE</span>
+        <h2>${data.subject || (data.document_title || (activeSubjectMeta ? activeSubjectMeta.name : 'Subject Syllabus'))}</h2>
+        ${data.preamble ? `<p style="margin-top:0.4rem;"><strong>Preamble:</strong> ${data.preamble}</p>` : ''}
+      </div>
+    `;
 
-            const targetItem =
-                match || fileList[0];
+    // Objectives or Aims
+    const objectives = data.objectives || data.aims;
+    if (Array.isArray(objectives) && objectives.length) {
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">Course Objectives & Aims</h3>
+          <ul class="styled-list">
+            ${objectives.map(obj => `<li>${obj}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
 
+    // Assessment Objectives
+    if (data.assessment_objectives && typeof data.assessment_objectives === 'object') {
+      html += `<div class="section-card"><h3 class="section-title">Assessment Objectives</h3>`;
+      Object.keys(data.assessment_objectives).forEach(key => {
+        const formattedTitle = key.replace(/_/g, ' ');
+        const items = data.assessment_objectives[key];
+        html += `<h4 class="text-capitalize" style="color:var(--flexi-blue); margin-bottom:0.25rem;">${formattedTitle}</h4>`;
+        if (Array.isArray(items)) {
+          html += `<ul class="styled-list">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+        }
+      });
+      html += `</div>`;
+    }
 
-            select.value =
-                targetItem.path;
+    // Adaptive Examination Scheme
+    if (data.examination_scheme || data.structure_of_the_examination) {
+      const scheme = data.examination_scheme || data.structure_of_the_examination;
+      html += `<div class="section-card"><h3 class="section-title">Examination Scheme</h3>`;
 
-
-            activeSubjectMeta =
-                targetItem;
-
-
-            loadSyllabus(
-                targetItem.path
-            );
-
+      if (typeof scheme === 'string') {
+        html += `<p>${scheme}</p>`;
+      } else if (typeof scheme === 'object') {
+        if (scheme.summary) html += `<p>${scheme.summary}</p>`;
+        
+        if (Array.isArray(scheme.papers) && scheme.papers.length) {
+          html += `
+            <div style="overflow-x:auto;">
+              <table>
+                <thead>
+                  <tr><th>Paper</th><th>Title</th><th>Duration</th><th>Marks</th><th>Details</th></tr>
+                </thead>
+                <tbody>
+                  ${scheme.papers.map(p => `
+                    <tr>
+                      <td><strong>${p.paper || ''}</strong></td>
+                      <td>${p.title || ''}</td>
+                      <td>${p.duration || ''}</td>
+                      <td>${p.marks || ''}</td>
+                      <td>${p.details || ''}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `;
         } else {
-
-            document.getElementById(
-                'syllabus-app'
-            ).innerHTML = `
-                <div class="flexi-syllabus-section-card">
-                    <p>
-                        No ${escapeHTML(currentExam.toUpperCase())}
-                        syllabus files are configured.
-                    </p>
-                </div>
-            `;
-
-        }
-
-    }
-
-
-    /* =========================================================
-       SUBJECT CHANGE
-       ========================================================= */
-
-    function onSubjectChanged(filePath) {
-
-        const fileList =
-            subjectRegistry[currentExam] || [];
-
-
-        activeSubjectMeta =
-            fileList.find(
-                f => f.path === filePath
-            ) || null;
-
-
-        loadSyllabus(filePath);
-
-    }
-
-
-    /* =========================================================
-       LOAD SYLLABUS JSON
-       ========================================================= */
-
-    async function loadSyllabus(filePath) {
-
-        const app =
-            document.getElementById(
-                'syllabus-app'
-            );
-
-
-        app.innerHTML = `
-            <div class="flexi-syllabus-loading">
-                Loading syllabus data...
-            </div>
-        `;
-
-
-        try {
-
-            const response =
-                await fetch(filePath, {
-                    cache: 'no-cache'
-                });
-
-
-            if (!response.ok) {
-                throw new Error(
-                    `HTTP ${response.status}`
-                );
-            }
-
-
-            const rawData =
-                await response.json();
-
-
-            if (currentExam === 'jamb') {
-
-                renderJAMBSyllabus(rawData);
-
-            } else {
-
-                renderWAECSyllabus(rawData);
-
-            }
-
-
-        } catch (err) {
-
-            console.error(
-                'Syllabus renderer error:',
-                err
-            );
-
-
-            app.innerHTML = `
-                <div class="flexi-syllabus-error">
-
-                    <p class="flexi-syllabus-error-title">
-                        Unable to load syllabus
-                    </p>
-
-                    <p class="flexi-syllabus-error-text">
-                        Could not load:
-                        <code class="flexi-syllabus-code">
-                            ${escapeHTML(filePath)}
-                        </code>
-                    </p>
-
-                    <p class="flexi-syllabus-error-text">
-                        If you are testing locally, make sure
-                        you are running the site through a web
-                        server such as Live Server rather than
-                        opening the PHP/HTML file directly.
-                    </p>
-
-                </div>
-            `;
-
-        }
-
-    }
-
-
-    /* =========================================================
-       JAMB RENDERER
-       ========================================================= */
-
-    function renderJAMBSyllabus(fullData) {
-
-        const data =
-            fullData && fullData.syllabus
-                ? fullData.syllabus
-                : fullData;
-
-
-        const app =
-            document.getElementById(
-                'syllabus-app'
-            );
-
-
-        let descHTML =
-            activeSubjectMeta &&
-            activeSubjectMeta.desc
-
-                ? `
-                    <p class="flexi-syllabus-description">
-                        ${escapeHTML(
-                            activeSubjectMeta.desc
-                        )}
-                    </p>
-                  `
-
-                : '';
-
-
-        let html = `
-
-            <div class="flexi-syllabus-subject-card">
-
-                <span class="flexi-syllabus-exam-badge">
-                    JAMB / UTME
-                </span>
-
-                <h2>
-                    ${escapeHTML(
-                        data.subject ||
-                        (
-                            activeSubjectMeta
-                                ? activeSubjectMeta.name
-                                : 'Subject'
-                        )
-                    )}
-                    Syllabus
-                </h2>
-
-                ${descHTML}
-
-            </div>
-
-        `;
-
-
-        /* -----------------------------------------------------
-           General Objectives
-           ----------------------------------------------------- */
-
-        const objectives =
-            data.general_objectives ||
-            data.objectives ||
-            data.aims;
-
-
-        if (
-            Array.isArray(objectives) &&
-            objectives.length
-        ) {
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        General Objectives
-                    </h3>
-
-                    <ul class="flexi-syllabus-list">
-
-                        ${objectives
-                            .map(
-                                o =>
-                                    `<li>${o}</li>`
-                            )
-                            .join('')}
-
+          Object.keys(scheme).forEach(key => {
+            if (key === 'summary') return;
+            const paper = scheme[key];
+            const paperTitle = key.replace(/_/g, ' ').toUpperCase();
+
+            if (typeof paper === 'string') {
+              html += `<div style="margin-bottom:1rem;"><strong>${paperTitle}:</strong> ${paper}</div>`;
+            } else if (typeof paper === 'object') {
+              html += `
+                <div class="topic-block" style="padding: 0.85rem; margin-bottom: 0.85rem;">
+                  <h4 style="margin: 0 0 0.5rem 0; color: var(--flexi-blue);">${paperTitle}</h4>
+                  ${paper.duration ? `<p style="margin: 0.2rem 0;"><strong>Duration:</strong> ${paper.duration}</p>` : ''}
+                  ${paper.marks ? `<p style="margin: 0.2rem 0;"><strong>Marks:</strong> ${paper.marks}</p>` : ''}
+                  ${paper.description ? `<p style="margin: 0.2rem 0;"><strong>Description:</strong> ${paper.description}</p>` : ''}
+                  ${paper.sections && Array.isArray(paper.sections) ? `
+                    <ul class="styled-list">
+                      ${paper.sections.map(sec => `<li>${sec}</li>`).join('')}
                     </ul>
-
+                  ` : ''}
                 </div>
-
-            `;
-
-        }
-
-
-        /* -----------------------------------------------------
-           Syllabus Structure / Topics
-           ----------------------------------------------------- */
-
-        const structureData =
-            data.structure ||
-            data.topics ||
-            data.sections ||
-            data.syllabus_content;
-
-
-        if (
-            Array.isArray(structureData) &&
-            structureData.length
-        ) {
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        Syllabus Structure & Topics
-                    </h3>
-
-            `;
-
-
-            structureData.forEach(section => {
-
-                const title =
-                    section.section ||
-                    section.topic ||
-                    section.title ||
-                    'Section';
-
-
-                const notes =
-                    section.contents_notes ||
-                    section.notes ||
-                    section.content ||
-                    section.details;
-
-
-                const subObjs =
-                    section.objectives ||
-                    section.learning_objectives;
-
-
-                html += `
-
-                    <div
-                        style="
-                            margin-bottom:1.5rem;
-                            padding-bottom:1rem;
-                            border-bottom:1px solid #E2E8F0;
-                        "
-                    >
-
-                        <h4
-                            style="
-                                color:var(--flexi-primary,#003366);
-                                margin-bottom:0.4rem;
-                                font-size:1.05rem;
-                            "
-                        >
-                            ${title}
-                        </h4>
-
-                `;
-
-
-                if (notes) {
-
-                    html += `
-
-                        <p
-                            style="
-                                margin:0.4rem 0;
-                                color:#334155;
-                                font-size:0.95rem;
-                            "
-                        >
-                            <strong>
-                                Contents & Notes:
-                            </strong>
-
-                            ${
-                                Array.isArray(notes)
-                                    ? notes.join(', ')
-                                    : notes
-                            }
-
-                        </p>
-
-                    `;
-
-                }
-
-
-                if (
-                    Array.isArray(subObjs) &&
-                    subObjs.length
-                ) {
-
-                    html += `
-
-                        <div style="margin-top:0.6rem;">
-
-                            <strong
-                                style="
-                                    font-size:0.85rem;
-                                    color:#475569;
-                                "
-                            >
-                                Learning Objectives:
-                            </strong>
-
-                            <ul class="flexi-syllabus-list">
-
-                                ${subObjs
-                                    .map(
-                                        o =>
-                                            `<li>${o}</li>`
-                                    )
-                                    .join('')}
-
-                            </ul>
-
-                        </div>
-
-                    `;
-
-                }
-
-
-                html += `</div>`;
-
-            });
-
-
-            html += `</div>`;
-
-        }
-
-
-        /* -----------------------------------------------------
-           Selected / Prescribed Texts
-           ----------------------------------------------------- */
-
-        const selectedTexts =
-            data.selected_texts ||
-            data.prescribed_texts ||
-            data.literature_texts;
-
-
-        if (
-            selectedTexts &&
-            typeof selectedTexts === 'object'
-        ) {
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        Prescribed / Selected Texts
-                    </h3>
-
-            `;
-
-
-            Object.keys(selectedTexts)
-                .forEach(genre => {
-
-                    html += `
-
-                        <h4
-                            class="flexi-syllabus-capitalize"
-                            style="
-                                color:var(--flexi-primary,#003366);
-                                margin-bottom:0.25rem;
-                            "
-                        >
-                            ${escapeHTML(
-                                genre.replace(
-                                    /_/g,
-                                    ' '
-                                )
-                            )}
-                        </h4>
-
-                    `;
-
-
-                    const categories =
-                        selectedTexts[genre];
-
-
-                    if (
-                        Array.isArray(categories)
-                    ) {
-
-                        html += `
-
-                            <ul class="flexi-syllabus-list">
-
-                                ${categories
-                                    .map(
-                                        b =>
-                                            `<li>${b}</li>`
-                                    )
-                                    .join('')}
-
-                            </ul>
-
-                        `;
-
-                    } else if (
-                        typeof categories === 'object' &&
-                        categories !== null
-                    ) {
-
-                        Object.keys(categories)
-                            .forEach(cat => {
-
-                                const books =
-                                    categories[cat];
-
-
-                                if (
-                                    Array.isArray(books) &&
-                                    books.length
-                                ) {
-
-                                    html += `
-
-                                        <strong
-                                            class="flexi-syllabus-capitalize"
-                                            style="
-                                                font-size:0.85rem;
-                                                color:#64748B;
-                                            "
-                                        >
-                                            ${escapeHTML(
-                                                cat.replace(
-                                                    /_/g,
-                                                    ' '
-                                                )
-                                            )}:
-                                        </strong>
-
-                                        <ul class="flexi-syllabus-list">
-
-                                            ${books
-                                                .map(
-                                                    b =>
-                                                        `<li>${b}</li>`
-                                                )
-                                                .join('')}
-
-                                        </ul>
-
-                                    `;
-
-                                }
-
-                            });
-
-                    }
-
-                });
-
-
-            html += `</div>`;
-
-        }
-
-
-        /* -----------------------------------------------------
-           Recommended Reading
-           ----------------------------------------------------- */
-
-        const readingList =
-            data.recommended_texts ||
-            data.reading_list ||
-            data.recommended_books;
-
-
-        if (readingList) {
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        Recommended Reading List
-                    </h3>
-
-                    <ol class="flexi-syllabus-list">
-
-            `;
-
-
-            if (Array.isArray(readingList)) {
-
-                html += readingList
-                    .map(
-                        text =>
-                            `<li>${text}</li>`
-                    )
-                    .join('');
-
-
-            } else if (
-                typeof readingList === 'object'
-            ) {
-
-                Object.values(readingList)
-                    .forEach(value => {
-
-                        if (Array.isArray(value)) {
-
-                            value.forEach(item => {
-
-                                html +=
-                                    `<li>${item}</li>`;
-
-                            });
-
-                        } else if (
-                            typeof value === 'object' &&
-                            value !== null
-                        ) {
-
-                            Object.values(value)
-                                .forEach(item => {
-
-                                    html +=
-                                        `<li>${item}</li>`;
-
-                                });
-
-                        } else {
-
-                            html +=
-                                `<li>${value}</li>`;
-
-                        }
-
-                    });
-
+              `;
             }
-
-
-            html += `
-
-                    </ol>
-
-                </div>
-
-            `;
-
+          });
         }
-
-
-        app.innerHTML = html;
-
+      }
+      html += `</div>`;
     }
 
+    // Adaptive Detailed Syllabus Content
+    const detailed = data.detailed_syllabus || data.syllabus_content || data.topics;
+    if (detailed) {
+      html += `<div class="section-card"><h3 class="section-title">Detailed Syllabus Content</h3>`;
 
-    /* =========================================================
-       WAEC RENDERER
-       ========================================================= */
+      if (Array.isArray(detailed)) {
+        detailed.forEach(sec => {
+          const secTitle = sec.section_name || sec.section_title || sec.title || sec.topic || 'Section';
+          html += `<h4 style="color:var(--flexi-blue); margin-top: 1rem;">${secTitle}</h4>`;
 
-    function renderWAECSyllabus(fullData) {
+          if (Array.isArray(sec.contents)) {
+            html += `<ul class="styled-list">${sec.contents.map(c => `<li>${c}</li>`).join('')}</ul>`;
+          }
 
-        const data =
-            fullData && fullData.syllabus
-                ? fullData.syllabus
-                : fullData;
-
-
-        const app =
-            document.getElementById(
-                'syllabus-app'
-            );
-
-
-        let html = `
-
-            <div class="flexi-syllabus-subject-card">
-
-                <span class="flexi-syllabus-exam-badge">
-                    WAEC / WASSCE
-                </span>
-
-                <h2>
-                    ${escapeHTML(
-                        data.subject ||
-                        data.document_title ||
-                        (
-                            activeSubjectMeta
-                                ? activeSubjectMeta.name
-                                : 'Subject Syllabus'
-                        )
-                    )}
-                </h2>
-
-        `;
-
-
-        if (data.preamble) {
-
-            html += `
-
-                <p style="margin-top:0.4rem;">
-                    <strong>Preamble:</strong>
-                    ${data.preamble}
-                </p>
-
-            `;
-
-        }
-
-
-        html += `</div>`;
-
-
-        /* -----------------------------------------------------
-           Objectives / Aims
-           ----------------------------------------------------- */
-
-        const objectives =
-            data.objectives ||
-            data.aims;
-
-
-        if (
-            Array.isArray(objectives) &&
-            objectives.length
-        ) {
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        Course Objectives & Aims
-                    </h3>
-
-                    <ul class="flexi-syllabus-list">
-
-                        ${objectives
-                            .map(
-                                obj =>
-                                    `<li>${obj}</li>`
-                            )
-                            .join('')}
-
-                    </ul>
-
-                </div>
-
-            `;
-
-        }
-
-
-        /* -----------------------------------------------------
-           Assessment Objectives
-           ----------------------------------------------------- */
-
-        if (
-            data.assessment_objectives &&
-            typeof data.assessment_objectives === 'object'
-        ) {
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        Assessment Objectives
-                    </h3>
-
-            `;
-
-
-            Object.keys(
-                data.assessment_objectives
-            ).forEach(key => {
-
-                const formattedTitle =
-                    key.replace(
-                        /_/g,
-                        ' '
-                    );
-
-
-                const items =
-                    data.assessment_objectives[key];
-
-
-                html += `
-
-                    <h4
-                        class="flexi-syllabus-capitalize"
-                        style="
-                            color:var(--flexi-primary,#003366);
-                            margin-bottom:0.25rem;
-                        "
-                    >
-                        ${escapeHTML(formattedTitle)}
-                    </h4>
-
-                `;
-
-
-                if (Array.isArray(items)) {
-
-                    html += `
-
-                        <ul class="flexi-syllabus-list">
-
-                            ${items
-                                .map(
-                                    item =>
-                                        `<li>${item}</li>`
-                                )
-                                .join('')}
-
-                        </ul>
-
-                    `;
-
-                }
-
+          if (Array.isArray(sec.topics)) {
+            sec.topics.forEach(top => {
+              html += `
+                <details class="topic-block" open>
+                  <summary class="topic-header">${top.title || top.topics || 'Topic'}</summary>
+                  <div class="topic-body">
+                    ${top.notes ? `<p>${top.notes}</p>` : ''}
+                    ${top.details && top.details.length ? `<ul class="styled-list">${top.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+                  </div>
+                </details>
+              `;
             });
-
-
-            html += `</div>`;
-
-        }
-
-
-        /* -----------------------------------------------------
-           Examination Scheme
-           ----------------------------------------------------- */
-
-        if (
-            data.examination_scheme ||
-            data.structure_of_the_examination
-        ) {
-
-            const scheme =
-                data.examination_scheme ||
-                data.structure_of_the_examination;
-
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        Examination Scheme
-                    </h3>
-
-            `;
-
-
-            if (typeof scheme === 'string') {
-
-                html += `
-                    <p>${scheme}</p>
-                `;
-
-            } else if (
-                typeof scheme === 'object' &&
-                scheme !== null
-            ) {
-
-                if (scheme.summary) {
-
-                    html += `
-                        <p>${scheme.summary}</p>
-                    `;
-
-                }
-
-
-                /* Papers Array */
-
-                if (
-                    Array.isArray(scheme.papers) &&
-                    scheme.papers.length
-                ) {
-
-                    html += `
-
-                        <div class="flexi-syllabus-table-wrapper">
-
-                            <table class="flexi-syllabus-table">
-
-                                <thead>
-
-                                    <tr>
-                                        <th>Paper</th>
-                                        <th>Title</th>
-                                        <th>Duration</th>
-                                        <th>Marks</th>
-                                        <th>Details</th>
-                                    </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                    `;
-
-
-                    scheme.papers.forEach(paper => {
-
-                        html += `
-
-                            <tr>
-
-                                <td>
-                                    <strong>
-                                        ${paper.paper || ''}
-                                    </strong>
-                                </td>
-
-                                <td>
-                                    ${paper.title || ''}
-                                </td>
-
-                                <td>
-                                    ${paper.duration || ''}
-                                </td>
-
-                                <td>
-                                    ${paper.marks || ''}
-                                </td>
-
-                                <td>
-                                    ${paper.details || ''}
-                                </td>
-
-                            </tr>
-
-                        `;
-
-                    });
-
-
-                    html += `
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    `;
-
-
-                } else {
-
-                    /* Dynamic Scheme */
-
-                    Object.keys(scheme)
-                        .forEach(key => {
-
-                            if (
-                                key === 'summary'
-                            ) {
-                                return;
-                            }
-
-
-                            const paper =
-                                scheme[key];
-
-
-                            const paperTitle =
-                                key
-                                    .replace(
-                                        /_/g,
-                                        ' '
-                                    )
-                                    .toUpperCase();
-
-
-                            if (
-                                typeof paper === 'string'
-                            ) {
-
-                                html += `
-
-                                    <div style="margin-bottom:1rem;">
-
-                                        <strong>
-                                            ${escapeHTML(
-                                                paperTitle
-                                            )}:
-                                        </strong>
-
-                                        ${paper}
-
-                                    </div>
-
-                                `;
-
-                            } else if (
-                                typeof paper === 'object' &&
-                                paper !== null
-                            ) {
-
-                                html += `
-
-                                    <div
-                                        class="flexi-syllabus-topic"
-                                        style="padding:0.85rem;"
-                                    >
-
-                                        <h4
-                                            style="
-                                                margin:0 0 0.5rem;
-                                                color:var(--flexi-primary,#003366);
-                                            "
-                                        >
-                                            ${escapeHTML(
-                                                paperTitle
-                                            )}
-                                        </h4>
-
-                                `;
-
-
-                                if (paper.duration) {
-
-                                    html += `
-                                        <p style="margin:0.2rem 0;">
-                                            <strong>Duration:</strong>
-                                            ${paper.duration}
-                                        </p>
-                                    `;
-
-                                }
-
-
-                                if (paper.marks) {
-
-                                    html += `
-                                        <p style="margin:0.2rem 0;">
-                                            <strong>Marks:</strong>
-                                            ${paper.marks}
-                                        </p>
-                                    `;
-
-                                }
-
-
-                                if (paper.description) {
-
-                                    html += `
-                                        <p style="margin:0.2rem 0;">
-                                            <strong>Description:</strong>
-                                            ${paper.description}
-                                        </p>
-                                    `;
-
-                                }
-
-
-                                if (
-                                    Array.isArray(
-                                        paper.sections
-                                    )
-                                ) {
-
-                                    html += `
-
-                                        <ul class="flexi-syllabus-list">
-
-                                            ${paper.sections
-                                                .map(
-                                                    section =>
-                                                        `<li>${section}</li>`
-                                                )
-                                                .join('')}
-
-                                        </ul>
-
-                                    `;
-
-                                }
-
-
-                                html += `</div>`;
-
-                            }
-
-                        });
-
-                }
-
-            }
-
-
-            html += `</div>`;
-
-        }
-
-
-        /* -----------------------------------------------------
-           Detailed Syllabus Content
-           ----------------------------------------------------- */
-
-        const detailed =
-            data.detailed_syllabus ||
-            data.syllabus_content ||
-            data.topics;
-
-
-        if (detailed) {
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        Detailed Syllabus Content
-                    </h3>
-
-            `;
-
-
-            if (Array.isArray(detailed)) {
-
-                detailed.forEach(section => {
-
-                    const secTitle =
-                        section.section_name ||
-                        section.section_title ||
-                        section.title ||
-                        section.topic ||
-                        'Section';
-
-
-                    html += `
-
-                        <h4
-                            style="
-                                color:var(--flexi-primary,#003366);
-                                margin-top:1rem;
-                            "
-                        >
-                            ${secTitle}
-                        </h4>
-
-                    `;
-
-
-                    if (
-                        Array.isArray(
-                            section.contents
-                        )
-                    ) {
-
-                        html += `
-
-                            <ul class="flexi-syllabus-list">
-
-                                ${section.contents
-                                    .map(
-                                        content =>
-                                            `<li>${content}</li>`
-                                    )
-                                    .join('')}
-
-                            </ul>
-
-                        `;
-
-                    }
-
-
-                    if (
-                        Array.isArray(
-                            section.topics
-                        )
-                    ) {
-
-                        section.topics
-                            .forEach(topic => {
-
-                                html += `
-
-                                    <details
-                                        class="flexi-syllabus-topic"
-                                        open
-                                    >
-
-                                        <summary
-                                            class="flexi-syllabus-topic-header"
-                                        >
-                                            ${topic.title ||
-                                            topic.topics ||
-                                            'Topic'}
-                                        </summary>
-
-                                        <div
-                                            class="flexi-syllabus-topic-body"
-                                        >
-
-                                `;
-
-
-                                if (topic.notes) {
-
-                                    html += `
-                                        <p>
-                                            ${topic.notes}
-                                        </p>
-                                    `;
-
-                                }
-
-
-                                if (
-                                    topic.details &&
-                                    topic.details.length
-                                ) {
-
-                                    html += `
-
-                                        <ul class="flexi-syllabus-list">
-
-                                            ${topic.details
-                                                .map(
-                                                    detail =>
-                                                        `<li>${detail}</li>`
-                                                )
-                                                .join('')}
-
-                                        </ul>
-
-                                    `;
-
-                                }
-
-
-                                html += `
-
-                                        </div>
-
-                                    </details>
-
-                                `;
-
-                            });
-
-                    }
-
-                });
-
-
-            } else if (
-                typeof detailed === 'object'
-            ) {
-
-                Object.keys(detailed)
-                    .forEach(partKey => {
-
-                        const partTitle =
-                            partKey
-                                .replace(
-                                    /_/g,
-                                    ' '
-                                )
-                                .toUpperCase();
-
-
-                        html += `
-
-                            <h4
-                                style="
-                                    color:var(--flexi-primary,#003366);
-                                    margin-top:1.2rem;
-                                    border-bottom:1px solid #E2E8F0;
-                                    padding-bottom:0.25rem;
-                                "
-                            >
-                                ${escapeHTML(
-                                    partTitle
-                                )}
-                            </h4>
-
-                        `;
-
-
-                        const topicList =
-                            detailed[partKey];
-
-
-                        if (
-                            Array.isArray(topicList)
-                        ) {
-
-                            topicList
-                                .forEach(item => {
-
-                                    html += `
-
-                                        <div
-                                            class="flexi-syllabus-topic"
-                                            style="padding:0.75rem;"
-                                        >
-
-                                            <div
-                                                style="
-                                                    font-weight:bold;
-                                                    color:var(--flexi-primary,#003366);
-                                                "
-                                            >
-                                                ${
-                                                    item.topics ||
-                                                    item.content ||
-                                                    item.title ||
-                                                    ''
-                                                }
-                                            </div>
-
-                                    `;
-
-
-                                    if (item.notes) {
-
-                                        html += `
-
-                                            <div
-                                                style="
-                                                    font-size:0.9rem;
-                                                    color:#475569;
-                                                    margin-top:0.25rem;
-                                                "
-                                            >
-                                                <strong>
-                                                    Notes:
-                                                </strong>
-
-                                                ${item.notes}
-
-                                            </div>
-
-                                        `;
-
-                                    }
-
-
-                                    html += `</div>`;
-
-                                });
-
-                        }
-
-                    });
-
-            }
-
-
-            html += `</div>`;
-
-        }
-
-
-        /* -----------------------------------------------------
-           Reading List
-           ----------------------------------------------------- */
-
-        const reading =
-            data.reading_list ||
-            data.recommended_texts ||
-            data.prescribed_texts;
-
-
-        if (
-            Array.isArray(reading) &&
-            reading.length
-        ) {
-
-            html += `
-
-                <div class="flexi-syllabus-section-card">
-
-                    <h3 class="flexi-syllabus-section-title">
-                        Recommended Reading List
-                    </h3>
-
-                    <ol class="flexi-syllabus-list">
-
-                        ${reading
-                            .map(
-                                book =>
-                                    `<li>${book}</li>`
-                            )
-                            .join('')}
-
-                    </ol>
-
+          }
+        });
+      } else if (typeof detailed === 'object') {
+        Object.keys(detailed).forEach(partKey => {
+          const partTitle = partKey.replace(/_/g, ' ').toUpperCase();
+          html += `<h4 style="color:var(--flexi-blue); margin-top: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem;">${partTitle}</h4>`;
+
+          const topicList = detailed[partKey];
+          if (Array.isArray(topicList)) {
+            topicList.forEach(item => {
+              html += `
+                <div class="topic-block" style="padding: 0.75rem;">
+                  <div style="font-weight: bold; color: var(--flexi-blue);">${item.topics || item.content || item.title || ''}</div>
+                  ${item.notes ? `<div style="font-size: 0.9rem; color: #475569; margin-top: 0.25rem;"><strong>Notes:</strong> ${item.notes}</div>` : ''}
                 </div>
+              `;
+            });
+          }
+        });
+      }
 
-            `;
-
-        }
-
-
-        app.innerHTML = html;
-
+      html += `</div>`;
     }
 
+    // Reading List
+    const reading = data.reading_list || data.recommended_texts || data.prescribed_texts;
+    if (Array.isArray(reading) && reading.length) {
+      html += `
+        <div class="section-card">
+          <h3 class="section-title">Recommended Reading List</h3>
+          <ol class="styled-list">
+            ${reading.map(book => `<li>${book}</li>`).join('')}
+          </ol>
+        </div>
+      `;
+    }
 
-    /* =========================================================
-       BOOT
-       ========================================================= */
+    app.innerHTML = html;
+  }
 
-    document.addEventListener(
-        'DOMContentLoaded',
-        () => {
+  // Boot system
+  document.addEventListener('DOMContentLoaded', () => {
+    switchPortal(urlExam);
+  });
 
-            const initialExam =
-                urlExam === 'waec'
-                    ? 'waec'
-                    : 'jamb';
-
-            switchPortal(
-                initialExam
-            );
-
-        }
-    );
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+    
 </script>
-
-<?php
-require_once __DIR__ . '/includes/footer.php';
-?>
+</body>
+</html>
