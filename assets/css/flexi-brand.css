@@ -1,356 +1,823 @@
 /**
- * Flexi Educational Consult - Centralized Brand CSS
- * 
- * Provides consistent styling for:
- * - Flexi header
- * - Flexi navigation
- * - Flexi footer
- * - Brand colors and typography
+ * Flexi Educational Consult
+ * Centralized Brand CSS
+ *
+ * Stage 1:
+ * Shared header + navigation + footer only.
+ *
+ * IMPORTANT:
+ * This stylesheet intentionally does NOT style generic elements such as:
+ *
+ * body
+ * h1
+ * h2
+ * p
+ * a
+ * button
+ * img
+ * table
+ * input
+ * select
+ *
+ * This prevents the shared branding stylesheet from breaking
+ * page-specific applications such as CBT, chat, support, etc.
  */
 
+
+/* =========================================================
+   BRAND VARIABLES
+   ========================================================= */
+
 :root {
-    /* Flexi Brand Colors */
+
     --flexi-primary: #003366;
     --flexi-secondary: #2E8B57;
     --flexi-accent: #FFD700;
+
     --flexi-text: #333333;
     --flexi-bg: #f4f7f6;
-    --flexi-border: #eee;
+    --flexi-border: #eeeeee;
+
     --flexi-radius: 12px;
-    --flexi-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+
+    --flexi-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.06);
+
+    --flexi-header-height: 56px;
+
 }
 
-/**
- * FLEXI HEADER STYLES
- */
+
+/* =========================================================
+   SHARED HEADER
+   ========================================================= */
+
 .flexi-header {
+
     background: var(--flexi-primary);
-    color: white;
-    height: auto;
+
+    color: #ffffff;
+
+    width: 100%;
+
     padding: 0;
-    border-bottom: 4px solid var(--flexi-secondary);
+
+    border-bottom:
+        4px solid var(--flexi-secondary);
+
     position: sticky;
+
     top: 0;
+
     z-index: 1000;
-    box-shadow: var(--flexi-shadow);
+
+    box-shadow:
+        var(--flexi-shadow);
+
 }
+
+
+/* Header inner container */
 
 .flexi-header-content {
+
+    width: 100%;
+
     max-width: 1200px;
+
+    min-height:
+        var(--flexi-header-height);
+
     margin: 0 auto;
+
+    padding:
+        0 20px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
-    padding: 0 20px;
-    height: 56px;
+
+    box-sizing: border-box;
+
 }
+
+
+/* =========================================================
+   BRAND / LOGO
+   ========================================================= */
 
 .flexi-header-left {
+
     display: flex;
+
     align-items: center;
-    gap: 0;
+
+    min-width: 0;
+
 }
+
 
 .flexi-logo-link {
-    display: flex;
+
+    display: inline-flex;
+
     align-items: center;
+
     gap: 12px;
+
+    color: #ffffff;
+
     text-decoration: none;
-    color: white;
+
     font-weight: 700;
-    transition: opacity 0.2s ease;
+
+    min-width: 0;
+
+    transition:
+        opacity 0.2s ease;
+
 }
+
 
 .flexi-logo-link:hover {
+
     opacity: 0.9;
+
 }
+
 
 .flexi-logo-img {
-    height: 36px;
+
     width: 36px;
+
+    height: 36px;
+
     object-fit: contain;
+
     border-radius: 4px;
+
     display: block;
+
+    flex-shrink: 0;
+
 }
+
 
 .flexi-brand-name {
+
+    color: #ffffff;
+
     font-size: 14px;
+
+    line-height: 1.2;
+
     font-weight: 700;
+
     letter-spacing: 0.3px;
+
     white-space: nowrap;
+
 }
 
-/* Mobile: reduce font size */
-@media (max-width: 768px) {
-    .flexi-brand-name {
-        font-size: 13px;
-    }
-    
-    .flexi-logo-img {
-        height: 32px;
-        width: 32px;
-    }
-    
-    .flexi-header-content {
-        height: 52px;
-        padding: 0 16px;
-    }
-}
 
-/**
- * FLEXI NAVIGATION STYLES
- */
+/* =========================================================
+   NAVIGATION CONTAINER
+   ========================================================= */
+
 .flexi-menu-container {
+
     position: relative;
+
     margin-left: auto;
+
 }
+
+
+/* =========================================================
+   HAMBURGER BUTTON
+   ========================================================= */
 
 .flexi-menu-btn {
+
     width: 40px;
+
     height: 40px;
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
+
     padding: 0;
-    transition: border-color 0.2s ease;
+
+    margin: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.30);
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+
 }
+
 
 .flexi-menu-btn:hover {
-    border-color: rgba(255, 255, 255, 0.6);
+
+    border-color:
+        rgba(255, 255, 255, 0.60);
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
 }
+
+
+.flexi-menu-btn:focus-visible {
+
+    outline:
+        2px solid var(--flexi-accent);
+
+    outline-offset: 2px;
+
+}
+
 
 .flexi-menu-btn span {
-    width: 20px;
-    height: 2px;
-    background: white;
-    border-radius: 1px;
+
     display: block;
-    transition: all 0.3s ease;
+
+    width: 20px;
+
+    height: 2px;
+
+    background: #ffffff;
+
+    border-radius: 2px;
+
 }
 
-.flexi-menu-btn:hover span {
-    background: rgba(255, 255, 255, 0.9);
-}
+
+/* =========================================================
+   NAVIGATION MENU
+   ========================================================= */
 
 .flexi-menu {
+
     display: none;
+
     position: absolute;
-    top: 48px;
+
+    top: calc(100% + 8px);
+
     right: 0;
-    width: 240px;
-    background: var(--flexi-primary);
-    border: 2px solid var(--flexi-secondary);
+
+    width: 250px;
+
+    max-width:
+        calc(100vw - 32px);
+
+    padding: 0;
+
+    margin: 0;
+
+    background:
+        var(--flexi-primary);
+
+    border:
+        2px solid var(--flexi-secondary);
+
     border-radius: 8px;
-    z-index: 2000;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.35);
+
     overflow: hidden;
+
+    box-sizing: border-box;
+
 }
+
 
 .flexi-menu.open {
+
     display: flex;
+
     flex-direction: column;
+
 }
+
+
+/* =========================================================
+   NAVIGATION LINKS
+   ========================================================= */
 
 .flexi-menu-link {
+
     display: block;
-    padding: 14px 16px;
-    color: white;
+
+    width: 100%;
+
+    padding:
+        14px 16px;
+
+    box-sizing: border-box;
+
+    color: #ffffff;
+
+    background: transparent;
+
     text-decoration: none;
+
     font-size: 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background 0.15s ease;
+
+    line-height: 1.3;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+
 }
+
 
 .flexi-menu-link:last-child {
+
     border-bottom: none;
+
 }
+
 
 .flexi-menu-link:hover {
-    background: rgba(255, 255, 255, 0.08);
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    color: #ffffff;
+
 }
+
+
+.flexi-menu-link:focus-visible {
+
+    outline:
+        2px solid var(--flexi-accent);
+
+    outline-offset: -2px;
+
+}
+
 
 .flexi-menu-link.active {
-    background: rgba(255, 255, 255, 0.15);
-    font-weight: 600;
+
+    background:
+        rgba(255, 255, 255, 0.15);
+
+    color: #ffffff;
+
+    font-weight: 700;
+
 }
 
-.flexi-auth-link {
-    color: #fff;
+
+/* Login */
+
+.flexi-menu-link.flexi-auth-link {
+
+    font-weight: 700;
+
+    color: #ffffff;
+
 }
 
-/**
- * FLEXI FOOTER STYLES
- */
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
 .flexi-footer {
-    background: linear-gradient(135deg, #011627 0%, #032038 100%);
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            135deg,
+            #011627 0%,
+            #032038 100%
+        );
+
     color: #e2e8f0;
-    padding: 60px 20px 30px;
+
+    padding:
+        60px 20px 30px;
+
     margin-top: 50px;
-    border-top: 4px solid var(--flexi-secondary);
+
+    border-top:
+        4px solid var(--flexi-secondary);
+
     font-size: 14px;
+
 }
+
+
+/* Footer grid */
 
 .flexi-footer-grid {
-    display: grid;
-    grid-template-columns: 1.8fr 1.2fr 1.3fr 1fr;
-    gap: 35px;
+
+    width: 100%;
+
     max-width: 1200px;
+
     margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1.8fr
+        1.2fr
+        1.3fr
+        1fr;
+
+    gap: 35px;
+
+    box-sizing: border-box;
+
 }
+
+
+/* Footer columns */
+
+.flexi-footer-col {
+
+    min-width: 0;
+
+}
+
+
+/* =========================================================
+   FOOTER HEADINGS
+   ========================================================= */
 
 .flexi-footer-col h4 {
-    color: var(--flexi-accent);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin: 0 0 16px 0;
-    position: relative;
+
+    margin:
+        0 0 16px;
+
     padding-bottom: 6px;
+
+    position: relative;
+
+    color:
+        var(--flexi-accent);
+
+    font-size: 0.9rem;
+
+    line-height: 1.3;
+
     font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+
 }
+
 
 .flexi-footer-col h4::after {
-    content: '';
+
+    content: "";
+
     position: absolute;
+
     left: 0;
+
     bottom: 0;
+
     width: 24px;
+
     height: 2px;
-    background: var(--flexi-accent);
+
+    background:
+        var(--flexi-accent);
+
     opacity: 0.7;
+
     border-radius: 2px;
+
 }
+
+
+/* =========================================================
+   FOOTER ABOUT
+   ========================================================= */
 
 .flexi-footer-about {
-    line-height: 1.7;
-    color: #94a3b8;
+
     margin: 0;
+
+    color: #94a3b8;
+
+    line-height: 1.7;
+
 }
+
+
+/* =========================================================
+   FOOTER LINKS
+   ========================================================= */
 
 .flexi-footer-links {
+
     list-style: none;
+
     padding: 0;
+
     margin: 0;
+
 }
+
 
 .flexi-footer-links li {
-    margin-bottom: 10px;
+
+    margin:
+        0 0 10px;
+
 }
 
-.flexi-footer a {
+
+.flexi-footer-links a {
+
     color: #cbd5e0;
+
     text-decoration: none;
-    transition: all 0.25s ease;
+
+    line-height: 1.4;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+
 }
+
 
 .flexi-footer-links a:hover {
-    color: var(--flexi-accent);
-    transform: translateX(4px);
+
+    color:
+        var(--flexi-accent);
+
+    transform:
+        translateX(4px);
+
     display: inline-block;
+
 }
+
+
+/* =========================================================
+   WHATSAPP LINK
+   ========================================================= */
 
 .flexi-whatsapp-link {
-    color: #25D366 !important;
-    font-weight: 600;
+
     display: inline-block;
-    transition: transform 0.25s ease, opacity 0.25s ease;
+
+    color: #25D366;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+
 }
+
 
 .flexi-whatsapp-link:hover {
+
     opacity: 0.85;
-    transform: translateX(4px);
+
+    transform:
+        translateX(4px);
+
 }
+
+
+/* =========================================================
+   CONTACT GROUPS
+   ========================================================= */
 
 .flexi-contact-group {
+
     margin-bottom: 16px;
+
 }
+
 
 .flexi-contact-group h5 {
+
+    margin:
+        0 0 6px;
+
     color: #ffffff;
+
     font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin: 0 0 6px 0;
-    opacity: 0.9;
+
+    line-height: 1.3;
+
     font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+
+    opacity: 0.9;
+
 }
+
 
 .flexi-contact-group a {
+
     display: block;
-    color: #94a3b8;
-    font-size: 0.88rem;
+
     margin-bottom: 4px;
+
+    color: #94a3b8;
+
+    font-size: 0.88rem;
+
+    line-height: 1.4;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease;
+
 }
+
 
 .flexi-contact-group a:hover {
+
     color: #ffffff;
+
 }
+
+
+/* =========================================================
+   FOOTER COPYRIGHT
+   ========================================================= */
 
 .flexi-footer-bottom {
+
+    width: 100%;
+
     max-width: 1200px;
-    margin: 40px auto 0;
+
+    margin:
+        40px auto 0;
+
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+
     text-align: center;
-    font-size: 13px;
+
     color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    box-sizing: border-box;
+
 }
 
-/* Responsive: Tablet */
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
 @media (max-width: 900px) {
+
     .flexi-footer-grid {
-        grid-template-columns: 1fr 1fr;
+
+        grid-template-columns:
+            1fr 1fr;
+
         gap: 30px;
+
     }
+
 }
 
-/* Responsive: Mobile */
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .flexi-header-content {
+
+        min-height: 52px;
+
+        padding:
+            0 16px;
+
+    }
+
+
+    .flexi-logo-img {
+
+        width: 32px;
+
+        height: 32px;
+
+    }
+
+
+    .flexi-brand-name {
+
+        font-size: 13px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
 @media (max-width: 550px) {
+
+    .flexi-menu {
+
+        width:
+            min(250px, calc(100vw - 32px));
+
+    }
+
+
+    .flexi-footer {
+
+        padding:
+            50px 16px 25px;
+
+    }
+
+
     .flexi-footer-grid {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+            1fr;
+
         gap: 28px;
+
     }
+
 }
 
-/**
- * GENERAL ADJUSTMENTS FOR BODY
- */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--flexi-bg);
-    color: var(--flexi-text);
-}
 
-/* Ensure proper spacing after sticky header */
-body {
-    padding-top: 0;
-}
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
 
-/* Common utility classes */
-.flexi-container {
-    max-width: 920px;
-    margin: 24px auto;
-    width: 94%;
-    padding: 0;
-}
+@media (prefers-reduced-motion: reduce) {
 
-@media (min-width: 768px) {
-    .flexi-container {
-        max-width: 980px;
-        margin: 32px auto;
+    .flexi-logo-link,
+    .flexi-menu-btn,
+    .flexi-menu-link,
+    .flexi-footer-links a,
+    .flexi-whatsapp-link,
+    .flexi-contact-group a {
+
+        transition: none;
+
     }
-}
 
-@media (min-width: 1100px) {
-    .flexi-container {
-        max-width: 1040px;
-    }
 }
