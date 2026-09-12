@@ -16,7 +16,7 @@ Flexi Educational Consult — routing, maintenance mode & legacy redirects
 #
 # ============================================================
 
-RewriteRule ^ - [R=503,L]
+# RewriteRule ^ - [R=503,L]
 
 
 # ============================================================
