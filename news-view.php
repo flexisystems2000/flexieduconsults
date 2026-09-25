@@ -3575,92 +3575,106 @@ if (
     type="text/javascript"
     src="https://cdn.jsdelivr.net/npm/toastify-js"
 ></script>
-
-
 <!-- ========================================================
-     FIREBASE / COMMENTS / OTHER NEWS
+     SUPABASE / COMMENTS / OTHER NEWS
 ========================================================= -->
 
-<script type="module">
-// ==========================================================
-// FIREBASE
-// ==========================================================
-
-const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyA0bM6pk1T1peGSS7quVfPEMOMuplnNRNM",
-
-    authDomain:
-        "waec2026jamb2027.firebaseapp.com",
-
-    projectId:
-        "waec2026jamb2027"
-
-};
-
-
-const app =
-    initializeApp(
-        firebaseConfig
-    );
-
-
-const db =
-    getFirestore(
-        app
-    );
-
-
-// ==========================================================
-// CURRENT ARTICLE ID
-// ==========================================================
+<script>
+const SUPABASE_URL = "https://ryvauylmymcvbvvlaceb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6";
 
 const currentArticleId =
     <?php
-
     echo json_encode(
         $article['id'] ?? ''
     );
-
     ?>;
+
+async function supabaseRequest(path, options = {}) {
+    const response = await fetch(SUPABASE_URL + path, {
+        ...options,
+        headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization": "Bearer " + SUPABASE_KEY,
+            "Accept": "application/json",
+            ...(options.headers || {})
+        }
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+            "Supabase request failed: " +
+            response.status +
+            " " +
+            errorText
+        );
+    }
+
+    if (response.status === 204) {
+        return null;
+    }
+
+    return response.json();
+}
 
 
 // ==========================================================
-// SAFE HTML ESCAPE FOR CLIENT-SIDE DATA
+// ESCAPE HTML
 // ==========================================================
 
 function escapeHtml(str) {
+    return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
-    if (!str) return '';
 
-    return String(str)
+// ==========================================================
+// COMMENT TIME
+// ==========================================================
 
-        .replace(
-            /&/g,
-            '&amp;'
-        )
+function getCommentTime(value) {
 
-        .replace(
-            /</g,
-            '&lt;'
-        )
+    if (!value) {
+        return 0;
+    }
 
-        .replace(
-            />/g,
-            '&gt;'
-        )
+    if (typeof value === "number") {
+        return value;
+    }
 
-        .replace(
-            /"/g,
-            '&quot;'
-        )
+    if (typeof value === "object") {
 
-        .replace(
-            /'/g,
-            '&#039;'
-        );
+        if (typeof value._seconds === "number") {
+            return value._seconds * 1000;
+        }
 
+        if (typeof value.seconds === "number") {
+            return value.seconds * 1000;
+        }
+    }
+
+    const parsed = Date.parse(String(value));
+
+    return Number.isNaN(parsed)
+        ? 0
+        : parsed;
+}
+
+
+function formatCommentDate(value) {
+
+    const time = getCommentTime(value);
+
+    if (!time) {
+        return "Just now";
+    }
+
+    return new Date(time).toLocaleString();
 }
 
 
@@ -3670,76 +3684,39 @@ function escapeHtml(str) {
 
 window.shareArticle = () => {
 
-    if (
-        navigator.share
-    ) {
+    if (navigator.share) {
 
         navigator.share({
-
             title:
-                document
-                    .getElementById(
-                        'news-title'
-                    )
-                    ?.innerText
-                ||
-                'News',
+                document.getElementById("news-title")?.innerText ||
+                "News",
 
             url:
                 window.location.href
-
-        })
-        .catch(
-            () => {}
-        );
-
+        }).catch(() => {});
 
     } else {
 
-        if (
-            navigator.clipboard
-        ) {
+        if (navigator.clipboard) {
 
-            navigator.clipboard
-                .writeText(
-                    window.location.href
-                );
-
+            navigator.clipboard.writeText(
+                window.location.href
+            );
         }
 
-
-        if (
-            typeof Toastify !==
-            'undefined'
-        ) {
+        if (typeof Toastify !== "undefined") {
 
             Toastify({
-
-                text:
-                    "Link copied to clipboard!",
-
-                duration:
-                    3000,
-
-                gravity:
-                    "top",
-
-                position:
-                    "right",
-
+                text: "Link copied to clipboard!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
                 style: {
-
-                    background:
-                        "#2E8B57"
-
+                    background: "#2E8B57"
                 }
-
             }).showToast();
-
         }
-
     }
-
 };
 
 
@@ -3749,117 +3726,90 @@ window.shareArticle = () => {
 
 async function loadComments() {
 
-    if (!currentArticleId)
+    if (!currentArticleId) {
         return;
-
+    }
 
     const cList =
-        document.getElementById(
-            'comments-list'
-        );
+        document.getElementById("comments-list");
 
-
-    if (!cList)
+    if (!cList) {
         return;
-
+    }
 
     try {
 
-        const q =
-            query(
-
-                collection(
-                    db,
-                    "news",
-                    currentArticleId,
-                    "comments"
-                ),
-
-                orderBy(
-                    "timestamp",
-                    "desc"
+        const rows =
+            await supabaseRequest(
+                "/rest/v1/news_comments" +
+                "?select=id,news_id,data" +
+                "&news_id=eq." +
+                encodeURIComponent(
+                    String(currentArticleId)
                 )
-
             );
 
+        const comments =
+            Array.isArray(rows)
+                ? rows
+                : [];
 
-        const snap =
-            await getDocs(
-                q
-            );
+        comments.sort((a, b) =>
+            getCommentTime(
+                b?.data?.timestamp
+            ) -
+            getCommentTime(
+                a?.data?.timestamp
+            )
+        );
 
-
-        if (!snap.empty) {
-
-            cList.innerHTML =
-                "";
-
-
-            snap.forEach(
-                d => {
-
-                    const c =
-                        d.data();
-
-
-                    const date =
-                        c.timestamp
-                            ?
-                            c.timestamp
-                                .toDate()
-                                .toLocaleString()
-                            :
-                            "Just now";
-
-
-                    cList.innerHTML += `
-
-                        <div class="comment-box">
-
-                            <div class="comment-name">
-
-                                ${escapeHtml(
-                                    c.name
-                                )}
-
-                            </div>
-
-
-                            <div class="comment-text">
-
-                                ${escapeHtml(
-                                    c.text
-                                )}
-
-                            </div>
-
-
-                            <div class="comment-date">
-
-                                ${escapeHtml(
-                                    date
-                                )}
-
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            );
-
+        if (!comments.length) {
+            return;
         }
 
-    } catch (e) {
+        cList.innerHTML =
+            comments.map(row => {
+
+                const data =
+                    row.data || {};
+
+                return `
+                    <div class="comment-box">
+
+                        <div class="comment-name">
+                            ${escapeHtml(
+                                data.name ||
+                                "Anonymous"
+                            )}
+                        </div>
+
+                        <div class="comment-text">
+                            ${escapeHtml(
+                                data.text ||
+                                ""
+                            )}
+                        </div>
+
+                        <div class="comment-date">
+                            ${escapeHtml(
+                                formatCommentDate(
+                                    data.timestamp
+                                )
+                            )}
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+
+    } catch (error) {
 
         console.error(
             "Error loading comments:",
-            e
+            error
         );
-
     }
-
 }
 
 
@@ -3871,185 +3821,100 @@ async function loadOtherNews() {
 
     const section =
         document.getElementById(
-            'other-news-section'
+            "other-news-section"
         );
-
 
     const list =
         document.getElementById(
-            'other-news-list'
+            "other-news-list"
         );
 
-
-    if (
-        !section ||
-        !list
-    )
+    if (!section || !list) {
         return;
-
+    }
 
     try {
 
-        const snap =
-            await getDocs(
-                collection(
-                    db,
-                    "news"
-                )
+        const rows =
+            await supabaseRequest(
+                "/rest/v1/news" +
+                "?select=id,title,image_url,slug,timestamp" +
+                "&order=timestamp.desc" +
+                "&limit=7"
             );
 
+        const items =
+            (Array.isArray(rows)
+                ? rows
+                : [])
+            .filter(
+                item =>
+                    String(item.id) !==
+                    String(currentArticleId)
+            )
+            .slice(0, 6);
 
-        if (
-            snap.empty
-        )
+        if (!items.length) {
             return;
-
-
-        const items = [];
-
-
-        snap.forEach(
-            d => {
-
-                if (
-                    d.id ===
-                    currentArticleId
-                )
-                    return;
-
-
-                const data =
-                    d.data();
-
-
-                items.push({
-
-                    id:
-                        d.id,
-
-                    title:
-                        data.title ||
-                        "News Update",
-
-                    imageUrl:
-                        data.imageUrl ||
-                        "https://via.placeholder.com/88x66",
-
-                    slug:
-                        data.slug ||
-                        "",
-
-                    timestamp:
-                        data.timestamp
-                            ?
-                            data.timestamp
-                                .toDate()
-                                .getTime()
-                            :
-                            0
-
-                });
-
-            }
-        );
-
-
-        items.sort(
-            (a, b) =>
-                b.timestamp -
-                a.timestamp
-        );
-
-
-        const top =
-            items.slice(
-                0,
-                6
-            );
-
-
-        if (
-            top.length === 0
-        )
-            return;
-
+        }
 
         list.innerHTML =
-            top
-                .map(
-                    item => {
+            items.map(item => {
 
-                        const href =
-                            item.slug
+                const href =
+                    item.slug
+                        ? "/news/" +
+                          encodeURIComponent(
+                              item.slug
+                          )
+                        : "/news/id/" +
+                          encodeURIComponent(
+                              item.id
+                          );
 
-                                ?
-                                `/news/${encodeURIComponent(
-                                    item.slug
-                                )}`
+                return `
+                    <a
+                        class="other-news-item"
+                        href="${escapeHtml(href)}"
+                    >
 
-                                :
-                                `/news/id/${encodeURIComponent(
-                                    item.id
-                                )}`;
+                        <img
+                            src="${escapeHtml(
+                                item.image_url ||
+                                "https://via.placeholder.com/88x66"
+                            )}"
+                            alt="${escapeHtml(
+                                item.title ||
+                                "News Update"
+                            )}"
+                            loading="lazy"
+                        >
 
+                        <span class="on-title">
+                            ${escapeHtml(
+                                item.title ||
+                                "News Update"
+                            )}
+                        </span>
 
-                        return `
+                        <span class="on-arrow">
+                            ❯
+                        </span>
 
-                            <a
-                                class="other-news-item"
-                                href="${escapeHtml(
-                                    href
-                                )}"
-                            >
+                    </a>
+                `;
 
-                                <img
-                                    src="${escapeHtml(
-                                        item.imageUrl
-                                    )}"
-                                    alt="${escapeHtml(
-                                        item.title
-                                    )}"
-                                    loading="lazy"
-                                >
+            }).join("");
 
+        section.style.display = "block";
 
-                                <span class="on-title">
-
-                                    ${escapeHtml(
-                                        item.title
-                                    )}
-
-                                </span>
-
-
-                                <span class="on-arrow">
-                                    ❯
-                                </span>
-
-                            </a>
-
-                        `;
-
-                    }
-                )
-                .join(
-                    ""
-                );
-
-
-        section.style.display =
-            "block";
-
-
-    } catch (e) {
+    } catch (error) {
 
         console.error(
             "Error loading other news:",
-            e
+            error
         );
-
     }
-
 }
 
 
@@ -4057,150 +3922,149 @@ async function loadOtherNews() {
 // POST COMMENT
 // ==========================================================
 
-window.postComment =
-    async () => {
+window.postComment = async () => {
 
-        const name =
-            document
-                .getElementById(
-                    'comm-name'
-                )
-                .value
-                .trim();
+    const nameInput =
+        document.getElementById(
+            "comm-name"
+        );
 
+    const textInput =
+        document.getElementById(
+            "comm-text"
+        );
 
-        const text =
-            document
-                .getElementById(
-                    'comm-text'
-                )
-                .value
-                .trim();
+    const btn =
+        document.getElementById(
+            "post-comm-btn"
+        );
 
+    if (!nameInput ||
+        !textInput ||
+        !btn) {
 
-        const btn =
-            document.getElementById(
-                'post-comm-btn'
-            );
+        return;
+    }
 
+    const name =
+        nameInput.value.trim();
 
-        if (
-            !name ||
-            !text
-        ) {
-
-            alert(
-                "Please fill both fields"
-            );
-
-            return;
-
-        }
+    const text =
+        textInput.value.trim();
 
 
-        if (!currentArticleId) {
+    if (!name || !text) {
 
-            alert(
-                "This article cannot receive comments."
-            );
+        alert(
+            "Please fill both fields"
+        );
 
-            return;
-
-        }
-
-
-        btn.disabled =
-            true;
+        return;
+    }
 
 
-        btn.innerText =
-            "Posting...";
+    if (!currentArticleId) {
+
+        alert(
+            "This article cannot receive comments."
+        );
+
+        return;
+    }
 
 
-        try {
+    btn.disabled = true;
 
-            await addDoc(
+    btn.innerText =
+        "Posting...";
 
-                collection(
-                    db,
-                    "news",
-                    currentArticleId,
-                    "comments"
-                ),
 
-                {
+    try {
 
-                    name:
-                        name,
+        await supabaseRequest(
+            "/rest/v1/news_comments",
+            {
+                method: "POST",
 
-                    text:
-                        text,
+                headers: {
+                    "Content-Type":
+                        "application/json",
 
-                    timestamp:
-                        serverTimestamp()
+                    "Prefer":
+                        "return=minimal"
+                },
 
+                body: JSON.stringify({
+
+                    id:
+                        crypto.randomUUID(),
+
+                    news_id:
+                        String(
+                            currentArticleId
+                        ),
+
+                    data: {
+
+                        name:
+                            name,
+
+                        text:
+                            text,
+
+                        timestamp:
+                            new Date()
+                                .toISOString()
+                    }
+                })
+            }
+        );
+
+
+        if (typeof Toastify !== "undefined") {
+
+            Toastify({
+
+                text:
+                    "Comment posted!",
+
+                duration:
+                    3000,
+
+                style: {
+                    background:
+                        "#2E8B57"
                 }
 
-            );
-
-
-            if (
-                typeof Toastify !==
-                'undefined'
-            ) {
-
-                Toastify({
-
-                    text:
-                        "Comment posted!",
-
-                    style: {
-
-                        background:
-                            "#2E8B57"
-
-                    }
-
-                }).showToast();
-
-            }
-
-
-            document
-                .getElementById(
-                    'comm-text'
-                )
-                .value =
-                "";
-
-
-            loadComments();
-
-
-        } catch (e) {
-
-            console.error(
-                e
-            );
-
-
-            alert(
-                "Error posting comment."
-            );
-
-
-        } finally {
-
-            btn.disabled =
-                false;
-
-
-            btn.innerText =
-                "Post Comment";
-
+            }).showToast();
         }
 
-    };
+
+        textInput.value = "";
+
+
+        await loadComments();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error posting comment:",
+            error
+        );
+
+        alert(
+            "Error posting comment. Please try again."
+        );
+
+    } finally {
+
+        btn.disabled = false;
+
+        btn.innerText =
+            "Post Comment";
+    }
+};
 
 
 // ==========================================================
@@ -4209,35 +4073,30 @@ window.postComment =
 
 const yearElement =
     document.getElementById(
-        'current-year'
+        "current-year"
     );
-
 
 if (yearElement) {
 
     yearElement.textContent =
-        new Date()
-            .getFullYear();
-
+        new Date().getFullYear();
 }
 
 
 // ==========================================================
-// INTERACTIVE CONTENT
+// START
 // ==========================================================
 
-if (
-    currentArticleId
-) {
+if (currentArticleId) {
 
     loadComments();
 
     loadOtherNews();
-
 }
 
 </script>
 
-
+</body>
+</html>
 </body>
 </html>
