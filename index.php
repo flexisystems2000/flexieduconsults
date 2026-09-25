@@ -1,32 +1,49 @@
 <?php
-// SERVER-SIDE: Fetch news + pagination
-$firebaseProjectId = "waec2026jamb2027";
-$apiUrl = "https://firestore.googleapis.com/v1/projects/{$firebaseProjectId}/databases/(default)/documents/news";
+// SERVER-SIDE: Fetch news + pagination from Supabase
+$supabaseUrl = "https://ryvauylmymcvbvvlaceb.supabase.co";
+$supabaseKey = "sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6";
+
+$newsApiUrl = $supabaseUrl . "/rest/v1/news"
+    . "?select=id,title,image_url,slug,timestamp"
+    . "&order=timestamp.desc";
 
 $perPage = 10; // Change this if you want more/less items per page
 $currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 
 $allNews = [];
-$response = @file_get_contents($apiUrl);
 
-if ($response) {
+$context = stream_context_create([
+    'http' => [
+        'method' => 'GET',
+        'header' =>
+            "apikey: {$supabaseKey}\r\n" .
+            "Authorization: Bearer {$supabaseKey}\r\n" .
+            "Accept: application/json\r\n",
+        'timeout' => 10
+    ]
+]);
+
+$response = @file_get_contents(
+    $newsApiUrl,
+    false,
+    $context
+);
+
+if ($response !== false) {
     $data = json_decode($response, true);
-    if (isset($data['documents'])) {
-        foreach ($data['documents'] as $doc) {
-            $fields = $doc['fields'] ?? [];
-            $docNameParts = explode('/', $doc['name']);
-            $docId = end($docNameParts);
 
-            $timestamp = 0;
-            if (!empty($fields['timestamp']['timestampValue'])) {
-                $timestamp = strtotime($fields['timestamp']['timestampValue']);
-            }
+    if (is_array($data)) {
+        foreach ($data as $row) {
+
+            $timestamp = !empty($row['timestamp'])
+                ? strtotime($row['timestamp'])
+                : 0;
 
             $allNews[] = [
-                'id'        => $docId,
-                'title'     => $fields['title']['stringValue'] ?? 'News Update',
-                'imageUrl'  => $fields['imageUrl']['stringValue'] ?? 'https://via.placeholder.com/88x66',
-                'slug'      => $fields['slug']['stringValue'] ?? '',
+                'id'        => $row['id'] ?? '',
+                'title'     => $row['title'] ?? 'News Update',
+                'imageUrl'  => $row['image_url'] ?? 'https://via.placeholder.com/88x66',
+                'slug'      => $row['slug'] ?? '',
                 'timestamp' => $timestamp,
             ];
         }
