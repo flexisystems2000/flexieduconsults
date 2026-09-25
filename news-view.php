@@ -1,32 +1,5 @@
 <?php
 // ============================================================
-// FLEXI EDUCATIONAL CONSULT
-// NEWS ARTICLE VIEWER
-//
-// Supports:
-//   **Bold text**
-//   *Italic text*
-//   ✳️ Sub-header
-//   # Main heading
-//   ## Sub-heading
-//   ### Small heading
-//   > Important notice
-//   • Bullet points
-//   - Bullet points
-//   1. Numbered lists
-//   --- Divider
-//   [[TABLE_1]]
-//   [[TABLE_2]]
-//   etc.
-//
-// Legacy articles with the old tableData format are also supported.
-// ============================================================
-
-
-$firebaseProjectId = "waec2026jamb2027";
-
-
-// ============================================================
 // GET ARTICLE ID / SLUG
 // ============================================================
 
@@ -148,271 +121,228 @@ $article = [
 
 ];
 
-
 // ============================================================
-// FETCH FIRESTORE NEWS
+// FETCH SUPABASE NEWS
 // ============================================================
 
 if ($newsId || $newsSlug) {
 
-    $apiUrl =
-        "https://firestore.googleapis.com/v1/projects/" .
-        $firebaseProjectId .
-        "/databases/(default)/documents/news";
+    $supabaseUrl =
+        "https://ryvauylmymcvbvvlaceb.supabase.co";
 
+    $supabaseKey =
+        "sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6";
+
+    $select =
+        "id,title,content,image_url,pdf_url,table_data,timestamp,seo_title,meta_description,focus_keyword,slug";
+
+    $queryParts = [
+        "select=" . $select,
+        "limit=1"
+    ];
+
+    if ($newsSlug) {
+
+        $queryParts[] =
+            "slug=eq." .
+            rawurlencode($newsSlug);
+
+    } else {
+
+        $queryParts[] =
+            "id=eq." .
+            rawurlencode($newsId);
+
+    }
+
+    $apiUrl =
+        $supabaseUrl .
+        "/rest/v1/news?" .
+        implode("&", $queryParts);
+
+    $context =
+        stream_context_create([
+            'http' => [
+                'method' => 'GET',
+
+                'header' =>
+                    "apikey: {$supabaseKey}\r\n" .
+                    "Authorization: Bearer {$supabaseKey}\r\n" .
+                    "Accept: application/json\r\n",
+
+                'timeout' => 10
+            ]
+        ]);
 
     $response =
         @file_get_contents(
-            $apiUrl
+            $apiUrl,
+            false,
+            $context
         );
 
+    if ($response !== false) {
 
-    if ($response) {
-
-        $data =
+        $rows =
             json_decode(
                 $response,
                 true
             );
 
-
         if (
-            isset(
-                $data['documents']
-            )
+            is_array($rows) &&
+            !empty($rows)
         ) {
 
-            foreach (
-                $data['documents']
-                as $doc
+            $row = $rows[0];
+
+            $slug =
+                $row['slug'] ?? '';
+
+            // ------------------------------------------------
+            // SEO TITLE
+            // ------------------------------------------------
+
+            if (
+                !empty(
+                    $row['seo_title']
+                )
             ) {
 
-                $docNameParts =
-                    explode(
-                        '/',
-                        $doc['name']
-                    );
+                $pageTitle =
+                    $row['seo_title'] .
+                    " | Flexi Educational Consult";
 
+            } elseif (
+                !empty(
+                    $row['title']
+                )
+            ) {
 
-                $docId =
-                    end(
-                        $docNameParts
-                    );
-
-
-                $fields =
-                    $doc['fields']
-                    ?? [];
-
-
-                $slug =
-                    $fields['slug']['stringValue']
-                    ?? '';
-
-
-                if (
-                    (
-                        $newsId &&
-                        $docId === $newsId
-                    )
-                    ||
-                    (
-                        $newsSlug &&
-                        $slug === $newsSlug
-                    )
-                ) {
-
-                    // ------------------------------------------------
-                    // SEO TITLE
-                    // ------------------------------------------------
-
-                    if (
-                        !empty(
-                            $fields['seoTitle']['stringValue']
-                        )
-                    ) {
-
-                        $pageTitle =
-                            $fields['seoTitle']['stringValue']
-                            . " | Flexi Educational Consult";
-
-                    } elseif (
-                        !empty(
-                            $fields['title']['stringValue']
-                        )
-                    ) {
-
-                        $pageTitle =
-                            $fields['title']['stringValue']
-                            . " | Flexi Educational Consult";
-
-                    }
-
-
-                    // ------------------------------------------------
-                    // META DESCRIPTION
-                    // ------------------------------------------------
-
-                    if (
-                        !empty(
-                            $fields['metaDescription']['stringValue']
-                        )
-                    ) {
-
-                        $pageDesc =
-                            $fields['metaDescription']['stringValue'];
-
-                    } elseif (
-                        !empty(
-                            $fields['content']['stringValue']
-                        )
-                    ) {
-
-                        $cleanDescription =
-                            preg_replace(
-                                '/\[\[TABLE_\d+\]\]/',
-                                '',
-                                $fields['content']['stringValue']
-                            );
-
-
-                        $cleanDescription =
-                            preg_replace(
-                                '/[*✳️#>]/u',
-                                '',
-                                $cleanDescription
-                            );
-
-
-                        $pageDesc =
-                            mb_substr(
-                                trim(
-                                    strip_tags(
-                                        $cleanDescription
-                                    )
-                                ),
-                                0,
-                                155
-                            )
-                            . "...";
-
-                    }
-
-
-                    // ------------------------------------------------
-                    // IMAGE
-                    // ------------------------------------------------
-
-                    if (
-                        !empty(
-                            $fields['imageUrl']['stringValue']
-                        )
-                    ) {
-
-                        $pageImage =
-                            $fields['imageUrl']['stringValue'];
-
-                    }
-
-
-                    // ------------------------------------------------
-                    // FULL ARTICLE DATA
-                    // ------------------------------------------------
-
-                    $article['title'] =
-                        $fields['title']['stringValue']
-                        ?? '';
-
-
-                    $article['content'] =
-                        $fields['content']['stringValue']
-                        ??
-                        (
-                            $fields['body']['stringValue']
-                            ?? ''
-                        );
-
-
-                    $article['imageUrl'] =
-                        $fields['imageUrl']['stringValue']
-                        ?? '';
-
-
-                    $article['tableData'] =
-                        $fields['tableData']['stringValue']
-                        ?? '';
-
-
-                    $article['pdfUrl'] =
-                        $fields['pdfUrl']['stringValue']
-                        ?? '';
-
-
-                    $article['id'] =
-                        $docId;
-
-
-                    $article['slug'] =
-                        $slug;
-
-
-                    // ------------------------------------------------
-                    // TIMESTAMP
-                    // ------------------------------------------------
-
-                    if (
-                        !empty(
-                            $fields['timestamp']['timestampValue']
-                        )
-                    ) {
-
-                        $article['timestamp'] =
-                            $fields['timestamp']['timestampValue'];
-
-                    }
-
-
-                    // ------------------------------------------------
-                    // CANONICAL URL
-                    // ------------------------------------------------
-
-                    if ($slug) {
-
-                        $pageUrl =
-                            $scheme .
-                            '://' .
-                            $host .
-                            '/news/' .
-                            rawurlencode(
-                                $slug
-                            );
-
-                    } else {
-
-                        $pageUrl =
-                            $scheme .
-                            '://' .
-                            $host .
-                            '/news/id/' .
-                            rawurlencode(
-                                $docId
-                            );
-
-                    }
-
-
-                    break;
-
-                }
+                $pageTitle =
+                    $row['title'] .
+                    " | Flexi Educational Consult";
 
             }
 
+            // ------------------------------------------------
+            // META DESCRIPTION
+            // ------------------------------------------------
+
+            if (
+                !empty(
+                    $row['meta_description']
+                )
+            ) {
+
+                $pageDesc =
+                    $row['meta_description'];
+
+            } elseif (
+                !empty(
+                    $row['content']
+                )
+            ) {
+
+                $cleanDescription =
+                    preg_replace(
+                        '/\[\[TABLE_\d+\]\]/',
+                        '',
+                        $row['content']
+                    );
+
+                $cleanDescription =
+                    preg_replace(
+                        '/[*✳️#>]/u',
+                        '',
+                        $cleanDescription
+                    );
+
+                $pageDesc =
+                    mb_substr(
+                        trim(
+                            strip_tags(
+                                $cleanDescription
+                            )
+                        ),
+                        0,
+                        155
+                    ) . "...";
+            }
+
+            // ------------------------------------------------
+            // IMAGE
+            // ------------------------------------------------
+
+            if (
+                !empty(
+                    $row['image_url']
+                )
+            ) {
+
+                $pageImage =
+                    $row['image_url'];
+
+            }
+
+            // ------------------------------------------------
+            // FULL ARTICLE DATA
+            // ------------------------------------------------
+
+            $article['title'] =
+                $row['title'] ?? '';
+
+            $article['content'] =
+                $row['content'] ?? '';
+
+            $article['imageUrl'] =
+                $row['image_url'] ?? '';
+
+            $article['tableData'] =
+                $row['table_data'] ?? '';
+
+            $article['pdfUrl'] =
+                $row['pdf_url'] ?? '';
+
+            $article['id'] =
+                $row['id'] ?? $newsId;
+
+            $article['slug'] =
+                $slug;
+
+            $article['timestamp'] =
+                $row['timestamp'] ?? null;
+
+            // ------------------------------------------------
+            // CANONICAL URL
+            // ------------------------------------------------
+
+            if ($slug) {
+
+                $pageUrl =
+                    $scheme .
+                    '://' .
+                    $host .
+                    '/news/' .
+                    rawurlencode(
+                        $slug
+                    );
+
+            } else {
+
+                $pageUrl =
+                    $scheme .
+                    '://' .
+                    $host .
+                    '/news/id/' .
+                    rawurlencode(
+                        $article['id']
+                    );
+
+            }
         }
-
     }
-
 }
-
 
 // ============================================================
 // BASIC HTML ESCAPE
