@@ -23,7 +23,6 @@
 // ============================================================
 
 
-$firebaseProjectId = "waec2026jamb2027";
 
 
 // ============================================================
@@ -33,8 +32,8 @@ $firebaseProjectId = "waec2026jamb2027";
 $newsId   = isset($_GET['id'])   ? trim($_GET['id'])   : '';
 $newsSlug = isset($_GET['slug']) ? trim($_GET['slug']) : '';
 
-// News search is intentionally slug-first because the slug is the
-// stable public identifier used by /news/{slug}.
+// News search is keyword-based. The title and slug are both searched
+// so visitors can search naturally without knowing the exact slug.
 $newsSearch = isset($_GET['news_search'])
     ? trim((string)$_GET['news_search'])
     : '';
@@ -185,69 +184,73 @@ function supabase_get_rows($url, $key) {
 
 
 // ------------------------------------------------------------
-// SEARCH BY SLUG FIRST
+// KEYWORD / SEO SEARCH
+//
+// Search is intentionally keyword-based.
+// The slug is used behind the scenes as an SEO/search field,
+// but visitors do NOT need to know or paste the exact slug.
 // ------------------------------------------------------------
 
 if ($newsSearch !== '') {
 
-    $searchValue =
-        rawurlencode($newsSearch);
-
-    // Exact slug is the preferred lookup.
-    $exactSlugUrl =
-        $supabaseUrl .
-        "/rest/v1/news?select=id,slug&slug=eq." .
-        $searchValue .
-        "&limit=1";
-
-    $exactRows =
-        supabase_get_rows(
-            $exactSlugUrl,
-            $supabaseKey
+    // Keyword search across both title and slug.
+    // Visitors can search naturally, for example:
+    // "JAMB portal", "admission 2026", or "WAEC result".
+    $rawTerms =
+        preg_split(
+            '/\s+/u',
+            $newsSearch,
+            -1,
+            PREG_SPLIT_NO_EMPTY
         );
 
-    if (
-        !empty($exactRows[0]['slug'])
-    ) {
+    $terms = [];
 
-        header(
-            'Location: /news/' .
-            rawurlencode(
-                $exactRows[0]['slug']
-            ),
-            true,
-            302
-        );
+    foreach ($rawTerms as $rawTerm) {
 
-        exit;
+        $term =
+            preg_replace(
+                '/[^\p{L}\p{N}_-]/u',
+                '',
+                $rawTerm
+            );
+
+        if ($term !== '' && mb_strlen($term) >= 2) {
+            $terms[] = $term;
+        }
     }
 
-    // If the visitor did not enter an exact slug,
-    // also allow a title/slug search.
-    $term =
-        str_replace(
-            ['\\', '"'],
-            ['\\\\', '\\"'],
-            $newsSearch
-        );
+    $terms = array_values(array_unique($terms));
 
-    $or =
-        "(slug.ilike.*{$term}*,title.ilike.*{$term}*)";
+    if (!empty($terms)) {
 
-    $searchUrl =
-        $supabaseUrl .
-        "/rest/v1/news?" .
-        "select=id,title,image_url,slug,timestamp" .
-        "&or=" .
-        rawurlencode($or) .
-        "&order=timestamp.desc" .
-        "&limit=12";
+        $orParts = [];
 
-    $searchResults =
-        supabase_get_rows(
-            $searchUrl,
-            $supabaseKey
-        );
+        foreach ($terms as $term) {
+            $orParts[] = 'slug.ilike.*' . $term . '*';
+            $orParts[] = 'title.ilike.*' . $term . '*';
+        }
+
+        $or = '(' . implode(',', $orParts) . ')';
+
+        $searchUrl =
+            $supabaseUrl .
+            "/rest/v1/news?" .
+            "select=id,title,image_url,slug,timestamp" .
+            "&or=" .
+            rawurlencode($or) .
+            "&order=timestamp.desc" .
+            "&limit=12";
+
+        $searchResults =
+            supabase_get_rows(
+                $searchUrl,
+                $supabaseKey
+            );
+
+    } else {
+        $searchResults = [];
+    }
 }
 
 
@@ -318,260 +321,171 @@ $article = [
 
 
 // ============================================================
-// FETCH FIRESTORE NEWS
+// FETCH NEWS FROM SUPABASE
 // ============================================================
 
 if ($newsId || $newsSlug) {
 
-    $apiUrl =
-        "https://firestore.googleapis.com/v1/projects/" .
-        $firebaseProjectId .
-        "/databases/(default)/documents/news";
+    $articleUrl = '';
 
+    if ($newsSlug !== '') {
 
-    $response =
-        @file_get_contents(
-            $apiUrl
-        );
+        $articleUrl =
+            $supabaseUrl .
+            "/rest/v1/news?" .
+            "select=id,title,content,image_url,pdf_url,table_data,timestamp,seo_title,meta_description,focus_keyword,slug" .
+            "&slug=eq." .
+            rawurlencode($newsSlug) .
+            "&limit=1";
 
+    } elseif ($newsId !== '') {
 
-    if ($response) {
+        $articleUrl =
+            $supabaseUrl .
+            "/rest/v1/news?" .
+            "select=id,title,content,image_url,pdf_url,table_data,timestamp,seo_title,meta_description,focus_keyword,slug" .
+            "&id=eq." .
+            rawurlencode($newsId) .
+            "&limit=1";
 
-        $data =
-            json_decode(
-                $response,
-                true
+    }
+
+    if ($articleUrl !== '') {
+
+        $articleRows =
+            supabase_get_rows(
+                $articleUrl,
+                $supabaseKey
             );
 
+        if (!empty($articleRows[0]) && is_array($articleRows[0])) {
 
-        if (
-            isset(
-                $data['documents']
-            )
-        ) {
+            $row = $articleRows[0];
 
-            foreach (
-                $data['documents']
-                as $doc
-            ) {
+            // ------------------------------------------------
+            // SEO TITLE
+            // ------------------------------------------------
 
-                $docNameParts =
-                    explode(
-                        '/',
-                        $doc['name']
+            if (!empty($row['seo_title'])) {
+
+                $pageTitle =
+                    $row['seo_title'] .
+                    " | Flexi Educational Consult";
+
+            } elseif (!empty($row['title'])) {
+
+                $pageTitle =
+                    $row['title'] .
+                    " | Flexi Educational Consult";
+
+            }
+
+
+            // ------------------------------------------------
+            // META DESCRIPTION
+            // ------------------------------------------------
+
+            if (!empty($row['meta_description'])) {
+
+                $pageDesc =
+                    $row['meta_description'];
+
+            } elseif (!empty($row['content'])) {
+
+                $cleanDescription =
+                    preg_replace(
+                        '/\[\[TABLE_\d+\]\]/',
+                        '',
+                        (string)$row['content']
                     );
 
-
-                $docId =
-                    end(
-                        $docNameParts
+                $cleanDescription =
+                    preg_replace(
+                        '/[*✳️#>]/u',
+                        '',
+                        $cleanDescription
                     );
 
-
-                $fields =
-                    $doc['fields']
-                    ?? [];
-
-
-                $slug =
-                    $fields['slug']['stringValue']
-                    ?? '';
-
-
-                if (
-                    (
-                        $newsId &&
-                        $docId === $newsId
-                    )
-                    ||
-                    (
-                        $newsSlug &&
-                        $slug === $newsSlug
-                    )
-                ) {
-
-                    // ------------------------------------------------
-                    // SEO TITLE
-                    // ------------------------------------------------
-
-                    if (
-                        !empty(
-                            $fields['seoTitle']['stringValue']
-                        )
-                    ) {
-
-                        $pageTitle =
-                            $fields['seoTitle']['stringValue']
-                            . " | Flexi Educational Consult";
-
-                    } elseif (
-                        !empty(
-                            $fields['title']['stringValue']
-                        )
-                    ) {
-
-                        $pageTitle =
-                            $fields['title']['stringValue']
-                            . " | Flexi Educational Consult";
-
-                    }
-
-
-                    // ------------------------------------------------
-                    // META DESCRIPTION
-                    // ------------------------------------------------
-
-                    if (
-                        !empty(
-                            $fields['metaDescription']['stringValue']
-                        )
-                    ) {
-
-                        $pageDesc =
-                            $fields['metaDescription']['stringValue'];
-
-                    } elseif (
-                        !empty(
-                            $fields['content']['stringValue']
-                        )
-                    ) {
-
-                        $cleanDescription =
-                            preg_replace(
-                                '/\[\[TABLE_\d+\]\]/',
-                                '',
-                                $fields['content']['stringValue']
-                            );
-
-
-                        $cleanDescription =
-                            preg_replace(
-                                '/[*✳️#>]/u',
-                                '',
+                $pageDesc =
+                    mb_substr(
+                        trim(
+                            strip_tags(
                                 $cleanDescription
-                            );
-
-
-                        $pageDesc =
-                            mb_substr(
-                                trim(
-                                    strip_tags(
-                                        $cleanDescription
-                                    )
-                                ),
-                                0,
-                                155
                             )
-                            . "...";
+                        ),
+                        0,
+                        155
+                    ) . "...";
 
-                    }
-
-
-                    // ------------------------------------------------
-                    // IMAGE
-                    // ------------------------------------------------
-
-                    if (
-                        !empty(
-                            $fields['imageUrl']['stringValue']
-                        )
-                    ) {
-
-                        $pageImage =
-                            $fields['imageUrl']['stringValue'];
-
-                    }
+            }
 
 
-                    // ------------------------------------------------
-                    // FULL ARTICLE DATA
-                    // ------------------------------------------------
+            // ------------------------------------------------
+            // IMAGE
+            // ------------------------------------------------
 
-                    $article['title'] =
-                        $fields['title']['stringValue']
-                        ?? '';
+            if (!empty($row['image_url'])) {
 
+                $pageImage =
+                    $row['image_url'];
 
-                    $article['content'] =
-                        $fields['content']['stringValue']
-                        ??
-                        (
-                            $fields['body']['stringValue']
-                            ?? ''
-                        );
+            }
 
 
-                    $article['imageUrl'] =
-                        $fields['imageUrl']['stringValue']
-                        ?? '';
+            // ------------------------------------------------
+            // FULL ARTICLE DATA
+            // ------------------------------------------------
+
+            $article['title'] =
+                $row['title'] ?? '';
+
+            $article['content'] =
+                $row['content'] ?? '';
+
+            $article['imageUrl'] =
+                $row['image_url'] ?? '';
+
+            $article['tableData'] =
+                $row['table_data'] ?? '';
+
+            $article['pdfUrl'] =
+                $row['pdf_url'] ?? '';
+
+            $article['id'] =
+                $row['id'] ?? $newsId;
+
+            $article['slug'] =
+                $row['slug'] ?? $newsSlug;
+
+            $article['timestamp'] =
+                $row['timestamp'] ?? null;
 
 
-                    $article['tableData'] =
-                        $fields['tableData']['stringValue']
-                        ?? '';
+            // ------------------------------------------------
+            // CANONICAL URL
+            // ------------------------------------------------
 
+            if (!empty($article['slug'])) {
 
-                    $article['pdfUrl'] =
-                        $fields['pdfUrl']['stringValue']
-                        ?? '';
+                $pageUrl =
+                    $scheme .
+                    '://' .
+                    $host .
+                    '/news/' .
+                    rawurlencode(
+                        $article['slug']
+                    );
 
+            } elseif (!empty($article['id'])) {
 
-                    $article['id'] =
-                        $docId;
-
-
-                    $article['slug'] =
-                        $slug;
-
-
-                    // ------------------------------------------------
-                    // TIMESTAMP
-                    // ------------------------------------------------
-
-                    if (
-                        !empty(
-                            $fields['timestamp']['timestampValue']
-                        )
-                    ) {
-
-                        $article['timestamp'] =
-                            $fields['timestamp']['timestampValue'];
-
-                    }
-
-
-                    // ------------------------------------------------
-                    // CANONICAL URL
-                    // ------------------------------------------------
-
-                    if ($slug) {
-
-                        $pageUrl =
-                            $scheme .
-                            '://' .
-                            $host .
-                            '/news/' .
-                            rawurlencode(
-                                $slug
-                            );
-
-                    } else {
-
-                        $pageUrl =
-                            $scheme .
-                            '://' .
-                            $host .
-                            '/news/id/' .
-                            rawurlencode(
-                                $docId
-                            );
-
-                    }
-
-
-                    break;
-
-                }
+                $pageUrl =
+                    $scheme .
+                    '://' .
+                    $host .
+                    '/news/id/' .
+                    rawurlencode(
+                        $article['id']
+                    );
 
             }
 
@@ -3846,8 +3760,8 @@ if (
                         type="search"
                         name="news_search"
                         value="<?php echo h($newsSearch); ?>"
-                        placeholder="Search news by slug or title..."
-                        aria-label="Search news by slug or title"
+                        placeholder="Search news by keywords..."
+                        aria-label="Search news by keywords"
                         autocomplete="off"
                     >
 
@@ -3861,7 +3775,7 @@ if (
                 </form>
 
                 <p class="search-hint">
-                    Tip: paste the article slug for a direct match.
+                    Search by keywords, article title, or topic.
                 </p>
 
             </div>
@@ -4370,6 +4284,77 @@ const currentArticleId =
 
 
 // ==========================================================
+// SUPABASE REQUEST HELPER
+// Used by the public news subscription form.
+// The publishable key is safe for browser use; no service-role
+// key is exposed here.
+// ==========================================================
+
+const SUPABASE_URL =
+    "https://ryvauylmymcvbvvlaceb.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6";
+
+
+async function supabaseRequest(
+    path,
+    options = {}
+) {
+
+    const response =
+        await fetch(
+            SUPABASE_URL + path,
+            {
+                ...options,
+
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization":
+                        "Bearer " + SUPABASE_KEY,
+                    "Accept": "application/json",
+                    ...(options.headers || {})
+                }
+            }
+        );
+
+
+    if (!response.ok) {
+
+        const errorText =
+            await response.text();
+
+        const error =
+            new Error(
+                errorText ||
+                ("Supabase request failed (" +
+                 response.status +
+                 ")")
+            );
+
+        error.status =
+            response.status;
+
+        throw error;
+
+    }
+
+
+    if (response.status === 204) {
+        return null;
+    }
+
+
+    const responseText =
+        await response.text();
+
+    return responseText
+        ? JSON.parse(responseText)
+        : null;
+}
+
+
+// ==========================================================
 // SAFE HTML ESCAPE FOR CLIENT-SIDE DATA
 // ==========================================================
 
@@ -4843,8 +4828,12 @@ if (subscribeForm) {
                 );
 
                 if (
+                    error.status === 409 ||
                     String(error.message || "")
-                        .includes("409")
+                        .includes("409") ||
+                    String(error.message || "")
+                        .toLowerCase()
+                        .includes("duplicate")
                 ) {
 
                     message.textContent =
