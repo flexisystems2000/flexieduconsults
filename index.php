@@ -253,6 +253,84 @@ if (!empty($announcementDocuments)) {
 
 
 // ============================================================
+// SERVER-SIDE: BUILD COMPLETE SYSTEM UPDATE HTML
+// ============================================================
+// The complete ticker markup is assembled here on the server.
+// JavaScript does not fetch, create, or inject the announcement.
+$serverSystemTickerHtml = '';
+
+if ($serverAnnouncement) {
+
+    $announcementTitleHtml = '';
+    $announcementContentHtml = '';
+    $announcementDateHtml = '';
+
+    if ($serverAnnouncement['title'] !== '') {
+        $announcementTitleHtml =
+            '<span class="system-ticker-title">' .
+            esc($serverAnnouncement['title']) .
+            '</span>';
+    }
+
+    if ($serverAnnouncement['content'] !== '') {
+        $announcementContentHtml =
+            '<span class="system-ticker-content">' .
+            esc($serverAnnouncement['content']) .
+            '</span>';
+    }
+
+    if (!empty($serverAnnouncement['timestamp'])) {
+        $announcementDateHtml =
+            '<span class="system-ticker-date">' .
+            'Posted: ' .
+            esc(date('j M Y', $serverAnnouncement['timestamp'])) .
+            '</span>';
+    }
+
+    $announcementLinkStart = '';
+    $announcementLinkEnd = '';
+
+    if (!empty($serverAnnouncement['newsLink'])) {
+        $announcementLinkStart =
+            '<a class="system-ticker-link" href="' .
+            esc($serverAnnouncement['newsLink']) .
+            '">';
+
+        $announcementLinkEnd = '</a>';
+    }
+
+    $serverSystemTickerItem =
+        '<span class="system-ticker-item">' .
+        $announcementLinkStart .
+        $announcementTitleHtml .
+        $announcementContentHtml .
+        $announcementDateHtml .
+        $announcementLinkEnd .
+        '</span>';
+
+    // Duplicate item keeps the original continuous ticker structure.
+    $serverSystemTickerDuplicateItem =
+        '<span class="system-ticker-item">' .
+        $announcementLinkStart .
+        $announcementTitleHtml .
+        $announcementContentHtml .
+        $announcementLinkEnd .
+        '</span>';
+
+    $serverSystemTickerHtml =
+        '<div class="system-ticker" role="status" aria-label="System Update">' .
+            '<div class="system-ticker-label">SYSTEM UPDATE</div>' .
+            '<div class="system-ticker-window">' .
+                '<div class="system-ticker-track">' .
+                    $serverSystemTickerItem .
+                    $serverSystemTickerDuplicateItem .
+                '</div>' .
+            '</div>' .
+        '</div>';
+}
+
+
+// ============================================================
 // SERVER-SIDE: FETCH MOTIVATIONAL QUOTES
 // ============================================================
 $serverQuotes = [];
@@ -2324,167 +2402,14 @@ $currentYear = date('Y');
 
 
     <!-- ======================================================
-         SERVER-RENDERED SYSTEM MESSAGE
+         SERVER-BUILT SYSTEM UPDATE
+         The complete ticker HTML is constructed by PHP before
+         the page is rendered. No JavaScript builds this content.
          ====================================================== -->
 
-    <?php if ($serverAnnouncement): ?>
-
-        <div
-            class="system-ticker"
-            role="status"
-            aria-label="System Update">
-
-            <div class="system-ticker-label">
-                SYSTEM UPDATE
-            </div>
-
-
-            <div class="system-ticker-window">
-
-                <div class="system-ticker-track">
-
-                    <span class="system-ticker-item">
-
-                        <?php if (!empty($serverAnnouncement['newsLink'])): ?>
-
-                            <a
-                                class="system-ticker-link"
-                                href="<?php echo esc($serverAnnouncement['newsLink']); ?>"
-                            >
-
-                        <?php endif; ?>
-
-                        <?php if (
-                            $serverAnnouncement['title'] !== ''
-                        ): ?>
-
-                            <span
-                                class="system-ticker-title">
-
-                                <?php
-                                echo esc(
-                                    $serverAnnouncement['title']
-                                );
-                                ?>
-
-                            </span>
-
-                        <?php endif; ?>
-
-
-                        <?php if (
-                            $serverAnnouncement['content'] !== ''
-                        ): ?>
-
-                            <span
-                                class="system-ticker-content">
-
-                                <?php
-                                echo esc(
-                                    $serverAnnouncement['content']
-                                );
-                                ?>
-
-                            </span>
-
-                        <?php endif; ?>
-
-
-                        <?php if (
-                            !empty(
-                                $serverAnnouncement['timestamp']
-                            )
-                        ): ?>
-
-                            <span
-                                class="system-ticker-date">
-
-                                Posted:
-                                <?php
-                                echo date(
-                                    'j M Y',
-                                    $serverAnnouncement['timestamp']
-                                );
-                                ?>
-
-                            </span>
-
-                        <?php endif; ?>
-
-
-                        <?php if (!empty($serverAnnouncement['newsLink'])): ?>
-
-                            </a>
-
-                        <?php endif; ?>
-
-                    </span>
-
-
-                    <!-- Duplicate for smoother continuous movement -->
-
-                    <span class="system-ticker-item">
-
-                        <?php if (!empty($serverAnnouncement['newsLink'])): ?>
-
-                            <a
-                                class="system-ticker-link"
-                                href="<?php echo esc($serverAnnouncement['newsLink']); ?>"
-                            >
-
-                        <?php endif; ?>
-
-                        <?php if (
-                            $serverAnnouncement['title'] !== ''
-                        ): ?>
-
-                            <span
-                                class="system-ticker-title">
-
-                                <?php
-                                echo esc(
-                                    $serverAnnouncement['title']
-                                );
-                                ?>
-
-                            </span>
-
-                        <?php endif; ?>
-
-
-                        <?php if (
-                            $serverAnnouncement['content'] !== ''
-                        ): ?>
-
-                            <span
-                                class="system-ticker-content">
-
-                                <?php
-                                echo esc(
-                                    $serverAnnouncement['content']
-                                );
-                                ?>
-
-                            </span>
-
-                        <?php endif; ?>
-
-
-                        <?php if (!empty($serverAnnouncement['newsLink'])): ?>
-
-                            </a>
-
-                        <?php endif; ?>
-
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    <?php endif; ?>
+    <?php
+    echo $serverSystemTickerHtml;
+    ?>
 
 
     <!-- ======================================================
