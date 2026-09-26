@@ -245,7 +245,8 @@ if (!empty($announcementDocuments)) {
         $serverAnnouncement = [
             'title' => $announcementTitle,
             'content' => $announcementContent,
-            'timestamp' => $announcementTimestamp
+            'timestamp' => $announcementTimestamp,
+            'newsLink' => trim((string)($latestAnnouncement['newsLink'] ?? ''))
         ];
     }
 }
@@ -1021,13 +1022,13 @@ $currentYear = date('Y');
 
         margin-bottom: 18px;
 
-        background: var(--blue);
+        background: #e8f5e9;
 
-        color: white;
+        color: #1b5e20;
 
         border-radius: var(--radius);
 
-        border-left: 5px solid var(--yellow);
+        border-left: 5px solid #2e7d32;
 
         box-shadow: var(--shadow);
 
@@ -1047,9 +1048,9 @@ $currentYear = date('Y');
 
         padding: 0 14px;
 
-        background: var(--green);
+        background: #c8e6c9;
 
-        color: white;
+        color: #1b5e20;
 
         font-size: 12px;
 
@@ -1113,22 +1114,38 @@ $currentYear = date('Y');
     }
 
 
+    .system-ticker-link {
+        color: inherit;
+
+        text-decoration: none;
+
+        display: inline-flex;
+
+        align-items: center;
+    }
+
+
+    .system-ticker-link:hover {
+        text-decoration: underline;
+    }
+
+
     .system-ticker-title {
         font-weight: 800;
 
-        color: var(--yellow);
+        color: #2e7d32;
 
         margin-right: 8px;
     }
 
 
     .system-ticker-content {
-        color: white;
+        color: #1b5e20;
     }
 
 
     .system-ticker-date {
-        color: #cbd5e1;
+        color: #4b6f52;
 
         font-size: 12px;
 
@@ -2315,10 +2332,10 @@ $currentYear = date('Y');
         <div
             class="system-ticker"
             role="status"
-            aria-label="System Message">
+            aria-label="System Update">
 
             <div class="system-ticker-label">
-                SYSTEM MESSAGE
+                SYSTEM UPDATE
             </div>
 
 
@@ -2327,6 +2344,15 @@ $currentYear = date('Y');
                 <div class="system-ticker-track">
 
                     <span class="system-ticker-item">
+
+                        <?php if (!empty($serverAnnouncement['newsLink'])): ?>
+
+                            <a
+                                class="system-ticker-link"
+                                href="<?php echo esc($serverAnnouncement['newsLink']); ?>"
+                            >
+
+                        <?php endif; ?>
 
                         <?php if (
                             $serverAnnouncement['title'] !== ''
@@ -2385,12 +2411,28 @@ $currentYear = date('Y');
 
                         <?php endif; ?>
 
+
+                        <?php if (!empty($serverAnnouncement['newsLink'])): ?>
+
+                            </a>
+
+                        <?php endif; ?>
+
                     </span>
 
 
                     <!-- Duplicate for smoother continuous movement -->
 
                     <span class="system-ticker-item">
+
+                        <?php if (!empty($serverAnnouncement['newsLink'])): ?>
+
+                            <a
+                                class="system-ticker-link"
+                                href="<?php echo esc($serverAnnouncement['newsLink']); ?>"
+                            >
+
+                        <?php endif; ?>
 
                         <?php if (
                             $serverAnnouncement['title'] !== ''
@@ -2424,6 +2466,13 @@ $currentYear = date('Y');
                                 ?>
 
                             </span>
+
+                        <?php endif; ?>
+
+
+                        <?php if (!empty($serverAnnouncement['newsLink'])): ?>
+
+                            </a>
 
                         <?php endif; ?>
 
@@ -3662,8 +3711,5 @@ window.addEventListener(
 );
 
 </script>
-
-
 </body>
-
 </html>
