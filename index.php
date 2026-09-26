@@ -1274,20 +1274,19 @@ $currentYear = date('Y');
 
 
     .slider-slide {
-        position: absolute;
-
-        width: 100%;
-        height: 100%;
-
-        opacity: 0;
-
-        transition: opacity .6s ease;
-    }
+    position: absolute;
+   width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+   transition: opacity .6s ease;
+}
 
 
     .slider-slide.active {
-        opacity: 1;
-    }
+    opacity: 1;
+    pointer-events: auto;
+}
 
 
     .slider-slide img {
