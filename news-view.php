@@ -1,10 +1,49 @@
 <?php
 // ============================================================
+// FLEXI EDUCATIONAL CONSULT
+// NEWS ARTICLE VIEWER
+//
+// Supports:
+//   **Bold text**
+//   *Italic text*
+//   ✳️ Sub-header
+//   # Main heading
+//   ## Sub-heading
+//   ### Small heading
+//   > Important notice
+//   • Bullet points
+//   - Bullet points
+//   1. Numbered lists
+//   --- Divider
+//   [[TABLE_1]]
+//   [[TABLE_2]]
+//   etc.
+//
+// Legacy articles with the old tableData format are also supported.
+// ============================================================
+
+
+$firebaseProjectId = "waec2026jamb2027";
+
+
+// ============================================================
 // GET ARTICLE ID / SLUG
 // ============================================================
 
 $newsId   = isset($_GET['id'])   ? trim($_GET['id'])   : '';
 $newsSlug = isset($_GET['slug']) ? trim($_GET['slug']) : '';
+
+// News search is intentionally slug-first because the slug is the
+// stable public identifier used by /news/{slug}.
+$newsSearch = isset($_GET['news_search'])
+    ? trim((string)$_GET['news_search'])
+    : '';
+
+$searchResults = [];
+$otherNews = [];
+$subscriptionMessage = '';
+$subscriptionType = '';
+
 
 
 // ============================================================
@@ -105,6 +144,162 @@ $pageUrl =
 
 
 // ============================================================
+// NEWS SEARCH / OTHER NEWS
+// ============================================================
+
+$supabaseUrl =
+    "https://ryvauylmymcvbvvlaceb.supabase.co";
+
+$supabaseKey =
+    "sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6";
+
+function supabase_get_rows($url, $key) {
+
+    $context =
+        stream_context_create([
+            'http' => [
+                'method' => 'GET',
+                'header' =>
+                    "apikey: {$key}\r\n" .
+                    "Authorization: Bearer {$key}\r\n" .
+                    "Accept: application/json\r\n",
+                'timeout' => 10
+            ]
+        ]);
+
+    $response =
+        @file_get_contents(
+            $url,
+            false,
+            $context
+        );
+
+    if ($response === false) {
+        return [];
+    }
+
+    $rows = json_decode($response, true);
+
+    return is_array($rows) ? $rows : [];
+}
+
+
+// ------------------------------------------------------------
+// SEARCH BY SLUG FIRST
+// ------------------------------------------------------------
+
+if ($newsSearch !== '') {
+
+    $searchValue =
+        rawurlencode($newsSearch);
+
+    // Exact slug is the preferred lookup.
+    $exactSlugUrl =
+        $supabaseUrl .
+        "/rest/v1/news?select=id,slug&slug=eq." .
+        $searchValue .
+        "&limit=1";
+
+    $exactRows =
+        supabase_get_rows(
+            $exactSlugUrl,
+            $supabaseKey
+        );
+
+    if (
+        !empty($exactRows[0]['slug'])
+    ) {
+
+        header(
+            'Location: /news/' .
+            rawurlencode(
+                $exactRows[0]['slug']
+            ),
+            true,
+            302
+        );
+
+        exit;
+    }
+
+    // If the visitor did not enter an exact slug,
+    // also allow a title/slug search.
+    $term =
+        str_replace(
+            ['\\', '"'],
+            ['\\\\', '\\"'],
+            $newsSearch
+        );
+
+    $or =
+        "(slug.ilike.*{$term}*,title.ilike.*{$term}*)";
+
+    $searchUrl =
+        $supabaseUrl .
+        "/rest/v1/news?" .
+        "select=id,title,image_url,slug,timestamp" .
+        "&or=" .
+        rawurlencode($or) .
+        "&order=timestamp.desc" .
+        "&limit=12";
+
+    $searchResults =
+        supabase_get_rows(
+            $searchUrl,
+            $supabaseKey
+        );
+}
+
+
+// ------------------------------------------------------------
+// SERVER-RENDER OTHER NEWS
+// ------------------------------------------------------------
+
+$otherNewsUrl =
+    $supabaseUrl .
+    "/rest/v1/news?" .
+    "select=id,title,image_url,slug,timestamp" .
+    "&order=timestamp.desc" .
+    "&limit=8";
+
+$otherNewsRows =
+    supabase_get_rows(
+        $otherNewsUrl,
+        $supabaseKey
+    );
+
+foreach (
+    $otherNewsRows
+    as $newsItem
+) {
+
+    if (
+        !empty($newsId) &&
+        isset($newsItem['id']) &&
+        (string)$newsItem['id'] ===
+        (string)$newsId
+    ) {
+        continue;
+    }
+
+    if (
+        !empty($newsSlug) &&
+        isset($newsItem['slug']) &&
+        (string)$newsItem['slug'] ===
+        (string)$newsSlug
+    ) {
+        continue;
+    }
+
+    $otherNews[] = $newsItem;
+
+    if (count($otherNews) >= 6) {
+        break;
+    }
+}
+
+
+// ============================================================
 // ARTICLE DATA
 // ============================================================
 
@@ -121,228 +316,271 @@ $article = [
 
 ];
 
+
 // ============================================================
-// FETCH SUPABASE NEWS
+// FETCH FIRESTORE NEWS
 // ============================================================
 
 if ($newsId || $newsSlug) {
 
-    $supabaseUrl =
-        "https://ryvauylmymcvbvvlaceb.supabase.co";
-
-    $supabaseKey =
-        "sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6";
-
-    $select =
-        "id,title,content,image_url,pdf_url,table_data,timestamp,seo_title,meta_description,focus_keyword,slug";
-
-    $queryParts = [
-        "select=" . $select,
-        "limit=1"
-    ];
-
-    if ($newsSlug) {
-
-        $queryParts[] =
-            "slug=eq." .
-            rawurlencode($newsSlug);
-
-    } else {
-
-        $queryParts[] =
-            "id=eq." .
-            rawurlencode($newsId);
-
-    }
-
     $apiUrl =
-        $supabaseUrl .
-        "/rest/v1/news?" .
-        implode("&", $queryParts);
+        "https://firestore.googleapis.com/v1/projects/" .
+        $firebaseProjectId .
+        "/databases/(default)/documents/news";
 
-    $context =
-        stream_context_create([
-            'http' => [
-                'method' => 'GET',
-
-                'header' =>
-                    "apikey: {$supabaseKey}\r\n" .
-                    "Authorization: Bearer {$supabaseKey}\r\n" .
-                    "Accept: application/json\r\n",
-
-                'timeout' => 10
-            ]
-        ]);
 
     $response =
         @file_get_contents(
-            $apiUrl,
-            false,
-            $context
+            $apiUrl
         );
 
-    if ($response !== false) {
 
-        $rows =
+    if ($response) {
+
+        $data =
             json_decode(
                 $response,
                 true
             );
 
+
         if (
-            is_array($rows) &&
-            !empty($rows)
+            isset(
+                $data['documents']
+            )
         ) {
 
-            $row = $rows[0];
-
-            $slug =
-                $row['slug'] ?? '';
-
-            // ------------------------------------------------
-            // SEO TITLE
-            // ------------------------------------------------
-
-            if (
-                !empty(
-                    $row['seo_title']
-                )
+            foreach (
+                $data['documents']
+                as $doc
             ) {
 
-                $pageTitle =
-                    $row['seo_title'] .
-                    " | Flexi Educational Consult";
-
-            } elseif (
-                !empty(
-                    $row['title']
-                )
-            ) {
-
-                $pageTitle =
-                    $row['title'] .
-                    " | Flexi Educational Consult";
-
-            }
-
-            // ------------------------------------------------
-            // META DESCRIPTION
-            // ------------------------------------------------
-
-            if (
-                !empty(
-                    $row['meta_description']
-                )
-            ) {
-
-                $pageDesc =
-                    $row['meta_description'];
-
-            } elseif (
-                !empty(
-                    $row['content']
-                )
-            ) {
-
-                $cleanDescription =
-                    preg_replace(
-                        '/\[\[TABLE_\d+\]\]/',
-                        '',
-                        $row['content']
+                $docNameParts =
+                    explode(
+                        '/',
+                        $doc['name']
                     );
 
-                $cleanDescription =
-                    preg_replace(
-                        '/[*✳️#>]/u',
-                        '',
-                        $cleanDescription
+
+                $docId =
+                    end(
+                        $docNameParts
                     );
 
-                $pageDesc =
-                    mb_substr(
-                        trim(
-                            strip_tags(
+
+                $fields =
+                    $doc['fields']
+                    ?? [];
+
+
+                $slug =
+                    $fields['slug']['stringValue']
+                    ?? '';
+
+
+                if (
+                    (
+                        $newsId &&
+                        $docId === $newsId
+                    )
+                    ||
+                    (
+                        $newsSlug &&
+                        $slug === $newsSlug
+                    )
+                ) {
+
+                    // ------------------------------------------------
+                    // SEO TITLE
+                    // ------------------------------------------------
+
+                    if (
+                        !empty(
+                            $fields['seoTitle']['stringValue']
+                        )
+                    ) {
+
+                        $pageTitle =
+                            $fields['seoTitle']['stringValue']
+                            . " | Flexi Educational Consult";
+
+                    } elseif (
+                        !empty(
+                            $fields['title']['stringValue']
+                        )
+                    ) {
+
+                        $pageTitle =
+                            $fields['title']['stringValue']
+                            . " | Flexi Educational Consult";
+
+                    }
+
+
+                    // ------------------------------------------------
+                    // META DESCRIPTION
+                    // ------------------------------------------------
+
+                    if (
+                        !empty(
+                            $fields['metaDescription']['stringValue']
+                        )
+                    ) {
+
+                        $pageDesc =
+                            $fields['metaDescription']['stringValue'];
+
+                    } elseif (
+                        !empty(
+                            $fields['content']['stringValue']
+                        )
+                    ) {
+
+                        $cleanDescription =
+                            preg_replace(
+                                '/\[\[TABLE_\d+\]\]/',
+                                '',
+                                $fields['content']['stringValue']
+                            );
+
+
+                        $cleanDescription =
+                            preg_replace(
+                                '/[*✳️#>]/u',
+                                '',
                                 $cleanDescription
+                            );
+
+
+                        $pageDesc =
+                            mb_substr(
+                                trim(
+                                    strip_tags(
+                                        $cleanDescription
+                                    )
+                                ),
+                                0,
+                                155
                             )
-                        ),
-                        0,
-                        155
-                    ) . "...";
+                            . "...";
+
+                    }
+
+
+                    // ------------------------------------------------
+                    // IMAGE
+                    // ------------------------------------------------
+
+                    if (
+                        !empty(
+                            $fields['imageUrl']['stringValue']
+                        )
+                    ) {
+
+                        $pageImage =
+                            $fields['imageUrl']['stringValue'];
+
+                    }
+
+
+                    // ------------------------------------------------
+                    // FULL ARTICLE DATA
+                    // ------------------------------------------------
+
+                    $article['title'] =
+                        $fields['title']['stringValue']
+                        ?? '';
+
+
+                    $article['content'] =
+                        $fields['content']['stringValue']
+                        ??
+                        (
+                            $fields['body']['stringValue']
+                            ?? ''
+                        );
+
+
+                    $article['imageUrl'] =
+                        $fields['imageUrl']['stringValue']
+                        ?? '';
+
+
+                    $article['tableData'] =
+                        $fields['tableData']['stringValue']
+                        ?? '';
+
+
+                    $article['pdfUrl'] =
+                        $fields['pdfUrl']['stringValue']
+                        ?? '';
+
+
+                    $article['id'] =
+                        $docId;
+
+
+                    $article['slug'] =
+                        $slug;
+
+
+                    // ------------------------------------------------
+                    // TIMESTAMP
+                    // ------------------------------------------------
+
+                    if (
+                        !empty(
+                            $fields['timestamp']['timestampValue']
+                        )
+                    ) {
+
+                        $article['timestamp'] =
+                            $fields['timestamp']['timestampValue'];
+
+                    }
+
+
+                    // ------------------------------------------------
+                    // CANONICAL URL
+                    // ------------------------------------------------
+
+                    if ($slug) {
+
+                        $pageUrl =
+                            $scheme .
+                            '://' .
+                            $host .
+                            '/news/' .
+                            rawurlencode(
+                                $slug
+                            );
+
+                    } else {
+
+                        $pageUrl =
+                            $scheme .
+                            '://' .
+                            $host .
+                            '/news/id/' .
+                            rawurlencode(
+                                $docId
+                            );
+
+                    }
+
+
+                    break;
+
+                }
+
             }
 
-            // ------------------------------------------------
-            // IMAGE
-            // ------------------------------------------------
-
-            if (
-                !empty(
-                    $row['image_url']
-                )
-            ) {
-
-                $pageImage =
-                    $row['image_url'];
-
-            }
-
-            // ------------------------------------------------
-            // FULL ARTICLE DATA
-            // ------------------------------------------------
-
-            $article['title'] =
-                $row['title'] ?? '';
-
-            $article['content'] =
-                $row['content'] ?? '';
-
-            $article['imageUrl'] =
-                $row['image_url'] ?? '';
-
-            $article['tableData'] =
-                $row['table_data'] ?? '';
-
-            $article['pdfUrl'] =
-                $row['pdf_url'] ?? '';
-
-            $article['id'] =
-                $row['id'] ?? $newsId;
-
-            $article['slug'] =
-                $slug;
-
-            $article['timestamp'] =
-                $row['timestamp'] ?? null;
-
-            // ------------------------------------------------
-            // CANONICAL URL
-            // ------------------------------------------------
-
-            if ($slug) {
-
-                $pageUrl =
-                    $scheme .
-                    '://' .
-                    $host .
-                    '/news/' .
-                    rawurlencode(
-                        $slug
-                    );
-
-            } else {
-
-                $pageUrl =
-                    $scheme .
-                    '://' .
-                    $host .
-                    '/news/id/' .
-                    rawurlencode(
-                        $article['id']
-                    );
-
-            }
         }
+
     }
+
 }
+
 
 // ============================================================
 // BASIC HTML ESCAPE
@@ -2322,6 +2560,293 @@ if (
 
 
         /* ====================================================
+           NEWS SEARCH
+        ==================================================== */
+
+        .news-search-box {
+
+            margin-bottom:
+                16px;
+
+        }
+
+
+        .news-search-form {
+
+            display:
+                flex;
+
+            gap:
+                8px;
+
+            align-items:
+                stretch;
+
+        }
+
+
+        .news-search-form input {
+
+            flex:
+                1;
+
+            margin:
+                0;
+
+            border:
+                1px solid #d7dfdc;
+
+            border-radius:
+                8px;
+
+            min-width:
+                0;
+
+        }
+
+
+        .news-search-btn {
+
+            border:
+                none;
+
+            background:
+                var(--green);
+
+            color:
+                white;
+
+            padding:
+                0 18px;
+
+            border-radius:
+                8px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .search-hint {
+
+            margin:
+                7px 0 0;
+
+            color:
+                #888;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .search-results {
+
+            margin-top:
+                16px;
+
+        }
+
+
+        .search-results-title {
+
+            color:
+                var(--blue);
+
+            font-size:
+                14px;
+
+            font-weight:
+                700;
+
+            margin:
+                0 0 10px;
+
+        }
+
+
+        .no-search-results {
+
+            color:
+                #777;
+
+            font-size:
+                14px;
+
+            padding:
+                8px 0;
+
+        }
+
+
+        /* ====================================================
+           NEWS SUBSCRIPTION
+        ==================================================== */
+
+        .news-subscribe {
+
+            margin-top:
+                22px;
+
+            padding:
+                18px;
+
+            background:
+                rgba(46,139,87,0.08);
+
+            border:
+                1px solid rgba(46,139,87,0.22);
+
+            border-radius:
+                10px;
+
+        }
+
+
+        .news-subscribe h5 {
+
+            color:
+                #ffffff;
+
+            margin:
+                0 0 6px;
+
+            font-size:
+                15px;
+
+        }
+
+
+        .news-subscribe p {
+
+            color:
+                #94a3b8;
+
+            margin:
+                0 0 12px;
+
+            line-height:
+                1.5;
+
+            font-size:
+                13px;
+
+        }
+
+
+        .news-subscribe-form {
+
+            display:
+                flex;
+
+            gap:
+                8px;
+
+        }
+
+
+        .news-subscribe-form input {
+
+            flex:
+                1;
+
+            margin:
+                0;
+
+            min-width:
+                0;
+
+            background:
+                #ffffff;
+
+            color:
+                #222;
+
+            border:
+                1px solid #d8dee5;
+
+        }
+
+
+        .news-subscribe-btn {
+
+            border:
+                none;
+
+            border-radius:
+                7px;
+
+            padding:
+                0 15px;
+
+            background:
+                var(--green);
+
+            color:
+                white;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .news-subscribe-btn:disabled {
+
+            opacity:
+                0.6;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        .subscription-message {
+
+            margin:
+                8px 0 0;
+
+            font-size:
+                12px;
+
+            min-height:
+                16px;
+
+        }
+
+
+        .subscription-message.success {
+
+            color:
+                #86efac;
+
+        }
+
+
+        .subscription-message.error {
+
+            color:
+                #fca5a5;
+
+        }
+
+
+        /* ====================================================
            OTHER NEWS
         ==================================================== */
 
@@ -3302,7 +3827,6 @@ if (
         <div
             class="other-news-section"
             id="other-news-section"
-            style="display:none;"
         >
 
             <h3>
@@ -3310,10 +3834,163 @@ if (
             </h3>
 
 
-            <div
-                class="other-news-grid"
-                id="other-news-list"
-            ></div>
+            <div class="news-search-box">
+
+                <form
+                    class="news-search-form"
+                    method="get"
+                    action="/news-view.php"
+                >
+
+                    <input
+                        type="search"
+                        name="news_search"
+                        value="<?php echo h($newsSearch); ?>"
+                        placeholder="Search news by slug or title..."
+                        aria-label="Search news by slug or title"
+                        autocomplete="off"
+                    >
+
+                    <button
+                        type="submit"
+                        class="news-search-btn"
+                    >
+                        Search
+                    </button>
+
+                </form>
+
+                <p class="search-hint">
+                    Tip: paste the article slug for a direct match.
+                </p>
+
+            </div>
+
+
+            <?php if ($newsSearch !== ''): ?>
+
+                <div class="search-results">
+
+                    <div class="search-results-title">
+                        Search results for:
+                        <?php echo h($newsSearch); ?>
+                    </div>
+
+                    <?php if (empty($searchResults)): ?>
+
+                        <div class="no-search-results">
+                            No matching news was found.
+                        </div>
+
+                    <?php else: ?>
+
+                        <div class="other-news-grid">
+
+                            <?php foreach ($searchResults as $item): ?>
+
+                                <?php
+                                $searchHref =
+                                    !empty($item['slug'])
+                                        ? '/news/' .
+                                          rawurlencode($item['slug'])
+                                        : '/news/id/' .
+                                          rawurlencode($item['id'] ?? '');
+                                ?>
+
+                                <a
+                                    class="other-news-item"
+                                    href="<?php echo h($searchHref); ?>"
+                                >
+
+                                    <img
+                                        src="<?php echo h(
+                                            $item['image_url'] ??
+                                            'https://via.placeholder.com/88x66'
+                                        ); ?>"
+                                        alt="<?php echo h(
+                                            $item['title'] ??
+                                            'News Update'
+                                        ); ?>"
+                                        loading="lazy"
+                                    >
+
+                                    <span class="on-title">
+                                        <?php echo h(
+                                            $item['title'] ??
+                                            'News Update'
+                                        ); ?>
+                                    </span>
+
+                                    <span class="on-arrow">
+                                        ❯
+                                    </span>
+
+                                </a>
+
+                            <?php endforeach; ?>
+
+                        </div>
+
+                    <?php endif; ?>
+
+                </div>
+
+            <?php endif; ?>
+
+
+            <?php if (!empty($otherNews)): ?>
+
+                <div
+                    class="other-news-grid"
+                    style="margin-top:18px;"
+                >
+
+                    <?php foreach ($otherNews as $item): ?>
+
+                        <?php
+                        $otherHref =
+                            !empty($item['slug'])
+                                ? '/news/' .
+                                  rawurlencode($item['slug'])
+                                : '/news/id/' .
+                                  rawurlencode($item['id'] ?? '');
+                        ?>
+
+                        <a
+                            class="other-news-item"
+                            href="<?php echo h($otherHref); ?>"
+                        >
+
+                            <img
+                                src="<?php echo h(
+                                    $item['image_url'] ??
+                                    'https://via.placeholder.com/88x66'
+                                ); ?>"
+                                alt="<?php echo h(
+                                    $item['title'] ??
+                                    'News Update'
+                                ); ?>"
+                                loading="lazy"
+                            >
+
+                            <span class="on-title">
+                                <?php echo h(
+                                    $item['title'] ??
+                                    'News Update'
+                                ); ?>
+                            </span>
+
+                            <span class="on-arrow">
+                                ❯
+                            </span>
+
+                        </a>
+
+                    <?php endforeach; ?>
+
+                </div>
+
+            <?php endif; ?>
 
         </div>
 
@@ -3493,6 +4170,51 @@ if (
 
             </div>
 
+
+            <!-- NEWS SUBSCRIPTION -->
+
+            <div class="news-subscribe">
+
+                <h5>
+                    Subscribe to Our News
+                </h5>
+
+                <p>
+                    Get an email when we publish a new news update.
+                </p>
+
+                <form
+                    class="news-subscribe-form"
+                    id="news-subscribe-form"
+                >
+
+                    <input
+                        type="email"
+                        id="news-subscribe-email"
+                        placeholder="Your email address"
+                        aria-label="Email address"
+                        required
+                        autocomplete="email"
+                    >
+
+                    <button
+                        type="submit"
+                        class="news-subscribe-btn"
+                        id="news-subscribe-btn"
+                    >
+                        Subscribe
+                    </button>
+
+                </form>
+
+                <div
+                    id="subscription-message"
+                    class="subscription-message"
+                    aria-live="polite"
+                ></div>
+
+            </div>
+
         </div>
 
 
@@ -3575,106 +4297,113 @@ if (
     type="text/javascript"
     src="https://cdn.jsdelivr.net/npm/toastify-js"
 ></script>
+
+
 <!-- ========================================================
-     SUPABASE / COMMENTS / OTHER NEWS
+     FIREBASE / COMMENTS / OTHER NEWS
 ========================================================= -->
 
-<script>
-const SUPABASE_URL = "https://ryvauylmymcvbvvlaceb.supabase.co";
-const SUPABASE_KEY = "sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6";
+<script type="module">
+
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    query,
+    orderBy,
+    serverTimestamp
+}
+from
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
+// ==========================================================
+// FIREBASE
+// ==========================================================
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyA0bM6pk1T1peGSS7quVfPEMOMuplnNRNM",
+
+    authDomain:
+        "waec2026jamb2027.firebaseapp.com",
+
+    projectId:
+        "waec2026jamb2027"
+
+};
+
+
+const app =
+    initializeApp(
+        firebaseConfig
+    );
+
+
+const db =
+    getFirestore(
+        app
+    );
+
+
+// ==========================================================
+// CURRENT ARTICLE ID
+// ==========================================================
 
 const currentArticleId =
     <?php
+
     echo json_encode(
         $article['id'] ?? ''
     );
+
     ?>;
-
-async function supabaseRequest(path, options = {}) {
-    const response = await fetch(SUPABASE_URL + path, {
-        ...options,
-        headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization": "Bearer " + SUPABASE_KEY,
-            "Accept": "application/json",
-            ...(options.headers || {})
-        }
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-            "Supabase request failed: " +
-            response.status +
-            " " +
-            errorText
-        );
-    }
-
-    if (response.status === 204) {
-        return null;
-    }
-
-    return response.json();
-}
 
 
 // ==========================================================
-// ESCAPE HTML
+// SAFE HTML ESCAPE FOR CLIENT-SIDE DATA
 // ==========================================================
 
 function escapeHtml(str) {
-    return String(str ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
 
+    if (!str) return '';
 
-// ==========================================================
-// COMMENT TIME
-// ==========================================================
+    return String(str)
 
-function getCommentTime(value) {
+        .replace(
+            /&/g,
+            '&amp;'
+        )
 
-    if (!value) {
-        return 0;
-    }
+        .replace(
+            /</g,
+            '&lt;'
+        )
 
-    if (typeof value === "number") {
-        return value;
-    }
+        .replace(
+            />/g,
+            '&gt;'
+        )
 
-    if (typeof value === "object") {
+        .replace(
+            /"/g,
+            '&quot;'
+        )
 
-        if (typeof value._seconds === "number") {
-            return value._seconds * 1000;
-        }
+        .replace(
+            /'/g,
+            '&#039;'
+        );
 
-        if (typeof value.seconds === "number") {
-            return value.seconds * 1000;
-        }
-    }
-
-    const parsed = Date.parse(String(value));
-
-    return Number.isNaN(parsed)
-        ? 0
-        : parsed;
-}
-
-
-function formatCommentDate(value) {
-
-    const time = getCommentTime(value);
-
-    if (!time) {
-        return "Just now";
-    }
-
-    return new Date(time).toLocaleString();
 }
 
 
@@ -3684,39 +4413,76 @@ function formatCommentDate(value) {
 
 window.shareArticle = () => {
 
-    if (navigator.share) {
+    if (
+        navigator.share
+    ) {
 
         navigator.share({
+
             title:
-                document.getElementById("news-title")?.innerText ||
-                "News",
+                document
+                    .getElementById(
+                        'news-title'
+                    )
+                    ?.innerText
+                ||
+                'News',
 
             url:
                 window.location.href
-        }).catch(() => {});
+
+        })
+        .catch(
+            () => {}
+        );
+
 
     } else {
 
-        if (navigator.clipboard) {
+        if (
+            navigator.clipboard
+        ) {
 
-            navigator.clipboard.writeText(
-                window.location.href
-            );
+            navigator.clipboard
+                .writeText(
+                    window.location.href
+                );
+
         }
 
-        if (typeof Toastify !== "undefined") {
+
+        if (
+            typeof Toastify !==
+            'undefined'
+        ) {
 
             Toastify({
-                text: "Link copied to clipboard!",
-                duration: 3000,
-                gravity: "top",
-                position: "right",
+
+                text:
+                    "Link copied to clipboard!",
+
+                duration:
+                    3000,
+
+                gravity:
+                    "top",
+
+                position:
+                    "right",
+
                 style: {
-                    background: "#2E8B57"
+
+                    background:
+                        "#2E8B57"
+
                 }
+
             }).showToast();
+
         }
+
     }
+
 };
 
 
@@ -3726,195 +4492,117 @@ window.shareArticle = () => {
 
 async function loadComments() {
 
-    if (!currentArticleId) {
+    if (!currentArticleId)
         return;
-    }
+
 
     const cList =
-        document.getElementById("comments-list");
+        document.getElementById(
+            'comments-list'
+        );
 
-    if (!cList) {
+
+    if (!cList)
         return;
-    }
+
 
     try {
 
-        const rows =
-            await supabaseRequest(
-                "/rest/v1/news_comments" +
-                "?select=id,news_id,data" +
-                "&news_id=eq." +
-                encodeURIComponent(
-                    String(currentArticleId)
+        const q =
+            query(
+
+                collection(
+                    db,
+                    "news",
+                    currentArticleId,
+                    "comments"
+                ),
+
+                orderBy(
+                    "timestamp",
+                    "desc"
                 )
+
             );
 
-        const comments =
-            Array.isArray(rows)
-                ? rows
-                : [];
 
-        comments.sort((a, b) =>
-            getCommentTime(
-                b?.data?.timestamp
-            ) -
-            getCommentTime(
-                a?.data?.timestamp
-            )
-        );
+        const snap =
+            await getDocs(
+                q
+            );
 
-        if (!comments.length) {
-            return;
+
+        if (!snap.empty) {
+
+            cList.innerHTML =
+                "";
+
+
+            snap.forEach(
+                d => {
+
+                    const c =
+                        d.data();
+
+
+                    const date =
+                        c.timestamp
+                            ?
+                            c.timestamp
+                                .toDate()
+                                .toLocaleString()
+                            :
+                            "Just now";
+
+
+                    cList.innerHTML += `
+
+                        <div class="comment-box">
+
+                            <div class="comment-name">
+
+                                ${escapeHtml(
+                                    c.name
+                                )}
+
+                            </div>
+
+
+                            <div class="comment-text">
+
+                                ${escapeHtml(
+                                    c.text
+                                )}
+
+                            </div>
+
+
+                            <div class="comment-date">
+
+                                ${escapeHtml(
+                                    date
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
         }
 
-        cList.innerHTML =
-            comments.map(row => {
-
-                const data =
-                    row.data || {};
-
-                return `
-                    <div class="comment-box">
-
-                        <div class="comment-name">
-                            ${escapeHtml(
-                                data.name ||
-                                "Anonymous"
-                            )}
-                        </div>
-
-                        <div class="comment-text">
-                            ${escapeHtml(
-                                data.text ||
-                                ""
-                            )}
-                        </div>
-
-                        <div class="comment-date">
-                            ${escapeHtml(
-                                formatCommentDate(
-                                    data.timestamp
-                                )
-                            )}
-                        </div>
-
-                    </div>
-                `;
-
-            }).join("");
-
-    } catch (error) {
+    } catch (e) {
 
         console.error(
             "Error loading comments:",
-            error
-        );
-    }
-}
-
-
-// ==========================================================
-// LOAD OTHER NEWS
-// ==========================================================
-
-async function loadOtherNews() {
-
-    const section =
-        document.getElementById(
-            "other-news-section"
+            e
         );
 
-    const list =
-        document.getElementById(
-            "other-news-list"
-        );
-
-    if (!section || !list) {
-        return;
     }
 
-    try {
-
-        const rows =
-            await supabaseRequest(
-                "/rest/v1/news" +
-                "?select=id,title,image_url,slug,timestamp" +
-                "&order=timestamp.desc" +
-                "&limit=7"
-            );
-
-        const items =
-            (Array.isArray(rows)
-                ? rows
-                : [])
-            .filter(
-                item =>
-                    String(item.id) !==
-                    String(currentArticleId)
-            )
-            .slice(0, 6);
-
-        if (!items.length) {
-            return;
-        }
-
-        list.innerHTML =
-            items.map(item => {
-
-                const href =
-                    item.slug
-                        ? "/news/" +
-                          encodeURIComponent(
-                              item.slug
-                          )
-                        : "/news/id/" +
-                          encodeURIComponent(
-                              item.id
-                          );
-
-                return `
-                    <a
-                        class="other-news-item"
-                        href="${escapeHtml(href)}"
-                    >
-
-                        <img
-                            src="${escapeHtml(
-                                item.image_url ||
-                                "https://via.placeholder.com/88x66"
-                            )}"
-                            alt="${escapeHtml(
-                                item.title ||
-                                "News Update"
-                            )}"
-                            loading="lazy"
-                        >
-
-                        <span class="on-title">
-                            ${escapeHtml(
-                                item.title ||
-                                "News Update"
-                            )}
-                        </span>
-
-                        <span class="on-arrow">
-                            ❯
-                        </span>
-
-                    </a>
-                `;
-
-            }).join("");
-
-        section.style.display = "block";
-
-    } catch (error) {
-
-        console.error(
-            "Error loading other news:",
-            error
-        );
-    }
 }
 
 
@@ -3922,149 +4610,266 @@ async function loadOtherNews() {
 // POST COMMENT
 // ==========================================================
 
-window.postComment = async () => {
+window.postComment =
+    async () => {
 
-    const nameInput =
-        document.getElementById(
-            "comm-name"
-        );
-
-    const textInput =
-        document.getElementById(
-            "comm-text"
-        );
-
-    const btn =
-        document.getElementById(
-            "post-comm-btn"
-        );
-
-    if (!nameInput ||
-        !textInput ||
-        !btn) {
-
-        return;
-    }
-
-    const name =
-        nameInput.value.trim();
-
-    const text =
-        textInput.value.trim();
+        const name =
+            document
+                .getElementById(
+                    'comm-name'
+                )
+                .value
+                .trim();
 
 
-    if (!name || !text) {
-
-        alert(
-            "Please fill both fields"
-        );
-
-        return;
-    }
-
-
-    if (!currentArticleId) {
-
-        alert(
-            "This article cannot receive comments."
-        );
-
-        return;
-    }
+        const text =
+            document
+                .getElementById(
+                    'comm-text'
+                )
+                .value
+                .trim();
 
 
-    btn.disabled = true;
-
-    btn.innerText =
-        "Posting...";
-
-
-    try {
-
-        await supabaseRequest(
-            "/rest/v1/news_comments",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json",
-
-                    "Prefer":
-                        "return=minimal"
-                },
-
-                body: JSON.stringify({
-
-                    id:
-                        crypto.randomUUID(),
-
-                    news_id:
-                        String(
-                            currentArticleId
-                        ),
-
-                    data: {
-
-                        name:
-                            name,
-
-                        text:
-                            text,
-
-                        timestamp:
-                            new Date()
-                                .toISOString()
-                    }
-                })
-            }
-        );
+        const btn =
+            document.getElementById(
+                'post-comm-btn'
+            );
 
 
-        if (typeof Toastify !== "undefined") {
+        if (
+            !name ||
+            !text
+        ) {
 
-            Toastify({
+            alert(
+                "Please fill both fields"
+            );
 
-                text:
-                    "Comment posted!",
+            return;
 
-                duration:
-                    3000,
-
-                style: {
-                    background:
-                        "#2E8B57"
-                }
-
-            }).showToast();
         }
 
 
-        textInput.value = "";
+        if (!currentArticleId) {
+
+            alert(
+                "This article cannot receive comments."
+            );
+
+            return;
+
+        }
 
 
-        await loadComments();
+        btn.disabled =
+            true;
 
-
-    } catch (error) {
-
-        console.error(
-            "Error posting comment:",
-            error
-        );
-
-        alert(
-            "Error posting comment. Please try again."
-        );
-
-    } finally {
-
-        btn.disabled = false;
 
         btn.innerText =
-            "Post Comment";
-    }
-};
+            "Posting...";
+
+
+        try {
+
+            await addDoc(
+
+                collection(
+                    db,
+                    "news",
+                    currentArticleId,
+                    "comments"
+                ),
+
+                {
+
+                    name:
+                        name,
+
+                    text:
+                        text,
+
+                    timestamp:
+                        serverTimestamp()
+
+                }
+
+            );
+
+
+            if (
+                typeof Toastify !==
+                'undefined'
+            ) {
+
+                Toastify({
+
+                    text:
+                        "Comment posted!",
+
+                    style: {
+
+                        background:
+                            "#2E8B57"
+
+                    }
+
+                }).showToast();
+
+            }
+
+
+            document
+                .getElementById(
+                    'comm-text'
+                )
+                .value =
+                "";
+
+
+            loadComments();
+
+
+        } catch (e) {
+
+            console.error(
+                e
+            );
+
+
+            alert(
+                "Error posting comment."
+            );
+
+
+        } finally {
+
+            btn.disabled =
+                false;
+
+
+            btn.innerText =
+                "Post Comment";
+
+        }
+
+    };
+
+
+// ==========================================================
+// NEWS SUBSCRIPTION
+// ==========================================================
+
+const subscribeForm =
+    document.getElementById(
+        "news-subscribe-form"
+    );
+
+if (subscribeForm) {
+
+    subscribeForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const emailInput =
+                document.getElementById(
+                    "news-subscribe-email"
+                );
+
+            const button =
+                document.getElementById(
+                    "news-subscribe-btn"
+                );
+
+            const message =
+                document.getElementById(
+                    "subscription-message"
+                );
+
+            if (!emailInput ||
+                !button ||
+                !message) {
+                return;
+            }
+
+            const email =
+                emailInput.value.trim().toLowerCase();
+
+            if (!email) {
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = "Subscribing...";
+            message.textContent = "";
+            message.className =
+                "subscription-message";
+
+            try {
+
+                const rows =
+                    await supabaseRequest(
+                        "/rest/v1/news_subscribers",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+                                "Prefer":
+                                    "return=minimal"
+                            },
+                            body: JSON.stringify({
+                                email: email,
+                                active: true
+                            })
+                        }
+                    );
+
+                message.textContent =
+                    "You're subscribed! You'll receive new news updates by email.";
+
+                message.className =
+                    "subscription-message success";
+
+                emailInput.value = "";
+
+            } catch (error) {
+
+                console.error(
+                    "Subscription error:",
+                    error
+                );
+
+                if (
+                    String(error.message || "")
+                        .includes("409")
+                ) {
+
+                    message.textContent =
+                        "This email is already subscribed.";
+
+                } else {
+
+                    message.textContent =
+                        "We couldn't complete your subscription. Please try again.";
+
+                }
+
+                message.className =
+                    "subscription-message error";
+
+            } finally {
+
+                button.disabled = false;
+                button.textContent = "Subscribe";
+
+            }
+
+        }
+    );
+}
 
 
 // ==========================================================
@@ -4073,30 +4878,33 @@ window.postComment = async () => {
 
 const yearElement =
     document.getElementById(
-        "current-year"
+        'current-year'
     );
+
 
 if (yearElement) {
 
     yearElement.textContent =
-        new Date().getFullYear();
+        new Date()
+            .getFullYear();
+
 }
 
 
 // ==========================================================
-// START
+// INTERACTIVE CONTENT
 // ==========================================================
 
-if (currentArticleId) {
+if (
+    currentArticleId
+) {
 
     loadComments();
 
-    loadOtherNews();
 }
 
 </script>
 
-</body>
-</html>
+
 </body>
 </html>
