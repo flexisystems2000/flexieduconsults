@@ -181,12 +181,11 @@ $pageDescription =
 
         header {
             background:
-                linear-gradient(
-                    135deg,
-                    #075e54,
-                    #087f5b,
-                    #0aa06e
-                );
+    linear-gradient(
+        135deg,
+        #003366,
+        #2E8B57
+    );
 
             color: white;
             padding: 18px 20px;
@@ -363,11 +362,11 @@ $pageDescription =
             height: 5px;
 
             background:
-                linear-gradient(
-                    90deg,
-                    #075e54,
-                    #0aa06e
-                );
+    linear-gradient(
+        90deg,
+        #003366,
+        #2E8B57
+    );
         }
 
         .app-badge {
