@@ -154,24 +154,51 @@ $supabaseKey =
 
 function supabase_get_rows($url, $key) {
 
-    $context =
-        stream_context_create([
-            'http' => [
-                'method' => 'GET',
-                'header' =>
-                    "apikey: {$key}\r\n" .
-                    "Authorization: Bearer {$key}\r\n" .
-                    "Accept: application/json\r\n",
-                'timeout' => 10
+    // Prefer PHP cURL when available. Some hosting environments
+    // disable allow_url_fopen, which makes file_get_contents()
+    // silently fail for HTTPS API requests.
+    if (function_exists('curl_init')) {
+
+        $ch = curl_init($url);
+
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 20,
+            CURLOPT_HTTPHEADER => [
+                'apikey: ' . $key,
+                'Authorization: Bearer ' . $key,
+                'Accept: application/json'
             ]
         ]);
 
-    $response =
-        @file_get_contents(
-            $url,
-            false,
-            $context
-        );
+        $response = curl_exec($ch);
+        $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response !== false && $httpCode >= 200 && $httpCode < 300) {
+            $rows = json_decode($response, true);
+            return is_array($rows) ? $rows : [];
+        }
+
+        return [];
+    }
+
+    // Fallback for servers without the cURL extension.
+    $context = stream_context_create([
+        'http' => [
+            'method' => 'GET',
+            'header' =>
+                "apikey: {$key}\r\n" .
+                "Authorization: Bearer {$key}\r\n" .
+                "Accept: application/json\r\n",
+            'timeout' => 20,
+            'ignore_errors' => true
+        ]
+    ]);
+
+    $response = @file_get_contents($url, false, $context);
 
     if ($response === false) {
         return [];
@@ -208,9 +235,11 @@ if ($newsSearch !== '') {
 
     foreach ($rawTerms as $rawTerm) {
 
+        // Keep normal word characters. Remove only characters that can
+        // interfere with a PostgREST filter expression.
         $term =
             preg_replace(
-                '/[^\p{L}\p{N}_-]/u',
+                '/[^\p{L}\p{N}_\/-]/u',
                 '',
                 $rawTerm
             );
@@ -227,8 +256,26 @@ if ($newsSearch !== '') {
         $orParts = [];
 
         foreach ($terms as $term) {
-            $orParts[] = 'slug.ilike.*' . $term . '*';
-            $orParts[] = 'title.ilike.*' . $term . '*';
+            // Search the fields visitors are most likely to expect.
+            // This makes searches such as "Yaba", "YABATECH",
+            // "admission", or "JAMB portal" useful even when
+            // the exact article slug is unknown.
+            $safeTerm = str_replace(
+                ['*', ',', '(', ')'],
+                '',
+                $term
+            );
+
+            if ($safeTerm === '') {
+                continue;
+            }
+
+            $orParts[] = 'slug.ilike.*' . $safeTerm . '*';
+            $orParts[] = 'title.ilike.*' . $safeTerm . '*';
+            $orParts[] = 'content.ilike.*' . $safeTerm . '*';
+            $orParts[] = 'seo_title.ilike.*' . $safeTerm . '*';
+            $orParts[] = 'meta_description.ilike.*' . $safeTerm . '*';
+            $orParts[] = 'focus_keyword.ilike.*' . $safeTerm . '*';
         }
 
         $or = '(' . implode(',', $orParts) . ')';
@@ -334,7 +381,7 @@ if ($newsId || $newsSlug) {
             $supabaseUrl .
             "/rest/v1/news?" .
             "select=id,title,content,image_url,pdf_url,table_data,timestamp,seo_title,meta_description,focus_keyword,slug" .
-            "&slug=eq." .
+            "&slug=ilike." .
             rawurlencode($newsSlug) .
             "&limit=1";
 
@@ -3410,7 +3457,119 @@ if (
 
 <div class="container">
 
-<?php if (empty($article['title'])): ?>
+<?php if ($newsSearch !== '' && empty($newsId) && empty($newsSlug)): ?>
+
+    <div id="loader" style="display:block;">
+
+        <h2 style="margin-bottom:18px;">
+            Search News
+        </h2>
+
+        <div class="news-search-box" style="max-width:700px;margin:0 auto 20px;">
+
+            <form
+                class="news-search-form"
+                method="get"
+                action="/news-view.php"
+            >
+
+                <input
+                    type="search"
+                    name="news_search"
+                    value="<?php echo h($newsSearch); ?>"
+                    placeholder="Search news by keywords..."
+                    aria-label="Search news by keywords"
+                    autocomplete="off"
+                    autofocus
+                >
+
+                <button
+                    type="submit"
+                    class="news-search-btn"
+                >
+                    Search
+                </button>
+
+            </form>
+
+            <p class="search-hint">
+                Search by keywords, article title, topic, or article content.
+            </p>
+
+        </div>
+
+        <div class="search-results" style="max-width:900px;margin:0 auto;">
+
+            <div class="search-results-title">
+                Search results for:
+                <?php echo h($newsSearch); ?>
+            </div>
+
+            <?php if (empty($searchResults)): ?>
+
+                <div class="no-search-results">
+                    No matching news was found. Try another keyword, such as Yaba, JAMB, admission, WAEC, or ASUU.
+                </div>
+
+            <?php else: ?>
+
+                <div class="other-news-grid">
+
+                    <?php foreach ($searchResults as $item): ?>
+
+                        <?php
+                        $searchHref =
+                            !empty($item['slug'])
+                                ? '/news/' . rawurlencode($item['slug'])
+                                : '/news/id/' . rawurlencode($item['id'] ?? '');
+                        ?>
+
+                        <a
+                            class="other-news-item"
+                            href="<?php echo h($searchHref); ?>"
+                        >
+
+                            <img
+                                src="<?php echo h(
+                                    $item['image_url'] ??
+                                    'https://via.placeholder.com/88x66'
+                                ); ?>"
+                                alt="<?php echo h(
+                                    $item['title'] ??
+                                    'News Update'
+                                ); ?>"
+                                loading="lazy"
+                            >
+
+                            <span class="on-title">
+                                <?php echo h(
+                                    $item['title'] ??
+                                    'News Update'
+                                ); ?>
+                            </span>
+
+                        </a>
+
+                    <?php endforeach; ?>
+
+                </div>
+
+            <?php endif; ?>
+
+        </div>
+
+        <p style="margin-top:24px;">
+            <a
+                href="/index.php"
+                style="color:var(--blue);font-weight:bold;"
+            >
+                ❮ Back to News Archive
+            </a>
+        </p>
+
+    </div>
+
+<?php elseif (empty($article['title'])): ?>
 
     <div id="loader">
 
