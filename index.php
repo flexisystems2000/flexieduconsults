@@ -2447,46 +2447,30 @@ $currentYear = date('Y');
          ====================================================== -->
 
     <div class="slider-container">
+       <a href="/download-app.php" class="slider-slide active">
+   <img
+        src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg"
+        alt="JAMB UTME CBT Online Exam Practice Banner">
+</a>
 
-        <div class="slider-slide active">
+       <a href="/purchase.html" class="slider-slide">
+   <img src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg"
+        alt="WAEC NECO SSCE Preparation Tutorials Banner"></a>
 
-            <img
-                src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg"
-                alt="JAMB UTME CBT Online Exam Practice Banner">
+       <a href="/purchase.html" class="slider-slide">
 
-        </div>
+    <img
+        src="https://i.postimg.cc/76p3Srkc/Screenshot-20260418-191139-2.png"
+        alt="Flexi Educational Consult Academic Registration Banner">
 
-
-        <div class="slider-slide">
-
-            <img
-                src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg"
-                alt="WAEC NECO SSCE Preparation Tutorials Banner">
-
-        </div>
-
-
-        <div class="slider-slide">
-
-            <img
-                src="https://i.postimg.cc/76p3Srkc/Screenshot-20260418-191139-2.png"
-                alt="Flexi Educational Consult Academic Registration Banner">
-
-        </div>
-
+</a>
 
         <div class="slider-dots">
-
             <span class="dot active-dot"></span>
-
             <span class="dot"></span>
-
             <span class="dot"></span>
-
         </div>
-
     </div>
-
 
     <!-- ======================================================
          NEWS
@@ -2496,17 +2480,12 @@ $currentYear = date('Y');
         News Updates
     </h2>
 
-
-    <table class="news-table">
-
-        <tbody id="news-table-body">
-
+   <table class="news-table">
+       <tbody id="news-table-body">
             <?php
             echo $serverNewsHtml;
             ?>
-
         </tbody>
-
     </table>
 
 
