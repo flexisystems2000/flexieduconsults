@@ -184,10 +184,7 @@ function fetchFirestoreCollection($collectionName, $baseUrl)
         return [];
     }
 
-    if (
-        !isset($decoded['documents']) ||
-        !is_array($decoded['documents'])
-    ) {
+    if (!isset($decoded['documents']) || !is_array($decoded['documents'])) {
         return [];
     }
 
@@ -216,7 +213,6 @@ if (!empty($announcementDocuments)) {
     usort(
         $announcementDocuments,
         function ($a, $b) {
-
             $aTime = firestoreTimestampToUnix(
                 $a['createdAt'] ?? null
             );
@@ -229,54 +225,27 @@ if (!empty($announcementDocuments)) {
         }
     );
 
-    $latestAnnouncement =
-        $announcementDocuments[0];
+    $latestAnnouncement = $announcementDocuments[0];
 
     $announcementTitle =
-        trim(
-            (string)(
-                $latestAnnouncement['title'] ?? ''
-            )
-        );
+        trim((string)($latestAnnouncement['title'] ?? ''));
 
     $announcementContent =
-        trim(
-            (string)(
-                $latestAnnouncement['content'] ?? ''
-            )
-        );
+        trim((string)($latestAnnouncement['content'] ?? ''));
 
     $announcementTimestamp =
         firestoreTimestampToUnix(
             $latestAnnouncement['createdAt'] ?? null
         );
 
-    $announcementNewsLink =
-        trim(
-            (string)(
-                $latestAnnouncement['newsLink'] ?? ''
-            )
-        );
-
     if (
         $announcementTitle !== '' ||
         $announcementContent !== ''
     ) {
-
         $serverAnnouncement = [
-
-            'title' =>
-                $announcementTitle,
-
-            'content' =>
-                $announcementContent,
-
-            'timestamp' =>
-                $announcementTimestamp,
-
-            'newsLink' =>
-                $announcementNewsLink
-
+            'title' => $announcementTitle,
+            'content' => $announcementContent,
+            'timestamp' => $announcementTimestamp
         ];
     }
 }
@@ -297,7 +266,6 @@ if (!empty($quoteDocuments)) {
     usort(
         $quoteDocuments,
         function ($a, $b) {
-
             $aTime = firestoreTimestampToUnix(
                 $a['createdAt'] ?? null
             );
@@ -325,35 +293,17 @@ if (!empty($quoteDocuments)) {
         }
 
         $serverQuotes[] = [
-
-            'text' =>
-                $text,
-
-            'author' =>
-                $author,
-
-            'bgImage' =>
-                trim(
-                    (string)(
-                        $quote['bgImage'] ?? ''
-                    )
-                ),
-
-            'textColor' =>
-                trim(
-                    (string)(
-                        $quote['textColor']
-                        ?? '#ffffff'
-                    )
-                ),
-
-            'authorColor' =>
-                trim(
-                    (string)(
-                        $quote['authorColor']
-                        ?? '#f1f5f9'
-                    )
-                )
+            'text' => $text,
+            'author' => $author,
+            'bgImage' => trim(
+                (string)($quote['bgImage'] ?? '')
+            ),
+            'textColor' => trim(
+                (string)($quote['textColor'] ?? '#ffffff')
+            ),
+            'authorColor' => trim(
+                (string)($quote['authorColor'] ?? '#f1f5f9')
+            )
         ];
     }
 }
@@ -362,11 +312,10 @@ if (!empty($quoteDocuments)) {
 // ============================================================
 // SERVER-SIDE: FETCH NEWS + PAGINATION FROM SUPABASE
 // ============================================================
-$supabaseUrl =
-    "https://ryvauylmymcvbvvlaceb.supabase.co";
+$supabaseUrl = "https://ryvauylmymcvbvvlaceb.supabase.co";
 
 $supabaseKey =
-    "sb_publishable_zF84MIhSPO3MXth_LLqDA_yQ4pIvp6";
+    "sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6";
 
 $newsApiUrl =
     $supabaseUrl .
@@ -378,30 +327,21 @@ $perPage = 10;
 
 $currentPage =
     isset($_GET['page'])
-        ? max(
-            1,
-            (int)$_GET['page']
-        )
+        ? max(1, (int)$_GET['page'])
         : 1;
 
 $allNews = [];
 
 $context = stream_context_create([
-
     'http' => [
-
         'method' => 'GET',
-
         'header' =>
             "apikey: {$supabaseKey}\r\n" .
             "Authorization: Bearer {$supabaseKey}\r\n" .
             "Accept: application/json\r\n",
-
         'timeout' => 10,
-
         'ignore_errors' => true
     ]
-
 ]);
 
 $response = @file_get_contents(
@@ -423,19 +363,15 @@ if ($response !== false) {
 
             $timestamp =
                 !empty($row['timestamp'])
-                    ? strtotime(
-                        $row['timestamp']
-                    )
+                    ? strtotime($row['timestamp'])
                     : 0;
 
             $allNews[] = [
-
                 'id' =>
                     $row['id'] ?? '',
 
                 'title' =>
-                    $row['title']
-                    ?? 'News Update',
+                    $row['title'] ?? 'News Update',
 
                 'imageUrl' =>
                     $row['image_url']
@@ -458,7 +394,6 @@ if ($response !== false) {
 usort(
     $allNews,
     function ($a, $b) {
-
         return $b['timestamp']
             <=> $a['timestamp'];
     }
@@ -472,9 +407,7 @@ $totalItems = count($allNews);
 
 $totalPages = max(
     1,
-    (int)ceil(
-        $totalItems / $perPage
-    )
+    (int)ceil($totalItems / $perPage)
 );
 
 $currentPage = min(
@@ -535,14 +468,10 @@ if (empty($newsForPage)) {
             );
 
         $safeImage =
-            esc(
-                $item['imageUrl']
-            );
+            esc($item['imageUrl']);
 
         $safeTitle =
-            esc(
-                $item['title']
-            );
+            esc($item['title']);
 
         $serverNewsHtml .=
             '<tr onclick="window.location.href=\'' .
@@ -587,7 +516,6 @@ function buildPagination(
     $html =
         '<div class="pagination-bar" ' .
         'id="pagination-controls">';
-
 
     // Previous
     if ($currentPage > 1) {
@@ -739,21 +667,15 @@ if (!empty($serverQuotes)) {
 
             $bgStyle =
                 "background-image:url('" .
-                esc(
-                    $quote['bgImage']
-                ) .
+                esc($quote['bgImage']) .
                 "');";
         }
 
         $textColor =
-            esc(
-                $quote['textColor']
-            );
+            esc($quote['textColor']);
 
         $authorColor =
-            esc(
-                $quote['authorColor']
-            );
+            esc($quote['authorColor']);
 
         $serverQuoteHtml .=
             '<div class="quote-slide' .
@@ -769,9 +691,7 @@ if (!empty($serverQuotes)) {
             '<blockquote style="color:' .
             $textColor .
             ';">"' .
-            esc(
-                $quote['text']
-            ) .
+            esc($quote['text']) .
             '"</blockquote>';
 
         if ($quote['author'] !== '') {
@@ -780,9 +700,7 @@ if (!empty($serverQuotes)) {
                 '<cite style="color:' .
                 $authorColor .
                 ';">— ' .
-                esc(
-                    $quote['author']
-                ) .
+                esc($quote['author']) .
                 '</cite>';
         }
 
@@ -1095,7 +1013,7 @@ $currentYear = date('Y');
 
 
     /* ========================================================
-       SYSTEM UPDATE / NEWS TICKER
+       SYSTEM MESSAGE / NEWS TICKER
        ======================================================== */
 
     .system-ticker {
@@ -1103,13 +1021,13 @@ $currentYear = date('Y');
 
         margin-bottom: 18px;
 
-        background: #e8f5e9;
+        background: var(--blue);
 
-        color: #1b5e20;
+        color: white;
 
         border-radius: var(--radius);
 
-        border-left: 5px solid #2e7d32;
+        border-left: 5px solid var(--yellow);
 
         box-shadow: var(--shadow);
 
@@ -1129,9 +1047,9 @@ $currentYear = date('Y');
 
         padding: 0 14px;
 
-        background: #c8e6c9;
+        background: var(--green);
 
-        color: #1b5e20;
+        color: white;
 
         font-size: 12px;
 
@@ -1195,38 +1113,22 @@ $currentYear = date('Y');
     }
 
 
-    .system-ticker-link {
-        color: inherit;
-
-        text-decoration: none;
-
-        display: inline-flex;
-
-        align-items: center;
-    }
-
-
-    .system-ticker-link:hover {
-        text-decoration: underline;
-    }
-
-
     .system-ticker-title {
         font-weight: 800;
 
-        color: #2e7d32;
+        color: var(--yellow);
 
         margin-right: 8px;
     }
 
 
     .system-ticker-content {
-        color: #1b5e20;
+        color: white;
     }
 
 
     .system-ticker-date {
-        color: #4b6f52;
+        color: #cbd5e1;
 
         font-size: 12px;
 
@@ -2405,7 +2307,7 @@ $currentYear = date('Y');
 
 
     <!-- ======================================================
-         SERVER-RENDERED SYSTEM UPDATE
+         SERVER-RENDERED SYSTEM MESSAGE
          ====================================================== -->
 
     <?php if ($serverAnnouncement): ?>
@@ -2413,10 +2315,10 @@ $currentYear = date('Y');
         <div
             class="system-ticker"
             role="status"
-            aria-label="System Update">
+            aria-label="System Message">
 
             <div class="system-ticker-label">
-                SYSTEM UPDATE
+                SYSTEM MESSAGE
             </div>
 
 
@@ -2424,29 +2326,7 @@ $currentYear = date('Y');
 
                 <div class="system-ticker-track">
 
-
-                    <!-- ==================================================
-                         FIRST TICKER ITEM
-                         ================================================== -->
-
                     <span class="system-ticker-item">
-
-                        <?php if (
-                            !empty(
-                                $serverAnnouncement['newsLink']
-                            )
-                        ): ?>
-
-                            <a
-                                class="system-ticker-link"
-                                href="<?php
-                                    echo esc(
-                                        $serverAnnouncement['newsLink']
-                                    );
-                                ?>">
-
-                        <?php endif; ?>
-
 
                         <?php if (
                             $serverAnnouncement['title'] !== ''
@@ -2494,7 +2374,6 @@ $currentYear = date('Y');
                                 class="system-ticker-date">
 
                                 Posted:
-
                                 <?php
                                 echo date(
                                     'j M Y',
@@ -2506,42 +2385,12 @@ $currentYear = date('Y');
 
                         <?php endif; ?>
 
-
-                        <?php if (
-                            !empty(
-                                $serverAnnouncement['newsLink']
-                            )
-                        ): ?>
-
-                            </a>
-
-                        <?php endif; ?>
-
                     </span>
 
 
-                    <!-- ==================================================
-                         DUPLICATE TICKER ITEM
-                         ================================================== -->
+                    <!-- Duplicate for smoother continuous movement -->
 
                     <span class="system-ticker-item">
-
-                        <?php if (
-                            !empty(
-                                $serverAnnouncement['newsLink']
-                            )
-                        ): ?>
-
-                            <a
-                                class="system-ticker-link"
-                                href="<?php
-                                    echo esc(
-                                        $serverAnnouncement['newsLink']
-                                    );
-                                ?>">
-
-                        <?php endif; ?>
-
 
                         <?php if (
                             $serverAnnouncement['title'] !== ''
@@ -2578,42 +2427,7 @@ $currentYear = date('Y');
 
                         <?php endif; ?>
 
-
-                        <?php if (
-                            !empty(
-                                $serverAnnouncement['timestamp']
-                            )
-                        ): ?>
-
-                            <span
-                                class="system-ticker-date">
-
-                                Posted:
-
-                                <?php
-                                echo date(
-                                    'j M Y',
-                                    $serverAnnouncement['timestamp']
-                                );
-                                ?>
-
-                            </span>
-
-                        <?php endif; ?>
-
-
-                        <?php if (
-                            !empty(
-                                $serverAnnouncement['newsLink']
-                            )
-                        ): ?>
-
-                            </a>
-
-                        <?php endif; ?>
-
                     </span>
-
 
                 </div>
 
@@ -3244,7 +3058,7 @@ document.addEventListener(
 const firebaseConfig = {
 
     apiKey:
-        "AIzaSyA0bM6pk1T1peGSS7qufVPEMOMuplnNRNM",
+        "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
 
     authDomain:
         "auth.flexieduconsult.com.ng",
@@ -3848,5 +3662,8 @@ window.addEventListener(
 );
 
 </script>
+
+
 </body>
+
 </html>
