@@ -1,0 +1,561 @@
+{
+  "play": "An Inspector Calls",
+  "author": "J.B. Priestley",
+  "category": "English Drama / Twentieth-Century Literature",
+  "summary": {
+    "overview": "An Inspector Calls is a famous 1945 stage play by English dramatist J.B. Priestley. Set in 1912 in the fictional industrial city of Brumley, it examines the affluent Birling family, whose comfortable celebratory dinner party is abruptly interrupted by the arrival of a mysterious police inspector investigating the suicide of a young working-class woman named Eva Smith.",
+    "plot_summary": "The play opens with Arthur Birling celebrating his daughter Sheila's engagement to Gerald Croft, expressing capitalist views on individualism and business ('community and all that nonsense'). Suddenly, Inspector Goole arrives, announcing that a young woman named Eva Smith (later known as Daisy Renton) has died by suicide after drinking disinfectant. Through a meticulous chain of interrogation, the Inspector reveals how each family member—and Gerald—played a contributory role in her downward spiral: Arthur Birling fired her for demanding higher wages; Sheila had her dismissed from her next job out of jealousy; Gerald kept her as his mistress before discarding her; Eric forced himself upon her and stole money to support her; and Sybil Birling refused her charitable aid when she was pregnant and desperate. As the Inspector departs with a stern warning about social responsibility, Gerald returns with news that no Inspector Goole exists at the local police force and no girl has recently died. While the older Birlings (Arthur and Sybil) and Gerald dismiss the entire ordeal as a hoax and celebrate, the younger generation (Sheila and Eric) remain deeply shaken by their moral guilt. The play concludes with a chilling climax: a real phone call announces that a young woman has just died by suicide, and a real inspector is on his way to interrogate them."
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of the play 'An Inspector Calls'?",
+      "options": [
+        "A) George Bernard Shaw",
+        "B) J.B. Priestley",
+        "C) Oscar Wilde",
+        "D) Arthur Miller"
+      ],
+      "answer": "B) J.B. Priestley"
+    },
+    {
+      "id": 2,
+      "question": "In what year was the play written and first performed?",
+      "options": [
+        "A) 1912",
+        "B) 1939",
+        "C) 1945",
+        "D) 1950"
+      ],
+      "answer": "C) 1945"
+    },
+    {
+      "id": 3,
+      "question": "In what year is the play's action specifically set?",
+      "options": [
+        "A) 1912",
+        "B) 1914",
+        "C) 1918",
+        "D) 1945"
+      ],
+      "answer": "A) 1912"
+    },
+    {
+      "id": 4,
+      "question": "What is the name of the fictional industrial city where the play takes place?",
+      "options": [
+        "A) Manchester",
+        "B) Brumley",
+        "C) Liverpool",
+        "D) Birmingham"
+      ],
+      "answer": "B) Brumley"
+    },
+    {
+      "id": 5,
+      "question": "What occasion is the Birling family celebrating at the beginning of the play?",
+      "options": [
+        "A) Arthur Birling's knighthood",
+        "B) Sheila Birling and Gerald Croft's engagement",
+        "C) Eric Birling's birthday",
+        "D) A successful business merger"
+      ],
+      "answer": "B) Sheila Birling and Gerald Croft's engagement"
+    },
+    {
+      "id": 6,
+      "question": "What is the name of the company owned by Arthur Birling?",
+      "options": [
+        "A) Birling & Co.",
+        "B) Croft & Birling Ltd.",
+        "C) Brumley Works",
+        "D) Imperial Steels"
+      ],
+      "answer": "A) Birling & Co."
+    },
+    {
+      "id": 7,
+      "question": "Which family does Gerald Croft belong to, and why is the alliance important to Arthur Birling?",
+      "options": [
+        "A) The Birlings; it keeps money in the family",
+        "B) Crofts Limited; it is a larger, rival company that could mean a potential business merger",
+        "C) The royal family; it brings political power",
+        "D) The local church; it brings moral respectability"
+      ],
+      "answer": "B) Crofts Limited; it is a larger, rival company that could mean a potential business merger"
+    },
+    {
+      "id": 8,
+      "question": "What political and economic view does Arthur Birling aggressively champion early in the play?",
+      "options": [
+        "A) Socialism",
+        "B) Radical communism",
+        "C) Capitalistic individualism ('every man for himself')",
+        "D) Absolute monarchy"
+      ],
+      "answer": "C) Capitalistic individualism ('every man for himself')"
+    },
+    {
+      "id": 9,
+      "question": "Which historical events does Arthur Birling foolishly mock and dismiss as impossible in his opening dinner speech?",
+      "options": [
+        "A) The sinking of the Titanic and a future world war",
+        "B) The invention of the airplane and telephone",
+        "C) The collapse of the British monarchy",
+        "D) The Russian Revolution"
+      ],
+      "answer": "A) The sinking of the Titanic and a future world war"
+    },
+    {
+      "id": 10,
+      "question": "What is the name of the inspector who arrives at the Birling household?",
+      "options": [
+        "A) Inspector Poole",
+        "B) Inspector Goole",
+        "C) Inspector Cole",
+        "D) Inspector Sharp"
+      ],
+      "answer": "B) Inspector Goole"
+    },
+    {
+      "id": 11,
+      "question": "What tragic news does the Inspector bring when he first enters?",
+      "options": [
+        "A) A local bank has crashed",
+        "B) A young woman named Eva Smith has committed suicide by drinking disinfectant",
+        "C) A factory fire has destroyed Birling & Co.",
+        "D) World War I has officially broken out"
+      ],
+      "answer": "B) A young woman named Eva Smith has committed suicide by drinking disinfectant"
+    },
+    {
+      "id": 12,
+      "question": "Why did Arthur Birling fire Eva Smith from his factory in 1910?",
+      "options": [
+        "A) She stole company money",
+        "B) She led a strike demanding higher wages (twenty-five shillings a week)",
+        "C) She insulted his wife",
+        "D) She was habitually late for work"
+      ],
+      "answer": "B) She led a strike demanding higher wages (twenty-five shillings a week)"
+    },
+    {
+      "id": 13,
+      "question": "How does Arthur Birling justify firing Eva Smith?",
+      "options": [
+        "A) He claims he had to make an example to keep labor costs down and run a profitable business",
+        "B) He admits he acted out of personal malice",
+        "C) He says she was completely unqualified",
+        "D) He claims she attacked a manager"
+      ],
+      "answer": "A) He claims he had to make an example to keep labor costs down and run a profitable business"
+    },
+    {
+      "id": 14,
+      "question": "What role did Sheila Birling play in Eva Smith's downfall?",
+      "options": [
+        "A) She fired her from Milwards clothing store out of petty jealousy and bad temper",
+        "B) She stole money and framed Eva",
+        "C) She bullied her at school",
+        "D) She refused to give her food"
+      ],
+      "answer": "A) She fired her from Milwards clothing store out of petty jealousy and bad temper"
+    },
+    {
+      "id": 15,
+      "question": "What alias did Eva Smith adopt when she met Gerald Croft?",
+      "options": [
+        "A) Rose Maybud",
+        "B) Daisy Renton",
+        "C) Clara Smith",
+        "D) Martha Jones"
+      ],
+      "answer": "B) Daisy Renton"
+    },
+    {
+      "id": 16,
+      "question": "Where did Gerald Croft meet Daisy Renton, and what did he do for her?",
+      "options": [
+        "A) At a church; he helped her find a job",
+        "B) At the Palace Music Hall bar; he rescued her from Alderman Meggarty's unwanted advances, housed her, and made her his mistress",
+        "C) On a ship to America; he paid for her ticket",
+        "D) In a park; he gave her charity money"
+      ],
+      "answer": "B) At the Palace Music Hall bar; he rescued her from Alderman Meggarty's unwanted advances, housed her, and made her his mistress"
+    },
+    {
+      "id": 17,
+      "question": "How does Gerald feel when he breaks off his relationship with Daisy Renton?",
+      "options": [
+        "A) He feels completely indifferent and heartless",
+        "B) He genuinely cared for her and kept her as a cherished friend",
+        "C) He genuinely cared for her as a mistress when it suited him, but discarded her when he had to leave for the summer",
+        "D) He hated her from the start"
+      ],
+      "answer": "C) He genuinely cared for her as a mistress when it suited him, but discarded her when he had to leave for the summer"
+    },
+    {
+      "id": 18,
+      "question": "Who is the father of Eva Smith's unborn child?",
+      "options": [
+        "A) Gerald Croft",
+        "B) Arthur Birling",
+        "C) Eric Birling",
+        "D) Inspector Goole"
+      ],
+      "answer": "C) Eric Birling"
+    },
+    {
+      "id": 19,
+      "question": "How did Eric Birling fund his financial support for Eva Smith when she was pregnant?",
+      "options": [
+        "A) He earned extra money working overtime",
+        "B) He stole fifty pounds from his father's office safe",
+        "C) He won money gambling",
+        "D) He borrowed it from Gerald"
+      ],
+      "answer": "B) He stole fifty pounds from his father's office safe"
+    },
+    {
+      "id": 20,
+      "question": "Why did Eva Smith refuse to accept money from Eric when she discovered it was stolen?",
+      "options": [
+        "A) She was wealthy on her own",
+        "B) She had high moral integrity and knew the money was stolen",
+        "C) She hated Eric",
+        "D) She wanted money from Gerald instead"
+      ],
+      "answer": "B) She had high moral integrity and knew the money was stolen"
+    },
+    {
+      "id": 21,
+      "question": "What is Sybil Birling's connection to Eva Smith?",
+      "options": [
+        "A) Sybil was her former schoolteacher",
+        "B) As head of the Brumley Women's Charity Organization, Sybil cruelly turned down Eva's application for financial aid",
+        "C) Sybil hired her as a personal maid",
+        "D) Sybil is secretly her biological aunt"
+      ],
+      "answer": "B) As head of the Brumley Women's Charity Organization, Sybil cruelly turned down Eva's application for financial aid"
+    },
+    {
+      "id": 22,
+      "question": "Why does Sybil Birling reject Eva Smith's appeal for charity?",
+      "options": [
+        "A) The committee had run out of funds completely",
+        "B) Eva used the name 'Mrs. Birling,' which Sybil viewed as impertinent and offensive",
+        "C) Eva refused to answer questions",
+        "D) Sybil knew Eric was the father"
+      ],
+      "answer": "B) Eva Use the name 'Mrs. Birling,' which Sybil viewed as impertinent and offensive"
+    },
+    {
+      "id": 23,
+      "question": "Whom does Sybil Birling blame entirely for the girl's death just before she realizes Eric is involved?",
+      "options": [
+        "A) Herself",
+        "B) The father of the child, insisting he should be publicly made an example of and forced to confess",
+        "C) Arthur Birling",
+        "D) The Inspector"
+      ],
+      "answer": "B) The father of the child, insisting he should be publicly made an example of and forced to confess"
+    },
+    {
+      "id": 24,
+      "question": "How does Sheila's reaction to the Inspector's investigation differ from her parents' reaction?",
+      "options": [
+        "A) She remains cold and unrepentant",
+        "B) She immediately accepts moral responsibility, feels deep remorse, and matures significantly",
+        "C) She faints and forgets everything",
+        "D) She joins her father in attacking the Inspector"
+      ],
+      "answer": "B) She immediately accepts moral responsibility, feels deep remorse, and matures significantly"
+    },
+    {
+      "id": 25,
+      "question": "What generational divide is heavily emphasized throughout the play?",
+      "options": [
+        "A) Between the rich and the poor",
+        "B) Between the older generation (inflexible, unrepentant capitalists) and the younger generation (impressionable, socially conscious)",
+        "C) Between men and women",
+        "D) Between British citizens and foreigners"
+      ],
+      "answer": "B) Between the older generation (inflexible, unrepentant capitalists) and the younger generation (impressionable, socially conscious)"
+    },
+    {
+      "id": 26,
+      "question": "What is symbolic about the name 'Goole'?",
+      "options": [
+        "A) It sounds like 'gold', representing greed",
+        "B) It sounds like 'ghoul', suggesting he is a spirit, ghost, or supernatural judge of conscience",
+        "C) It means 'good citizen'",
+        "D) It is a common Scottish surname"
+      ],
+      "answer": "B) It sounds like 'ghoul', suggesting he is a spirit, ghost, or supernatural judge of conscience"
+    },
+    {
+      "id": 27,
+      "question": "What famous socialist warning does Inspector Goole deliver in his final speech?",
+      "options": [
+        "A) 'We are responsible for each other... if men will not learn that lesson, then they will be taught it in fire and blood and anguish.'",
+        "B) 'Capitalism will destroy the world if taxes are raised.'",
+        "C) 'Always look after your own family first.'",
+        "D) 'Government should control every factory in England.'"
+      ],
+      "answer": "A) 'We are responsible for each other... if men will not learn that lesson, then they will be taught it in fire and blood and anguish.'"
+    },
+    {
+      "id": 28,
+      "question": "What startling discovery does Gerald Croft make after the Inspector leaves?",
+      "options": [
+        "A) That Eva Smith is still alive",
+        "B) That there is no Inspector Goole registered with the Brumley police force",
+        "C) That Arthur Birling is bankrupt",
+        "D) That Sheila is married"
+      ],
+      "answer": "B) That there is no Inspector Goole registered with the Brumley police force"
+    },
+    {
+      "id": 29,
+      "question": "What further revelation does a phone call or local check confirm regarding the girl?",
+      "options": [
+        "A) A girl died in the infirmary, but multiple photographs showed different girls, implying it might have been several different women",
+        "B) No girl has committed suicide in Brumley for years",
+        "C) Eva Smith was actually a fictitious person",
+        "D) The police have arrested Eric"
+      ],
+      "answer": "A) A girl died in the infirmary, but multiple photographs showed different girls, implying it might have been several different women"
+    },
+    {
+      "id": 30,
+      "question": "How do Arthur and Sybil Birling react once they suspect the Inspector was a fake?",
+      "options": [
+        "A) They repent and change their lifestyle",
+        "B) They are immensely relieved, laugh it off, and refuse to accept any moral guilt",
+        "C) They call the police to report Gerald",
+        "D) They leave the country"
+      ],
+      "answer": "B) They are immensely relieved, laugh it off, and refuse to accept any moral guilt"
+    },
+    {
+      "id": 31,
+      "question": "How do Sheila and Eric react to the news that the Inspector might have been a hoax?",
+      "options": [
+        "A) They join their parents in celebrating",
+        "B) They remain deeply troubled, recognizing that whether the inspector was real or fake, their immoral actions still happened",
+        "C) They run away from home",
+        "D) They demand Gerald break off the engagement"
+      ],
+      "answer": "B) They remain deeply troubled, recognizing that whether the inspector was real or fake, their immoral actions still happened"
+    },
+    {
+      "id": 32,
+      "question": "What shocking final twist occurs at the very end of the play?",
+      "options": [
+        "A) The house catches fire",
+        "B) Arthur Birling receives a phone call stating a real girl has just died by suicide, and a real police inspector is on his way to question them",
+        "C) Inspector Goole returns with handcuffs",
+        "D) Sheila announces she is leaving"
+      ],
+      "answer": "B) Arthur Birling receives a phone call stating a real girl has just died by suicide, and a real police inspector is on his way to question them"
+    },
+    {
+      "id": 33,
+      "question": "What dramatic genre best describes 'An Inspector Calls'?",
+      "options": [
+        "A) Slapstick comedy",
+        "B) A well-made play / Morality play / Detective mystery thriller",
+        "C) Science fiction epic",
+        "D) Historical romance"
+      ],
+      "answer": "B) A well-made play / Morality play / Detective mystery thriller"
+    },
+    {
+      "id": 34,
+      "question": "What theatrical device does Priestley use to maintain tension and unity of place?",
+      "options": [
+        "A) Multiple revolving stage sets",
+        "B) A single dining room set that remains lit throughout while the surrounding stage is in darkness",
+        "C) Actors entering from the audience seats",
+        "D) Silent film projections"
+      ],
+      "answer": "B) A single dining room set that remains lit throughout while the surrounding stage is in darkness"
+    },
+    {
+      "id": 35,
+      "question": "What does the lighting change from 'pink and intimate' to 'brighter and harder' signify when the Inspector enters?",
+      "options": [
+        "A) The sun is coming up",
+        "B) The shift from comfortable bourgeois illusion and rose-colored self-deception to harsh truth and exposure",
+        "C) A power outage in Brumley",
+        "D) The transition to a party atmosphere"
+      ],
+      "answer": "B) The shift from comfortable bourgeois illusion and rose-colored self-deception to harsh truth and exposure"
+    },
+    {
+      "id": 36,
+      "question": "What does Arthur Birling's obsession with respectability and his impending knighthood highlight?",
+      "options": [
+        "A) His deep Christian charity",
+        "B) His shallow social ambition and bourgeois materialism",
+        "C) His military heroism",
+        "D) His dedication to working-class welfare"
+      ],
+      "answer": "B) His shallow social ambition and bourgeois materialism"
+    },
+    {
+      "id": 37,
+      "question": "Which character acts as the Inspector's primary foil, aggressively challenging his authority?",
+      "options": [
+        "A) Sheila Birling",
+        "B) Arthur Birling",
+        "C) Eric Birling",
+        "D) Edna"
+      ],
+      "answer": "B) Arthur Birling"
+    },
+    {
+      "id": 38,
+      "question": "What is the name of the Birlings' domestic servant?",
+      "options": [
+        "A) Martha",
+        "B) Edna",
+        "C) Sarah",
+        "D) Clara"
+      ],
+      "answer": "B) Edna"
+    },
+    {
+      "id": 39,
+      "question": "How does Edna function symbolically in the play?",
+      "options": [
+        "A) As the comic relief",
+        "B) As the silent, marginalized working-class figure serving the wealthy upper class",
+        "C) As a secret detective",
+        "D) As Arthur Birling's secret partner"
+      ],
+      "answer": "B) As the silent, marginalized working-class figure serving the wealthy upper class"
+    },
+    {
+      "id": 40,
+      "question": "Why is the setting of 1912 significant to a 1945 audience?",
+      "options": [
+        "A) It allowed the audience to laugh at outdated fashion",
+        "B) It was written right after WWII; the 1912 setting allowed Priestley to use dramatic irony to mock Arthur Birling's blind optimism before two world wars and the General Strike",
+        "C) It was the year Queen Victoria died",
+        "D) It represented a golden era of British socialism"
+      ],
+      "answer": "B) It was written right after WWII; the 1912 setting allowed Priestley to use dramatic irony to mock Arthur Birling's blind optimism before two world wars and the General Strike"
+    },
+    {
+      "id": 41,
+      "question": "What does the ring symbolize when Gerald gives it back to Sheila and she returns it?",
+      "options": [
+        "A) Eternal love",
+        "B) The superficiality of upper-class engagements broken by moral truth, though Sheila accepts it back later when Gerald reverts to denial",
+        "C) A family heirloom lost in the war",
+        "D) A bribe"
+      ],
+      "answer": "B) The superficiality of upper-class engagements broken by moral truth, though Sheila accepts it back later when Gerald reverts to denial"
+    },
+    {
+      "id": 42,
+      "question": "What does Eric's heavy drinking reveal about his character and family life?",
+      "options": [
+        "A) He is a professional bartender",
+        "B) Underlying tension, guilt, and the stifling, emotionally repressed nature of the Birling household",
+        "C) His love for French wine",
+        "D) That he is an athletic champion"
+      ],
+      "answer": "B) Underlying tension, guilt, and the stifling, emotionally repressed nature of the Birling household"
+    },
+    {
+      "id": 43,
+      "question": "What does Inspector Goole show to each family member individually that no one else sees at the same time?",
+      "options": [
+        "A) A pistol",
+        "B) A photograph of Eva Smith",
+        "C) A suicide note",
+        "D) A stolen watch"
+      ],
+      "answer": "B) A photograph of Eva Smith"
+    },
+    {
+      "id": 44,
+      "question": "Why is the mystery of whether it was the *same* girl in everyone's story left ambiguous?",
+      "options": [
+        "A) Because Priestley forgot to write the ending",
+        "B) Because the Inspector emphasizes that collective guilt and collective social responsibility matter more than individual legal identity",
+        "C) Because Eva Smith had an identical twin",
+        "D) Because the actors lost the script"
+      ],
+      "answer": "B) Because the Inspector emphasizes that collective guilt and collective social responsibility matter more than individual legal identity"
+    },
+    {
+      "id": 45,
+      "question": "How does Arthur Birling view the working class?",
+      "options": [
+        "A) As equal partners in industry",
+        "B) As cheap labor and commodities to be exploited for profit rather than human beings",
+        "C) As future political leaders",
+        "D) With deep affectionate friendship"
+      ],
+      "answer": "B) As cheap labor and commodities to be exploited for profit rather than human beings"
+    },
+    {
+      "id": 46,
+      "question": "What is the core moral message J.B. Priestley promotes through the play?",
+      "options": [
+        "A) Never trust police inspectors",
+        "B) Society is interconnected; we must look out for one another and share collective responsibility",
+        "C) Capitalism always brings world peace",
+        "D) Parents should never listen to their children"
+      ],
+      "answer": "B) Society is interconnected; we must look out for one another and share collective responsibility"
+    },
+    {
+      "id": 47,
+      "question": "How does Sheila's perspective on her father change by the end of the play?",
+      "options": [
+        "A) She admires his business acumen more than ever",
+        "B) She loses respect for his lack of moral conscience and inability to learn from the experience",
+        "C) She decides to take over his company",
+        "D) She agrees to marry someone else"
+      ],
+      "answer": "B) She loses respect for his lack of moral conscience and inability to learn from the experience"
+    },
+    {
+      "id": 48,
+      "question": "What role does class prejudice play in Sybil Birling's treatment of Eva Smith?",
+      "options": [
+        "A) She treats her with excessive maternal sympathy",
+        "B) She assumes working-class women do not have moral feelings, fine sensibilities, or genuine suffering",
+        "C) She invites her to live in their home",
+        "D) She offers her a job as a maid"
+      ],
+      "answer": "B) She assumes working-class women do not have moral feelings, fine sensibilities, or genuine suffering"
+    },
+    {
+      "id": 49,
+      "question": "What dramatic function does the cyclical nature of the play's final moments serve?",
+      "options": [
+        "A) It confuses the audience",
+        "B) It suggests that if society refuses to learn its moral lesson, humanity is doomed to repeat its errors in endless cycles of judgment ('fire and blood')",
+        "C) It proves the Inspector was a ghost",
+        "D) It shows that time travel is real"
+      ],
+      "answer": "B) It suggests that if society refuses to learn its moral lesson, humanity is doomed to repeat its errors in endless cycles of judgment ('fire and blood')"
+    },
+    {
+      "id": 50,
+      "question": "Why is 'An Inspector Calls' regarded as a masterpiece of British drama?",
+      "options": [
+        "A) For its elaborate musical dance numbers",
+        "B) For its brilliant fusion of an engaging thriller mystery with a profound socialist-morality critique of human conscience",
+        "C) For its realistic depiction of outer space travel",
+        "D) For its use of Shakespearean verse"
+      ],
+      "answer": "B) For its brilliant fusion of an engaging thriller mystery with a profound socialist-morality critique of human conscience"
+    }
+  ]
+}
