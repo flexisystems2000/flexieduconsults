@@ -1,0 +1,561 @@
+{
+  "play": "Antony and Cleopatra",
+  "author": "William Shakespeare",
+  "category": "African Poetry / Elizabethan Drama (Set partly in North Africa)",
+  "summary": {
+    "overview": "Antony and Cleopatra is one of William Shakespeare's great Roman tragedies, deeply rooted in historical geopolitics, spanning the Roman Empire and Ptolemaic Egypt. It explores the passionate, destructive, and politically dangerous love affair between Mark Antony, one of the triumvirs of Rome, and Cleopatra, the exotic Queen of Egypt.",
+    "plot_summary": "Following the assassination of Julius Caesar, the Roman Empire is jointly ruled by Mark Antony, Octavius Caesar, and Lepidus. Antony neglects his political and military duties in Rome because he is infatuated with Cleopatra in Alexandria. Pulled back to Rome by political necessity and the death of his wife, Fulvia, Antony forms a temporary political alliance with Octavius Caesar by marrying Caesar's sister, Octavia. However, Antony soon breaks his vows, returns to Egypt, and openly crowns Cleopatra and their children. Outraged, Octavius Caesar wages war against them. The conflict culminates in the naval Battle of Actium, where Cleopatra's flight causes Antony's fleet to scatter and collapse. Misled by false reports of Cleopatra's death, Antony falls on his sword in despair. Upon discovering his body, a grief-stricken Cleopatra chooses suicide by the venomous bite of an asp rather than being paraded as a captive in Caesar's triumphal march through Rome."
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of the play 'Antony and Cleopatra'?",
+      "options": [
+        "A) Christopher Marlowe",
+        "B) William Shakespeare",
+        "C) Ben Jonson",
+        "D) John Webster"
+      ],
+      "answer": "B) William Shakespeare"
+    },
+    {
+      "id": 2,
+      "question": "Which two primary geographical settings dominate the action of the play?",
+      "options": [
+        "A) Athens and Sparta",
+        "B) Rome and Egypt",
+        "C) London and Paris",
+        "D) Troy and Carthage"
+      ],
+      "answer": "B) Rome and Egypt"
+    },
+    {
+      "id": 3,
+      "question": "Who are the three members of the second triumvirate ruling Rome at the start?",
+      "options": [
+        "A) Brutus, Cassius, and Caesar",
+        "B) Antony, Octavius Caesar, and Lepidus",
+        "C) Pompey, Antony, and Agrippa",
+        "D) Octavius, Cicero, and Maecenas"
+      ],
+      "answer": "B) Antony, Octavius Caesar, and Lepidus"
+    },
+    {
+      "id": 4,
+      "question": "What is Mark Antony's primary fault as viewed by his Roman peers?",
+      "options": [
+        "A) Cowardice in battle",
+        "B) Financial irresponsibility",
+        "C) Neglect of state duties due to his infatuation with Cleopatra",
+        "D) Hatred of the Roman gods"
+      ],
+      "answer": "C) Neglect of state duties due to his infatuation with Cleopatra"
+    },
+    {
+      "id": 5,
+      "question": "Whose death brings Antony back to Rome initially?",
+      "options": [
+        "A) Julius Caesar",
+        "B) His wife, Fulvia",
+        "C) Cleopatra's father",
+        "D) Lepidus"
+      ],
+      "answer": "B) His wife, Fulvia"
+    },
+    {
+      "id": 6,
+      "question": "Whom does Antony marry in Rome to seal a political truce with Octavius Caesar?",
+      "options": [
+        "A) Charmian",
+        "B) Octavia",
+        "C) Livia",
+        "D) Portia"
+      ],
+      "answer": "B) Octavia"
+    },
+    {
+      "id": 7,
+      "question": "How does Octavius Caesar react when Antony returns to Egypt and breaks his marriage vows?",
+      "options": [
+        "A) He forgives him immediately",
+        "B) He declares war against Antony and Cleopatra",
+        "C) He steps down from power",
+        "D) He sends him more wealth"
+      ],
+      "answer": "B) He declares war against Antony and Cleopatra"
+    },
+    {
+      "id": 8,
+      "question": "At which major battle is Antony's naval fleet defeated by Octavius?",
+      "options": [
+        "A) Battle of Philippi",
+        "B) Battle of Actium",
+        "C) Battle of Pharsalus",
+        "D) Battle of Zela"
+      ],
+      "answer": "B) Battle of Actium"
+    },
+    {
+      "id": 9,
+      "question": "Why does Cleopatra flee the Battle of Actium, causing Antony to follow her?",
+      "options": [
+        "A) She betrays Antony intentionally for Rome",
+        "B) Her ships panic and turn, and Antony follows out of blind love",
+        "C) She is captured early in the fight",
+        "D) Antony orders her execution"
+      ],
+      "answer": "B) Her ships panic and turn, and Antony follows out of blind love"
+    },
+    {
+      "id": 10,
+      "question": "Who is Antony's loyal friend and general who ultimately deserts him for Caesar due to Antony's poor leadership?",
+      "options": [
+        "A) Enobarbus",
+        "B) Agrippa",
+        "C) Menas",
+        "D) Dolabella"
+      ],
+      "answer": "A) Enobarbus"
+    },
+    {
+      "id": 11,
+      "question": "How does Enobarbus die after betraying Antony?",
+      "options": [
+        "A) Killed in action by Octavius",
+        "B) Executed by Cleopatra",
+        "C) Died of a broken heart and guilt",
+        "D) Poisoned by a snake"
+      ],
+      "answer": "C) Died of a broken heart and guilt"
+    },
+    {
+      "id": 12,
+      "question": "What false news drives Antony to attempt suicide?",
+      "options": [
+        "A) That Rome has burned down",
+        "B) That Cleopatra has committed suicide",
+        "C) That Octavia has died",
+        "D) That his soldiers have mutinied"
+      ],
+      "answer": "B) That Cleopatra has committed suicide"
+    },
+    {
+      "id": 13,
+      "question": "How does Antony attempt to kill himself?",
+      "options": [
+        "A) By drowning in the Nile",
+        "B) By falling on his own sword",
+        "C) By drinking hemlock",
+        "D) By jumping from a tower"
+      ],
+      "answer": "B) By falling on his own sword"
+    },
+    {
+      "id": 14,
+      "question": "Does Antony die immediately from his sword wound?",
+      "options": [
+        "A) Yes, he dies instantly",
+        "B) No, he lives long enough to be carried to Cleopatra and dies in her arms",
+        "C) No, he survives and escapes to Greece",
+        "D) No, Caesar's doctors heal him"
+      ],
+      "answer": "B) No, he lives long enough to be carried to Cleopatra and dies in her arms"
+    },
+    {
+      "id": 15,
+      "question": "How does Cleopatra ultimately commit suicide?",
+      "options": [
+        "A) By sword",
+        "B) By poison via the bite of an asp (venomous snake)",
+        "C) By starvation",
+        "D) By drowning"
+      ],
+      "answer": "B) By poison via the bite of an asp (venomous snake)"
+    },
+    {
+      "id": 16,
+      "question": "Why does Cleopatra choose to commit suicide rather than surrender to Octavius?",
+      "options": [
+        "A) She wants to join Antony in death and avoid being paraded in Rome as a captive",
+        "B) She is afraid of imprisonment conditions",
+        "C) Caesar commands her to do so",
+        "D) Her servants force her"
+      ],
+      "answer": "A) She wants to join Antony in death and avoid being paraded in Rome as a captive"
+    },
+    {
+      "id": 17,
+      "question": "Who are Cleopatra's faithful handmaidens who die with her?",
+      "options": [
+        "A) Octavia and Fulvia",
+        "B) Charmian and Iras",
+        "C) Portia and Calpurnia",
+        "D) Hero and Beatrice"
+      ],
+      "answer": "B) Charmian and Iras"
+    },
+    {
+      "id": 18,
+      "question": "What is Octavius Caesar's ultimate reaction to finding the dead bodies of Antony and Cleopatra?",
+      "options": [
+        "A) He rejoices publicly and insults their memory",
+        "B) He orders a solemn military funeral and honors their tragic bond",
+        "C) He orders their bodies to be fed to wild animals",
+        "D) He flees Rome in panic"
+      ],
+      "answer": "B) He orders a solemn military funeral and honors their tragic bond"
+    },
+    {
+      "id": 19,
+      "question": "What central thematic contrast drives the conflict of the play?",
+      "options": [
+        "A) Reason and emotion / Rome and Egypt",
+        "B) Christianity and Paganism",
+        "C) Democracy and Monarchy",
+        "D) Science and Magic"
+      ],
+      "answer": "A) Reason and emotion / Rome and Egypt"
+    },
+    {
+      "id": 20,
+      "question": "How is Rome characterized symbolically in the play?",
+      "options": [
+        "A) As a place of passion, art, and indulgence",
+        "B) As a place of duty, order, political calculation, and stoicism",
+        "C) As a magical wonderland",
+        "D) As an uncivilized wilderness"
+      ],
+      "answer": "B) As a place of duty, order, political calculation, and stoicism"
+    },
+    {
+      "id": 21,
+      "question": "How is Egypt characterized symbolically in the play?",
+      "options": [
+        "A) As a realm of sensual luxury, emotional excess, and eternal decay/fertility",
+        "B) As a strict military camp",
+        "C) As a boring desert",
+        "D) As an industrial superpower"
+      ],
+      "answer": "A) As a realm of sensual luxury, emotional excess, and eternal decay/fertility"
+    },
+    {
+      "id": 22,
+      "question": "What title or description does Philo give Antony in the opening lines of the play?",
+      "options": [
+        "A) 'The greatest general of all time'",
+        "B) 'The triple pillar of the world transformed into a strumpet's fool'",
+        "C) 'A wise and just ruler'",
+        "D) 'The savior of Rome'"
+      ],
+      "answer": "B) 'The triple pillar of the world transformed into a strumpet's fool'"
+    },
+    {
+      "id": 23,
+      "question": "What does Cleopatra do to test or manipulate Antony's feelings early in the play?",
+      "options": [
+        "A) She pretends to love Caesar instead",
+        "B) She changes her moods constantly and sends messengers to track his every move",
+        "C) She poisons his wine",
+        "D) She burns down her palace"
+      ],
+      "answer": "B) She changes her moods constantly and sends messengers to track his every move"
+    },
+    {
+      "id": 24,
+      "question": "What role does Pompey's son (Sextus Pompey) play in the early political plot?",
+      "options": [
+        "A) He is a minor pirate threat controlling the seas who makes a temporary truce with the triumvirs",
+        "B) He invades Egypt directly",
+        "C) He marries Cleopatra",
+        "D) He assassinates Octavius"
+      ],
+      "answer": "A) He is a minor pirate threat controlling the seas who makes a temporary truce with the triumvirs"
+    },
+    {
+      "id": 25,
+      "question": "What happens to Lepidus after the triumvirate defeats Pompey?",
+      "options": [
+        "A) He becomes sole emperor",
+        "B) He is imprisoned by Octavius Caesar for political weakness",
+        "C) He retires peacefully to Greece",
+        "D) He is poisoned by Cleopatra"
+      ],
+      "answer": "B) He is imprisoned by Octavius Caesar for political weakness"
+    },
+    {
+      "id": 26,
+      "question": "What does Enobarbus famously say about Cleopatra's endless charm?",
+      "options": [
+        "A) 'Age cannot wither her, nor custom stale her infinite variety.'",
+        "B) 'She is nothing but a simple queen of sand.'",
+        "C) 'Her beauty fades like the morning dew.'",
+        "D) 'Rome is better without her.'"
+      ],
+      "answer": "A) 'Age cannot wither her, nor custom stale her infinite variety.'"
+    },
+    {
+      "id": 27,
+      "question": "What does Cleopatra dream Antony is like after his death?",
+      "options": [
+        "A) A petty tyrant",
+        "B) A giant statue whose legs bestrode the ocean and whose crest scaled heaven",
+        "C) A ordinary Roman soldier",
+        "D) A ghost haunting the pyramids"
+      ],
+      "answer": "B) A giant statue whose legs bestrode the ocean and whose crest scaled heaven"
+    },
+    {
+      "id": 28,
+      "question": "How does Octavius Caesar differ from Antony in terms of personal lifestyle?",
+      "options": [
+        "A) Caesar loves drinking, feasting, and romance just like Antony",
+        "B) Caesar is cold, calculating, abstemious, and entirely focused on political ambition",
+        "C) Caesar is an artist and poet",
+        "D) Caesar is reckless and emotional"
+      ],
+      "answer": "B) Caesar is cold, calculating, abstemious, and entirely focused on political ambition"
+    },
+    {
+      "id": 29,
+      "question": "Which dramatic genre does 'Antony and Cleopatra' belong to?",
+      "options": [
+        "A) Comedy",
+        "B) Tragedy",
+        "C) Pastoral romance",
+        "D) Morality play"
+      ],
+      "answer": "B) Tragedy"
+    },
+    {
+      "id": 30,
+      "question": "What brings about Antony's military downfall on land after the naval loss?",
+      "options": [
+        "A) Bad weather",
+        "B) Treachery and the desertion of his remaining troops/allies",
+        "C) Lack of food and water",
+        "D) A sudden plague"
+      ],
+      "answer": "B) Treachery and the desertion of his remaining troops/allies"
+    },
+    {
+      "id": 31,
+      "question": "How does Cleopatra smuggle the asp into her monument?",
+      "options": [
+        "A) In a basket of figs brought by a rustic countryman",
+        "B) Hidden inside her royal crown",
+        "C) Carried by Charmian in her robes",
+        "D) Swum across the Nile"
+      ],
+      "answer": "A) In a basket of figs brought by a rustic countryman"
+    },
+    {
+      "id": 32,
+      "question": "What is the attitude of the clown/countryman who brings the snake regarding death?",
+      "options": [
+        "A) He is terrified of the snake",
+        "B) He speaks casually and cheerfully about death as a natural, painless end",
+        "C) He tries to blackmail Cleopatra",
+        "D) He bursts into tears"
+      ],
+      "answer": "B) He speaks casually and cheerfully about death as a natural, painless end"
+    },
+    {
+      "id": 33,
+      "question": "What does Cleopatra call herself just before dying, expressing her royal pride and reunion with Antony?",
+      "options": [
+        "A) 'A slave to Rome'",
+        "B) 'Husband, I come: now to that name my courage prove my title!' / 'A queen'",
+        "C) 'A defeated refugee'",
+        "D) 'An ordinary woman'"
+      ],
+      "answer": "B) 'Husband, I come: now to that name my courage prove my title!' / 'A queen'"
+    },
+    {
+      "id": 34,
+      "question": "Which character represents the voice of strict Roman morality and disapproval of Antony's behavior?",
+      "options": [
+        "A) Cleopatra",
+        "B) Octavius Caesar",
+        "C) Charmian",
+        "D) Alexas"
+      ],
+      "answer": "B) Octavius Caesar"
+    },
+    {
+      "id": 35,
+      "question": "How many acts are in Shakespeare's 'Antony and Cleopatra'?",
+      "options": [
+        "A) Three acts",
+        "B) Four acts",
+        "C) Five acts",
+        "D) Six acts"
+      ],
+      "answer": "C) Five acts"
+    },
+    {
+      "id": 36,
+      "question": "What source text did William Shakespeare primarily use to write this play?",
+      "options": [
+        "A) Holinshed's Chronicles",
+        "B) Plutarch's 'Parallel Lives' (translated by Sir Thomas North)",
+        "C) Virgil's 'Aeneid'",
+        "D) Ovid's 'Metamorphoses'"
+      ],
+      "answer": "B) Plutarch's 'Parallel Lives' (translated by Sir Thomas North)"
+    },
+    {
+      "id": 37,
+      "question": "What is the significance of the Nile River in the imagery of the play?",
+      "options": [
+        "A) It represents destruction and famine",
+        "B) It symbolizes Egypt's fertility, life, cyclical renewal, and natural wealth",
+        "C) It is used only for naval battles",
+        "D) It represents Roman law"
+      ],
+      "answer": "B) It symbolizes Egypt's fertility, life, cyclical renewal, and natural wealth"
+    },
+    {
+      "id": 38,
+      "question": "How does Enobarbus demonstrate his loyalty before his betrayal?",
+      "options": [
+        "A) He fights single-handedly against an army",
+        "B) He urges Antony to stay away from Cleopatra's destructive influence",
+        "C) He steals money for Antony",
+        "D) He protects Octavius"
+      ],
+      "answer": "B) He urges Antony to stay away from Cleopatra's destructive influence"
+    },
+    {
+      "id": 39,
+      "question": "What does Octavius Caesar plan to do with Cleopatra after capturing Alexandria?",
+      "options": [
+        "A) Make her queen of all Rome",
+        "B) Marry her himself",
+        "C) Keep her alive to display her as a prisoner in his Roman triumph",
+        "D) Exile her to Greece"
+      ],
+      "answer": "C) Keep her alive to display her as a prisoner in his Roman triumph"
+    },
+    {
+      "id": 40,
+      "question": "What do Charmian and Iras do immediately after Cleopatra applies the asp?",
+      "options": [
+        "A) They run away to save themselves",
+        "B) They die as well from the poison and grief to follow their queen",
+        "C) They call for Caesar's guards",
+        "D) They try to remove the snake"
+      ],
+      "answer": "B) They die as well from the poison and grief to follow their queen"
+    },
+    {
+      "id": 41,
+      "question": "What is the thematic meaning of 'dissolution' in the play?",
+      "options": [
+        "A) The melting away of empire, boundaries, and physical life into spiritual union",
+        "B) Chemical experiments",
+        "C) The breaking of contracts",
+        "D) Legal divorces in Rome"
+      ],
+      "answer": "A) The melting away of empire, boundaries, and physical life into spiritual union"
+    },
+    {
+      "id": 42,
+      "question": "How does Antony view his military reputation toward the middle of the play?",
+      "options": [
+        "A) He believes it is completely untarnished",
+        "B) He worries that he has lost his edge and shamed his martial honor",
+        "C) He doesn't care about honor anymore",
+        "D) He thinks he is a god"
+      ],
+      "answer": "B) He worries that he has lost his edge and shamed his martial honor"
+    },
+    {
+      "id": 43,
+      "question": "What is the role of Soothsayers and omens in the play?",
+      "options": [
+        "A) They provide comedic relief",
+        "B) They hint at the inescapable doom and political fate awaiting Antony",
+        "C) They change the future successfully",
+        "D) They are proven completely false"
+      ],
+      "answer": "B) They hint at the inescapable doom and political fate awaiting Antony"
+    },
+    {
+      "id": 44,
+      "question": "Why is Octavia's marriage to Antony doomed from the start?",
+      "options": [
+        "A) Octavia hates men",
+        "B) Antony's heart and political ambition remain anchored to Cleopatra in Egypt",
+        "C) Caesar stops the marriage",
+        "D) Octavia falls ill"
+      ],
+      "answer": "B) Antony's heart and political ambition remain anchored to Cleopatra in Egypt"
+    },
+    {
+      "id": 45,
+      "question": "What does the word 'dotage' mean when applied to Antony by Romans?",
+      "options": [
+        "A) Extreme wisdom",
+        "B) Senile foolishness caused by obsessive love",
+        "C) Great military strategy",
+        "D) Divine blessing"
+      ],
+      "answer": "B) Senile foolishness caused by obsessive love"
+    },
+    {
+      "id": 46,
+      "question": "How does Shakespeare portray Cleopatra compared to standard historical villainy?",
+      "options": [
+        "A) As a flat, evil seductress without depth",
+        "B) As a complex, majestic, theatrical, deeply charismatic, and deeply human queen",
+        "C) As a helpless, weak victim",
+        "D) As an uneducated peasant"
+      ],
+      "answer": "B) As a complex, majestic, theatrical, deeply charismatic, and deeply human queen"
+    },
+    {
+      "id": 47,
+      "question": "What does the suicide of Antony and Cleopatra ultimately achieve for them?",
+      "options": [
+        "A) Total political victory over Rome",
+        "B) A tragic transcendence where they preserve their love and dignity outside Caesar's control",
+        "C) Financial ruin for Egypt",
+        "D) Eternal banishment"
+      ],
+      "answer": "B) A tragic transcendence where they preserve their love and dignity outside Caesar's control"
+    },
+    {
+      "id": 48,
+      "question": "What is Octavius Caesar's primary motivation throughout the play?",
+      "options": [
+        "A) Finding true love",
+        "B) Consolidating absolute power and unifying the Roman Empire under his sole rule",
+        "C) Exploring foreign lands",
+        "D) Becoming a philosopher"
+      ],
+      "answer": "B) Consolidating absolute power and unifying the Roman Empire under his sole rule"
+    },
+    {
+      "id": 49,
+      "question": "What kind of language does Shakespeare use predominantly for Antony and Cleopatra's exchanges?",
+      "options": [
+        "A) Simple prose and everyday slang",
+        "B) Rich, elevated, hyper-romantic blank verse full of celestial and cosmic imagery",
+        "C) Legal documents and contracts",
+        "D) Short nursery rhymes"
+      ],
+      "answer": "B) Rich, elevated, hyper-romantic blank verse full of celestial and cosmic imagery"
+    },
+    {
+      "id": 50,
+      "question": "Which statement best captures the legacy of 'Antony and Cleopatra'?",
+      "options": [
+        "A) It is a dry history lesson about tax collection",
+        "B) It is a supreme masterpiece exploring the intersection of global politics and consuming romantic passion",
+        "C) It is a light-hearted romantic comedy set in the desert",
+        "D) It is a play about magic spells"
+      ],
+      "answer": "B) It is a supreme masterpiece exploring the intersection of global politics and consuming romantic passion"
+    }
+  ]
+}
