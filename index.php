@@ -572,7 +572,11 @@ if (empty($newsForPage)) {
             '</td>';
 
         $serverNewsHtml .=
-            '<td class="td-arrow">❯</td>';
+            '<td class="td-arrow">' .
+            '<svg class="svg-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' .
+            '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>' .
+            '</svg>' .
+            '</td>';
 
         $serverNewsHtml .=
             '</tr>';
@@ -603,14 +607,14 @@ function buildPagination(
             '<a href="?page=' .
             ($currentPage - 1) .
             '" class="pg-btn" ' .
-            'aria-label="Previous page">‹</a>';
+            'aria-label="Previous page"><svg class="pagination-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
 
     } else {
 
         $html .=
             '<span class="pg-btn" ' .
             'style="opacity:0.4;cursor:default;">' .
-            '‹' .
+            '<svg class="pagination-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' .
             '</span>';
     }
 
@@ -699,14 +703,14 @@ function buildPagination(
             '<a href="?page=' .
             ($currentPage + 1) .
             '" class="pg-btn" ' .
-            'aria-label="Next page">›</a>';
+            'aria-label="Next page"><svg class="pagination-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
 
     } else {
 
         $html .=
             '<span class="pg-btn" ' .
             'style="opacity:0.4;cursor:default;">' .
-            '›' .
+            '<svg class="pagination-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' .
             '</span>';
     }
 
@@ -820,6 +824,15 @@ if (count($serverQuotes) > 0) {
 // SERVER-SIDE CURRENT YEAR
 // ============================================================
 $currentYear = date('Y');
+
+// ============================================================
+// FLEXI APP DOWNLOAD BANNER
+// Uploaded artwork measured: 1536 x 445 px.
+// Replace this path with the final hosted image URL when the
+// banner is uploaded to your image host.
+// ============================================================
+$appDownloadImageUrl = '/assets/flexi-app-download-banner.jpg';
+$appDownloadTargetUrl = '/download-app.php';
 
 ?>
 <!DOCTYPE html>
@@ -1593,34 +1606,39 @@ $currentYear = date('Y');
 
 
     .menu-btn {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
 
         cursor: pointer;
 
-        background: none;
+        background: rgba(255,255,255,.06);
 
-        border: 1px solid rgba(255,255,255,.3);
+        border: 1px solid rgba(255,255,255,.32);
 
-        border-radius: 6px;
+        border-radius: 8px;
 
         display: flex;
 
-        flex-direction: column;
+        align-items: center;
 
         justify-content: center;
 
-        align-items: center;
+        color: white;
 
-        gap: 4px;
+        transition: background .2s ease, transform .2s ease;
     }
 
 
-    .menu-btn span {
-        width: 18px;
-        height: 2px;
+    .menu-btn:hover {
+        background: rgba(255,255,255,.14);
+        transform: translateY(-1px);
+    }
 
-        background: white;
+
+    .menu-svg {
+        width: 21px;
+        height: 21px;
+        display: block;
     }
 
 
@@ -1632,9 +1650,9 @@ $currentYear = date('Y');
         top: 48px;
         right: 0;
 
-        width: 240px;
+        width: 300px;
 
-        background: var(--blue);
+        background: linear-gradient(145deg, #003366 0%, #075a55 52%, #2E8B57 100%);
 
         border: 2px solid var(--green);
 
@@ -1649,10 +1667,33 @@ $currentYear = date('Y');
     }
 
 
-    .square-menu a {
+    .square-menu.menu-open {
         display: block;
+        animation: menuDrop .18s ease-out;
+        transform-origin: top right;
+    }
 
-        padding: 14px 16px;
+
+    @keyframes menuDrop {
+        from {
+            opacity: 0;
+            transform: translateY(-6px) scale(.98);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+
+    .square-menu a {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 13px 15px;
 
         color: white;
 
@@ -1663,18 +1704,42 @@ $currentYear = date('Y');
         border-bottom:
             1px solid rgba(255,255,255,.1);
 
-        transition: background 0.15s;
+        transition: background 0.15s, padding-left 0.15s;
     }
 
 
     .square-menu a:hover {
-        background:
-            rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.12);
+        padding-left: 19px;
     }
 
 
     .square-menu a:last-child {
         border-bottom: none;
+    }
+
+
+    .menu-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,.96);
+    }
+
+
+    .menu-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+
+    .menu-label {
+        min-width: 0;
+        line-height: 1.35;
     }
 
 
@@ -2112,59 +2177,165 @@ $currentYear = date('Y');
 
 
     /* ========================================================
+       APP DOWNLOAD CARD
+       ======================================================== */
+
+    .app-download-card {
+        display: block;
+        width: 100%;
+        margin: 0 0 24px;
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: #10151c;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(0,0,0,.08);
+        line-height: 0;
+        text-decoration: none;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+
+    .app-download-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(0,0,0,.12);
+    }
+
+
+    .app-download-card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1536 / 445;
+        object-fit: cover;
+    }
+
+
+    /* ========================================================
+       DESKTOP HERO / CONTENT STRUCTURE
+       ======================================================== */
+
+    .desktop-hero-grid,
+    .desktop-content-grid {
+        display: block;
+    }
+
+
+    .svg-arrow,
+    .pagination-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+    }
+
+
+    .pagination-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+
+    /* ========================================================
        DESKTOP
        ======================================================== */
 
     @media (min-width: 768px) {
 
-        .container {
-            max-width: 980px;
-
-            margin: 32px auto;
-        }
-
-
         header {
-            height: 56px;
-
-            padding: 0 28px;
-        }
-
-
-        .brand-name {
-            font-size: 16px;
+            height: 64px;
+            padding: 0 34px;
         }
 
 
         .logo-img {
-            height: 36px;
-            width: 36px;
+            height: 40px;
+            width: 40px;
         }
 
 
-        .slider-container {
-            height: 220px;
+        .brand-name {
+            font-size: 17px;
         }
 
 
-        .quote-slider-container {
-            min-height: 220px;
+        .container {
+            max-width: 1120px;
+            margin: 30px auto 46px;
+        }
+
+
+        .system-ticker {
+            margin-bottom: 22px;
+        }
+
+
+        .desktop-hero-grid {
+            display: grid;
+            grid-template-columns: minmax(300px, .86fr) minmax(0, 1.74fr);
+            gap: 22px;
+            align-items: stretch;
+            margin-bottom: 22px;
+        }
+
+
+        .desktop-hero-grid .quote-slider-container,
+        .desktop-hero-grid .slider-container {
+            height: 100%;
+            min-height: 300px;
+            margin-bottom: 0;
+        }
+
+
+        .desktop-hero-grid .quote-slider-container {
+            min-height: 300px;
+        }
+
+
+        .desktop-hero-grid .slider-container {
+            height: 300px;
+        }
+
+
+        .quote-content-box {
+            padding: 30px 32px;
         }
 
 
         .quote-content-box blockquote {
-            font-size: 1.2rem;
+            font-size: 1.28rem;
+            line-height: 1.55;
+        }
+
+
+        .desktop-content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(300px, .95fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+
+        .desktop-content-grid > .section-heading {
+            grid-column: 1;
+        }
+
+
+        .desktop-content-grid > .news-table,
+        .desktop-content-grid > .pagination-bar {
+            grid-column: 1;
+        }
+
+
+        .desktop-content-grid > .testimonials-section {
+            grid-column: 2;
+            grid-row: 1 / span 3;
+            margin-top: 28px;
         }
 
 
         .section-heading,
         .testimonials-heading {
-            font-size: 1.35rem;
-        }
-
-
-        .td-title {
-            font-size: 16px;
+            font-size: 1.38rem;
         }
 
 
@@ -2174,41 +2345,97 @@ $currentYear = date('Y');
 
 
         .td-img {
-            width: 100px;
-            height: 72px;
+            width: 104px;
+            height: 76px;
+        }
+
+
+        .td-title {
+            font-size: 16px;
         }
 
 
         .testimonial-slider-container {
-            height: 160px;
+            height: 238px;
+        }
+
+
+        .testimonial-slide {
+            padding: 28px;
         }
 
 
         .testimonial-text {
             font-size: 15px;
+            line-height: 1.65;
         }
 
 
         .card {
-            padding: 28px 32px;
+            padding: 30px 34px;
+            margin-top: 28px;
         }
+
+
+        .app-download-card {
+            margin-bottom: 30px;
+        }
+
+
+        .square-menu {
+            top: 54px;
+            width: 340px;
+            border-radius: 14px;
+        }
+
+
+        .square-menu a {
+            min-height: 50px;
+            padding: 14px 17px;
+            font-size: 14px;
+        }
+
     }
 
 
-    @media (min-width: 1100px) {
+    @media (min-width: 1180px) {
 
         .container {
-            max-width: 1040px;
+            max-width: 1180px;
         }
 
 
-        .slider-container {
-            height: 260px;
+        .desktop-hero-grid {
+            grid-template-columns: minmax(340px, .82fr) minmax(0, 1.78fr);
+            gap: 26px;
         }
+
+
+        .desktop-hero-grid .quote-slider-container,
+        .desktop-hero-grid .slider-container {
+            min-height: 326px;
+        }
+
+
+        .desktop-hero-grid .slider-container {
+            height: 326px;
+        }
+
+
+        .desktop-content-grid {
+            grid-template-columns: minmax(0, 1.62fr) minmax(330px, .98fr);
+            gap: 32px;
+        }
+
     }
 
 
     @media (max-width: 480px) {
+
+        .app-download-card {
+            border-radius: 10px;
+        }
+
 
         .system-ticker-label {
             padding: 0 10px;
@@ -2310,9 +2537,9 @@ $currentYear = date('Y');
             onclick="toggleMenu()"
             aria-label="Toggle Navigation Menu">
 
-            <span></span>
-            <span></span>
-            <span></span>
+            <svg class="menu-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
 
         </button>
 
@@ -2322,49 +2549,60 @@ $currentYear = date('Y');
             id="squareMenu">
 
             <a href="/index.php">
-                Home
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+                <span class="menu-label">Home</span>
             </a>
 
             <a href="/videos.html">
-                Watch Video Lessons
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 7l5 3-5 3V7z" fill="currentColor"/></svg></span>
+                <span class="menu-label">Watch Video Lessons</span>
             </a>
 
             <a href="/syllabus.html">
-                Access the JAMB and WAEC syllabus here
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22V4.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 7h8M8 11h8M8 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Access the JAMB and WAEC syllabus here</span>
             </a>
 
             <a href="/brochure.html">
-                Access JAMB Brochure
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 12h8M8 16h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Access JAMB Brochure</span>
             </a>
 
             <a href="/cbt.html">
-                CBT Simulator
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">CBT Simulator</span>
             </a>
 
             <a href="/groups.html">
-                Classroom (Groups and chats)
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M15 14.5a4.5 4.5 0 0 1 5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Classroom (Groups and chats)</span>
             </a>
 
             <a href="/purchase.html">
-                Purchase Scratch Cards
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Purchase Scratch Cards</span>
             </a>
 
             <a href="/pdf.html">
-                Get your PDFs from here
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 14h8M8 17h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Get your PDFs from here</span>
             </a>
 
             <a href="/location.html">
-                Tutorial Centers Near You
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12A7 7 0 0 0 5 9c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+                <span class="menu-label">Tutorial Centers Near You</span>
             </a>
 
             <a href="/profile.html">
-                User Profile
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">User Profile</span>
             </a>
 
             <a
                 href="#"
                 id="auth-menu-btn">
-                Login
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 12h10M10 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="menu-label">Login</span>
             </a>
 
         </div>
@@ -2410,6 +2648,14 @@ $currentYear = date('Y');
     echo $serverSystemTickerHtml;
     ?>
 
+
+    <!-- ======================================================
+         DESKTOP HERO LAYOUT
+         Mobile remains a normal vertical flow. On desktop,
+         the quote and main image slider form a dedicated hero
+         area instead of simply becoming wider.
+         ====================================================== -->
+    <div class="desktop-hero-grid">
 
     <!-- ======================================================
          SERVER-RENDERED MOTIVATIONAL QUOTES
@@ -2470,6 +2716,34 @@ $currentYear = date('Y');
             <span class="dot"></span>
         </div>
     </div>
+
+    </div>
+
+    <!-- ======================================================
+         FLEXI APP DOWNLOAD CARD
+         Artwork ratio: 1536 x 445. The image is intentionally
+         loaded through a single configurable image URL.
+         ====================================================== -->
+    <a
+        class="app-download-card"
+        href="<?php echo esc($appDownloadTargetUrl); ?>"
+        aria-label="Download the Flexi Educational Consult CBT App">
+
+        <img
+            src="<?php echo esc($appDownloadImageUrl); ?>"
+            alt="JAMB, WAEC and NECO CBT App for Mobile Devices - Download Now"
+            width="1536"
+            height="445"
+            loading="lazy">
+
+    </a>
+
+    <!-- ======================================================
+         DESKTOP CONTENT GRID
+         News and testimonials share the desktop content area;
+         mobile keeps the original vertical order.
+         ====================================================== -->
+    <div class="desktop-content-grid">
 
     <!-- ======================================================
          NEWS
@@ -2613,6 +2887,8 @@ $currentYear = date('Y');
 
 
         </div>
+
+    </div>
 
     </div>
 
@@ -3071,10 +3347,10 @@ onAuthStateChanged(
                 `Welcome back,
                 <span style="color:var(--green)">
                     ${name}
-                </span> 👋`;
+                </span>`;
 
 
-            authMenuBtn.innerText =
+            authMenuBtn.querySelector('.menu-label').innerText =
                 "Logout";
 
 
@@ -3108,7 +3384,7 @@ onAuthStateChanged(
                 "none";
 
 
-            authMenuBtn.innerText =
+            authMenuBtn.querySelector('.menu-label').innerText =
                 "Login";
 
 
@@ -3264,10 +3540,7 @@ window.toggleMenu =
             );
 
 
-        m.style.display =
-            (m.style.display === "block")
-                ? "none"
-                : "block";
+        m.classList.toggle('menu-open');
 
     };
 
@@ -3289,13 +3562,12 @@ document.addEventListener(
 
         if (
             m &&
-            m.style.display === "block" &&
+            m.classList.contains('menu-open') &&
             !m.contains(e.target) &&
             !b.contains(e.target)
         ) {
 
-            m.style.display =
-                "none";
+            m.classList.remove('menu-open');
 
         }
 
