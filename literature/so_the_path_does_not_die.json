@@ -1,0 +1,313 @@
+{
+  "play_info": {
+    "title": "So the Path Does Not Die",
+    "author": "Pede Hollist",
+    "category": "African Literature text for SSCE",
+    "summary": {
+      "overview": "So the Path Does Not Die is a contemporary Nigerian play by Pede Hollist, a leading voice in contemporary African drama. It explores themes of identity, family loyalty, tradition versus modernity, and the moral cost of silence. The play follows the story of a young man who returns home to confront the secrets of his father’s past during the Nigerian Civil War era. It is widely studied in Nigerian secondary schools as a text on the weight of history, reconciliation, and the importance of speaking truth.",
+      "plot_summary": "The play is set in a small Nigerian village and centres on two generations. The young protagonist, Chukwudi, returns home after years in the city and discovers that his father, a retired civil servant who fought in the Biafran War, has been living a double life. Chukwudi learns that his father was involved in a secret relationship and that his mother was forced to leave the family. Through tense family confrontations, Chukwudi learns that his father killed a man during the war to protect his family and has been carrying the guilt ever since. The play ends with the father confessing everything to Chukwudi, who in turn chooses to break the cycle of silence by forgiving and moving forward. The title ‘So the Path Does Not Die’ refers to the importance of carrying the past forward without letting it destroy the present."
+    }
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of the play 'So the Path Does Not Die'?",
+      "options": ["A) Wole Soyinka", "B) Pede Hollist", "C) Chinua Achebe", "D) Ola Rotimi"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 2,
+      "question": "In which Nigerian state is the play 'So the Path Does Not Die' set?",
+      "options": ["A) Lagos", "B) Enugu", "C) A fictional village", "D) Port Harcourt"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 3,
+      "question": "What is the main conflict in the play?",
+      "options": ["A) A land dispute between two families", "B) Father and son confronting the father’s past during the Nigerian Civil War", "C) A political election", "D) A love triangle"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 4,
+      "question": "What historical event is the father involved in?",
+      "options": ["A) Nigerian Independence", "B) The Nigerian Civil War (Biafran War)", "C) The Niger Delta militancy", "D) The Nigerian Banking Crisis"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 5,
+      "question": "Who is the young protagonist of the play?",
+      "options": ["A) The father", "B) Chukwudi", "C) The mother", "D) The village chief"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 6,
+      "question": "What secret does Chukwudi discover about his father?",
+      "options": ["That his father is a thief", "That his father killed a man during the war", "That his father is gay", "That his father is a politician"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 7,
+      "question": "What does the title 'So the Path Does Not Die' symbolise?",
+      "options": ["The importance of carrying the past forward without letting it destroy the present", "The beauty of the village path", "A curse", "A war memorial"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 8,
+      "question": "How does the father kill the man during the war?",
+      "options": ["With a knife", "In a fight with machete", "By shooting", "It is never shown on stage"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 9,
+      "question": "What does Chukwudi’s mother do after discovering the father’s secret?",
+      "options": ["She stays and tries to make the family work", "She leaves the family and moves to the city", "She kills the father", "She divorces him in court"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 10,
+      "question": "What is the role of the village chief in the play?",
+      "options": ["He is the judge who settles the dispute", "He advises the father to confess", "He supports Chukwudi’s decision", "He is the father’s friend"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 11,
+      "question": "How does Chukwudi feel when he first hears the truth from his father?",
+      "options": ["He is happy and forgives him immediately", "He is angry and wants to fight him", "He feels pity and decides to help him", "He is indifferent"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 12,
+      "question": "What does Chukwudi say to his father about the past?",
+      "options": ["'The past is dead, let it rest'", "'We must carry the past so that the path does not die'", "'I will never forgive you'", "'You are a coward'"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 13,
+      "question": "Who is the only character that supports Chukwudi’s decision to forgive?",
+      "options": ["The mother", "The village chief", "The father", "A neighbour"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 14,
+      "question": "What is the theme of silence in the play?",
+      "options": ["The importance of keeping family secrets", "The danger of silence when truth is needed", "The silence of the village", "The silence of the war"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 15,
+      "question": "How does the play end?",
+      "options": ["The family breaks up forever", "The father and son bury the past together", "The village chief declares war", "Everyone dies in a fire"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 16,
+      "question": "What does Chukwudi do after his father’s confession?",
+      "options": ["He leaves home forever", "He stays and starts a new chapter with his father", "He reports his father to the police", "He burns the house"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 17,
+      "question": "Which character represents the older generation in the play?",
+      "options": ["Chukwudi", "The village chief", "The father", "A young woman in the village"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 18,
+      "question": "What does the father say about his guilt during the war?",
+      "options": ["He feels no guilt", "He says he has been living with the guilt for years", "He blames the enemy", "He says it was not him"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 19,
+      "question": "How does the play use symbolism?",
+      "options": ["The path in the village represents the journey of forgiveness", "The house represents the family", "The war represents modernity", "The chief represents money"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 20,
+      "question": "What is the main message of the play?",
+      "options": ["You must always fight for your rights", "Forgiveness can heal deep family wounds", "The war never ends", "Silence is golden"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 21,
+      "question": "Who is Chukwudi’s mother?",
+      "options": ["She is the village chief’s sister", "She is the wife who left the family", "She is a politician", "She is a doctor"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 22,
+      "question": "Why does the father never tell Chukwudi the truth earlier?",
+      "options": ["He was afraid of losing him", "He thought it would hurt the family", "He wanted to protect him", "He forgot"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 23,
+      "question": "What happens to the father after the confession?",
+      "options": ["He dies", "He lives peacefully with his son", "He runs away", "He is jailed"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 24,
+      "question": "How does Chukwudi feel about his father at the end of the play?",
+      "options": ["He still hates him", "He respects him more than ever", "He feels nothing", "He wants to kill him"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 25,
+      "question": "What is the role of the village in the play?",
+      "options": ["It is the setting for the story", "It is the main character", "It represents money", "It is the enemy"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 26,
+      "question": "What does the play say about the Nigerian Civil War?",
+      "options": ["It is a distant event", "It still affects families today", "It is a happy memory", "It never happened"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 27,
+      "question": "Who is the only person that knows the full story before Chukwudi?",
+      "options": ["The mother", "The village chief", "The father alone", "The neighbour"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 28,
+      "question": "How does the father feel when Chukwudi forgives him?",
+      "options": ["He is relieved", "He is angry", "He cries", "He is indifferent"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 29,
+      "question": "What is the name of the village path mentioned in the title?",
+      "options": ["A path that leads to the city", "A path that represents life and continuity", "A path that is dangerous", "A path that is closed"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 30,
+      "question": "What does Chukwudi do with the secrets of the past?",
+      "options": ["He buries them forever", "He shares them with his friends", "He tells the whole village", "He burns the letters"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 31,
+      "question": "Who supports Chukwudi when he first learns the truth?",
+      "options": ["His mother", "The village chief", "Everyone", "No one"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 32,
+      "question": "What is the final message of the play?",
+      "options": ["The path must continue", "Forgiveness is the only way", "The war is over", "Silence is power"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 33,
+      "question": "How does the play use dialogue?",
+      "options": ["Long speeches only", "Short, powerful exchanges that reveal character", "No dialogue", "Only songs"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 34,
+      "question": "What does the name 'Chukwudi' mean?",
+      "options": ["God has come", "Born in the morning", "God is with us", "The way of life"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 35,
+      "question": "Who is the father’s rival in the village?",
+      "options": ["The village chief", "A neighbour who spread rumours", "His own brother", "The police"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 36,
+      "question": "What happens when the father finally confesses?",
+      "options": ["The family is destroyed", "The family is healed", "The village celebrates", "The play ends"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 37,
+      "question": "What does the play criticise?",
+      "options": ["The silence of fathers towards their children", "The greed of politicians", "The beauty of the village", "The independence of women"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 38,
+      "question": "How does Chukwudi change by the end?",
+      "options": ["He becomes angry", "He becomes wiser and more forgiving", "He leaves the village", "He joins the army"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 39,
+      "question": "What is the role of the mother in the play?",
+      "options": ["She is the main hero", "She left the family but returns at the end", "She is the judge", "She is the villain"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 40,
+      "question": "What does the play suggest about the past?",
+      "options": ["The past should be forgotten", "The past must be carried and healed", "The past is gone forever", "The past is only for history books"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 41,
+      "question": "Who is the comic character in the play?",
+      "options": ["The village chief", "A young boy who jokes", "The father", "The mother"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 42,
+      "question": "What does Chukwudi say to his father after the confession?",
+      "options": ["'You are a bad man'", "'We are still family'", "'I will kill you'", "'I hate you'"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 43,
+      "question": "How does the play end for the family?",
+      "options": ["They move to the city", "They stay together as a family", "They separate forever", "The village chief takes over"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 44,
+      "question": "What is the significance of the title 'So the Path Does Not Die'?",
+      "options": ["It means the village path is still open", "It means the story must continue", "It means the war path is blocked", "It means nothing"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 45,
+      "question": "Who is the only person Chukwudi trusts completely at the end?",
+      "options": ["His mother", "The village chief", "His father", "The whole village"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 46,
+      "question": "What does the father say he carried for years?",
+      "options": ["Money", "Guilt", "Happiness", "Power"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 47,
+      "question": "How does the play show the cost of silence?",
+      "options": ["The family suffered for years", "The father died", "The village was destroyed", "No cost"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 48,
+      "question": "What is the final action Chukwudi takes?",
+      "options": ["He leaves the village", "He stays and hugs his father", "He fights with the village chief", "He tells the police"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 49,
+      "question": "What is the main lesson the play teaches?",
+      "options": ["Never forgive", "Speak the truth and forgive", "Work hard", "Stay silent"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 50,
+      "question": "Why is 'So the Path Does Not Die' important in Nigerian literature?",
+      "options": ["It is the first play written", "It shows the importance of reconciliation after the Nigerian Civil War", "It has no social message", "It is only about love"],
+      "correct_answer": "B"
+    }
+  ]
+}
