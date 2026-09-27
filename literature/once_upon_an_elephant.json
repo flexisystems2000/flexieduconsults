@@ -1,0 +1,561 @@
+{
+  "play": "Once Upon an Elephant",
+  "author": "Bosede Ademilua-Afolayan",
+  "category": "African Drama / Socio-Political Literature",
+  "summary": {
+    "overview": "Once Upon an Elephant is a socio-political allegorical play by Bosede Ademilua-Afolayan inspired by traditional Yoruba oral aesthetics, specifically the folktale of the proud elephant tricked to its death by the cunning tortoise. Set in an unnamed traditional Yoruba village, the play dramatizes the perils of dictatorial leadership, political manipulation, greed, and the eventual triumph of collective resistance against tyranny.",
+    "plot_summary": "The play opens in medias res as King Akinjobi lies old, sick, and dying. Serubawon, a manipulative palace physician and schemer, orchestrates a clandestine plot to crown Ajanaku (Olaniyonu), the younger son of the king, bypassing tradition and proper succession rules. Once enthroned, Ajanaku adopts the moniker of the 'Elephant' and rapidly spirals into a ruthless tyrant, stealing land from citizens, abusing power, and crushing opposition. Alongside his tyranny, dark family secrets unfold: Iya Agba, an ostracized elder falsely banished years ago, returns to expose palace corruption. It is revealed that Serubawon is actually Ajanaku's biological father through an illicit affair with the late king's wife, and that Serubawon caused King Akinjobi's slow illness. Seeking immortality and absolute control, Ajanaku attempts to perform the dreadful Ijedodo ritual, which requires the blood and sacrifice of a virgin. Horrifyingly, the chosen sixth victim is Desola, Serubawon's own daughter. Prompted by Iya Agba, the oppressed villagers, alongside characters like Odekunle and Desola, unite to resist. The ritual is intercepted, Ajanaku is weakened by a charmed red cloth wrapped by Odekunle and dies, and Desola is saved. Overwhelmed by exposure and guilt, Serubawon commits suicide by hanging, restoring peace, justice, and democratic order to the land."
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of the play 'Once Upon an Elephant'?",
+      "options": [
+        "A) Wole Soyinka",
+        "B) Bosede Ademilua-Afolayan",
+        "C) Femi Osofisan",
+        "D) Ama Ata Aidoo"
+      ],
+      "answer": "B) Bosede Ademilua-Afolayan"
+    },
+    {
+      "id": 2,
+      "question": "What traditional oral art form and folktale motif heavily inspires the structural and thematic design of the play?",
+      "options": [
+        "A) The Yoruba tale of the elephant and the tortoise",
+        "B) The Igbo epic of Okonkwo",
+        "C) The Akan legend of Ananse the spider",
+        "D) The Zulu praise poetry of Shaka"
+      ],
+      "answer": "A) The Yoruba tale of the elephant and the tortoise"
+    },
+    {
+      "id": 3,
+      "question": "In how many acts is 'Once Upon an Elephant' structured?",
+      "options": [
+        "A) Five acts",
+        "B) Seven acts",
+        "C) Ten acts",
+        "D) Fourteen acts"
+      ],
+      "answer": "D) Fourteen acts"
+    },
+    {
+      "id": 4,
+      "question": "What is the primary sociopolitical theme explored in the play?",
+      "options": [
+        "A) Technological advancement",
+        "B) Dictatorship, abuse of power, and political corruption",
+        "C) Religious fanaticism",
+        "D) International trade policy"
+      ],
+      "answer": "B) Dictatorship, abuse of power, and political corruption"
+    },
+    {
+      "id": 5,
+      "question": "What is the state of King Akinjobi at the beginning of the play?",
+      "options": [
+        "A) He is healthy and expanding his kingdom",
+        "B) He is old, sick, and dying",
+        "C) He has abdicated voluntarily to travel abroad",
+        "D) He has been deposed by a democratic vote"
+      ],
+      "answer": "B) He is old, sick, and dying"
+    },
+    {
+      "id": 6,
+      "question": "Who orchestrates the controversial political usurpation to crown Ajanaku as king?",
+      "options": [
+        "A) Odejimi",
+        "B) Serubawon",
+        "C) Odekunle",
+        "D) Gbeleyi"
+      ],
+      "answer": "B) Serubawon"
+    },
+    {
+      "id": 7,
+      "question": "What is Serubawon's primary occupation or role in the palace?",
+      "options": [
+        "A) Chief hunter and military general",
+        "B) Palace physician, medicine man, and kingmaker",
+        "C) Royal musician and historian",
+        "D) Chief judge of the market"
+      ],
+      "answer": "B) Palace physician, medicine man, and kingmaker"
+    },
+    {
+      "id": 8,
+      "question": "Why do senior members of the Hunters' Guild, like Odejimi and Ogundele, initially oppose Ajanaku's coronation?",
+      "options": [
+        "A) Because Ajanaku is a foreigner",
+        "B) Because the reigning king, Akinjobi, is still alive, defying strict traditional succession",
+        "C) Because Ajanaku refuses to pay taxes",
+        "D) Because they want Serubawon to be king instead"
+      ],
+      "answer": "B) Because the reigning king, Akinjobi, is still alive, defying strict traditional succession"
+    },
+    {
+      "id": 9,
+      "question": "What animal sobriquet does Olaniyonu choose for himself, symbolizing brute, destructive power?",
+      "options": [
+        "A) The Leopard (Ekun)",
+        "B) The Lion (Kiniun)",
+        "C) The Elephant (Ajanaku)",
+        "D) The Buffalo (Erinmale)"
+      ],
+      "answer": "C) The Elephant (Ajanaku)"
+    },
+    {
+      "id": 10,
+      "question": "How does Ajanaku behave immediately after ascending the throne?",
+      "options": [
+        "A) He institutes peaceful democratic reforms",
+        "B) He becomes arrogant, seizes citizens' lands, and rules as a tyrant",
+        "C) He steps down voluntarily",
+        "D) He distributes wealth equally to the poor"
+      ],
+      "answer": "B) He becomes arrogant, seizes citizens' lands, and rules as a tyrant"
+    },
+    {
+      "id": 11,
+      "question": "Who is Desola in relation to Serubawon?",
+      "options": [
+        "A) His wife",
+        "B) His daughter",
+        "C) His sister",
+        "D) His housemaid"
+      ],
+      "answer": "B) His daughter"
+    },
+    {
+      "id": 12,
+      "question": "With whom is Desola romantically involved?",
+      "options": [
+        "A) Ajanaku",
+        "B) Odekunle (Odejimi's son)",
+        "C) Gbeleyi",
+        "D) Delani"
+      ],
+      "answer": "B) Odekunle (Odejimi's son)"
+    },
+    {
+      "id": 13,
+      "question": "Who is Omoyeni, and what is her tragic predicament?",
+      "options": [
+        "A) She is Ajanaku's wife who was forced to marry him under threats to her family and former lover, Delani",
+        "B) She is the village market leader who leads a successful protest",
+        "C) She is Iya Agba's lost daughter",
+        "D) She is the chief priestess who crowns the king"
+      ],
+      "answer": "A) She is Ajanaku's wife who was forced to marry him under threats to her family and former lover, Delani"
+    },
+    {
+      "id": 14,
+      "question": "Who is Delani?",
+      "options": [
+        "A) A corrupt kingmaker",
+        "B) A poor youth who previously slaved for Desola's grandfather and was stripped of his lover Omoyeni by Ajanaku",
+        "C) The royal executioner",
+        "D) A foreign merchant"
+      ],
+      "answer": "B) A poor youth who previously slaved for Desola's grandfather and was stripped of his lover Omoyeni by Ajanaku"
+    },
+    {
+      "id": 15,
+      "question": "What is the symbolic significance of Iya Agba in the play?",
+      "options": [
+        "A) She represents blind superstition",
+        "B) She is the voice of public conscience, memory, truth, and ultimate resistance against oppression",
+        "C) She represents the corrupt upper class",
+        "D) She is a foreign invader"
+      ],
+      "answer": "B) She is the voice of public conscience, memory, truth, and ultimate resistance against oppression"
+    },
+    {
+      "id": 16,
+      "question": "Why was Iya Agba ostracized and banished from the palace years prior?",
+      "options": [
+        "A) She committed a capital theft",
+        "B) She caught Serubawon and Adebisi (the king's second wife) having an illicit affair and was framed",
+        "C) She tried to poison King Akinjobi",
+        "D) She refused to pay community levies"
+      ],
+      "answer": "B) She caught Serubawon and Adebisi (the king's second wife) having an illicit affair and was framed"
+    },
+    {
+      "id": 17,
+      "question": "What shocking genealogical secret is revealed about Ajanaku's true paternity?",
+      "options": [
+        "A) He is the son of a foreign king",
+        "B) He is actually Serubawon's biological son, born from Serubawon's affair with the late king's wife",
+        "C) He is an orphan adopted from the forest",
+        "D) He is King Akinjobi's firstborn son"
+      ],
+      "answer": "B) He is actually Serubawon's biological son, born from Serubawon's affair with the late king's wife"
+    },
+    {
+      "id": 18,
+      "question": "What caused King Akinjobi's prolonged, mysterious illness?",
+      "options": [
+        "A) Old age and natural fatigue",
+        "B) Slow poisoning administered by his trusted friend and physician, Serubawon",
+        "C) A curse placed by forest spirits",
+        "D) Battle wounds from his youth"
+      ],
+      "answer": "B) Slow poisoning administered by his trusted friend and physician, Serubawon"
+    },
+    {
+      "id": 19,
+      "question": "What dangerous ritual does Ajanaku attempt to perform in his quest for absolute immortality and invincibility?",
+      "options": [
+        "A) The Ogun Iron Festival",
+        "B) The Ijedodo rites, which require the blood and sacrifice of a virgin",
+        "C) The ancestral rain-making dance",
+        "D) The royal coronation cleansing"
+      ],
+      "answer": "B) The Ijedodo rites, which require the blood and sacrifice of a virgin"
+    },
+    {
+      "id": 20,
+      "question": "Who tragically turns out to be the targeted sixth virgin for Ajanaku's ritual?",
+      "options": [
+        "A) Omoyeni",
+        "B) Desola (Serubawon's own daughter)",
+        "C) Iya Agba's granddaughter",
+        "D) Iyale"
+      ],
+      "answer": "B) Desola (Serubawon's own daughter)"
+    },
+    {
+      "id": 21,
+      "question": "How does Serubawon react when he discovers his own daughter is designated as the sacrificial victim for Ajanaku?",
+      "options": [
+        "A) He happily offers her to secure political glory",
+        "B) He is horrified and trapped by the monster he helped create, leading to his eventual moral breakdown",
+        "C) He kills Ajanaku immediately",
+        "D) He flees the village alone"
+      ],
+      "answer": "B) He is horrified and trapped by the monster he helped create, leading to his eventual moral breakdown"
+    },
+    {
+      "id": 22,
+      "question": "How is Ajanaku's tyrannical grip finally broken?",
+      "options": [
+        "A) Through a peaceful ballot election",
+        "B) Through the collective unity of oppressed villagers led by Iya Agba, with Odekunle wrapping a charmed red cloth around Ajanaku's neck",
+        "C) Through foreign military intervention",
+        "D) Through a natural earthquake"
+      ],
+      "answer": "B) Through the collective unity of oppressed villagers led by Iya Agba, with Odekunle wrapping a charmed red cloth around Ajanaku's neck"
+    },
+    {
+      "id": 23,
+      "question": "What happens to Ajanaku at the climax of the play?",
+      "options": [
+        "A) He is exiled to another country",
+        "B) He weakens and dies after the ritual is disrupted and neutralized",
+        "C) He abdicates and becomes a farmer",
+        "D) He reforms his ways and remains king"
+      ],
+      "answer": "B) He weakens and dies after the ritual is disrupted and neutralized"
+    },
+    {
+      "id": 24,
+      "question": "How does Serubawon meet his end at the conclusion of the drama?",
+      "options": [
+        "A) He is executed by the village council",
+        "B) He dies by suicide (hanging himself on an iroko tree) out of shame and guilt after his crimes are fully exposed",
+        "C) He dies of old age",
+        "D) He escapes into the wilderness and is never seen again"
+      ],
+      "answer": "B) He dies by suicide (hanging himself on an iroko tree) out of shame and guilt after his crimes are fully exposed"
+    },
+    {
+      "id": 25,
+      "question": "What does the 'Elephant' metaphor signify in the broader political context of postcolonial Africa according to the play?",
+      "options": [
+        "A) Agricultural prosperity",
+        "B) Overgrown, rapacious political leaders who trample on the rights and lives of ordinary citizens",
+        "C) Wildlife conservation success",
+        "D) Military strength against foreign enemies"
+      ],
+      "answer": "B) Overgrown, rapacious political leaders who trample on the rights and lives of ordinary citizens"
+    },
+    {
+      "id": 26,
+      "question": "Which character represents the archetype of the clever, resilient trickster figure who outwits the powerful brute?",
+      "options": [
+        "A) Serubawon",
+        "B) Iya Agba",
+        "C) Ajanaku",
+        "D) Akinjobi"
+      ],
+      "answer": "B) Iya Agba"
+    },
+    {
+      "id": 27,
+      "question": "What does the play suggest is required to overthrow a deeply entrenched dictatorship?",
+      "options": [
+        "A) Patience and silence",
+        "B) The collective will, awareness, and united effort of sane-minded citizens",
+        "C) Reliance on corrupt international allies",
+        "D) Pure luck"
+      ],
+      "answer": "B) The collective will, awareness, and united effort of sane-minded citizens"
+    },
+    {
+      "id": 28,
+      "question": "Which dramatic technique does Ademilua-Afolayan use to connect contemporary African political realities to traditional models?",
+      "options": [
+        "A) Historification and mythopoeia using oral folklore aesthetics",
+        "B) Science fiction futurism",
+        "C) Absurdist silent theater",
+        "D) Musical opera styling"
+      ],
+      "answer": "A) Historification and mythopoeia using oral folklore aesthetics"
+    },
+    {
+      "id": 29,
+      "question": "How are the dialogues and songs in the play heavily flavored?",
+      "options": [
+        "A) With Elizabethan English idioms",
+        "B) With Yoruba proverbs, chants, riddles, and songs mirroring folktale performance",
+        "C) With modern corporate jargon",
+        "D) With Latin legal phrases"
+      ],
+      "answer": "B) With Yoruba proverbs, chants, riddles, and songs mirroring folktale performance"
+    },
+    {
+      "id": 30,
+      "question": "What is the fate of Desola after the ritual is aborted by Iya Agba?",
+      "options": [
+        "A) She is permanently cursed",
+        "B) She is saved and cured, allowing her life and union with Odekunle to resume",
+        "C) She leaves the village forever",
+        "D) She becomes queen"
+      ],
+      "answer": "B) She is saved and cured, allowing her life and union with Odekunle to resume"
+    },
+    {
+      "id": 31,
+      "question": "What role do bribes play in Serubawon's political maneuvering early in the plot?",
+      "options": [
+        "A) He uses gifts and material items to compromise elders like Odejimi and Ogundele",
+        "B) He uses money to build schools",
+        "C) He bribes foreign traders",
+        "D) He uses bribes to buy weapons"
+      ],
+      "answer": "A) He uses gifts and material items to compromise elders like Odejimi and Ogundele"
+    },
+    {
+      "id": 32,
+      "question": "How does Ajanaku react to dissent or criticism from common townspeople during land disputes?",
+      "options": [
+        "A) He listens patiently and grants compensation",
+        "B) He displays extreme greed, dismisses justice, and appropriates their lands for himself",
+        "C) He refers them to a court of law",
+        "D) He resigns from office"
+      ],
+      "answer": "B) He displays extreme greed, dismisses justice, and appropriates their lands for himself"
+    },
+    {
+      "id": 33,
+      "question": "What does the song sung by Iya Agba ('Erin ka re'leo wa jo'oba...') recall from traditional folklore?",
+      "options": [
+        "A) A song used by the tortoise to lure the proud elephant to its destruction",
+        "B) A lullaby for newborn babies",
+        "C) A harvest thanksgiving chant",
+        "D) A war hymn for victory"
+      ],
+      "answer": "A) A song used by the tortoise to lure the proud elephant to its destruction"
+    },
+    {
+      "id": 34,
+      "question": "What does the character of Gbeleyi represent in the village?",
+      "options": [
+        "A) A corrupt kingmaker",
+        "B) An ordinary citizen who dares to speak out against Ajanaku's tyranny and pays for it",
+        "C) The royal doctor",
+        "D) A wealthy merchant"
+      ],
+      "answer": "B) An ordinary citizen who dares to speak out against Ajanaku's tyranny and pays for it"
+    },
+    {
+      "id": 35,
+      "question": "In what kind of physical setting does the play take place?",
+      "options": [
+        "A) A futuristic industrial metropolis",
+        "B) An unnamed traditional African village with pre-colonial cultural dimensions",
+        "C) A coastal European port city",
+        "D) A military barracks"
+      ],
+      "answer": "B) An unnamed traditional African village with pre-colonial cultural dimensions"
+    },
+    {
+      "id": 36,
+      "question": "What broader sociopolitical critique does the play offer regarding African states?",
+      "options": [
+        "A) A celebration of colonial rule",
+        "B) A critique of post-independence leadership failures, political greed, and betrayal of public trust",
+        "C) An analysis of climate change",
+        "D) A study of tribal migration patterns"
+      ],
+      "answer": "B) A critique of post-independence leadership failures, political greed, and betrayal of public trust"
+    },
+    {
+      "id": 37,
+      "question": "How does Omoyeni's labor at the end of the play symbolically resonate?",
+      "options": [
+        "A) The birth of a new, untainted era and hope for the community",
+        "B) A medical disaster",
+        "C) The return of the late king",
+        "D) An omen of bad luck"
+      ],
+      "answer": "A) The birth of a new, untainted era and hope for the community"
+    },
+    {
+      "id": 38,
+      "question": "Why did Serubawon mastermind Ajanaku's ascension instead of following due process?",
+      "options": [
+        "A) To satisfy his own hidden paternal ambition and secure absolute proxy control over the throne",
+        "B) To help the poor peasants",
+        "C) Because the oracle commanded it strictly",
+        "D) To honor King Akinjobi's final wish"
+      ],
+      "answer": "A) To satisfy his own hidden paternal ambition and secure absolute proxy control over the throne"
+    },
+    {
+      "id": 39,
+      "question": "What is Odejimi's internal conflict throughout much of the drama?",
+     "options": [
+        "A) Deciding whether to steal crown jewels",
+        "B) Balancing his traditional responsibilities as a hunter-elder against the moral corruption and bribery surrounding him",
+        "C) Fighting a personal illness",
+        "D) Leaving the village to live abroad"
+      ],
+      "answer": "B) Balancing his traditional responsibilities as a hunter-elder against the moral corruption and bribery surrounding him"
+    },
+    {
+      "id": 40,
+      "question": "What does the 'red cloth' used by Odekunle symbolize in traditional Yoruba dramatic action?",
+      "options": [
+        "A) Royal celebration",
+        "B) Danger, charm, counter-force, and the neutralizing of malevolent power",
+        "C) Agricultural fertility",
+        "D) Wedding festivity"
+      ],
+      "answer": "B) Danger, charm, counter-force, and the neutralizing of malevolent power"
+    },
+    {
+      "id": 41,
+      "question": "How does Ajanaku justify his harshness by invoking his father's memory?",
+      "options": [
+        "A) He claims his father was weak and that he must rule with terrifying, unyielding force",
+        "B) He promises to copy his father's kindness exactly",
+        "C) He claims his father ordered him to be ruthless",
+        "D) He denies knowing his father"
+      ],
+      "answer": "A) He claims his father was weak and that he must rule with terrifying, unyielding force"
+    },
+    {
+      "id": 42,
+      "question": "What structural feature characterizes the 14 acts of the play?",
+      "options": [
+        "A) They are divided into strict classical scenes",
+        "B) They flow continuously without traditional scene breaks, mirroring fluid oral narrative delivery",
+        "C) They take place over twenty years",
+        "D) They are written entirely in rhyming verse"
+      ],
+      "answer": "B) They flow continuously without traditional scene breaks, mirroring fluid oral narrative delivery"
+    },
+    {
+      "id": 43,
+      "question": "What function do the riddles spoken by Iya Agba serve in the plot?",
+      "options": [
+        "A) To confuse the audience for comedy",
+        "B) To expose hidden truths, foreshadow the downfall of the tyrants, and awaken the moral consciousness of the people",
+        "C) To test children in school",
+        "D) To disguise her identity from guards"
+      ],
+      "answer": "B) To expose hidden truths, foreshadow the downfall of the tyrants, and awaken the moral consciousness of the people"
+    },
+    {
+      "id": 44,
+      "question": "What does Serubawon's confession before his death reveal about palace politics?",
+      "options": [
+        "A) That everything was done legally",
+        "B) The deep web of deceit, patricide/regicide plotting, and moral rot underpinning autocratic regimes",
+        "C) That the gods approved of Ajanaku",
+        "D) That the treasury is full of gold"
+      ],
+      "answer": "B) The deep web of deceit, patricide/regicide plotting, and moral rot underpinning autocratic regimes"
+    },
+    {
+      "id": 45,
+      "question": "How do the youth of the village, exemplified by Odekunle, view the older generation's compromise with tyranny?",
+      "options": [
+        "A) With complete indifference",
+        "B) With frustration and a desire to break away from complicity to fight for justice",
+        "C) With absolute obedience",
+        "D) With amusement"
+      ],
+      "answer": "B) With frustration and a desire to break away from complicity to fight for justice"
+    },
+    {
+      "id": 46,
+      "question": "What thematic lesson does Bosede Ademilua-Afolayan impart regarding the lifespan of tyranny?",
+      "options": [
+        "A) Tyranny lasts forever if backed by magic",
+        "B) Dictatorships may seem invincible like an elephant, but they ultimately collapse under the weight of their own atrocities and united people's will",
+        "C) Tyranny can only be cured by foreign aid",
+        "D) Dictators always retire peacefully"
+      ],
+      "answer": "B) Dictatorships may seem invincible like an elephant, but they ultimately collapse under the weight of their own atrocities and united people's will"
+    },
+    {
+      "id": 47,
+      "question": "What is the significance of the title 'Once Upon an Elephant'?",
+      "options": [
+        "A) It signals a children's bedtime story without serious meaning",
+        "B) It frames the play as a timeless cautionary political fable rooted in oral storytelling traditions",
+        "C) It is a historical record of a zoological expedition",
+        "D) It refers to a hunting game"
+      ],
+      "answer": "B) It frames the play as a timeless cautionary political fable rooted in oral storytelling traditions"
+    },
+    {
+      "id": 48,
+      "question": "How is justice ultimately restored in the community?",
+      "options": [
+        "A) Through divine intervention without human effort",
+        "B) Through truth-telling, exposure of secret crimes, self-sacrifice, and collective community action",
+        "C) Through a royal decree by a neighboring king",
+        "D) Through a financial settlement"
+      ],
+      "answer": "B) Through truth-telling, exposure of secret crimes, self-sacrifice, and collective community action"
+    },
+    {
+      "id": 49,
+      "question": "What does Ajanaku's downfall teach aspiring leaders about power?",
+      "options": [
+        "A) Power is best kept through absolute terror",
+        "B) Power acquired through deceit and maintained through oppression is inherently unstable and self-destructive",
+        "C) Power requires no moral backing",
+        "D) Power should be shared with animals"
+      ],
+      "answer": "B) Power acquired through deceit and maintained through oppression is inherently unstable and self-destructive"
+    },
+    {
+      "id": 50,
+      "question": "Why is 'Once Upon an Elephant' considered a significant contribution to modern African drama?",
+      "options": [
+        "A) It avoids traditional themes entirely",
+        "B) It brilliantly merges indigenous Yoruba oral aesthetics with urgent contemporary political critique",
+        "C) It is written entirely in verse translation",
+        "D) It is the longest play ever written in Nigeria"
+      ],
+      "answer": "B) It brilliantly merges indigenous Yoruba oral aesthetics with urgent contemporary political critique"
+    }
+  ]
+}
