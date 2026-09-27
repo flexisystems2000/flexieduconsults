@@ -3,34 +3,41 @@
 // FLEXI EDUCATIONAL CONSULT
 // NOVELS / LITERATURE
 //
-// IMPORTANT:
-// This page uses the same HEADER and FOOTER structure as
-// index.php.
+// 10 PRESCRIBED LITERATURE TEXTS
 //
-// BOOK DATA:
-//   First 9 books:
-//      literature/*.json
+// FIRST 9 BOOKS:
+//   literature/*.json
 //
-//   The Lekki Headmaster:
-//      Summary:
-//         literature/the_lekki_headmaster.json
+// THE LEKKI HEADMASTER:
+//   SUMMARY:
+//      literature/the_lekki_headmaster.json
 //
-//      Practice:
-//         Flexi-JAMB-CBT-App-/question_bank/
-//         the_lekki_headmaster.json
+//   PRACTICE:
+//      Flexi-JAMB-CBT-App-/question_bank/
+//      the_lekki_headmaster.json
 //
-// PRACTICE MODE:
-//   One question at a time.
-//   Previous / Next navigation.
+// PRACTICE:
+//   - One question at a time
+//   - Click an option
+//   - Immediate CORRECT / WRONG feedback
+//   - Previous / Next without page reload
 // ============================================================
 
 declare(strict_types=1);
 
 
 // ============================================================
+// ERROR HANDLING
+// Prevent PHP warnings/notices from being displayed publicly.
+// ============================================================
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
+
+// ============================================================
 // HELPER: ESCAPE HTML
 // ============================================================
-function esc($value)
+function esc($value): string
 {
     return htmlspecialchars(
         (string)$value,
@@ -41,9 +48,9 @@ function esc($value)
 
 
 // ============================================================
-// HELPER: LOAD JSON
+// HELPER: LOAD JSON FILE
 // ============================================================
-function loadJsonFile($file)
+function loadJsonFile(string $file): ?array
 {
     if (!is_file($file)) {
         return null;
@@ -63,7 +70,10 @@ function loadJsonFile($file)
         true
     );
 
-    if (!is_array($data)) {
+    if (
+        !is_array($data) ||
+        json_last_error() !== JSON_ERROR_NONE
+    ) {
         return null;
     }
 
@@ -73,28 +83,34 @@ function loadJsonFile($file)
 
 // ============================================================
 // HELPER: GET BOOK INFORMATION
+//
 // Supports the different structures used by the existing
 // Literature JSON files.
 // ============================================================
-function getBookInfo($data)
+function getBookInfo(?array $data): array
 {
+    $result = [
+        'title' => '',
+        'author' => '',
+        'category' => '',
+        'summary' => []
+    ];
+
     if (!is_array($data)) {
-        return [
-            'title' => '',
-            'author' => '',
-            'category' => '',
-            'summary' => []
-        ];
+        return $result;
     }
 
     $info = [];
 
+    // play_info structure
     if (
         isset($data['play_info']) &&
         is_array($data['play_info'])
     ) {
         $info = $data['play_info'];
     }
+
+    // Some files may have play as an object.
     elseif (
         isset($data['play']) &&
         is_array($data['play'])
@@ -102,85 +118,90 @@ function getBookInfo($data)
         $info = $data['play'];
     }
 
-    $title = '';
-
+    // Title
     if (
         isset($info['title']) &&
         is_string($info['title'])
     ) {
-        $title = $info['title'];
+        $result['title'] =
+            trim($info['title']);
     }
+
     elseif (
         isset($data['title']) &&
         is_string($data['title'])
     ) {
-        $title = $data['title'];
+        $result['title'] =
+            trim($data['title']);
     }
+
     elseif (
         isset($data['play']) &&
         is_string($data['play'])
     ) {
-        $title = $data['play'];
+        $result['title'] =
+            trim($data['play']);
     }
 
-    $author = '';
-
+    // Author
     if (
         isset($info['author']) &&
         is_string($info['author'])
     ) {
-        $author = $info['author'];
+        $result['author'] =
+            trim($info['author']);
     }
+
     elseif (
         isset($data['author']) &&
         is_string($data['author'])
     ) {
-        $author = $data['author'];
+        $result['author'] =
+            trim($data['author']);
     }
 
-    $category = '';
-
+    // Category
     if (
         isset($info['category']) &&
         is_string($info['category'])
     ) {
-        $category = $info['category'];
+        $result['category'] =
+            trim($info['category']);
     }
+
     elseif (
         isset($data['category']) &&
         is_string($data['category'])
     ) {
-        $category = $data['category'];
+        $result['category'] =
+            trim($data['category']);
     }
 
-    $summary = [];
-
+    // Summary
     if (
         isset($info['summary']) &&
         is_array($info['summary'])
     ) {
-        $summary = $info['summary'];
+        $result['summary'] =
+            $info['summary'];
     }
+
     elseif (
         isset($data['summary']) &&
         is_array($data['summary'])
     ) {
-        $summary = $data['summary'];
+        $result['summary'] =
+            $data['summary'];
     }
 
-    return [
-        'title' => trim($title),
-        'author' => trim($author),
-        'category' => trim($category),
-        'summary' => $summary
-    ];
+    return $result;
 }
 
 
 // ============================================================
 // HELPER: GET QUESTIONS
 // ============================================================
-function getQuestions($data)
+function getQuestions(?array $data): array
 {
     if (!is_array($data)) {
         return [];
@@ -200,11 +221,6 @@ function getQuestions($data)
         return $data['questions'];
     }
 
-    /*
-     * PHP 8.1+.
-     * array_is_list() confirms that the JSON itself is
-     * an array of questions.
-     */
     if (
         function_exists('array_is_list') &&
         array_is_list($data)
@@ -288,14 +304,25 @@ $books = [
 // ============================================================
 // REQUEST
 // ============================================================
-$requestedSlug = isset($_GET['book'])
-    ? trim((string)$_GET['book'])
-    : '';
+$requestedSlug =
+    isset($_GET['book'])
+        ? trim((string)$_GET['book'])
+        : '';
 
-$requestedView = isset($_GET['view'])
-    ? trim((string)$_GET['view'])
-    : '';
+$requestedView =
+    isset($_GET['view'])
+        ? trim((string)$_GET['view'])
+        : '';
 
+$questionNumber =
+    isset($_GET['q'])
+        ? max(1, (int)$_GET['q'])
+        : 1;
+
+
+// ============================================================
+// FIND CURRENT BOOK
+// ============================================================
 $currentBook = null;
 
 foreach ($books as $book) {
@@ -310,9 +337,6 @@ foreach ($books as $book) {
 }
 
 
-// ============================================================
-// DETAIL PAGE?
-// ============================================================
 $isDetailPage =
     $currentBook !== null;
 
@@ -333,18 +357,6 @@ if (
 
 
 // ============================================================
-// QUESTION NUMBER
-//
-// q=1 means first question.
-// q=2 means second question, etc.
-// ============================================================
-$questionNumber =
-    isset($_GET['q'])
-        ? max(1, (int)$_GET['q'])
-        : 1;
-
-
-// ============================================================
 // CURRENT BOOK DATA
 // ============================================================
 $currentData = null;
@@ -360,7 +372,7 @@ $currentQuestions = [];
 
 
 // ============================================================
-// LOAD BOOK
+// LOAD CURRENT BOOK
 // ============================================================
 if ($isDetailPage) {
 
@@ -374,7 +386,6 @@ if ($isDetailPage) {
     $currentData =
         loadJsonFile($jsonPath);
 
-
     if ($currentData !== null) {
 
         $currentInfo =
@@ -382,15 +393,14 @@ if ($isDetailPage) {
 
         $currentQuestions =
             getQuestions($currentData);
-
     }
 
 
     // ========================================================
-    // THE LEKKI HEADMASTER
+    // SPECIAL CASE:
+    // THE LEKKI HEADMASTER PRACTICE QUESTIONS
     //
-    // Its practice questions come from the JAMB CBT App
-    // repository rather than the Literature summary JSON.
+    // They come from the Flexi JAMB CBT App repository.
     // ========================================================
     if (
         !empty($currentBook['special_practice']) &&
@@ -442,7 +452,9 @@ if ($isDetailPage) {
                 );
 
 
-            if (is_array($decodedQuestions)) {
+            if (
+                is_array($decodedQuestions)
+            ) {
 
                 if (
                     function_exists('array_is_list') &&
@@ -451,10 +463,12 @@ if ($isDetailPage) {
 
                     $currentQuestions =
                         $decodedQuestions;
-
                 }
+
                 elseif (
-                    isset($decodedQuestions['cbt_questions']) &&
+                    isset(
+                        $decodedQuestions['cbt_questions']
+                    ) &&
                     is_array(
                         $decodedQuestions['cbt_questions']
                     )
@@ -462,10 +476,12 @@ if ($isDetailPage) {
 
                     $currentQuestions =
                         $decodedQuestions['cbt_questions'];
-
                 }
+
                 elseif (
-                    isset($decodedQuestions['questions']) &&
+                    isset(
+                        $decodedQuestions['questions']
+                    ) &&
                     is_array(
                         $decodedQuestions['questions']
                     )
@@ -473,35 +489,36 @@ if ($isDetailPage) {
 
                     $currentQuestions =
                         $decodedQuestions['questions'];
-
                 }
-
             }
-
         }
-
     }
-
 }
 
 
 // ============================================================
-// SAFE BOOK VALUES
+// SAFE BOOK INFORMATION
 // ============================================================
 $title =
-    isset($currentInfo['title'])
-        ? trim((string)$currentInfo['title'])
-        : '';
+    trim(
+        (string)(
+            $currentInfo['title'] ?? ''
+        )
+    );
 
 $author =
-    isset($currentInfo['author'])
-        ? trim((string)$currentInfo['author'])
-        : '';
+    trim(
+        (string)(
+            $currentInfo['author'] ?? ''
+        )
+    );
 
 $category =
-    isset($currentInfo['category'])
-        ? trim((string)$currentInfo['category'])
-        : '';
+    trim(
+        (string)(
+            $currentInfo['category'] ?? ''
+        )
+    );
 
 $summary =
     isset($currentInfo['summary']) &&
@@ -510,80 +527,62 @@ $summary =
         : [];
 
 $overview =
-    isset($summary['overview'])
-        ? trim((string)$summary['overview'])
-        : '';
+    trim(
+        (string)(
+            $summary['overview'] ?? ''
+        )
+    );
 
 $plotSummary =
-    isset($summary['plot_summary'])
-        ? trim((string)$summary['plot_summary'])
-        : '';
+    trim(
+        (string)(
+            $summary['plot_summary'] ?? ''
+        )
+    );
 
 
 // ============================================================
 // URL HELPERS
 // ============================================================
 function bookUrl(
-    $slug,
-    $view = 'summary',
-    $question = null
-) {
+    string $slug,
+    string $view = 'summary'
+): string {
 
-    $url =
+    return
         'novel.php?book=' .
         rawurlencode($slug) .
         '&view=' .
         rawurlencode($view);
-
-    if ($question !== null) {
-
-        $url .=
-            '&q=' .
-            max(1, (int)$question);
-    }
-
-    return $url;
 }
 
 
-function coverUrl($book)
+function coverUrl(array $book): string
 {
     return
         'literature/assets/' .
-        rawurlencode($book['cover']);
+        rawurlencode(
+            (string)($book['cover'] ?? '')
+        );
 }
 
 
 // ============================================================
-// PRACTICE NAVIGATION DATA
+// PRACTICE DATA
 // ============================================================
 $totalQuestions =
     count($currentQuestions);
 
 if ($totalQuestions > 0) {
 
-    if ($questionNumber > $totalQuestions) {
-        $questionNumber = $totalQuestions;
+    if (
+        $questionNumber >
+        $totalQuestions
+    ) {
+        $questionNumber =
+            $totalQuestions;
     }
-
-    $currentQuestion =
-        $currentQuestions[
-            $questionNumber - 1
-        ];
-
 }
-else {
-
-    $currentQuestion = null;
-
-}
-
-
-$previousQuestion =
-    $questionNumber - 1;
-
-$nextQuestion =
-    $questionNumber + 1;
 
 
 // ============================================================
@@ -591,14 +590,12 @@ $nextQuestion =
 // ============================================================
 $pageTitle =
     $isDetailPage && $title !== ''
-        ? $title . ' | Flexi Educational Consult'
+        ? $title .
+          ' | Flexi Educational Consult'
         : 'Literature | Flexi Educational Consult';
 
-
-// ============================================================
-// CURRENT YEAR
-// ============================================================
-$currentYear = date('Y');
+$currentYear =
+    date('Y');
 
 ?>
 <!DOCTYPE html>
@@ -639,74 +636,52 @@ $currentYear = date('Y');
 <style>
 
 /* ============================================================
-   SAME CORE COLORS AS INDEX.PHP
+   FLEXI CORE COLORS
 ============================================================ */
 
 :root {
 
     --blue: #003366;
-
     --green: #2E8B57;
-
     --yellow: #FFD700;
-
     --bg: #f4f7f6;
 
     --radius: 12px;
 
     --shadow:
         0 4px 18px rgba(0,0,0,0.06);
-
 }
 
 
-/* ============================================================
-   GLOBAL
-============================================================ */
-
 * {
-
     box-sizing: border-box;
-
-    -webkit-user-select: none;
-
-    -moz-user-select: none;
-
-    -ms-user-select: none;
-
-    user-select: none;
-
 }
 
 
 body {
+
+    margin: 0;
+    padding: 0;
+
+    background: var(--bg);
+
+    color: #333;
 
     font-family:
         'Segoe UI',
         system-ui,
         -apple-system,
         sans-serif;
-
-    background: var(--bg);
-
-    margin: 0;
-
-    padding: 0;
-
-    color: #333;
-
 }
 
 
 a {
-
     text-decoration: none;
-
 }
 
 
 /* ============================================================
-   EXACT INDEX.PHP HEADER
+   HEADER
 ============================================================ */
 
 header {
@@ -715,7 +690,7 @@ header {
 
     color: white;
 
-    height: 52px;
+    min-height: 52px;
 
     display: flex;
 
@@ -725,14 +700,14 @@ header {
 
     padding: 0 20px;
 
-    border-bottom: 3px solid var(--green);
+    border-bottom:
+        3px solid var(--green);
 
     position: sticky;
 
     top: 0;
 
     z-index: 1000;
-
 }
 
 
@@ -743,7 +718,6 @@ header {
     align-items: center;
 
     gap: 12px;
-
 }
 
 
@@ -756,7 +730,6 @@ header {
     object-fit: contain;
 
     border-radius: 4px;
-
 }
 
 
@@ -766,22 +739,22 @@ header {
 
     font-weight: 700;
 
-    letter-spacing: 0.2px;
-
+    letter-spacing: .2px;
 }
 
 
+/* ============================================================
+   MENU
+============================================================ */
+
 .menu-container {
-
     position: relative;
-
 }
 
 
 .menu-btn {
 
     width: 38px;
-
     height: 38px;
 
     cursor: pointer;
@@ -801,18 +774,13 @@ header {
     justify-content: center;
 
     color: white;
-
 }
 
 
 .menu-svg {
 
     width: 21px;
-
     height: 21px;
-
-    display: block;
-
 }
 
 
@@ -823,7 +791,6 @@ header {
     position: absolute;
 
     top: 48px;
-
     right: 0;
 
     width: 300px;
@@ -836,54 +803,23 @@ header {
             #2E8B57 100%
         );
 
-    border: 2px solid var(--green);
+    border:
+        2px solid var(--green);
 
     border-radius: 10px;
 
     z-index: 2000;
 
     box-shadow:
-        0 12px 32px rgba(0,0,0,.35);
+        0 12px 32px
+        rgba(0,0,0,.35);
 
     overflow: hidden;
-
 }
 
 
 .square-menu.menu-open {
-
     display: block;
-
-    animation:
-        menuDrop
-        .18s
-        ease-out;
-
-}
-
-
-@keyframes menuDrop {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(-6px)
-            scale(.98);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
-    }
-
 }
 
 
@@ -900,17 +836,13 @@ header {
 
     color: white;
 
-    text-decoration: none;
-
     font-size: 14px;
 
+    border: 0;
+
     border-bottom:
-        1px solid rgba(255,255,255,.1);
-
-    transition:
-        background .15s,
-        padding-left .15s;
-
+        1px solid
+        rgba(255,255,255,.1);
 }
 
 
@@ -918,10 +850,7 @@ header {
 .study-menu-toggle:hover {
 
     background:
-        rgba(255,255,255,0.12);
-
-    padding-left: 19px;
-
+        rgba(255,255,255,.12);
 }
 
 
@@ -931,71 +860,48 @@ header {
 
     background: transparent;
 
-    border-top: none;
-
-    border-left: none;
-
-    border-right: none;
-
     text-align: left;
 
     cursor: pointer;
-
 }
 
 
 .menu-icon {
 
     width: 21px;
-
     height: 21px;
 
-    flex:
-        0 0 21px;
+    flex: 0 0 21px;
 
     display: inline-flex;
 
     align-items: center;
 
     justify-content: center;
-
-    color:
-        rgba(255,255,255,.96);
-
 }
 
 
 .menu-icon svg {
 
     width: 20px;
-
     height: 20px;
-
-    display: block;
-
 }
 
 
 .menu-label {
-
-    min-width: 0;
-
     line-height: 1.35;
-
 }
 
 
 .study-chevron {
 
     width: 18px;
-
     height: 18px;
 
     margin-left: auto;
 
     transition:
         transform .2s ease;
-
 }
 
 
@@ -1004,7 +910,6 @@ header {
 
     transform:
         rotate(180deg);
-
 }
 
 
@@ -1018,21 +923,19 @@ header {
     padding: 4px;
 
     border-left:
-        1px solid rgba(255,255,255,.20);
+        1px solid
+        rgba(255,255,255,.20);
 
     background:
         rgba(0,0,0,.10);
 
     border-radius:
         0 8px 8px 0;
-
 }
 
 
 .study-submenu.open {
-
     display: block;
-
 }
 
 
@@ -1040,52 +943,29 @@ header {
 
     min-height: 40px;
 
-    padding:
-        9px 10px;
+    padding: 9px 10px;
 
     font-size: 13px;
-
-    font-weight: 500;
-
-}
-
-
-.study-submenu .menu-icon {
-
-    width: 18px;
-
-    height: 18px;
-
-}
-
-
-.study-submenu .menu-icon svg {
-
-    width: 18px;
-
-    height: 18px;
-
 }
 
 
 /* ============================================================
-   PAGE CONTAINER
+   MAIN CONTAINER
 ============================================================ */
 
 .container {
 
     max-width: 1180px;
 
-    margin:
-        24px auto 46px;
-
     width: 94%;
 
+    margin:
+        24px auto 46px;
 }
 
 
 /* ============================================================
-   PAGE INTRO
+   PAGE HEADING
 ============================================================ */
 
 .page-heading {
@@ -1101,11 +981,11 @@ header {
     padding:
         24px 28px;
 
-    margin-bottom: 20px;
+    margin-bottom:
+        20px;
 
     border-left:
         5px solid var(--green);
-
 }
 
 
@@ -1119,7 +999,6 @@ header {
 
     font-size:
         1.8rem;
-
 }
 
 
@@ -1127,10 +1006,10 @@ header {
 
     margin: 0;
 
-    color: #64748b;
+    color:
+        #64748b;
 
     font-size: 14px;
-
 }
 
 
@@ -1143,10 +1022,9 @@ header {
     display: grid;
 
     grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+        repeat(3, minmax(0,1fr));
 
     gap: 18px;
-
 }
 
 
@@ -1168,7 +1046,6 @@ header {
     display: flex;
 
     flex-direction: column;
-
 }
 
 
@@ -1181,21 +1058,18 @@ header {
     object-fit: cover;
 
     background: #eef2f4;
-
 }
 
 
 .novel-content {
 
-    padding:
-        14px;
+    padding: 14px;
 
     display: flex;
 
     flex-direction: column;
 
     flex: 1;
-
 }
 
 
@@ -1204,18 +1078,14 @@ header {
     color:
         var(--green);
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    font-weight:
-        800;
+    font-weight: 800;
 
     text-transform:
         uppercase;
 
-    margin-bottom:
-        3px;
-
+    margin-bottom: 3px;
 }
 
 
@@ -1224,15 +1094,12 @@ header {
     color:
         var(--blue);
 
-    font-size:
-        16px;
+    font-size: 16px;
 
-    line-height:
-        1.3;
+    line-height: 1.3;
 
     margin:
         0 0 5px;
-
 }
 
 
@@ -1241,12 +1108,9 @@ header {
     color:
         #667085;
 
-    font-size:
-        12px;
+    font-size: 12px;
 
-    margin-bottom:
-        8px;
-
+    margin-bottom: 8px;
 }
 
 
@@ -1255,11 +1119,9 @@ header {
     color:
         #596575;
 
-    font-size:
-        12px;
+    font-size: 12px;
 
-    line-height:
-        1.55;
+    line-height: 1.55;
 
     margin:
         0 0 14px;
@@ -1272,58 +1134,42 @@ header {
     -webkit-box-orient:
         vertical;
 
-    overflow:
-        hidden;
-
+    overflow: hidden;
 }
 
 
 .novel-actions {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         1fr 1fr;
 
-    gap:
-        7px;
+    gap: 7px;
 
-    margin-top:
-        auto;
-
+    margin-top: auto;
 }
 
 
 .pill-btn {
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    text-align:
-        center;
+    text-align: center;
 
-    min-height:
-        40px;
+    min-height: 40px;
 
-    padding:
-        7px 8px;
+    padding: 7px 8px;
 
-    border-radius:
-        999px;
+    border-radius: 999px;
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    font-weight:
-        800;
-
+    font-weight: 800;
 }
 
 
@@ -1332,23 +1178,19 @@ header {
     background:
         var(--blue);
 
-    color:
-        white;
-
+    color: white;
 }
 
 
 .pill-practice {
 
-    background:
-        white;
+    background: white;
 
     color:
         var(--blue);
 
     border:
         1px solid var(--blue);
-
 }
 
 
@@ -1358,8 +1200,7 @@ header {
 
 .detail-card {
 
-    background:
-        white;
+    background: white;
 
     border-radius:
         var(--radius);
@@ -1367,46 +1208,35 @@ header {
     box-shadow:
         var(--shadow);
 
-    overflow:
-        hidden;
-
+    overflow: hidden;
 }
 
 
 .detail-header {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         170px 1fr;
 
-    gap:
-        24px;
+    gap: 24px;
 
-    padding:
-        24px;
+    padding: 24px;
 
     border-bottom:
         1px solid #e5e7eb;
-
 }
 
 
 .detail-cover {
 
-    width:
-        170px;
+    width: 170px;
 
-    height:
-        220px;
+    height: 220px;
 
-    object-fit:
-        cover;
+    object-fit: cover;
 
-    border-radius:
-        9px;
-
+    border-radius: 9px;
 }
 
 
@@ -1423,7 +1253,6 @@ header {
 
     line-height:
         1.25;
-
 }
 
 
@@ -1437,14 +1266,12 @@ header {
 
     margin-bottom:
         12px;
-
 }
 
 
 .detail-category {
 
-    display:
-        inline-block;
+    display: inline-block;
 
     background:
         #edf7f1;
@@ -1452,67 +1279,50 @@ header {
     color:
         #237246;
 
-    border-radius:
-        999px;
+    border-radius: 999px;
 
     padding:
         5px 10px;
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    font-weight:
-        800;
+    font-weight: 800;
 
-    margin-bottom:
-        17px;
-
+    margin-bottom: 17px;
 }
 
 
 .detail-actions {
 
-    display:
-        flex;
+    display: flex;
 
-    flex-wrap:
-        wrap;
+    flex-wrap: wrap;
 
-    gap:
-        8px;
-
+    gap: 8px;
 }
 
 
 .detail-pill {
 
-    display:
-        inline-flex;
+    display: inline-flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    min-height:
-        40px;
+    min-height: 40px;
 
     padding:
         8px 15px;
 
-    border-radius:
-        999px;
+    border-radius: 999px;
 
     border:
         1px solid var(--blue);
 
-    font-size:
-        12px;
+    font-size: 12px;
 
-    font-weight:
-        800;
-
+    font-weight: 800;
 }
 
 
@@ -1521,20 +1331,16 @@ header {
     background:
         var(--blue);
 
-    color:
-        white;
-
+    color: white;
 }
 
 
 .detail-pill.secondary {
 
-    background:
-        white;
+    background: white;
 
     color:
         var(--blue);
-
 }
 
 
@@ -1544,9 +1350,7 @@ header {
 
 .reading-area {
 
-    padding:
-        25px;
-
+    padding: 25px;
 }
 
 
@@ -1560,7 +1364,6 @@ header {
 
     font-size:
         1.3rem;
-
 }
 
 
@@ -1574,7 +1377,6 @@ header {
 
     font-size:
         1rem;
-
 }
 
 
@@ -1591,7 +1393,6 @@ header {
 
     margin:
         0 0 14px;
-
 }
 
 
@@ -1601,21 +1402,15 @@ header {
 
 .practice-top {
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
     justify-content:
         space-between;
 
-    gap:
-        10px;
-
     margin-bottom:
         18px;
-
 }
 
 
@@ -1629,24 +1424,19 @@ header {
 
     font-weight:
         700;
-
 }
 
 
 .question-card {
 
-    background:
-        #ffffff;
+    background: #fff;
 
     border:
         1px solid #e1e7ec;
 
-    border-radius:
-        12px;
+    border-radius: 12px;
 
-    padding:
-        20px;
-
+    padding: 20px;
 }
 
 
@@ -1666,7 +1456,6 @@ header {
 
     margin-bottom:
         8px;
-
 }
 
 
@@ -1686,31 +1475,32 @@ header {
 
     margin-bottom:
         17px;
-
 }
 
 
 .options {
 
-    display:
-        grid;
+    display: grid;
 
-    gap:
-        9px;
-
+    gap: 9px;
 }
 
 
+/* ============================================================
+   CLICKABLE OPTIONS
+============================================================ */
+
 .option {
 
+    width: 100%;
+
     padding:
-        11px 13px;
+        12px 13px;
 
     border:
         1px solid #e1e6eb;
 
-    border-radius:
-        8px;
+    border-radius: 8px;
 
     background:
         #f9fafb;
@@ -1718,19 +1508,150 @@ header {
     color:
         #374151;
 
+    font-family: inherit;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        color .18s ease,
+        transform .08s ease;
+}
+
+
+.option:hover {
+
+    border-color:
+        var(--blue);
+
+    background:
+        #f1f6fb;
+}
+
+
+.option:active {
+
+    transform:
+        scale(.995);
+}
+
+
+.option.selected-correct {
+
+    background:
+        #e8f7ef;
+
+    border-color:
+        var(--green);
+
+    color:
+        #17633c;
+}
+
+
+.option.selected-wrong {
+
+    background:
+        #fdecec;
+
+    border-color:
+        #c0392b;
+
+    color:
+        #9f2419;
+}
+
+
+.option.correct-answer {
+
+    background:
+        #e8f7ef;
+
+    border-color:
+        var(--green);
+
+    color:
+        #17633c;
+}
+
+
+.option:disabled {
+
+    cursor: default;
+
+    opacity: 1;
+}
+
+
+/* ============================================================
+   ANSWER FEEDBACK
+============================================================ */
+
+.answer-feedback {
+
+    display: none;
+
+    margin-top:
+        14px;
+
+    padding:
+        11px 13px;
+
+    border-radius:
+        9px;
+
     font-size:
         14px;
 
     line-height:
-        1.5;
+        1.45;
 
+    font-weight:
+        800;
+}
+
+
+.answer-feedback.show {
+    display: block;
+}
+
+
+.answer-feedback.correct {
+
+    background:
+        #e8f7ef;
+
+    border:
+        1px solid #a9dfc1;
+
+    color:
+        #17633c;
+}
+
+
+.answer-feedback.wrong {
+
+    background:
+        #fdecec;
+
+    border:
+        1px solid #efb2ac;
+
+    color:
+        #9f2419;
 }
 
 
 .question-year {
 
-    display:
-        inline-block;
+    display: inline-block;
 
     margin-top:
         14px;
@@ -1752,31 +1673,26 @@ header {
 
     font-weight:
         700;
-
 }
 
 
 /* ============================================================
-   PREVIOUS / NEXT NAVIGATION
+   PREVIOUS / NEXT
 ============================================================ */
 
 .practice-navigation {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         1fr auto 1fr;
 
-    align-items:
-        center;
+    align-items: center;
 
-    gap:
-        10px;
+    gap: 10px;
 
     margin-top:
         18px;
-
 }
 
 
@@ -1785,14 +1701,11 @@ header {
     min-height:
         45px;
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
     padding:
         9px 15px;
@@ -1809,45 +1722,45 @@ header {
     border:
         1px solid var(--blue);
 
+    font-family: inherit;
+
+    cursor: pointer;
 }
 
 
 .question-nav-btn.prev {
 
-    justify-self:
-        start;
+    justify-self: start;
 
     color:
         var(--blue);
 
     background:
         white;
-
 }
 
 
 .question-nav-btn.next {
 
-    justify-self:
-        end;
+    justify-self: end;
 
-    color:
-        white;
+    color: white;
 
     background:
         var(--blue);
-
 }
 
 
-.question-nav-btn.disabled {
+.question-nav-btn:disabled {
 
     opacity:
         .35;
 
+    cursor:
+        default;
+
     pointer-events:
         none;
-
 }
 
 
@@ -1864,9 +1777,12 @@ header {
 
     white-space:
         nowrap;
-
 }
 
+
+/* ============================================================
+   NOTICE
+============================================================ */
 
 .notice {
 
@@ -1887,12 +1803,11 @@ header {
 
     font-size:
         14px;
-
 }
 
 
 /* ============================================================
-   EXACT INDEX.PHP FOOTER
+   FOOTER
 ============================================================ */
 
 .footer {
@@ -1918,30 +1833,23 @@ header {
 
     font-size:
         14px;
-
 }
 
 
 .footer-grid {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
-        1.8fr
-        1.2fr
-        1.3fr
-        1fr;
+        1.8fr 1.2fr 1.3fr 1fr;
 
-    gap:
-        35px;
+    gap: 35px;
 
     max-width:
         1200px;
 
     margin:
         0 auto;
-
 }
 
 
@@ -1961,45 +1869,6 @@ header {
 
     margin:
         0 0 16px;
-
-    position:
-        relative;
-
-    padding-bottom:
-        6px;
-
-}
-
-
-.footer h4::after {
-
-    content:
-        '';
-
-    position:
-        absolute;
-
-    left:
-        0;
-
-    bottom:
-        0;
-
-    width:
-        24px;
-
-    height:
-        2px;
-
-    background:
-        var(--yellow);
-
-    opacity:
-        .7;
-
-    border-radius:
-        2px;
-
 }
 
 
@@ -2011,23 +1880,17 @@ header {
     color:
         #94a3b8;
 
-    margin:
-        0;
-
+    margin: 0;
 }
 
 
 .footer-links-list {
 
-    list-style:
-        none;
+    list-style: none;
 
-    padding:
-        0;
+    padding: 0;
 
-    margin:
-        0;
-
+    margin: 0;
 }
 
 
@@ -2035,7 +1898,6 @@ header {
 
     margin-bottom:
         10px;
-
 }
 
 
@@ -2043,18 +1905,13 @@ header {
 
     color:
         #cbd5e0;
-
-    text-decoration:
-        none;
-
 }
 
 
-.footer-links-list a:hover {
+.footer a:hover {
 
     color:
         var(--yellow);
-
 }
 
 
@@ -2065,10 +1922,6 @@ header {
 
     font-weight:
         600;
-
-    display:
-        inline-block;
-
 }
 
 
@@ -2076,7 +1929,6 @@ header {
 
     margin-bottom:
         16px;
-
 }
 
 
@@ -2091,22 +1943,14 @@ header {
     text-transform:
         uppercase;
 
-    letter-spacing:
-        .8px;
-
     margin:
         0 0 6px;
-
-    opacity:
-        .9;
-
 }
 
 
 .contact-group a {
 
-    display:
-        block;
+    display: block;
 
     color:
         #94a3b8;
@@ -2116,15 +1960,6 @@ header {
 
     margin-bottom:
         4px;
-
-}
-
-
-.contact-group a:hover {
-
-    color:
-        #ffffff;
-
 }
 
 
@@ -2141,7 +1976,7 @@ header {
 
     border-top:
         1px solid
-        rgba(255,255,255,0.08);
+        rgba(255,255,255,.08);
 
     text-align:
         center;
@@ -2151,38 +1986,23 @@ header {
 
     color:
         #64748b;
-
 }
 
 
 /* ============================================================
-   SUPPORT WIDGET
-============================================================ */
-
-#support-btn:hover {
-
-    transform:
-        scale(1.1);
-
-}
-
-
-/* ============================================================
-   DESKTOP
+   RESPONSIVE
 ============================================================ */
 
 @media (min-width: 768px) {
 
     header {
 
-        height:
+        min-height:
             64px;
 
         padding:
             0 34px;
-
     }
-
 
     .logo-img {
 
@@ -2191,17 +2011,13 @@ header {
 
         width:
             40px;
-
     }
-
 
     .brand-name {
 
         font-size:
             17px;
-
     }
-
 
     .square-menu {
 
@@ -2213,59 +2029,23 @@ header {
 
         border-radius:
             14px;
-
     }
-
-
-    .square-menu a,
-    .study-menu-toggle {
-
-        min-height:
-            50px;
-
-        padding:
-            14px 17px;
-
-        font-size:
-            14px;
-
-    }
-
-
-    .study-submenu {
-
-        margin-left:
-            38px;
-
-    }
-
 }
 
-
-/* ============================================================
-   RESPONSIVE
-============================================================ */
 
 @media (max-width: 900px) {
 
     .novel-grid {
 
         grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
+            repeat(2,minmax(0,1fr));
     }
-
 
     .footer-grid {
 
         grid-template-columns:
             1fr 1fr;
-
-        gap:
-            30px;
-
     }
-
 }
 
 
@@ -2275,44 +2055,31 @@ header {
 
         margin:
             16px auto 35px;
-
     }
-
 
     .page-heading {
 
         padding:
             18px;
-
     }
-
 
     .page-heading h1 {
 
         font-size:
             1.5rem;
-
     }
-
 
     .novel-grid {
 
         grid-template-columns:
             1fr;
-
-        gap:
-            15px;
-
     }
-
 
     .novel-cover {
 
         height:
             205px;
-
     }
-
 
     .detail-header {
 
@@ -2321,9 +2088,7 @@ header {
 
         padding:
             18px;
-
     }
-
 
     .detail-cover {
 
@@ -2332,25 +2097,19 @@ header {
 
         height:
             195px;
-
     }
-
 
     .reading-area {
 
         padding:
             18px;
-
     }
-
 
     .practice-navigation {
 
         grid-template-columns:
             1fr 1fr;
-
     }
-
 
     .question-position {
 
@@ -2362,51 +2121,25 @@ header {
 
         text-align:
             center;
-
-        order:
-            -1;
-
     }
-
 
     .question-nav-btn.prev {
 
         grid-column:
             1;
-
     }
-
 
     .question-nav-btn.next {
 
         grid-column:
             2;
-
     }
-
 
     .footer-grid {
 
         grid-template-columns:
             1fr;
-
-        gap:
-            28px;
-
     }
-
-}
-
-
-@media (max-width: 480px) {
-
-    .footer {
-
-        padding:
-            45px 20px 25px;
-
-    }
-
 }
 
 </style>
@@ -2418,7 +2151,7 @@ header {
 
 
 <!-- ==========================================================
-     EXACT INDEX.PHP HEADER STRUCTURE
+     FLEXI HEADER
 =========================================================== -->
 
 <header>
@@ -2440,15 +2173,14 @@ header {
     <div class="menu-container">
 
         <button
+            type="button"
             class="menu-btn"
             onclick="toggleMenu()"
             aria-label="Toggle Navigation Menu">
 
             <svg
                 class="menu-svg"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                focusable="false">
+                viewBox="0 0 24 24">
 
                 <path
                     d="M4 6h16M4 12h16M4 18h16"
@@ -2477,8 +2209,7 @@ header {
                             d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linejoin="round"/>
+                            stroke-width="1.8"/>
 
                     </svg>
 
@@ -2499,13 +2230,6 @@ header {
 
                         <path
                             d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5z"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linejoin="round"/>
-
-                        <path
-                            d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"
                             fill="none"
                             stroke="currentColor"
                             stroke-width="1.8"/>
@@ -2541,15 +2265,7 @@ header {
                             d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linejoin="round"/>
-
-                        <path
-                            d="M4 5.5V19M8 7h8M8 11h8"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
+                            stroke-width="1.8"/>
 
                     </svg>
 
@@ -2567,9 +2283,7 @@ header {
                         d="m6 9 6 6 6-6"
                         fill="none"
                         stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"/>
+                        stroke-width="2"/>
 
                 </svg>
 
@@ -2591,15 +2305,7 @@ header {
                                 d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linejoin="round"/>
-
-                            <path
-                                d="M4 5.5V19"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"/>
+                                stroke-width="1.8"/>
 
                         </svg>
 
@@ -2622,15 +2328,7 @@ header {
                                 d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v18H7.5A2.5 2.5 0 0 0 5 22V4.5Z"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linejoin="round"/>
-
-                            <path
-                                d="M5 4.5V19M9 7h6M9 11h7M9 15h5"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"/>
+                                stroke-width="1.8"/>
 
                         </svg>
 
@@ -2653,16 +2351,7 @@ header {
                                 d="M3 8.5 12 4l9 4.5-9 4.5-9-4.5Z"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linejoin="round"/>
-
-                            <path
-                                d="M6 11.5V16c2.8 2.2 9.2 2.2 12 0v-4.5M21 9v5"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"/>
+                                stroke-width="1.8"/>
 
                         </svg>
 
@@ -2684,26 +2373,10 @@ header {
                     <svg viewBox="0 0 24 24">
 
                         <path
-                            d="M12 3v11"
+                            d="M12 3v11M7.5 10.5L12 15l4.5-4.5M5 20h14"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
-
-                        <path
-                            d="M7.5 10.5L12 15l4.5-4.5"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"/>
-
-                        <path
-                            d="M5 20h14"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
+                            stroke-width="1.8"/>
 
                     </svg>
 
@@ -2726,15 +2399,7 @@ header {
                             d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22V4.5z"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linejoin="round"/>
-
-                        <path
-                            d="M8 7h8M8 11h8M8 15h5"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
+                            stroke-width="1.8"/>
 
                     </svg>
 
@@ -2757,15 +2422,7 @@ header {
                             d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linejoin="round"/>
-
-                        <path
-                            d="M14 3v5h5M8 12h8M8 16h6"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
+                            stroke-width="1.8"/>
 
                     </svg>
 
@@ -2794,13 +2451,6 @@ header {
                             stroke="currentColor"
                             stroke-width="1.8"/>
 
-                        <path
-                            d="M8 21h8M12 17v4"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
-
                     </svg>
 
                 </span>
@@ -2825,21 +2475,6 @@ header {
                             fill="none"
                             stroke="currentColor"
                             stroke-width="1.8"/>
-
-                        <circle
-                            cx="17"
-                            cy="9"
-                            r="2.5"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"/>
-
-                        <path
-                            d="M3.5 20a5.5 5.5 0 0 1 11 0M15 14.5a4.5 4.5 0 0 1 5 5.5"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
 
                     </svg>
 
@@ -2868,13 +2503,6 @@ header {
                             stroke="currentColor"
                             stroke-width="1.8"/>
 
-                        <path
-                            d="M3 10h18M7 15h4"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
-
                     </svg>
 
                 </span>
@@ -2896,15 +2524,7 @@ header {
                             d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linejoin="round"/>
-
-                        <path
-                            d="M14 3v5h5M8 14h8M8 17h6"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
+                            stroke-width="1.8"/>
 
                     </svg>
 
@@ -2925,14 +2545,6 @@ header {
 
                         <path
                             d="M12 21s7-6.2 7-12A7 7 0 0 0 5 9c0 5.8 7 12 7 12z"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"/>
-
-                        <circle
-                            cx="12"
-                            cy="9"
-                            r="2.3"
                             fill="none"
                             stroke="currentColor"
                             stroke-width="1.8"/>
@@ -2962,13 +2574,6 @@ header {
                             stroke="currentColor"
                             stroke-width="1.8"/>
 
-                        <path
-                            d="M5 20a7 7 0 0 1 14 0"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
-
                     </svg>
 
                 </span>
@@ -2992,16 +2597,7 @@ header {
                             d="M10 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-8"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
-
-                        <path
-                            d="M4 12h10M10 8l4 4-4 4"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"/>
+                            stroke-width="1.8"/>
 
                     </svg>
 
@@ -3021,118 +2617,175 @@ header {
 
 
 <!-- ==========================================================
-     MAIN
+     MAIN CONTENT
 =========================================================== -->
 
 <div class="container">
 
 
-    <?php if (!$isDetailPage): ?>
+<?php if (!$isDetailPage): ?>
 
 
-        <!-- ==================================================
-             NOVELS LIST
-        =================================================== -->
+    <div class="page-heading">
 
-        <div class="page-heading">
+        <h1>
+            Literature
+        </h1>
 
-            <h1>
-                Literature
-            </h1>
+        <p>
+            Study the prescribed Literature texts with
+            concise summaries and practise past questions
+            for better examination preparation.
+        </p>
 
-            <p>
-                Study the prescribed Literature texts with
-                concise summaries and practise past questions
-                for better examination preparation.
-            </p>
-
-        </div>
+    </div>
 
 
-        <div class="novel-grid">
+    <div class="novel-grid">
 
 
-            <?php foreach ($books as $index => $book): ?>
+    <?php foreach (
+        $books as $index => $book
+    ): ?>
 
 
-                <?php
+        <?php
 
-                $jsonPath =
-                    __DIR__ .
-                    DIRECTORY_SEPARATOR .
-                    'literature' .
-                    DIRECTORY_SEPARATOR .
-                    $book['json'];
+        $jsonPath =
+            __DIR__ .
+            DIRECTORY_SEPARATOR .
+            'literature' .
+            DIRECTORY_SEPARATOR .
+            $book['json'];
 
+        $data =
+            loadJsonFile($jsonPath);
 
-                $data =
-                    loadJsonFile($jsonPath);
+        $info =
+            getBookInfo($data);
 
+        $cardTitle =
+            $info['title'] !== ''
+                ? $info['title']
+                : ucwords(
+                    str_replace(
+                        '_',
+                        ' ',
+                        $book['slug']
+                    )
+                );
 
-                $info =
-                    getBookInfo($data);
+        $cardAuthor =
+            $info['author'] !== ''
+                ? $info['author']
+                : 'Literature';
 
+        $cardCategory =
+            $info['category'];
 
-                // IMPORTANT:
-                // Safe fallbacks prevent PHP warnings from
-                // appearing publicly.
+        $cardDescription = '';
 
-                $cardTitle =
-                    !empty($info['title'])
-                        ? $info['title']
-                        : ucwords(
-                            str_replace(
-                                '_',
-                                ' ',
-                                $book['slug']
-                            )
-                        );
+        if (
+            isset($info['summary']) &&
+            is_array($info['summary'])
+        ) {
 
+            $cardDescription =
+                trim(
+                    (string)(
+                        $info['summary']['overview']
+                        ?? ''
+                    )
+                );
+        }
 
-                $cardAuthor =
-                    !empty($info['author'])
-                        ? $info['author']
-                        : 'Literature';
+        if ($cardDescription === '') {
 
+            $cardDescription =
+                'Study this prescribed Literature text and practise examination questions.';
+        }
 
-                $cardCategory =
-                    !empty($info['category'])
-                        ? $info['category']
-                        : '';
-
-
-                $cardDescription = '';
-
-
-                if (
-                    isset($info['summary']) &&
-                    is_array($info['summary']) &&
-                    isset($info['summary']['overview'])
-                ) {
-
-                    $cardDescription =
-                        trim(
-                            (string)
-                            $info['summary']['overview']
-                        );
-
-                }
+        ?>
 
 
-                if ($cardDescription === '') {
-
-                    $cardDescription =
-                        'Study this prescribed Literature text and practise examination questions.';
-
-                }
-
-                ?>
+        <article class="novel-card">
 
 
-                <article class="novel-card">
+            <a
+                href="<?= esc(
+                    bookUrl(
+                        $book['slug'],
+                        'summary'
+                    )
+                ) ?>">
+
+                <img
+                    class="novel-cover"
+                    src="<?= esc(
+                        coverUrl($book)
+                    ) ?>"
+                    alt="<?= esc(
+                        $cardTitle
+                    ) ?> cover"
+                    loading="lazy">
+
+            </a>
+
+
+            <div class="novel-content">
+
+
+                <div class="book-number">
+
+                    Text
+                    <?= $index + 1 ?>
+
+                </div>
+
+
+                <h2 class="novel-title">
+
+                    <?= esc(
+                        $cardTitle
+                    ) ?>
+
+                </h2>
+
+
+                <div class="novel-author">
+
+                    <?= esc(
+                        $cardAuthor
+                    ) ?>
+
+                    <?php if (
+                        $cardCategory !== ''
+                    ): ?>
+
+                        ·
+                        <?= esc(
+                            $cardCategory
+                        ) ?>
+
+                    <?php endif; ?>
+
+                </div>
+
+
+                <p class="novel-description">
+
+                    <?= esc(
+                        $cardDescription
+                    ) ?>
+
+                </p>
+
+
+                <div class="novel-actions">
 
 
                     <a
+                        class="pill-btn pill-summary"
                         href="<?= esc(
                             bookUrl(
                                 $book['slug'],
@@ -3140,214 +2793,133 @@ header {
                             )
                         ) ?>">
 
-                        <img
-                            class="novel-cover"
-                            src="<?= esc(
-                                coverUrl($book)
-                            ) ?>"
-                            alt="<?= esc(
-                                $cardTitle
-                            ) ?> cover"
-                            loading="lazy">
+                        Summary
 
                     </a>
 
 
-                    <div class="novel-content">
+                    <a
+                        class="pill-btn pill-practice"
+                        href="<?= esc(
+                            bookUrl(
+                                $book['slug'],
+                                'practice'
+                            )
+                        ) ?>">
+
+                        Practice Past Questions
+
+                    </a>
 
 
-                        <div class="book-number">
-
-                            Text
-                            <?= $index + 1 ?>
-
-                        </div>
+                </div>
 
 
-                        <h2 class="novel-title">
+            </div>
 
-                            <?= esc(
-                                $cardTitle
-                            ) ?>
-
-                        </h2>
+        </article>
 
 
-                        <div class="novel-author">
-
-                            <?= esc(
-                                $cardAuthor
-                            ) ?>
-
-                            <?php if (
-                                $cardCategory !== ''
-                            ): ?>
-
-                                ·
-                                <?= esc(
-                                    $cardCategory
-                                ) ?>
-
-                            <?php endif; ?>
-
-                        </div>
+    <?php endforeach; ?>
 
 
-                        <p class="novel-description">
-
-                            <?= esc(
-                                $cardDescription
-                            ) ?>
-
-                        </p>
+    </div>
 
 
-                        <div class="novel-actions">
+<?php else: ?>
 
 
-                            <a
-                                class="pill-btn pill-summary"
-                                href="<?= esc(
-                                    bookUrl(
-                                        $book['slug'],
-                                        'summary'
-                                    )
-                                ) ?>">
-
-                                Summary
-
-                            </a>
+    <div class="detail-card">
 
 
-                            <a
-                                class="pill-btn pill-practice"
-                                href="<?= esc(
-                                    bookUrl(
-                                        $book['slug'],
-                                        'practice'
-                                    )
-                                ) ?>">
-
-                                Practice Past Questions
-
-                            </a>
+        <div class="detail-header">
 
 
-                        </div>
+            <img
+                class="detail-cover"
+                src="<?= esc(
+                    coverUrl($currentBook)
+                ) ?>"
+                alt="<?= esc($title) ?> cover">
 
+
+            <div class="detail-info">
+
+
+                <h1>
+
+                    <?= esc($title) ?>
+
+                </h1>
+
+
+                <?php if ($author !== ''): ?>
+
+                    <div class="detail-author">
+
+                        By
+                        <?= esc($author) ?>
 
                     </div>
 
-                </article>
+                <?php endif; ?>
 
 
-            <?php endforeach; ?>
+                <?php if ($category !== ''): ?>
 
+                    <div class="detail-category">
 
-        </div>
-
-
-    <?php else: ?>
-
-
-        <!-- ==================================================
-             DETAIL PAGE
-        =================================================== -->
-
-        <div class="detail-card">
-
-
-            <div class="detail-header">
-
-
-                <img
-                    class="detail-cover"
-                    src="<?= esc(
-                        coverUrl($currentBook)
-                    ) ?>"
-                    alt="<?= esc($title) ?> cover">
-
-
-                <div class="detail-info">
-
-
-                    <h1>
-
-                        <?= esc($title) ?>
-
-                    </h1>
-
-
-                    <?php if ($author !== ''): ?>
-
-                        <div class="detail-author">
-
-                            By
-                            <?= esc($author) ?>
-
-                        </div>
-
-                    <?php endif; ?>
-
-
-                    <?php if ($category !== ''): ?>
-
-                        <div class="detail-category">
-
-                            <?= esc($category) ?>
-
-                        </div>
-
-                    <?php endif; ?>
-
-
-                    <div class="detail-actions">
-
-
-                        <a
-                            class="detail-pill
-                            <?= $requestedView === 'summary'
-                                ? 'primary'
-                                : 'secondary' ?>"
-                            href="<?= esc(
-                                bookUrl(
-                                    $currentBook['slug'],
-                                    'summary'
-                                )
-                            ) ?>">
-
-                            Summary
-
-                        </a>
-
-
-                        <a
-                            class="detail-pill
-                            <?= $requestedView === 'practice'
-                                ? 'primary'
-                                : 'secondary' ?>"
-                            href="<?= esc(
-                                bookUrl(
-                                    $currentBook['slug'],
-                                    'practice'
-                                )
-                            ) ?>">
-
-                            Practice Past Questions
-
-                        </a>
-
-
-                        <a
-                            class="detail-pill secondary"
-                            href="/novel.php">
-
-                            All Novels
-
-                        </a>
-
+                        <?= esc($category) ?>
 
                     </div>
+
+                <?php endif; ?>
+
+
+                <div class="detail-actions">
+
+
+                    <a
+                        class="detail-pill
+                        <?= $requestedView === 'summary'
+                            ? 'primary'
+                            : 'secondary' ?>"
+                        href="<?= esc(
+                            bookUrl(
+                                $currentBook['slug'],
+                                'summary'
+                            )
+                        ) ?>">
+
+                        Summary
+
+                    </a>
+
+
+                    <a
+                        class="detail-pill
+                        <?= $requestedView === 'practice'
+                            ? 'primary'
+                            : 'secondary' ?>"
+                        href="<?= esc(
+                            bookUrl(
+                                $currentBook['slug'],
+                                'practice'
+                            )
+                        ) ?>">
+
+                        Practice Past Questions
+
+                    </a>
+
+
+                    <a
+                        class="detail-pill secondary"
+                        href="/novel.php">
+
+                        All Novels
+
+                    </a>
 
 
                 </div>
@@ -3356,353 +2928,67 @@ header {
             </div>
 
 
+        </div>
+
+
+<?php if (
+    $requestedView === 'summary'
+): ?>
+
+
+        <div class="reading-area">
+
+
+            <h2>
+                Summary
+            </h2>
+
+
+            <?php if ($overview !== ''): ?>
+
+                <h3>
+                    Overview
+                </h3>
+
+                <p>
+
+                    <?= nl2br(
+                        esc($overview)
+                    ) ?>
+
+                </p>
+
+            <?php endif; ?>
+
+
+            <?php if ($plotSummary !== ''): ?>
+
+                <h3>
+                    Plot Summary
+                </h3>
+
+                <p>
+
+                    <?= nl2br(
+                        esc($plotSummary)
+                    ) ?>
+
+                </p>
+
+            <?php endif; ?>
+
+
             <?php if (
-                $requestedView === 'summary'
+                $overview === '' &&
+                $plotSummary === ''
             ): ?>
 
+                <div class="notice">
 
-                <!-- ==========================================
-                     SUMMARY
-                =========================================== -->
-
-                <div class="reading-area">
-
-
-                    <h2>
-                        Summary
-                    </h2>
-
-
-                    <?php if (
-                        $overview !== ''
-                    ): ?>
-
-
-                        <h3>
-                            Overview
-                        </h3>
-
-
-                        <p>
-
-                            <?= nl2br(
-                                esc($overview)
-                            ) ?>
-
-                        </p>
-
-
-                    <?php endif; ?>
-
-
-                    <?php if (
-                        $plotSummary !== ''
-                    ): ?>
-
-
-                        <h3>
-                            Plot Summary
-                        </h3>
-
-
-                        <p>
-
-                            <?= nl2br(
-                                esc($plotSummary)
-                            ) ?>
-
-                        </p>
-
-
-                    <?php endif; ?>
-
-
-                    <?php if (
-                        $overview === '' &&
-                        $plotSummary === ''
-                    ): ?>
-
-
-                        <div class="notice">
-
-                            A summary has not been added
-                            for this Literature text yet.
-
-                        </div>
-
-
-                    <?php endif; ?>
-
+                    A summary has not been added
+                    for this Literature text yet.
 
                 </div>
-
-
-            <?php else: ?>
-
-
-                <!-- ==========================================
-                     PRACTICE
-                =========================================== -->
-
-                <div class="reading-area">
-
-
-                    <div class="practice-top">
-
-
-                        <div class="question-counter">
-
-                            <?php if (
-                                $totalQuestions > 0
-                            ): ?>
-
-                                Question
-                                <?= $questionNumber ?>
-                                of
-                                <?= $totalQuestions ?>
-
-                            <?php else: ?>
-
-                                Practice Questions
-
-                            <?php endif; ?>
-
-
-                        </div>
-
-
-                    </div>
-
-
-                    <?php if (
-                        $currentQuestion !== null &&
-                        is_array($currentQuestion)
-                    ): ?>
-
-
-                        <?php
-
-                        $questionText =
-                            isset(
-                                $currentQuestion['question']
-                            )
-                                ? (string)
-                                    $currentQuestion['question']
-                                : (
-                                    isset(
-                                        $currentQuestion['text']
-                                    )
-                                        ? (string)
-                                            $currentQuestion['text']
-                                        : ''
-                                );
-
-
-                        $options =
-                            isset(
-                                $currentQuestion['options']
-                            ) &&
-                            is_array(
-                                $currentQuestion['options']
-                            )
-                                ? $currentQuestion['options']
-                                : [];
-
-
-                        $year =
-                            isset(
-                                $currentQuestion['year']
-                            )
-                                ? (string)
-                                    $currentQuestion['year']
-                                : '';
-
-                        ?>
-
-
-                        <div class="question-card">
-
-
-                            <div class="question-label">
-
-                                Question
-                                <?= $questionNumber ?>
-
-                            </div>
-
-
-                            <div class="question-text">
-
-                                <?= nl2br(
-                                    esc($questionText)
-                                ) ?>
-
-                            </div>
-
-
-                            <?php if (
-                                !empty($options)
-                            ): ?>
-
-
-                                <div class="options">
-
-
-                                    <?php foreach (
-                                        $options as $option
-                                    ): ?>
-
-
-                                        <div class="option">
-
-                                            <?= esc(
-                                                $option
-                                            ) ?>
-
-                                        </div>
-
-
-                                    <?php endforeach; ?>
-
-
-                                </div>
-
-
-                            <?php endif; ?>
-
-
-                            <?php if (
-                                $year !== ''
-                            ): ?>
-
-
-                                <div class="question-year">
-
-                                    <?= esc($year) ?>
-
-                                </div>
-
-
-                            <?php endif; ?>
-
-
-                        </div>
-
-
-                        <!-- ==================================
-                             PREVIOUS / NEXT
-                        =================================== -->
-
-                        <div
-                            class="practice-navigation">
-
-
-                            <?php if (
-                                $previousQuestion >= 1
-                            ): ?>
-
-
-                                <a
-                                    class="question-nav-btn prev"
-                                    href="<?= esc(
-                                        bookUrl(
-                                            $currentBook['slug'],
-                                            'practice',
-                                            $previousQuestion
-                                        )
-                                    ) ?>">
-
-                                    ← Previous
-
-                                </a>
-
-
-                            <?php else: ?>
-
-
-                                <span
-                                    class="
-                                        question-nav-btn
-                                        prev
-                                        disabled
-                                    ">
-
-                                    ← Previous
-
-                                </span>
-
-
-                            <?php endif; ?>
-
-
-                            <div
-                                class="question-position">
-
-                                <?= $questionNumber ?>
-                                /
-                                <?= $totalQuestions ?>
-
-                            </div>
-
-
-                            <?php if (
-                                $nextQuestion <=
-                                $totalQuestions
-                            ): ?>
-
-
-                                <a
-                                    class="question-nav-btn next"
-                                    href="<?= esc(
-                                        bookUrl(
-                                            $currentBook['slug'],
-                                            'practice',
-                                            $nextQuestion
-                                        )
-                                    ) ?>">
-
-                                    Next →
-
-                                </a>
-
-
-                            <?php else: ?>
-
-
-                                <span
-                                    class="
-                                        question-nav-btn
-                                        next
-                                        disabled
-                                    ">
-
-                                    Next →
-
-                                </span>
-
-
-                            <?php endif; ?>
-
-
-                        </div>
-
-
-                    <?php else: ?>
-
-
-                        <div class="notice">
-
-                            Practice questions could not
-                            be loaded at the moment.
-
-                        </div>
-
-
-                    <?php endif; ?>
-
-
-                </div>
-
 
             <?php endif; ?>
 
@@ -3710,14 +2996,148 @@ header {
         </div>
 
 
-    <?php endif; ?>
+<?php else: ?>
+
+
+        <!-- ==================================================
+             PRACTICE
+        =================================================== -->
+
+        <div class="reading-area">
+
+
+        <?php if ($totalQuestions > 0): ?>
+
+
+            <div class="practice-top">
+
+                <div
+                    class="question-counter"
+                    id="novelQuestionCounter">
+
+                    Question
+                    <?= $questionNumber ?>
+                    of
+                    <?= $totalQuestions ?>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="question-card"
+                id="novelQuestionCard">
+
+
+                <div
+                    class="question-label"
+                    id="novelQuestionLabel">
+
+                    Question
+                    <?= $questionNumber ?>
+
+                </div>
+
+
+                <div
+                    class="question-text"
+                    id="novelQuestionText">
+                </div>
+
+
+                <div
+                    class="options"
+                    id="novelOptions">
+                </div>
+
+
+                <div
+                    id="novelAnswerFeedback"
+                    class="answer-feedback"
+                    aria-live="polite">
+                </div>
+
+
+                <div
+                    class="question-year"
+                    id="novelQuestionYear"
+                    hidden>
+                </div>
+
+
+            </div>
+
+
+            <div
+                class="practice-navigation">
+
+
+                <button
+                    type="button"
+                    class="question-nav-btn prev"
+                    id="novelPreviousBtn">
+
+                    ← Previous
+
+                </button>
+
+
+                <div
+                    class="question-position"
+                    id="novelQuestionPosition">
+
+                    <?= $questionNumber ?>
+                    /
+                    <?= $totalQuestions ?>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="question-nav-btn next"
+                    id="novelNextBtn">
+
+                    Next →
+
+                </button>
+
+
+            </div>
+
+
+        <?php else: ?>
+
+
+            <div class="notice">
+
+                Practice questions could not
+                be loaded at the moment.
+
+            </div>
+
+
+        <?php endif; ?>
+
+
+        </div>
+
+
+<?php endif; ?>
+
+
+    </div>
+
+
+<?php endif; ?>
 
 
 </div>
 
 
 <!-- ==========================================================
-     EXACT INDEX.PHP FOOTER STRUCTURE
+     FOOTER
 =========================================================== -->
 
 <footer class="footer">
@@ -3771,63 +3191,49 @@ header {
 
                 <li>
                     <a href="/syllabus.html">
-
                         Access the JAMB/WAEC syllabus
-
                     </a>
                 </li>
 
 
                 <li>
                     <a href="/brochure.html">
-
                         Access JAMB Brochure
-
                     </a>
                 </li>
 
 
                 <li>
                     <a href="/videos.html">
-
                         Video Lessons
-
                     </a>
                 </li>
 
 
                 <li>
                     <a href="/pdf.html">
-
                         Past Questions & PDFs
-
                     </a>
                 </li>
 
 
                 <li>
                     <a href="/cbt.html">
-
                         CBT Simulator
-
                     </a>
                 </li>
 
 
                 <li>
                     <a href="/groups.html">
-
                         Classroom Groups and chats
-
                     </a>
                 </li>
 
 
                 <li>
                     <a href="/location.html">
-
                         Tutorial Centres
-
                     </a>
                 </li>
 
@@ -3866,16 +3272,12 @@ header {
 
 
                 <a href="tel:+2349034159839">
-
                     (+234) 903 415 9839
-
                 </a>
 
 
                 <a href="tel:+2347033855206">
-
                     (+234) 703 385 5206
-
                 </a>
 
             </div>
@@ -3889,16 +3291,12 @@ header {
 
 
                 <a href="mailto:support@flexieduconsult.com.ng">
-
                     support@flexieduconsult.com.ng
-
                 </a>
 
 
                 <a href="mailto:info@flexieduconsult.com.ng">
-
                     info@flexieduconsult.com.ng
-
                 </a>
 
             </div>
@@ -3918,7 +3316,6 @@ header {
 
 
                 <li>
-
                     <a
                         href="https://www.facebook.com/profile.php?id=61589793118693"
                         target="_blank">
@@ -3926,12 +3323,10 @@ header {
                         Facebook @flexieduconsult
 
                     </a>
-
                 </li>
 
 
                 <li>
-
                     <a
                         href="https://instagram.com/flexieduconsult2000"
                         target="_blank">
@@ -3939,12 +3334,10 @@ header {
                         Instagram @flexieduconsult2000
 
                     </a>
-
                 </li>
 
 
                 <li>
-
                     <a
                         href="https://www.tiktok.com/@flexieduconsult"
                         target="_blank">
@@ -3952,7 +3345,6 @@ header {
                         TikTok @flexieduconsult
 
                     </a>
-
                 </li>
 
 
@@ -3978,147 +3370,837 @@ header {
 
 
 <!-- ==========================================================
-     SAME SUPPORT WIDGET AS INDEX.PHP
+     PRACTICE JAVASCRIPT
+     
+     IMPORTANT:
+     Previous / Next DOES NOT change the URL and DOES NOT
+     reload novel.php.
 =========================================================== -->
-
-<div
-    id="support-widget"
-    style="
-        position:fixed;
-        bottom:20px;
-        right:20px;
-        z-index:9999;
-        display:flex;
-        flex-direction:column;
-        align-items:flex-end;
-        gap:10px;
-    ">
-
-
-    <div
-        id="support-tooltip"
-        style="
-            background:#003366;
-            color:white;
-            padding:10px 15px;
-            border-radius:20px 20px 0px 20px;
-            font-size:0.85rem;
-            box-shadow:0 4px 10px rgba(0,0,0,0.2);
-            opacity:1;
-        ">
-
-        Chat with Jarvis AI for support
-
-    </div>
-
-
-    <button
-        id="support-btn"
-        onclick="window.location.href='/contactsupport.html'"
-        aria-label="Support Chat"
-        style="
-            background:#2E8B57;
-            border:none;
-            width:60px;
-            height:60px;
-            border-radius:50%;
-            cursor:pointer;
-            box-shadow:0 4px 15px rgba(0,0,0,0.3);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            transition:transform 0.3s;
-        ">
-
-
-        <svg
-            width="30"
-            height="30"
-            viewBox="0 0 24 24"
-            fill="white">
-
-            <path
-                d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
-
-        </svg>
-
-
-    </button>
-
-
-</div>
-
 
 <script>
 
-// ============================================================
-// SAME MENU BEHAVIOUR AS INDEX.PHP
-// ============================================================
+window.FLEXI_NOVEL_QUESTIONS =
+    <?= json_encode(
+        $currentQuestions,
+        JSON_UNESCAPED_UNICODE |
+        JSON_UNESCAPED_SLASHES |
+        JSON_HEX_TAG |
+        JSON_HEX_AMP |
+        JSON_HEX_APOS |
+        JSON_HEX_QUOT
+    ) ?>;
 
-window.toggleMenu = function() {
 
-    const menu =
+(function () {
+
+    const questions =
+        Array.isArray(
+            window.FLEXI_NOVEL_QUESTIONS
+        )
+            ? window.FLEXI_NOVEL_QUESTIONS
+            : [];
+
+
+    const questionText =
         document.getElementById(
-            'squareMenu'
+            'novelQuestionText'
         );
 
-    if (!menu) {
+    const questionLabel =
+        document.getElementById(
+            'novelQuestionLabel'
+        );
+
+    const questionCounter =
+        document.getElementById(
+            'novelQuestionCounter'
+        );
+
+    const questionPosition =
+        document.getElementById(
+            'novelQuestionPosition'
+        );
+
+    const optionsContainer =
+        document.getElementById(
+            'novelOptions'
+        );
+
+    const feedback =
+        document.getElementById(
+            'novelAnswerFeedback'
+        );
+
+    const yearBadge =
+        document.getElementById(
+            'novelQuestionYear'
+        );
+
+    const previousBtn =
+        document.getElementById(
+            'novelPreviousBtn'
+        );
+
+    const nextBtn =
+        document.getElementById(
+            'novelNextBtn'
+        );
+
+
+    // This script only runs on the practice page.
+    if (
+        !questionText ||
+        !questionLabel ||
+        !questionCounter ||
+        !questionPosition ||
+        !optionsContainer ||
+        !feedback ||
+        !previousBtn ||
+        !nextBtn ||
+        questions.length === 0
+    ) {
         return;
     }
 
-    menu.classList.toggle(
-        'menu-open'
+
+    // PHP question number becomes the initial question.
+    let currentIndex =
+        Math.max(
+            0,
+            Math.min(
+                questions.length - 1,
+                <?= max(
+                    0,
+                    $questionNumber - 1
+                ) ?>
+            )
+        );
+
+
+    // Stores answers selected by the user.
+    const answers = {};
+
+
+    // --------------------------------------------------------
+    // ESCAPE HTML
+    // --------------------------------------------------------
+    function escapeHtml(value) {
+
+        return String(value ?? '')
+            .replace(
+                /&/g,
+                '&amp;'
+            )
+            .replace(
+                /</g,
+                '&lt;'
+            )
+            .replace(
+                />/g,
+                '&gt;'
+            )
+            .replace(
+                /"/g,
+                '&quot;'
+            )
+            .replace(
+                /'/g,
+                '&#039;'
+            );
+    }
+
+
+    // --------------------------------------------------------
+    // QUESTION TEXT
+    // --------------------------------------------------------
+    function getQuestionText(question) {
+
+        if (
+            question &&
+            typeof question.question ===
+                'string'
+        ) {
+            return question.question;
+        }
+
+        if (
+            question &&
+            typeof question.text ===
+                'string'
+        ) {
+            return question.text;
+        }
+
+        return '';
+    }
+
+
+    // --------------------------------------------------------
+    // OPTIONS
+    // --------------------------------------------------------
+    function getOptions(question) {
+
+        if (
+            question &&
+            Array.isArray(
+                question.options
+            )
+        ) {
+            return question.options;
+        }
+
+        return [];
+    }
+
+
+    // --------------------------------------------------------
+    // CORRECT ANSWER
+    // --------------------------------------------------------
+    function getCorrectAnswer(question) {
+
+        if (!question) {
+            return '';
+        }
+
+        const answer =
+            question.answer ??
+            question.correctAnswer ??
+            question.correct_answer ??
+            '';
+
+        return String(answer)
+            .trim()
+            .toUpperCase()
+            .replace(
+                /\.$/,
+                ''
+            );
+    }
+
+
+    // --------------------------------------------------------
+    // OPTION LETTER
+    // --------------------------------------------------------
+    function optionLetter(index) {
+
+        return String.fromCharCode(
+            65 + index
+        );
+    }
+
+
+    // --------------------------------------------------------
+    // CHECK ANSWER
+    // --------------------------------------------------------
+    function checkAnswer(
+        question,
+        selectedIndex
+    ) {
+
+        const correct =
+            getCorrectAnswer(
+                question
+            );
+
+        if (correct === '') {
+            return null;
+        }
+
+
+        const selectedLetter =
+            optionLetter(
+                selectedIndex
+            );
+
+
+        if (
+            correct ===
+            selectedLetter
+        ) {
+            return true;
+        }
+
+
+        const options =
+            getOptions(
+                question
+            );
+
+
+        if (
+            selectedIndex >= 0 &&
+            selectedIndex < options.length
+        ) {
+
+            const selectedText =
+                String(
+                    options[selectedIndex]
+                )
+                .trim()
+                .toUpperCase();
+
+
+            if (
+                selectedText ===
+                correct
+            ) {
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+
+
+    // --------------------------------------------------------
+    // CLEAR FEEDBACK
+    // --------------------------------------------------------
+    function clearFeedback() {
+
+        feedback.className =
+            'answer-feedback';
+
+        feedback.textContent =
+            '';
+    }
+
+
+    // --------------------------------------------------------
+    // SHOW FEEDBACK
+    // --------------------------------------------------------
+    function showFeedback(
+        result,
+        question
+    ) {
+
+        if (result === true) {
+
+            feedback.className =
+                'answer-feedback show correct';
+
+            feedback.textContent =
+                'CORRECT';
+
+            return;
+        }
+
+
+        if (result === false) {
+
+            const correct =
+                getCorrectAnswer(
+                    question
+                );
+
+
+            feedback.className =
+                'answer-feedback show wrong';
+
+
+            if (correct !== '') {
+
+                feedback.textContent =
+                    'WRONG — Correct answer: ' +
+                    correct;
+
+            }
+            else {
+
+                feedback.textContent =
+                    'WRONG';
+            }
+
+            return;
+        }
+
+
+        clearFeedback();
+    }
+
+
+    // --------------------------------------------------------
+    // RENDER QUESTION
+    // --------------------------------------------------------
+    function renderQuestion() {
+
+        const question =
+            questions[currentIndex] || {};
+
+
+        const options =
+            getOptions(question);
+
+
+        const total =
+            questions.length;
+
+
+        const number =
+            currentIndex + 1;
+
+
+        const hasAnswered =
+            Object.prototype.hasOwnProperty.call(
+                answers,
+                currentIndex
+            );
+
+
+        const selectedIndex =
+            hasAnswered
+                ? answers[currentIndex]
+                : null;
+
+
+        // Counter
+        questionCounter.textContent =
+            'Question ' +
+            number +
+            ' of ' +
+            total;
+
+
+        questionLabel.textContent =
+            'Question ' +
+            number;
+
+
+        questionPosition.textContent =
+            number +
+            ' / ' +
+            total;
+
+
+        // Question text
+        questionText.innerHTML =
+            escapeHtml(
+                getQuestionText(question)
+            ).replace(
+                /\n/g,
+                '<br>'
+            );
+
+
+        // Clear old options.
+        optionsContainer.innerHTML =
+            '';
+
+
+        // Create clickable buttons.
+        options.forEach(
+            function (
+                optionText,
+                index
+            ) {
+
+                const button =
+                    document.createElement(
+                        'button'
+                    );
+
+
+                button.type =
+                    'button';
+
+
+                button.className =
+                    'option';
+
+
+                button.innerHTML =
+                    escapeHtml(
+                        String(optionText)
+                    );
+
+
+                // If already answered,
+                // show the result again.
+                if (hasAnswered) {
+
+                    const result =
+                        checkAnswer(
+                            question,
+                            selectedIndex
+                        );
+
+
+                    if (
+                        index ===
+                        selectedIndex
+                    ) {
+
+                        if (
+                            result === true
+                        ) {
+
+                            button.classList.add(
+                                'selected-correct'
+                            );
+
+                        }
+                        else {
+
+                            button.classList.add(
+                                'selected-wrong'
+                            );
+                        }
+                    }
+
+
+                    const correct =
+                        getCorrectAnswer(
+                            question
+                        );
+
+
+                    if (
+                        /^[A-Z]$/.test(
+                            correct
+                        )
+                    ) {
+
+                        const correctIndex =
+                            correct.charCodeAt(0)
+                            - 65;
+
+
+                        if (
+                            index ===
+                            correctIndex
+                        ) {
+
+                            button.classList.add(
+                                'correct-answer'
+                            );
+                        }
+                    }
+
+
+                    button.disabled =
+                        true;
+
+                }
+
+
+                // New answer.
+                else {
+
+                    button.addEventListener(
+                        'click',
+                        function () {
+
+                            selectAnswer(
+                                index
+                            );
+
+                        }
+                    );
+                }
+
+
+                optionsContainer.appendChild(
+                    button
+                );
+
+            }
+        );
+
+
+        // Feedback
+        if (hasAnswered) {
+
+            const result =
+                checkAnswer(
+                    question,
+                    selectedIndex
+                );
+
+
+            showFeedback(
+                result,
+                question
+            );
+
+        }
+        else {
+
+            clearFeedback();
+        }
+
+
+        // Year
+        const year =
+            String(
+                question.year ?? ''
+            ).trim();
+
+
+        if (year !== '') {
+
+            yearBadge.hidden =
+                false;
+
+            yearBadge.textContent =
+                year;
+
+        }
+        else {
+
+            yearBadge.hidden =
+                true;
+
+            yearBadge.textContent =
+                '';
+        }
+
+
+        // Navigation
+        previousBtn.disabled =
+            currentIndex === 0;
+
+
+        nextBtn.disabled =
+            currentIndex ===
+            total - 1;
+    }
+
+
+    // --------------------------------------------------------
+    // SELECT ANSWER
+    // --------------------------------------------------------
+    function selectAnswer(index) {
+
+        const question =
+            questions[currentIndex];
+
+
+        const options =
+            getOptions(question);
+
+
+        if (
+            !options[index]
+        ) {
+            return;
+        }
+
+
+        // Save answer.
+        answers[currentIndex] =
+            index;
+
+
+        // Re-render immediately.
+        renderQuestion();
+    }
+
+
+    // --------------------------------------------------------
+    // PREVIOUS
+    // --------------------------------------------------------
+    function previousQuestion() {
+
+        if (
+            currentIndex <= 0
+        ) {
+            return;
+        }
+
+
+        currentIndex--;
+
+
+        renderQuestion();
+
+
+        scrollToQuestion();
+    }
+
+
+    // --------------------------------------------------------
+    // NEXT
+    // --------------------------------------------------------
+    function nextQuestion() {
+
+        if (
+            currentIndex >=
+            questions.length - 1
+        ) {
+            return;
+        }
+
+
+        currentIndex++;
+
+
+        renderQuestion();
+
+
+        scrollToQuestion();
+    }
+
+
+    // --------------------------------------------------------
+    // SCROLL TO QUESTION
+    //
+    // This scrolls the screen to the question.
+    // It DOES NOT reload the page.
+    // --------------------------------------------------------
+    function scrollToQuestion() {
+
+        const card =
+            document.getElementById(
+                'novelQuestionCard'
+            );
+
+
+        if (!card) {
+            return;
+        }
+
+
+        const top =
+            card.getBoundingClientRect().top +
+            window.scrollY -
+            75;
+
+
+        window.scrollTo({
+
+            top:
+                Math.max(
+                    0,
+                    top
+                ),
+
+            behavior:
+                'smooth'
+        });
+    }
+
+
+    // --------------------------------------------------------
+    // BUTTON EVENTS
+    // --------------------------------------------------------
+    previousBtn.addEventListener(
+        'click',
+        previousQuestion
     );
 
-};
+
+    nextBtn.addEventListener(
+        'click',
+        nextQuestion
+    );
+
+
+    // --------------------------------------------------------
+    // KEYBOARD NAVIGATION
+    // --------------------------------------------------------
+    document.addEventListener(
+        'keydown',
+        function(event) {
+
+            if (
+                event.key ===
+                'ArrowLeft'
+            ) {
+
+                previousQuestion();
+
+            }
+
+            else if (
+                event.key ===
+                'ArrowRight'
+            ) {
+
+                nextQuestion();
+            }
+        }
+    );
+
+
+    // Initial question.
+    renderQuestion();
+
+})();
+
+
+// ============================================================
+// MENU
+// ============================================================
+
+window.toggleMenu =
+    function () {
+
+        const menu =
+            document.getElementById(
+                'squareMenu'
+            );
+
+
+        if (!menu) {
+            return;
+        }
+
+
+        menu.classList.toggle(
+            'menu-open'
+        );
+    };
 
 
 // ============================================================
 // STUDY SUBMENU
 // ============================================================
 
-window.toggleStudyMenu = function(event) {
+window.toggleStudyMenu =
+    function (event) {
 
-    if (event) {
-        event.stopPropagation();
-    }
+        if (event) {
+            event.stopPropagation();
+        }
 
 
-    const submenu =
-        document.getElementById(
-            'study-submenu'
+        const submenu =
+            document.getElementById(
+                'study-submenu'
+            );
+
+
+        const button =
+            document.getElementById(
+                'study-menu-toggle'
+            );
+
+
+        if (
+            !submenu ||
+            !button
+        ) {
+            return;
+        }
+
+
+        const isOpen =
+            submenu.classList.contains(
+                'open'
+            );
+
+
+        submenu.classList.toggle(
+            'open',
+            !isOpen
         );
 
 
-    const button =
-        document.getElementById(
-            'study-menu-toggle'
+        button.setAttribute(
+            'aria-expanded',
+            String(!isOpen)
         );
-
-
-    if (!submenu || !button) {
-        return;
-    }
-
-
-    const isOpen =
-        submenu.classList.contains(
-            'open'
-        );
-
-
-    submenu.classList.toggle(
-        'open',
-        !isOpen
-    );
-
-
-    button.setAttribute(
-        'aria-expanded',
-        String(!isOpen)
-    );
-
-};
+    };
 
 
 // ============================================================
@@ -4177,7 +4259,6 @@ document.addEventListener(
                 submenu.classList.remove(
                     'open'
                 );
-
             }
 
 
@@ -4187,9 +4268,7 @@ document.addEventListener(
                     'aria-expanded',
                     'false'
                 );
-
             }
-
         }
 
     }
