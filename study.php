@@ -2740,7 +2740,7 @@ header {
         <div class="calculator-header">
 
             <strong>
-                Flexi Calculator
+                Calculator
             </strong>
 
             <button
@@ -4289,7 +4289,7 @@ document.addEventListener('click', (e) => {
         if (isCorrect) {
 
             answerInfo.innerHTML =
-                '<strong>Correct.</strong> Your answer matches the answer recorded in the Flexi CBT question bank.';
+                '<strong>CORRECT</strong>';
 
         }
         else {
