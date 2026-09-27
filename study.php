@@ -1,354 +1,170 @@
 <?php
-// ============================================================
-// FLEXI EDUCATIONAL CONSULT
-// STUDY — PAST QUESTIONS
-//
-// DATA SOURCE:
-// Flexi JAMB CBT Practice App GitHub repository
-//
-// Repository:
-// https://github.com/flexisystems2000/Flexi-JAMB-CBT-App-
-//
-// Question source:
-// question_bank/*.json
-//
-// FLOW:
-// 1. Student selects subject.
-// 2. Subject JSON is read from the Flexi repository.
-// 3. Available years are extracted.
-// 4. Student selects year.
-// 5. Questions for that year are filtered.
-// 6. Questions are displayed inside a CBT simulator.
-//
-// IMPORTANT:
-// - No scholarship system.
-// - This mirrors ONLY the Past Questions system.
-// - No question data is invented here.
-// - SVG icons are used instead of emoji/Boxicons.
-// ============================================================
+/**
+ * ============================================================
+ * FLEXI EDUCATIONAL CONSULT
+ * STUDY — JAMB PAST QUESTIONS / CBT SIMULATOR
+ * ============================================================
+ *
+ * SOURCE:
+ * Flexi JAMB CBT App repository
+ * https://github.com/flexisystems2000/Flexi-JAMB-CBT-App-
+ *
+ * QUESTION BANK:
+ * question_bank/*.json
+ *
+ * The JSON structure used by the CBT repository includes:
+ *   question
+ *   options
+ *   answer
+ *   year
+ *
+ * This page does NOT create a second question database.
+ * It reads the actual Flexi CBT App question-bank files.
+ * ============================================================
+ */
+
+declare(strict_types=1);
+
+/*
+|--------------------------------------------------------------------------
+| BASIC CONFIGURATION
+|--------------------------------------------------------------------------
+*/
+
+$repoOwner = 'flexisystems2000';
+$repoName  = 'Flexi-JAMB-CBT-App-';
+$repoBranch = 'main';
+
+$rawBaseUrl =
+    'https://raw.githubusercontent.com/' .
+    $repoOwner . '/' .
+    $repoName . '/' .
+    $repoBranch . '/question_bank/';
+
+$repoUrl =
+    'https://github.com/' .
+    $repoOwner . '/' .
+    $repoName;
 
 
-// ============================================================
-// BASIC CONFIGURATION
-// ============================================================
+/*
+|--------------------------------------------------------------------------
+| SUBJECT MAP
+|--------------------------------------------------------------------------
+|
+| These filenames are taken from the actual repository's past-question
+| subject mapping.
+|
+*/
 
-$githubRawBase =
-    'https://raw.githubusercontent.com/flexisystems2000/Flexi-JAMB-CBT-App-/main/question_bank/';
+$subjectMap = [
 
-
-// ============================================================
-// SUBJECT MAP
-// These filenames match the Flexi JAMB CBT App repository.
-// ============================================================
-
-$subjects = [
-
-    'english' => [
-        'name' => 'English Language',
-        'file' => 'use_of_english.json'
+    'use_of_english' => [
+        'label' => 'English Language',
+        'file'  => 'use_of_english.json'
     ],
 
     'accounting' => [
-        'name' => 'Accounting',
-        'file' => 'accounting.json'
+        'label' => 'Accounting',
+        'file'  => 'accounting.json'
     ],
 
     'arabic' => [
-        'name' => 'Arabic',
-        'file' => 'arabic.json'
+        'label' => 'Arabic',
+        'file'  => 'arabic.json'
     ],
 
     'biology' => [
-        'name' => 'Biology',
-        'file' => 'biology.json'
+        'label' => 'Biology',
+        'file'  => 'biology.json'
     ],
 
     'chemistry' => [
-        'name' => 'Chemistry',
-        'file' => 'chemistry.json'
+        'label' => 'Chemistry',
+        'file'  => 'chemistry.json'
     ],
 
-    'crs' => [
-        'name' => 'Christian Religious Studies (CRS)',
-        'file' => 'christian_religious_studies__crs_.json'
+    'christian_religious_studies' => [
+        'label' => 'Christian Religious Studies (CRS)',
+        'file'  => 'christian_religious_studies__crs_.json'
     ],
 
     'commerce' => [
-        'name' => 'Commerce',
-        'file' => 'commerce.json'
+        'label' => 'Commerce',
+        'file'  => 'commerce.json'
     ],
 
-    'computer' => [
-        'name' => 'Computer Studies',
-        'file' => 'computer_studies.json'
+    'computer_studies' => [
+        'label' => 'Computer Studies',
+        'file'  => 'computer_studies.json'
     ],
 
     'economics' => [
-        'name' => 'Economics',
-        'file' => 'economics.json'
+        'label' => 'Economics',
+        'file'  => 'economics.json'
     ],
 
     'fine_art' => [
-        'name' => 'Fine Art',
-        'file' => 'fine_art.json'
+        'label' => 'Fine Arts',
+        'file'  => 'fine_art.json'
     ],
 
     'government' => [
-        'name' => 'Government',
-        'file' => 'government.json'
+        'label' => 'Government',
+        'file'  => 'government.json'
     ],
 
-    'literature' => [
-        'name' => 'Literature in English',
-        'file' => 'literature_in_english.json'
+    'literature_in_english' => [
+        'label' => 'Literature In English',
+        'file'  => 'literature_in_english.json'
     ],
 
     'mathematics' => [
-        'name' => 'Mathematics',
-        'file' => 'mathematics.json'
+        'label' => 'Mathematics',
+        'file'  => 'mathematics.json'
     ],
 
     'physics' => [
-        'name' => 'Physics',
-        'file' => 'physics.json'
+        'label' => 'Physics',
+        'file'  => 'physics.json'
     ],
 
     'yoruba' => [
-        'name' => 'Yoruba',
-        'file' => 'yoruba.json'
+        'label' => 'Yoruba',
+        'file'  => 'yoruba.json'
     ]
 ];
 
 
-// ============================================================
-// HELPER: ESCAPE HTML
-// ============================================================
+/*
+|--------------------------------------------------------------------------
+| HTML ESCAPER
+|--------------------------------------------------------------------------
+*/
 
-function esc($value)
+function esc(string $value): string
 {
     return htmlspecialchars(
-        (string)$value,
+        $value,
         ENT_QUOTES,
         'UTF-8'
     );
 }
 
 
-// ============================================================
-// HELPER: FETCH JSON
-// ============================================================
+/*
+|--------------------------------------------------------------------------
+| JSON FOR JAVASCRIPT
+|--------------------------------------------------------------------------
+*/
 
-function fetchRemoteJson($url)
-{
-    $context = stream_context_create([
-        'http' => [
-            'method' => 'GET',
-            'header' =>
-                "Accept: application/json\r\n" .
-                "User-Agent: Flexi-Educational-Consult\r\n",
-            'timeout' => 15,
-            'ignore_errors' => true
-        ]
-    ]);
+$subjectMapForJs = [];
 
-    $response = @file_get_contents(
-        $url,
-        false,
-        $context
-    );
-
-    if ($response === false) {
-        return [];
-    }
-
-    $decoded = json_decode(
-        $response,
-        true
-    );
-
-    return is_array($decoded)
-        ? $decoded
-        : [];
-}
-
-
-// ============================================================
-// HELPER: NORMALIZE QUESTION ARRAY
-// ============================================================
-
-function normalizeQuestions($data)
-{
-    if (isset($data['questions']) && is_array($data['questions'])) {
-        return $data['questions'];
-    }
-
-    if (isset($data['data']) && is_array($data['data'])) {
-        return $data['data'];
-    }
-
-    if (isset($data['items']) && is_array($data['items'])) {
-        return $data['items'];
-    }
-
-    return is_array($data)
-        ? $data
-        : [];
-}
-
-
-// ============================================================
-// SELECTED SUBJECT
-// ============================================================
-
-$selectedSubject =
-    isset($_GET['subject'])
-        ? strtolower(trim($_GET['subject']))
-        : '';
-
-$selectedYear =
-    isset($_GET['year'])
-        ? trim($_GET['year'])
-        : '';
-
-
-// ============================================================
-// SUBJECT DATA
-// ============================================================
-
-$subjectQuestions = [];
-
-if (
-    $selectedSubject !== '' &&
-    isset($subjects[$selectedSubject])
-) {
-
-    $subjectFile =
-        $subjects[$selectedSubject]['file'];
-
-    $subjectUrl =
-        $githubRawBase .
-        rawurlencode($subjectFile);
-
-    $remoteData =
-        fetchRemoteJson($subjectUrl);
-
-    $subjectQuestions =
-        normalizeQuestions($remoteData);
-}
-
-
-// ============================================================
-// AVAILABLE YEARS
-// ============================================================
-
-$availableYears = [];
-
-foreach ($subjectQuestions as $question) {
-
-    if (!is_array($question)) {
-        continue;
-    }
-
-    $year =
-        trim((string)($question['year'] ?? ''));
-
-    if ($year !== '') {
-        $availableYears[$year] = true;
-    }
-}
-
-$availableYears =
-    array_keys($availableYears);
-
-usort(
-    $availableYears,
-    function ($a, $b) {
-        return (int)$b <=> (int)$a;
-    }
-);
-
-
-// ============================================================
-// FILTER QUESTIONS BY SELECTED YEAR
-// ============================================================
-
-$practiceQuestions = [];
-
-if (
-    $selectedYear !== '' &&
-    !empty($subjectQuestions)
-) {
-
-    foreach ($subjectQuestions as $question) {
-
-        if (!is_array($question)) {
-            continue;
-        }
-
-        $questionYear =
-            trim((string)($question['year'] ?? ''));
-
-        if ($questionYear === $selectedYear) {
-
-            if (
-                !isset($question['question']) ||
-                !isset($question['options'])
-            ) {
-                continue;
-            }
-
-            $practiceQuestions[] = [
-                'question' =>
-                    (string)$question['question'],
-
-                'options' =>
-                    is_array($question['options'])
-                        ? array_values($question['options'])
-                        : [],
-
-                'answer' =>
-                    (string)($question['answer'] ?? ''),
-
-                'year' =>
-                    $questionYear,
-
-                'topic' =>
-                    (string)($question['topic'] ?? '')
-            ];
-        }
-    }
-}
-
-
-// ============================================================
-// RETURN QUESTIONS TO JAVASCRIPT SAFELY
-// ============================================================
-
-$questionsJson =
-    json_encode(
-        $practiceQuestions,
-        JSON_UNESCAPED_UNICODE |
-        JSON_UNESCAPED_SLASHES |
-        JSON_HEX_TAG |
-        JSON_HEX_AMP |
-        JSON_HEX_APOS |
-        JSON_HEX_QUOT
-    );
-
-if ($questionsJson === false) {
-    $questionsJson = '[]';
-}
-
-
-// ============================================================
-// CURRENT SUBJECT NAME
-// ============================================================
-
-$currentSubjectName = '';
-
-if (isset($subjects[$selectedSubject])) {
-    $currentSubjectName =
-        $subjects[$selectedSubject]['name'];
+foreach ($subjectMap as $key => $item) {
+    $subjectMapForJs[$key] = [
+        'label' => $item['label'],
+        'file'  => $item['file']
+    ];
 }
 
 ?>
@@ -357,1621 +173,1694 @@ if (isset($subjects[$selectedSubject])) {
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b5ed7"
+    >
+
+    <title>
+        Flexi Educational Consult | Study Past Questions
+    </title>
+
+
+    <!-- =====================================================
+         MATHJAX
+         Borrowed from the Flexi JAMB CBT App repository
+         ===================================================== -->
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [
+                    ['\\(', '\\)'],
+                    ['\\( ', ' \\)']
+                ],
+                displayMath: [
+                    ['\\[', '\\]'],
+                    ['\\[ ', ' \\]']
+                ],
+                processEscapes: true,
+                processEnvironments: true
+            },
 
-<meta
-    name="viewport"
-    content="width=device-width,
-             initial-scale=1.0,
-             viewport-fit=cover"
->
+            options: {
+                skipHtmlTags: [
+                    'script',
+                    'noscript',
+                    'style',
+                    'textarea',
+                    'pre',
+                    'code'
+                ]
+            },
 
-<title>
-    <?= esc(
-        $currentSubjectName !== ''
-            ? $currentSubjectName . ' Past Questions - Flexi Educational Consult'
-            : 'Study Past Questions - Flexi Educational Consult'
-    ) ?>
-</title>
+            svg: {
+                fontCache: 'global'
+            },
 
-<meta
-    name="theme-color"
-    content="#008000"
->
+            startup: {
+                typeset: false
+            }
+        };
+    </script>
 
-<style>
+    <script
+        id="MathJax-script"
+        async
+        src="https://raw.githubusercontent.com/flexisystems2000/Flexi-JAMB-CBT-App-/main/tex-mml-chtml.js"
+    ></script>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-}
 
-:root {
+    <style>
 
-    --green: #008000;
-    --green-dark: #006400;
-    --green-light: #eaf8ee;
+        /* =====================================================
+           ROOT
+           ===================================================== */
 
-    --blue: #0757a0;
-    --blue-dark: #043d73;
+        :root {
 
-    --text: #1f2937;
-    --muted: #6b7280;
+            --flexi-blue: #0b5ed7;
+            --flexi-blue-dark: #0649aa;
 
-    --bg: #f4f7f9;
-    --card: #ffffff;
+            --flexi-green: #008f4c;
+            --flexi-green-dark: #006b39;
 
-    --border: #e5e7eb;
+            --bg: #f4f7fb;
+            --card: #ffffff;
 
-    --shadow:
-        0 8px 25px rgba(0,0,0,.07);
+            --text: #172033;
+            --muted: #687386;
 
-    --radius: 18px;
-}
+            --border: #e5eaf1;
 
-html {
-    scroll-behavior: smooth;
-}
+            --shadow:
+                0 8px 25px rgba(18, 38, 63, 0.08);
 
-body {
+            --danger: #d92d20;
+            --success: #16844a;
 
-    font-family:
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
+            --radius: 18px;
+        }
 
-    background:
-        var(--bg);
 
-    color:
-        var(--text);
+        /* =====================================================
+           RESET
+           ===================================================== */
 
-    min-height:
-        100vh;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
+        html {
+            scroll-behavior: smooth;
+        }
 
-/* ============================================================
-   PAGE WRAPPER
-   ============================================================ */
+        body {
 
-.page {
+            font-family:
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
 
-    width:
-        min(100% - 30px, 1200px);
+            background: var(--bg);
 
-    margin:
-        0 auto;
+            color: var(--text);
 
-    padding:
-        20px 0 50px;
-}
+            min-height: 100vh;
 
+            line-height: 1.5;
+        }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+        button,
+        select {
+            font: inherit;
+        }
 
-.topbar {
+        button {
+            cursor: pointer;
+        }
 
-    display:
-        flex;
 
-    align-items:
-        center;
+        /* =====================================================
+           HEADER
+           ===================================================== */
 
-    justify-content:
-        space-between;
+        .flexi-header {
 
-    margin-bottom:
-        20px;
-}
+            position: sticky;
 
-.back-btn {
+            top: 0;
 
-    width:
-        46px;
+            z-index: 5000;
 
-    height:
-        46px;
+            background:
+                linear-gradient(
+                    115deg,
+                    #0757c9 0%,
+                    #0874d9 48%,
+                    #008c4b 100%
+                );
 
-    border-radius:
-        50%;
+            color: #ffffff;
 
-    display:
-        inline-flex;
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.12);
+        }
 
-    align-items:
-        center;
+        .header-inner {
 
-    justify-content:
-        center;
+            width: min(
+                1180px,
+                calc(100% - 30px)
+            );
 
-    text-decoration:
-        none;
+            margin: auto;
 
-    color:
-        var(--text);
+            min-height: 72px;
 
-    background:
-        var(--card);
+            display: flex;
 
-    border:
-        1px solid var(--border);
+            align-items: center;
 
-    box-shadow:
-        var(--shadow);
+            justify-content: space-between;
 
-    transition:
-        .2s ease;
-}
+            gap: 20px;
+        }
 
-.back-btn:hover {
-    transform:
-        translateY(-2px);
-}
+        .brand {
 
-.svg-icon {
+            display: flex;
 
-    width:
-        21px;
+            align-items: center;
 
-    height:
-        21px;
+            gap: 11px;
 
-    stroke:
-        currentColor;
+            text-decoration: none;
 
-    fill:
-        none;
+            color: #ffffff;
 
-    stroke-width:
-        2;
+            min-width: 0;
+        }
 
-    stroke-linecap:
-        round;
+        .brand-logo {
 
-    stroke-linejoin:
-        round;
-}
+            width: 42px;
+            height: 42px;
 
+            border-radius: 11px;
 
-/* ============================================================
-   PAGE INTRO
-   ============================================================ */
+            object-fit: contain;
 
-.intro {
+            background: rgba(255,255,255,.16);
 
-    background:
-        linear-gradient(
-            135deg,
-            #008000,
-            #0757a0
-        );
+            padding: 4px;
+        }
 
-    color:
-        white;
+        .brand-text {
 
-    border-radius:
-        22px;
+            min-width: 0;
+        }
 
-    padding:
-        24px;
+        .brand-title {
 
-    margin-bottom:
-        22px;
+            font-size: 1rem;
 
-    box-shadow:
-        0 12px 30px rgba(0,90,100,.15);
-}
+            font-weight: 800;
 
-.intro h1 {
+            letter-spacing: .1px;
 
-    font-size:
-        clamp(1.45rem, 3vw, 2rem);
+            white-space: nowrap;
+        }
 
-    margin-bottom:
-        7px;
-}
+        .brand-subtitle {
 
-.intro p {
+            font-size: .7rem;
 
-    font-size:
-        .94rem;
+            opacity: .85;
 
-    opacity:
-        .92;
+            margin-top: 1px;
 
-    line-height:
-        1.55;
-}
+            white-space: nowrap;
+        }
 
 
-/* ============================================================
-   SELECTION CARD
-   ============================================================ */
+        /* =====================================================
+           HEADER NAV
+           ===================================================== */
 
-.selection-card {
+        .desktop-nav {
 
-    background:
-        var(--card);
+            display: flex;
 
-    border:
-        1px solid var(--border);
+            align-items: center;
 
-    border-radius:
-        var(--radius);
+            gap: 5px;
+        }
 
-    padding:
-        22px;
+        .desktop-nav a {
 
-    box-shadow:
-        var(--shadow);
+            color: rgba(255,255,255,.96);
 
-    margin-bottom:
-        25px;
-}
+            text-decoration: none;
 
-.selection-title {
+            font-size: .86rem;
 
-    display:
-        flex;
+            font-weight: 650;
 
-    align-items:
-        center;
+            padding: 9px 11px;
 
-    gap:
-        10px;
+            border-radius: 9px;
 
-    margin-bottom:
-        18px;
-}
+            transition:
+                background .2s ease,
+                transform .2s ease;
+        }
 
-.selection-title-icon {
+        .desktop-nav a:hover {
 
-    width:
-        40px;
+            background:
+                rgba(255,255,255,.13);
 
-    height:
-        40px;
+            transform: translateY(-1px);
+        }
 
-    border-radius:
-        12px;
 
-    display:
-        flex;
+        /* =====================================================
+           SVG ICON
+           ===================================================== */
 
-    align-items:
-        center;
+        .svg-icon {
 
-    justify-content:
-        center;
+            width: 20px;
+            height: 20px;
 
-    background:
-        var(--green-light);
+            display: inline-block;
 
-    color:
-        var(--green);
-}
+            fill: none;
 
-.selection-title h2 {
+            stroke: currentColor;
 
-    font-size:
-        1.1rem;
+            stroke-width: 2;
 
-    font-weight:
-        800;
-}
+            stroke-linecap: round;
 
-.form-grid {
+            stroke-linejoin: round;
+        }
 
-    display:
-        grid;
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+        /* =====================================================
+           MOBILE HEADER
+           ===================================================== */
 
-    gap:
-        16px;
-}
+        .mobile-menu-btn {
 
-.form-group label {
+            width: 42px;
+            height: 42px;
 
-    display:
-        block;
+            border: 0;
 
-    font-size:
-        .88rem;
+            border-radius: 11px;
 
-    font-weight:
-        700;
+            background:
+                rgba(255,255,255,.12);
 
-    margin-bottom:
-        7px;
-}
+            color: #ffffff;
 
-.select-wrap {
-    position:
-        relative;
-}
+            display: none;
 
-.form-control {
+            align-items: center;
 
-    width:
-        100%;
+            justify-content: center;
+        }
 
-    min-height:
-        50px;
 
-    border:
-        1.5px solid var(--border);
+        /* =====================================================
+           MAIN
+           ===================================================== */
 
-    border-radius:
-        13px;
+        .page {
 
-    background:
-        #fff;
+            width: min(
+                1180px,
+                calc(100% - 30px)
+            );
 
-    color:
-        var(--text);
+            margin: auto;
 
-    padding:
-        0 45px 0 15px;
+            padding:
+                25px
+                0
+                55px;
+        }
 
-    font-size:
-        .95rem;
 
-    outline:
-        none;
+        /* =====================================================
+           PAGE INTRO
+           ===================================================== */
 
-    appearance:
-        none;
+        .page-intro {
 
-    transition:
-        .2s ease;
-}
+            margin-bottom: 22px;
+        }
 
-.form-control:focus {
+        .back-link {
 
-    border-color:
-        var(--green);
+            display: inline-flex;
 
-    box-shadow:
-        0 0 0 3px rgba(0,128,0,.08);
-}
+            align-items: center;
 
-.select-arrow {
+            gap: 7px;
 
-    position:
-        absolute;
+            text-decoration: none;
 
-    right:
-        15px;
+            color: var(--flexi-blue);
 
-    top:
-        50%;
+            font-size: .85rem;
 
-    transform:
-        translateY(-50%);
+            font-weight: 700;
 
-    pointer-events:
-        none;
+            margin-bottom: 13px;
+        }
 
-    color:
-        var(--muted);
-}
+        .page-title {
 
-.start-btn {
+            font-size:
+                clamp(
+                    1.45rem,
+                    3vw,
+                    2rem
+                );
 
-    width:
-        100%;
+            font-weight: 850;
 
-    min-height:
-        52px;
+            color: #14213d;
+        }
 
-    border:
-        none;
+        .page-description {
 
-    border-radius:
-        14px;
+            color: var(--muted);
 
-    margin-top:
-        17px;
+            margin-top: 5px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #008000,
-            #006400
-        );
+            font-size: .93rem;
+        }
 
-    color:
-        white;
 
-    font-size:
-        .98rem;
+        /* =====================================================
+           STUDY PANEL
+           ===================================================== */
 
-    font-weight:
-        800;
+        .study-panel {
 
-    cursor:
-        pointer;
+            background: var(--card);
 
-    transition:
-        .2s ease;
+            border:
+                1px solid var(--border);
 
-    display:
-        flex;
+            border-radius:
+                var(--radius);
 
-    align-items:
-        center;
+            box-shadow:
+                var(--shadow);
 
-    justify-content:
-        center;
+            padding: 22px;
+        }
 
-    gap:
-        9px;
-}
+        .panel-heading {
 
-.start-btn:hover {
-    transform:
-        translateY(-1px);
-}
+            display: flex;
 
-.start-btn:active {
-    transform:
-        scale(.99);
-}
+            align-items: center;
 
+            gap: 11px;
 
-/* ============================================================
-   ERROR / EMPTY MESSAGE
-   ============================================================ */
+            margin-bottom: 20px;
+        }
 
-.notice {
+        .panel-heading-icon {
 
-    padding:
-        15px 17px;
+            width: 43px;
+            height: 43px;
 
-    border-radius:
-        13px;
+            border-radius: 12px;
 
-    background:
-        #fff7ed;
+            display: flex;
 
-    color:
-        #9a3412;
+            align-items: center;
 
-    border:
-        1px solid #fed7aa;
+            justify-content: center;
 
-    margin-bottom:
-        20px;
+            color: #ffffff;
 
-    line-height:
-        1.5;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--flexi-blue),
+                    var(--flexi-green)
+                );
+        }
 
-    font-size:
-        .92rem;
-}
+        .panel-heading h2 {
 
+            font-size: 1.05rem;
 
-/* ============================================================
-   CBT AREA
-   ============================================================ */
+            font-weight: 800;
+        }
 
-.cbt-shell {
+        .panel-heading p {
 
-    display:
-        none;
-}
+            font-size: .78rem;
 
-.cbt-shell.active {
-    display:
-        block;
-}
+            color: var(--muted);
 
+            margin-top: 2px;
+        }
 
-/* ============================================================
-   CBT HEADER
-   ============================================================ */
 
-.cbt-header {
+        /* =====================================================
+           FILTER GRID
+           ===================================================== */
 
-    display:
-        flex;
+        .filter-grid {
 
-    align-items:
-        center;
+            display: grid;
 
-    justify-content:
-        space-between;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
 
-    gap:
-        15px;
+            gap: 17px;
+        }
 
-    background:
-        var(--card);
+        .form-group label {
 
-    border:
-        1px solid var(--border);
+            display: block;
 
-    border-radius:
-        var(--radius);
+            font-size: .82rem;
 
-    padding:
-        15px 18px;
+            font-weight: 750;
 
-    box-shadow:
-        var(--shadow);
+            margin-bottom: 7px;
 
-    margin-bottom:
-        18px;
-}
+            color: #344054;
+        }
 
-.cbt-subject {
+        .select-wrap {
 
-    min-width:
-        0;
-}
+            position: relative;
+        }
 
-.cbt-subject small {
+        .select-wrap .svg-icon {
 
-    display:
-        block;
+            position: absolute;
 
-    color:
-        var(--muted);
+            right: 14px;
 
-    font-size:
-        .76rem;
+            top: 50%;
 
-    margin-bottom:
-        3px;
-}
+            transform:
+                translateY(-50%);
 
-.cbt-subject strong {
+            width: 17px;
+            height: 17px;
 
-    display:
-        block;
+            pointer-events: none;
 
-    font-size:
-        1rem;
+            color: #667085;
+        }
 
-    white-space:
-        nowrap;
+        .form-control {
 
-    overflow:
-        hidden;
+            width: 100%;
 
-    text-overflow:
-        ellipsis;
-}
+            min-height: 48px;
 
-.progress-area {
+            padding:
+                11px
+                42px
+                11px
+                14px;
 
-    width:
-        min(230px, 40%);
+            border:
+                1px solid #d8dee8;
 
-    flex-shrink:
-        0;
-}
+            border-radius: 12px;
 
-.progress-text {
+            background: #ffffff;
 
-    display:
-        flex;
+            color: var(--text);
 
-    justify-content:
-        space-between;
+            outline: none;
 
-    font-size:
-        .75rem;
+            appearance: none;
 
-    color:
-        var(--muted);
+            font-size: .9rem;
 
-    margin-bottom:
-        5px;
-}
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease;
+        }
 
-.progress-bar {
+        .form-control:focus {
 
-    height:
-        7px;
+            border-color:
+                var(--flexi-blue);
 
-    border-radius:
-        99px;
+            box-shadow:
+                0 0 0 3px
+                rgba(11,94,215,.1);
+        }
 
-    background:
-        #e5e7eb;
 
-    overflow:
-        hidden;
-}
+        /* =====================================================
+           START BUTTON
+           ===================================================== */
 
-.progress-fill {
+        .start-area {
 
-    height:
-        100%;
+            margin-top: 20px;
 
-    width:
-        0%;
+            display: flex;
 
-    background:
-        linear-gradient(
-            90deg,
-            #008000,
-            #0757a0
-        );
+            justify-content: flex-end;
+        }
 
-    border-radius:
-        inherit;
+        .start-btn {
 
-    transition:
-        width .25s ease;
-}
+            border: 0;
 
+            color: #ffffff;
 
-/* ============================================================
-   QUESTION LAYOUT
-   ============================================================ */
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--flexi-blue),
+                    var(--flexi-green)
+                );
 
-.cbt-grid {
+            border-radius: 12px;
 
-    display:
-        grid;
+            min-height: 48px;
 
-    grid-template-columns:
-        minmax(0, 1fr) 270px;
+            padding:
+                0
+                25px;
 
-    gap:
-        20px;
+            font-weight: 800;
 
-    align-items:
-        start;
-}
+            display: inline-flex;
 
-.question-card {
+            align-items: center;
 
-    background:
-        var(--card);
+            justify-content: center;
 
-    border:
-        1px solid var(--border);
+            gap: 9px;
 
-    border-radius:
-        var(--radius);
+            box-shadow:
+                0 7px 18px
+                rgba(11,94,215,.18);
 
-    padding:
-        25px;
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
 
-    box-shadow:
-        var(--shadow);
-}
+        .start-btn:hover {
 
-.question-meta {
+            transform: translateY(-1px);
 
-    display:
-        flex;
+            box-shadow:
+                0 10px 22px
+                rgba(11,94,215,.23);
+        }
 
-    align-items:
-        center;
 
-    justify-content:
-        space-between;
+        /* =====================================================
+           STATUS
+           ===================================================== */
 
-    gap:
-        10px;
+        .status-box {
 
-    margin-bottom:
-        18px;
-}
+            margin-top: 15px;
 
-.question-number {
+            padding: 12px 14px;
 
-    color:
-        var(--green);
+            border-radius: 11px;
 
-    font-weight:
-        800;
+            font-size: .84rem;
 
-    font-size:
-        .9rem;
-}
+            display: none;
+        }
 
-.year-badge {
+        .status-box.show {
+            display: block;
+        }
 
-    background:
-        #eef6ff;
+        .status-loading {
 
-    color:
-        var(--blue);
+            color: #0757c9;
 
-    border-radius:
-        20px;
+            background:
+                #edf5ff;
+        }
 
-    padding:
-        5px 10px;
+        .status-error {
 
-    font-size:
-        .72rem;
+            color: #a61b14;
 
-    font-weight:
-        800;
-}
+            background:
+                #fff0ee;
+        }
 
-.question-text {
+        .status-success {
 
-    font-size:
-        clamp(1rem, 2vw, 1.13rem);
+            color: #126b3d;
 
-    line-height:
-        1.65;
+            background:
+                #ebf8f1;
+        }
 
-    font-weight:
-        600;
 
-    margin-bottom:
-        23px;
-}
+        /* =====================================================
+           SIMULATOR
+           ===================================================== */
 
-.options-list {
+        #simulatorSection {
 
-    display:
-        flex;
+            display: none;
 
-    flex-direction:
-        column;
+            margin-top: 25px;
+        }
 
-    gap:
-        11px;
-}
+        #simulatorSection.active {
+            display: block;
+        }
 
-.option-btn {
+        .simulator-top {
 
-    width:
-        100%;
+            background:
+                linear-gradient(
+                    120deg,
+                    #0757c9,
+                    #008c4b
+                );
 
-    display:
-        flex;
+            color: #ffffff;
 
-    align-items:
-        flex-start;
+            border-radius:
+                18px;
 
-    gap:
-        12px;
+            padding: 17px;
 
-    padding:
-        14px;
+            box-shadow:
+                var(--shadow);
+        }
 
-    border:
-        1.5px solid var(--border);
+        .simulator-top-row {
 
-    border-radius:
-        13px;
+            display: flex;
 
-    background:
-        #fff;
+            justify-content: space-between;
 
-    color:
-        var(--text);
+            align-items: center;
 
-    text-align:
-        left;
+            gap: 15px;
+        }
 
-    cursor:
-        pointer;
+        .simulator-title {
 
-    font-size:
-        .94rem;
+            font-size: 1rem;
 
-    line-height:
-        1.5;
+            font-weight: 850;
+        }
 
-    transition:
-        .2s ease;
-}
+        .simulator-meta {
 
-.option-btn:hover:not(:disabled) {
+            font-size: .76rem;
 
-    border-color:
-        #75b875;
+            opacity: .88;
 
-    background:
-        #f8fff9;
-}
+            margin-top: 3px;
+        }
 
-.option-letter {
+        .question-counter {
 
-    width:
-        30px;
+            font-weight: 800;
 
-    height:
-        30px;
+            font-size: .82rem;
 
-    flex:
-        0 0 30px;
+            white-space: nowrap;
+        }
 
-    border-radius:
-        50%;
+        .progress-track {
 
-    display:
-        flex;
+            height: 6px;
 
-    align-items:
-        center;
+            border-radius: 10px;
 
-    justify-content:
-        center;
+            background:
+                rgba(255,255,255,.2);
 
-    background:
-        #f1f5f9;
+            margin-top: 15px;
 
-    color:
-        #475569;
+            overflow: hidden;
+        }
 
-    font-size:
-        .8rem;
+        .progress-bar {
 
-    font-weight:
-        800;
-}
+            height: 100%;
 
-.option-content {
-    flex:
-        1;
-}
+            width: 0%;
 
-.option-btn.selected {
+            background: #ffffff;
 
-    border-color:
-        var(--blue);
+            border-radius: inherit;
 
-    background:
-        #eef6ff;
-}
+            transition: width .25s ease;
+        }
 
-.option-btn.selected .option-letter {
 
-    background:
-        var(--blue);
+        /* =====================================================
+           QUESTION CARD
+           ===================================================== */
 
-    color:
-        white;
-}
+        .question-card {
 
-.option-btn.correct {
+            background:
+                var(--card);
 
-    border-color:
-        #16a34a;
+            border:
+                1px solid var(--border);
 
-    background:
-        #dcfce7;
+            border-radius:
+                18px;
 
-    color:
-        #166534;
-}
+            box-shadow:
+                var(--shadow);
 
-.option-btn.correct .option-letter {
+            margin-top: 15px;
 
-    background:
-        #16a34a;
+            padding: 23px;
+        }
 
-    color:
-        white;
-}
+        .question-label {
 
-.option-btn.wrong {
+            color:
+                var(--flexi-green);
 
-    border-color:
-        #dc2626;
+            font-size: .8rem;
 
-    background:
-        #fee2e2;
+            font-weight: 850;
 
-    color:
-        #991b1b;
-}
+            margin-bottom: 10px;
+        }
 
-.option-btn.wrong .option-letter {
+        .question-text {
 
-    background:
-        #dc2626;
+            font-size:
+                clamp(
+                    1rem,
+                    2vw,
+                    1.13rem
+                );
 
-    color:
-        white;
-}
+            font-weight: 650;
 
+            line-height: 1.65;
 
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
+            color: var(--text);
 
-.question-navigation {
+            overflow-wrap: anywhere;
+        }
 
-    display:
-        flex;
+        .options {
 
-    justify-content:
-        space-between;
+            display: flex;
 
-    gap:
-        12px;
+            flex-direction: column;
 
-    margin-top:
-        20px;
-}
+            gap: 11px;
 
-.nav-btn {
+            margin-top: 21px;
+        }
 
-    min-height:
-        48px;
+        .option-btn {
 
-    border:
-        none;
+            width: 100%;
 
-    border-radius:
-        13px;
+            text-align: left;
 
-    padding:
-        0 20px;
+            border:
+                1.5px solid #dfe4eb;
 
-    background:
-        var(--green);
+            background: #ffffff;
 
-    color:
-        white;
+            color: var(--text);
 
-    font-weight:
-        800;
+            border-radius: 12px;
 
-    cursor:
-        pointer;
+            padding:
+                13px
+                15px;
 
-    display:
-        inline-flex;
+            display: flex;
 
-    align-items:
-        center;
+            align-items: flex-start;
 
-    justify-content:
-        center;
+            gap: 11px;
 
-    gap:
-        8px;
+            font-size: .91rem;
 
-    transition:
-        .2s ease;
-}
+            line-height: 1.5;
 
-.nav-btn.secondary {
+            transition:
+                border .18s ease,
+                background .18s ease,
+                transform .18s ease;
+        }
 
-    background:
-        #eef2f5;
+        .option-btn:hover {
 
-    color:
-        #334155;
+            border-color:
+                var(--flexi-blue);
 
-    border:
-        1px solid var(--border);
-}
+            transform:
+                translateY(-1px);
+        }
 
-.nav-btn:disabled {
+        .option-letter {
 
-    opacity:
-        .45;
+            flex:
+                0 0 31px;
 
-    cursor:
-        not-allowed;
-}
+            width: 31px;
+            height: 31px;
 
+            border-radius: 50%;
 
-/* ============================================================
-   QUESTION PALETTE
-   ============================================================ */
+            display: flex;
 
-.palette-card {
+            align-items: center;
 
-    background:
-        var(--card);
+            justify-content: center;
 
-    border:
-        1px solid var(--border);
+            background:
+                #eef3f9;
 
-    border-radius:
-        var(--radius);
+            color:
+                #344054;
 
-    padding:
-        18px;
+            font-weight: 850;
 
-    box-shadow:
-        var(--shadow);
+            font-size: .8rem;
+        }
 
-    position:
-        sticky;
+        .option-content {
 
-    top:
-        18px;
-}
+            flex: 1;
+        }
 
-.palette-card h3 {
+        .option-btn.selected {
 
-    font-size:
-        .95rem;
+            border-color:
+                var(--flexi-blue);
 
-    margin-bottom:
-        5px;
-}
+            background:
+                #edf5ff;
+        }
 
-.palette-info {
+        .option-btn.correct {
 
-    font-size:
-        .76rem;
+            border-color:
+                #16844a;
 
-    color:
-        var(--muted);
+            background:
+                #eaf8f0;
 
-    line-height:
-        1.45;
+            color:
+                #125d37;
+        }
 
-    margin-bottom:
-        15px;
-}
+        .option-btn.wrong {
 
-.palette {
+            border-color:
+                #d92d20;
 
-    display:
-        grid;
+            background:
+                #fff0ee;
 
-    grid-template-columns:
-        repeat(5, 1fr);
+            color:
+                #a61b14;
+        }
 
-    gap:
-        7px;
+        .answer-badge {
 
-    max-height:
-        400px;
+            display: inline-flex;
 
-    overflow:
-        auto;
+            margin-left: auto;
 
-    padding-right:
-        2px;
-}
+            padding:
+                3px 7px;
 
-.palette-btn {
+            border-radius: 6px;
 
-    min-height:
-        35px;
+            font-size: .66rem;
 
-    border:
-        1px solid var(--border);
+            font-weight: 850;
 
-    border-radius:
-        8px;
+            text-transform: uppercase;
+        }
 
-    background:
-        #f8fafc;
+        .answer-badge.correct {
 
-    color:
-        #475569;
+            background: #16844a;
 
-    cursor:
-        pointer;
+            color: #ffffff;
+        }
 
-    font-size:
-        .75rem;
+        .answer-badge.wrong {
 
-    font-weight:
-        700;
-}
+            background: #d92d20;
 
-.palette-btn.current {
+            color: #ffffff;
+        }
 
-    background:
-        var(--blue);
 
-    border-color:
-        var(--blue);
+        /* =====================================================
+           EXPLANATION
+           ===================================================== */
 
-    color:
-        white;
-}
+        .answer-info {
 
-.palette-btn.answered {
+            display: none;
 
-    background:
-        #dcfce7;
+            margin-top: 17px;
 
-    border-color:
-        #86efac;
+            border-radius: 12px;
 
-    color:
-        #166534;
-}
+            padding: 13px 14px;
 
+            background:
+                #f4f8fc;
 
-/* ============================================================
-   RESULT CARD
-   ============================================================ */
+            border:
+                1px solid #dfe7f1;
 
-.result-card {
+            font-size: .83rem;
+        }
 
-    display:
-        none;
+        .answer-info.visible {
+            display: block;
+        }
 
-    background:
-        var(--card);
+        .answer-info strong {
+            color:
+                var(--flexi-green);
+        }
 
-    border:
-        1px solid var(--border);
 
-    border-radius:
-        var(--radius);
+        /* =====================================================
+           NAVIGATION
+           ===================================================== */
 
-    box-shadow:
-        var(--shadow);
+        .simulator-controls {
 
-    padding:
-        30px;
+            display: flex;
 
-    text-align:
-        center;
+            gap: 10px;
 
-    margin-top:
-        20px;
-}
+            margin-top: 15px;
+        }
 
-.result-card.active {
-    display:
-        block;
-}
+        .control-btn {
 
-.result-icon {
+            flex: 1;
 
-    width:
-        60px;
+            min-height: 46px;
 
-    height:
-        60px;
+            border-radius: 12px;
 
-    margin:
-        0 auto 15px;
+            border: 1px solid #dbe2eb;
 
-    border-radius:
-        50%;
+            background: #ffffff;
 
-    background:
-        var(--green-light);
+            color: #344054;
 
-    color:
-        var(--green);
+            font-weight: 800;
 
-    display:
-        flex;
+            display: inline-flex;
 
-    align-items:
-        center;
+            align-items: center;
 
-    justify-content:
-        center;
-}
+            justify-content: center;
 
-.result-card h2 {
+            gap: 7px;
+        }
 
-    font-size:
-        1.35rem;
+        .control-btn.primary {
 
-    margin-bottom:
-        8px;
-}
+            border: 0;
 
-.result-score {
+            color: #ffffff;
 
-    font-size:
-        2.3rem;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--flexi-blue),
+                    var(--flexi-green)
+                );
+        }
 
-    font-weight:
-        900;
+        .control-btn:disabled {
 
-    color:
-        var(--green);
+            opacity: .45;
 
-    margin:
-        10px 0;
-}
+            cursor: not-allowed;
+        }
 
-.result-card p {
 
-    color:
-        var(--muted);
+        /* =====================================================
+           RESULT CARD
+           ===================================================== */
 
-    margin-bottom:
-        20px;
-}
+        .result-card {
 
-.restart-btn {
+            display: none;
 
-    border:
-        none;
+            margin-top: 15px;
 
-    border-radius:
-        13px;
+            background: #ffffff;
 
-    padding:
-        13px 22px;
+            border:
+                1px solid var(--border);
 
-    background:
-        var(--green);
+            border-radius: 18px;
 
-    color:
-        white;
+            padding: 23px;
 
-    font-weight:
-        800;
+            text-align: center;
 
-    cursor:
-        pointer;
-}
+            box-shadow:
+                var(--shadow);
+        }
 
+        .result-card.active {
+            display: block;
+        }
 
-/* ============================================================
-   CALCULATOR
-   ============================================================ */
+        .result-score {
 
-.calc-overlay {
+            font-size: 2.2rem;
 
-    position:
-        fixed;
+            font-weight: 900;
 
-    inset:
-        0;
+            color:
+                var(--flexi-green);
+        }
 
-    z-index:
-        10000;
+        .result-title {
 
-    display:
-        none;
+            font-size: 1.1rem;
 
-    align-items:
-        center;
+            font-weight: 850;
 
-    justify-content:
-        center;
+            margin-top: 3px;
+        }
 
-    background:
-        rgba(0,0,0,.72);
+        .result-detail {
 
-    padding:
-        20px;
-}
+            color: var(--muted);
 
-.calc-overlay.active {
-    display:
-        flex;
-}
+            font-size: .84rem;
 
-.calc-card {
+            margin-top: 4px;
+        }
 
-    width:
-        min(100%, 350px);
 
-    background:
-        #111827;
+        /* =====================================================
+           CALCULATOR
+           ===================================================== */
 
-    border-radius:
-        22px;
+        #calculatorOverlay {
 
-    overflow:
-        hidden;
+            position: fixed;
 
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.4);
-}
+            inset: 0;
 
-.calc-display {
+            background:
+                rgba(0,0,0,.72);
 
-    min-height:
-        90px;
+            backdrop-filter:
+                blur(4px);
 
-    padding:
-        20px;
+            display: none;
 
-    display:
-        flex;
+            align-items: center;
 
-    align-items:
-        flex-end;
+            justify-content: center;
 
-    justify-content:
-        flex-end;
+            z-index: 10000;
 
-    color:
-        white;
+            padding: 18px;
+        }
 
-    font-size:
-        2rem;
+        #calculatorOverlay.active {
+            display: flex;
+        }
 
-    overflow:
-        hidden;
+        .calculator {
 
-    word-break:
-        break-all;
-}
+            width:
+                min(
+                    350px,
+                    100%
+                );
 
-.calc-grid {
+            background:
+                #080a09;
 
-    display:
-        grid;
+            border:
+                1px solid #1f2923;
 
-    grid-template-columns:
-        repeat(4, 1fr);
+            border-radius: 23px;
 
-    gap:
-        1px;
+            overflow: hidden;
 
-    background:
-        #374151;
-}
+            box-shadow:
+                0 25px 60px
+                rgba(0,0,0,.4);
+        }
 
-.calc-grid button {
+        .calculator-header {
 
-    min-height:
-        60px;
+            display: flex;
 
-    border:
-        none;
+            align-items: center;
 
-    background:
-        #1f2937;
+            justify-content: space-between;
 
-    color:
-        white;
+            padding:
+                13px 16px;
 
-    font-size:
-        1.05rem;
+            background:
+                #0d110f;
 
-    cursor:
-        pointer;
-}
+            color: #ffffff;
+        }
 
-.calc-grid button:hover {
-    background:
-        #374151;
-}
+        .calculator-header strong {
+            font-size: .9rem;
+        }
 
-.calc-grid .operator {
-    background:
-        #0757a0;
-}
+        .calc-close {
 
-.calc-close {
+            width: 31px;
+            height: 31px;
 
-    width:
-        100%;
+            border: 0;
 
-    min-height:
-        48px;
+            border-radius: 8px;
 
-    border:
-        none;
+            background:
+                #18201b;
 
-    background:
-        #111827;
+            color: #ffffff;
+        }
 
-    color:
-        #9ca3af;
+        .calc-display {
 
-    cursor:
-        pointer;
+            min-height: 85px;
 
-    font-weight:
-        700;
-}
+            padding:
+                20px 17px;
 
+            display: flex;
 
-/* ============================================================
-   MOBILE
-   ============================================================ */
+            align-items: flex-end;
 
-@media (max-width: 800px) {
+            justify-content: flex-end;
 
-    .cbt-grid {
-        grid-template-columns:
-            1fr;
-    }
+            color:
+                #ffffff;
 
-    .palette-card {
+            font-size: 2rem;
 
-        position:
-            static;
+            font-weight: 700;
 
-        order:
-            2;
-    }
+            overflow-wrap: anywhere;
 
-    .palette {
+            text-align: right;
+        }
 
-        max-height:
-            180px;
-    }
-}
+        .calc-grid {
 
+            display: grid;
 
-@media (max-width: 620px) {
+            grid-template-columns:
+                repeat(4, 1fr);
 
-    .page {
+            gap: 7px;
 
-        width:
-            min(100% - 20px, 600px);
+            padding: 9px;
+        }
 
-        padding-top:
-            12px;
-    }
+        .calc-key {
 
-    .form-grid {
+            min-height: 55px;
 
-        grid-template-columns:
-            1fr;
-    }
+            border: 0;
 
-    .intro {
-        padding:
-            20px;
-    }
+            border-radius: 12px;
 
-    .question-card {
-        padding:
-            18px;
-    }
+            background:
+                #171d19;
 
-    .cbt-header {
+            color: #ffffff;
 
-        align-items:
-            flex-start;
+            font-size: 1rem;
 
-        flex-direction:
-            column;
-    }
+            font-weight: 750;
+        }
 
-    .progress-area {
-        width:
-            100%;
-    }
+        .calc-key:hover {
+            background: #202a23;
+        }
 
-    .question-navigation {
+        .calc-key.operator {
 
-        position:
-            sticky;
+            background:
+                #0e4d2d;
 
-        bottom:
-            8px;
+            color:
+                #8ff0bb;
+        }
 
-        z-index:
-            20;
+        .calc-key.equal {
 
-        background:
-            rgba(255,255,255,.95);
+            background:
+                #008f4c;
 
-        backdrop-filter:
-            blur(8px);
+            color:
+                #ffffff;
+        }
 
-        padding:
-            8px;
+        .calc-key.clear {
 
-        border-radius:
-            14px;
+            color:
+                #ff8179;
+        }
 
-        box-shadow:
-            0 4px 20px rgba(0,0,0,.08);
-    }
 
-    .nav-btn {
-        flex:
-            1;
-    }
-}
+        /* =====================================================
+           APP PROMOTION
+           ===================================================== */
 
-</style>
+        .app-promotion {
+
+            margin-top: 30px;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            background: #ffffff;
+
+            border:
+                1px solid var(--border);
+
+            box-shadow:
+                var(--shadow);
+        }
+
+        .app-promotion a {
+
+            display: block;
+
+            text-decoration: none;
+        }
+
+        .app-promotion img {
+
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+
+            max-height: 310px;
+
+            object-fit: cover;
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .flexi-footer {
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #063f99,
+                    #0757c9,
+                    #007b42
+                );
+
+            color: #ffffff;
+
+            margin-top: 0;
+        }
+
+        .footer-inner {
+
+            width: min(
+                1180px,
+                calc(100% - 30px)
+            );
+
+            margin: auto;
+
+            padding:
+                28px
+                0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .footer-brand {
+
+            font-weight: 850;
+
+            font-size: .92rem;
+        }
+
+        .footer-copy {
+
+            font-size: .74rem;
+
+            opacity: .8;
+
+            margin-top: 3px;
+        }
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 15px;
+        }
+
+        .footer-links a {
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: .77rem;
+
+            opacity: .9;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 760px) {
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .header-inner {
+                min-height: 64px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .start-area {
+                justify-content: stretch;
+            }
+
+            .start-btn {
+                width: 100%;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+        }
+
+
+        @media (min-width: 761px) {
+
+            .page {
+                padding-top: 35px;
+            }
+
+            .study-panel {
+                padding: 27px;
+            }
+
+            .question-card {
+                padding: 30px;
+            }
+        }
+
+
+        @media (max-width: 520px) {
+
+            .page {
+                width:
+                    calc(100% - 22px);
+
+                padding-top: 18px;
+            }
+
+            .header-inner {
+                width:
+                    calc(100% - 22px);
+            }
+
+            .brand-title {
+                font-size: .88rem;
+            }
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .study-panel {
+                padding: 17px;
+            }
+
+            .question-card {
+                padding: 18px;
+            }
+
+            .simulator-controls {
+                flex-direction: column;
+            }
+
+            .simulator-top-row {
+                align-items: flex-start;
+            }
+
+            .app-promotion img {
+                max-height: none;
+            }
+        }
+
+    </style>
 
 </head>
+
 
 <body>
 
 
-<div class="page">
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
 
+<header class="flexi-header">
 
-    <!-- ======================================================
-         HEADER
-         ====================================================== -->
-
-    <div class="topbar">
+    <div class="header-inner">
 
         <a
-            href="study.php"
-            class="back-btn"
-            aria-label="Back"
+            href="index.php"
+            class="brand"
+        >
+
+            <img
+                src="assets/logo.png"
+                class="brand-logo"
+                alt="Flexi Educational Consult"
+                onerror="this.style.display='none'"
+            >
+
+            <div class="brand-text">
+
+                <div class="brand-title">
+                    FLEXI EDUCATIONAL CONSULT
+                </div>
+
+                <div class="brand-subtitle">
+                    JAMB • CBT • Educational Resources
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <nav
+            class="desktop-nav"
+            aria-label="Main navigation"
+        >
+
+            <a href="index.php">
+                Home
+            </a>
+
+            <a href="study.php">
+                Study
+            </a>
+
+            <a href="news.php">
+                News
+            </a>
+
+        </nav>
+
+
+        <button
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            type="button"
+            aria-label="Open menu"
         >
 
             <svg
                 class="svg-icon"
                 viewBox="0 0 24 24"
-                aria-hidden="true"
             >
-                <path d="M19 12H5"></path>
-                <path d="M12 19l-7-7 7-7"></path>
+                <path d="M4 6h16"></path>
+                <path d="M4 12h16"></path>
+                <path d="M4 18h16"></path>
             </svg>
 
-        </a>
+        </button>
 
     </div>
 
+</header>
 
-    <!-- ======================================================
-         INTRO
-         ====================================================== -->
 
-    <section class="intro">
+<!-- =========================================================
+     MAIN PAGE
+     ========================================================= -->
 
-        <h1>
+<main class="page">
+
+
+    <section class="page-intro">
+
+        <a
+            href="index.php"
+            class="back-link"
+        >
+
+            <svg
+                class="svg-icon"
+                viewBox="0 0 24 24"
+            >
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+            </svg>
+
+            Back to Home
+
+        </a>
+
+
+        <h1 class="page-title">
             Study Past Questions
         </h1>
 
-        <p>
-            Practice JAMB past questions from the
-            Flexi JAMB CBT Practice App question bank.
-            Select a subject and examination year to begin.
+        <p class="page-description">
+            Select a subject and examination year to practise
+            questions from the Flexi JAMB CBT question bank.
         </p>
 
     </section>
 
 
-    <!-- ======================================================
-         SELECTION
-         ====================================================== -->
 
-    <section class="selection-card">
+    <!-- =====================================================
+         SELECTION PANEL
+         ===================================================== -->
 
-        <div class="selection-title">
+    <section class="study-panel">
 
-            <div class="selection-title-icon">
+        <div class="panel-heading">
+
+            <div class="panel-heading-icon">
 
                 <svg
                     class="svg-icon"
                     viewBox="0 0 24 24"
-                    aria-hidden="true"
                 >
-                    <rect
-                        x="3"
-                        y="4"
-                        width="18"
-                        height="16"
-                        rx="2"
-                    ></rect>
-
-                    <path d="M7 8h10"></path>
-                    <path d="M7 12h6"></path>
-                    <path d="M7 16h4"></path>
+                    <path d="M4 5h16v14H4z"></path>
+                    <path d="M8 9h8"></path>
+                    <path d="M8 13h5"></path>
                 </svg>
 
             </div>
 
             <div>
+
                 <h2>
-                    Choose Your Practice
+                    Past Questions Practice
                 </h2>
+
+                <p>
+                    Choose your subject and year
+                </p>
+
             </div>
 
         </div>
 
 
-        <div class="form-grid">
+        <div class="filter-grid">
 
 
             <!-- SUBJECT -->
@@ -1990,45 +1879,43 @@ body {
                     >
 
                         <option value="">
-                            Select a subject
+                            Select Subject
                         </option>
 
-                        <?php foreach ($subjects as $key => $subject): ?>
+                        <?php foreach ($subjectMap as $key => $subject): ?>
 
                             <option
                                 value="<?= esc($key) ?>"
-                                <?= $selectedSubject === $key ? 'selected' : '' ?>
                             >
-                                <?= esc($subject['name']) ?>
+                                <?= esc($subject['label']) ?>
                             </option>
 
                         <?php endforeach; ?>
 
                     </select>
 
-                    <div class="select-arrow">
 
-                        <svg
-                            class="svg-icon"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-                            <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-
-                    </div>
+                    <svg
+                        class="svg-icon"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
 
                 </div>
 
             </div>
 
 
-            <!-- EXAM TYPE -->
+
+            <!-- EXAMINATION -->
 
             <div class="form-group">
 
                 <label for="examType">
-                    Examination
+
+                    Examination Type
+
                 </label>
 
                 <div class="select-wrap">
@@ -2044,21 +1931,17 @@ body {
 
                     </select>
 
-                    <div class="select-arrow">
-
-                        <svg
-                            class="svg-icon"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-                            <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-
-                    </div>
+                    <svg
+                        class="svg-icon"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
 
                 </div>
 
             </div>
+
 
 
             <!-- YEAR -->
@@ -2066,7 +1949,9 @@ body {
             <div class="form-group">
 
                 <label for="yearSelect">
+
                     Examination Year
+
                 </label>
 
                 <div class="select-wrap">
@@ -2074,51 +1959,26 @@ body {
                     <select
                         id="yearSelect"
                         class="form-control"
-                        <?= empty($availableYears) ? 'disabled' : '' ?>
+                        disabled
                     >
 
-                        <?php if (!empty($availableYears)): ?>
-
-                            <option value="">
-                                Select a year
-                            </option>
-
-                            <?php foreach ($availableYears as $year): ?>
-
-                                <option
-                                    value="<?= esc($year) ?>"
-                                    <?= $selectedYear === $year ? 'selected' : '' ?>
-                                >
-                                    <?= esc($year) ?>
-                                </option>
-
-                            <?php endforeach; ?>
-
-                        <?php else: ?>
-
-                            <option value="">
-                                Select subject first
-                            </option>
-
-                        <?php endif; ?>
+                        <option value="">
+                            Select subject first
+                        </option>
 
                     </select>
 
-                    <div class="select-arrow">
-
-                        <svg
-                            class="svg-icon"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-                            <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-
-                    </div>
+                    <svg
+                        class="svg-icon"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
 
                 </div>
 
             </div>
+
 
 
             <!-- QUESTION TYPE -->
@@ -2126,7 +1986,9 @@ body {
             <div class="form-group">
 
                 <label for="questionType">
+
                     Question Type
+
                 </label>
 
                 <div class="select-wrap">
@@ -2142,17 +2004,12 @@ body {
 
                     </select>
 
-                    <div class="select-arrow">
-
-                        <svg
-                            class="svg-icon"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-                            <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-
-                    </div>
+                    <svg
+                        class="svg-icon"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
 
                 </div>
 
@@ -2162,542 +2019,717 @@ body {
         </div>
 
 
-        <button
-            type="button"
-            class="start-btn"
-            id="startBtn"
-        >
+        <div class="start-area">
 
-            <svg
-                class="svg-icon"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
+            <button
+                type="button"
+                id="startBtn"
+                class="start-btn"
             >
-                <path d="M8 5v14l11-7z"></path>
-            </svg>
 
-            Start Practice
+                <svg
+                    class="svg-icon"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
 
-        </button>
+                Start Practice
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="statusBox"
+            class="status-box"
+        ></div>
 
     </section>
 
 
-    <!-- ======================================================
-         SERVER NOTICE
-         ====================================================== -->
 
-    <?php if (
-        $selectedYear !== '' &&
-        empty($practiceQuestions)
-    ): ?>
-
-        <div class="notice">
-
-            No questions were found for
-            <strong>
-                <?= esc($currentSubjectName) ?>
-            </strong>
-            in
-            <strong>
-                <?= esc($selectedYear) ?>
-            </strong>.
-
-        </div>
-
-    <?php endif; ?>
-
-
-    <!-- ======================================================
-         CBT SHELL
-         ====================================================== -->
+    <!-- =====================================================
+         CBT SIMULATOR
+         ===================================================== -->
 
     <section
-        class="cbt-shell <?= !empty($practiceQuestions) ? 'active' : '' ?>"
-        id="cbtShell"
+        id="simulatorSection"
     >
 
 
-        <!-- CBT HEADER -->
+        <div class="simulator-top">
 
-        <div class="cbt-header">
+            <div class="simulator-top-row">
 
-            <div class="cbt-subject">
+                <div>
 
-                <small>
-                    CURRENT PRACTICE
-                </small>
+                    <div
+                        class="simulator-title"
+                        id="simulatorSubject"
+                    >
+                        JAMB Practice
+                    </div>
 
-                <strong id="cbtSubjectName">
-                    <?= esc($currentSubjectName) ?>
-                </strong>
+                    <div
+                        class="simulator-meta"
+                        id="simulatorMeta"
+                    >
+                        Flexi CBT Past Questions
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="question-counter"
+                    id="questionCounter"
+                >
+                    Question 1 of 1
+                </div>
 
             </div>
 
 
-            <div class="progress-area">
+            <div class="progress-track">
 
-                <div class="progress-text">
-
-                    <span id="progressQuestion">
-                        Question 1
-                    </span>
-
-                    <span id="progressPercent">
-                        0%
-                    </span>
-
-                </div>
-
-                <div class="progress-bar">
-
-                    <div
-                        class="progress-fill"
-                        id="progressFill"
-                    ></div>
-
-                </div>
+                <div
+                    class="progress-bar"
+                    id="progressBar"
+                ></div>
 
             </div>
 
         </div>
 
 
-        <!-- CBT GRID -->
 
-        <div class="cbt-grid">
+        <div class="question-card">
 
-
-            <!-- QUESTION -->
-
-            <div>
-
-                <div
-                    class="question-card"
-                    id="questionCard"
-                >
-
-                    <div class="question-meta">
-
-                        <div
-                            class="question-number"
-                            id="questionNumber"
-                        >
-                            Question 1
-                        </div>
-
-                        <div
-                            class="year-badge"
-                            id="yearBadge"
-                        >
-                            <?= esc($selectedYear) ?>
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        class="question-text"
-                        id="questionText"
-                    >
-                    </div>
-
-
-                    <div
-                        class="options-list"
-                        id="optionsContainer"
-                    >
-                    </div>
-
-
-                    <div class="question-navigation">
-
-                        <button
-                            type="button"
-                            class="nav-btn secondary"
-                            id="previousBtn"
-                        >
-
-                            <svg
-                                class="svg-icon"
-                                viewBox="0 0 24 24"
-                                aria-hidden="true"
-                            >
-                                <path d="M15 18l-6-6 6-6"></path>
-                            </svg>
-
-                            Previous
-
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="nav-btn"
-                            id="nextBtn"
-                        >
-
-                            Next
-
-                            <svg
-                                class="svg-icon"
-                                viewBox="0 0 24 24"
-                                aria-hidden="true"
-                            >
-                                <path d="M9 18l6-6-6-6"></path>
-                            </svg>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- RESULT -->
-
-                <div
-                    class="result-card"
-                    id="resultCard"
-                >
-
-                    <div class="result-icon">
-
-                        <svg
-                            class="svg-icon"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-                            <path d="M5 12l4 4L19 6"></path>
-                        </svg>
-
-                    </div>
-
-                    <h2>
-                        Practice Complete
-                    </h2>
-
-                    <div
-                        class="result-score"
-                        id="resultScore"
-                    >
-                        0%
-                    </div>
-
-                    <p id="resultSummary">
-                        You have completed this practice.
-                    </p>
-
-                    <button
-                        type="button"
-                        class="restart-btn"
-                        id="restartBtn"
-                    >
-                        Practice Again
-                    </button>
-
-                </div>
-
+            <div
+                class="question-label"
+                id="questionLabel"
+            >
+                QUESTION 1
             </div>
 
 
-            <!-- QUESTION PALETTE -->
+            <div
+                class="question-text"
+                id="questionText"
+            >
+                Loading question...
+            </div>
 
-            <aside class="palette-card">
 
-                <h3>
-                    Questions
-                </h3>
+            <div
+                class="options"
+                id="optionsContainer"
+            ></div>
 
-                <p class="palette-info">
-                    Green indicates questions you have answered.
-                    Blue indicates the current question.
-                </p>
 
-                <div
-                    class="palette"
-                    id="questionPalette"
-                >
-                </div>
-
-            </aside>
-
+            <div
+                class="answer-info"
+                id="answerInfo"
+            ></div>
 
         </div>
+
+
+
+        <div class="simulator-controls">
+
+            <button
+                type="button"
+                class="control-btn"
+                id="previousBtn"
+            >
+
+                <svg
+                    class="svg-icon"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M15 18l-6-6 6-6"></path>
+                </svg>
+
+                Previous
+
+            </button>
+
+
+            <button
+                type="button"
+                class="control-btn"
+                id="calculatorBtn"
+            >
+
+                <svg
+                    class="svg-icon"
+                    viewBox="0 0 24 24"
+                >
+                    <rect
+                        x="4"
+                        y="3"
+                        width="16"
+                        height="18"
+                        rx="2"
+                    ></rect>
+
+                    <path d="M8 7h8"></path>
+                    <path d="M8 11h2"></path>
+                    <path d="M14 11h2"></path>
+                    <path d="M8 15h2"></path>
+                    <path d="M14 15h2"></path>
+                </svg>
+
+                Calculator
+
+            </button>
+
+
+            <button
+                type="button"
+                class="control-btn primary"
+                id="nextBtn"
+            >
+
+                Next
+
+                <svg
+                    class="svg-icon"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="m9 18 6-6-6-6"></path>
+                </svg>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- RESULT -->
+
+        <div
+            class="result-card"
+            id="resultCard"
+        >
+
+            <div
+                class="result-score"
+                id="resultScore"
+            >
+                0%
+            </div>
+
+            <div class="result-title">
+                Practice Completed
+            </div>
+
+            <div
+                class="result-detail"
+                id="resultDetail"
+            >
+                0 correct out of 0
+            </div>
+
+            <div
+                style="margin-top:17px;"
+            >
+
+                <button
+                    type="button"
+                    class="start-btn"
+                    id="restartBtn"
+                >
+
+                    <svg
+                        class="svg-icon"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M20 11a8.1 8.1 0 0 0-15.5-2"></path>
+                        <path d="M4 5v4h4"></path>
+                        <path d="M4 13a8.1 8.1 0 0 0 15.5 2"></path>
+                        <path d="M20 19v-4h-4"></path>
+                    </svg>
+
+                    Practise Again
+
+                </button>
+
+            </div>
+
+        </div>
+
 
     </section>
 
 
-</div>
+
+    <!-- =====================================================
+         FLEXI APP ADVERTISEMENT
+         ===================================================== -->
+
+    <section class="app-promotion">
+
+        <a
+            href="#"
+            id="appPromotionLink"
+            aria-label="Download Flexi App"
+        >
+
+            <img
+                src="assets/flexi-app.png"
+                alt="Download the Flexi JAMB CBT App"
+                loading="lazy"
+                onerror="
+                    this.closest('.app-promotion').style.display='none';
+                "
+            >
+
+        </a>
+
+    </section>
 
 
-<!-- ==========================================================
+</main>
+
+
+
+<!-- =========================================================
      CALCULATOR
-     ========================================================== -->
+     ========================================================= -->
 
 <div
-    class="calc-overlay"
     id="calculatorOverlay"
+    aria-hidden="true"
 >
 
-    <div class="calc-card">
+    <div class="calculator">
+
+        <div class="calculator-header">
+
+            <strong>
+                Flexi Calculator
+            </strong>
+
+            <button
+                type="button"
+                class="calc-close"
+                id="calculatorClose"
+                aria-label="Close calculator"
+            >
+
+                <svg
+                    class="svg-icon"
+                    viewBox="0 0 24 24"
+                    style="width:17px;height:17px;"
+                >
+                    <path d="M6 6l12 12"></path>
+                    <path d="M18 6 6 18"></path>
+                </svg>
+
+            </button>
+
+        </div>
+
 
         <div
             class="calc-display"
-            id="calculatorDisplay"
+            id="calcDisplay"
         >
             0
         </div>
 
+
         <div class="calc-grid">
 
-            <button data-calc="AC">
+            <button
+                class="calc-key clear"
+                data-calc="AC"
+            >
                 AC
             </button>
 
-            <button data-calc="DEL">
+            <button
+                class="calc-key"
+                data-calc="DEL"
+            >
                 DEL
             </button>
 
-            <button data-calc="(">
-                (
-            </button>
-
             <button
-                data-calc=")"
-                class="operator"
-            >
-                )
-            </button>
-
-
-            <button data-calc="7">
-                7
-            </button>
-
-            <button data-calc="8">
-                8
-            </button>
-
-            <button data-calc="9">
-                9
-            </button>
-
-            <button
+                class="calc-key operator"
                 data-calc="/"
-                class="operator"
             >
                 ÷
             </button>
 
-
-            <button data-calc="4">
-                4
-            </button>
-
-            <button data-calc="5">
-                5
-            </button>
-
-            <button data-calc="6">
-                6
-            </button>
-
             <button
+                class="calc-key operator"
                 data-calc="*"
-                class="operator"
             >
                 ×
             </button>
 
 
-            <button data-calc="1">
-                1
-            </button>
-
-            <button data-calc="2">
-                2
-            </button>
-
-            <button data-calc="3">
-                3
+            <button
+                class="calc-key"
+                data-calc="7"
+            >
+                7
             </button>
 
             <button
+                class="calc-key"
+                data-calc="8"
+            >
+                8
+            </button>
+
+            <button
+                class="calc-key"
+                data-calc="9"
+            >
+                9
+            </button>
+
+            <button
+                class="calc-key operator"
                 data-calc="-"
-                class="operator"
             >
                 −
             </button>
 
 
-            <button data-calc="0">
-                0
-            </button>
-
-            <button data-calc=".">
-                .
-            </button>
-
-            <button data-calc="=">
-                =
+            <button
+                class="calc-key"
+                data-calc="4"
+            >
+                4
             </button>
 
             <button
+                class="calc-key"
+                data-calc="5"
+            >
+                5
+            </button>
+
+            <button
+                class="calc-key"
+                data-calc="6"
+            >
+                6
+            </button>
+
+            <button
+                class="calc-key operator"
                 data-calc="+"
-                class="operator"
             >
                 +
             </button>
 
+
+            <button
+                class="calc-key"
+                data-calc="1"
+            >
+                1
+            </button>
+
+            <button
+                class="calc-key"
+                data-calc="2"
+            >
+                2
+            </button>
+
+            <button
+                class="calc-key"
+                data-calc="3"
+            >
+                3
+            </button>
+
+            <button
+                class="calc-key equal"
+                data-calc="="
+                style="grid-row: span 2;"
+            >
+                =
+            </button>
+
+
+            <button
+                class="calc-key"
+                data-calc="0"
+            >
+                0
+            </button>
+
+            <button
+                class="calc-key"
+                data-calc="."
+            >
+                .
+            </button>
+
         </div>
-
-
-        <button
-            type="button"
-            class="calc-close"
-            id="calculatorClose"
-        >
-            CLOSE CALCULATOR
-        </button>
 
     </div>
 
 </div>
 
 
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="flexi-footer">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-brand">
+                FLEXI EDUCATIONAL CONSULT
+            </div>
+
+            <div class="footer-copy">
+                JAMB preparation, CBT practice and educational resources.
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.php">
+                Home
+            </a>
+
+            <a href="study.php">
+                Study
+            </a>
+
+            <a href="news.php">
+                News
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
 <script>
 
-// ============================================================
-// SERVER DATA
-// ============================================================
+    /* =========================================================
+       CONFIGURATION
+       ========================================================= */
 
-const SUBJECTS =
-    <?= json_encode(
-        $subjects,
-        JSON_UNESCAPED_UNICODE |
-        JSON_UNESCAPED_SLASHES
-    ) ?>;
-
-const SERVER_QUESTIONS =
-    <?= $questionsJson ?>;
-
-const SELECTED_SUBJECT =
-    <?= json_encode($selectedSubject) ?>;
-
-const SELECTED_YEAR =
-    <?= json_encode($selectedYear) ?>;
+    const SUBJECT_MAP =
+        <?= json_encode(
+            $subjectMapForJs,
+            JSON_UNESCAPED_SLASHES |
+            JSON_UNESCAPED_UNICODE
+        ) ?>;
 
 
-// ============================================================
-// ELEMENTS
-// ============================================================
-
-const subjectSelect =
-    document.getElementById('subjectSelect');
-
-const yearSelect =
-    document.getElementById('yearSelect');
-
-const startBtn =
-    document.getElementById('startBtn');
-
-const cbtShell =
-    document.getElementById('cbtShell');
-
-const questionNumber =
-    document.getElementById('questionNumber');
-
-const yearBadge =
-    document.getElementById('yearBadge');
-
-const questionText =
-    document.getElementById('questionText');
-
-const optionsContainer =
-    document.getElementById('optionsContainer');
-
-const previousBtn =
-    document.getElementById('previousBtn');
-
-const nextBtn =
-    document.getElementById('nextBtn');
-
-const questionPalette =
-    document.getElementById('questionPalette');
-
-const progressQuestion =
-    document.getElementById('progressQuestion');
-
-const progressPercent =
-    document.getElementById('progressPercent');
-
-const progressFill =
-    document.getElementById('progressFill');
-
-const resultCard =
-    document.getElementById('resultCard');
-
-const resultScore =
-    document.getElementById('resultScore');
-
-const resultSummary =
-    document.getElementById('resultSummary');
-
-const restartBtn =
-    document.getElementById('restartBtn');
+    const RAW_BASE_URL =
+        <?= json_encode($rawBaseUrl) ?>;
 
 
-// ============================================================
-// LOAD YEARS FROM GITHUB REPOSITORY
-// ============================================================
+    const REPOSITORY_URL =
+        <?= json_encode($repoUrl) ?>;
 
-async function loadSubjectYears(subjectKey)
-{
-    if (!subjectKey) {
 
-        yearSelect.innerHTML =
-            '<option value="">Select subject first</option>';
+    /* =========================================================
+       STATE
+       ========================================================= */
 
-        yearSelect.disabled =
-            true;
+    let currentQuestions = [];
 
-        return;
+    let currentIndex = 0;
+
+    let selectedAnswers = {};
+
+    let completedAnswers = {};
+
+    let activeSubject = '';
+
+    let activeYear = '';
+
+    let calculationValue = '';
+
+
+    /* =========================================================
+       ELEMENTS
+       ========================================================= */
+
+    const subjectSelect =
+        document.getElementById(
+            'subjectSelect'
+        );
+
+    const yearSelect =
+        document.getElementById(
+            'yearSelect'
+        );
+
+    const startBtn =
+        document.getElementById(
+            'startBtn'
+        );
+
+    const statusBox =
+        document.getElementById(
+            'statusBox'
+        );
+
+    const simulatorSection =
+        document.getElementById(
+            'simulatorSection'
+        );
+
+    const simulatorSubject =
+        document.getElementById(
+            'simulatorSubject'
+        );
+
+    const simulatorMeta =
+        document.getElementById(
+            'simulatorMeta'
+        );
+
+    const questionCounter =
+        document.getElementById(
+            'questionCounter'
+        );
+
+    const progressBar =
+        document.getElementById(
+            'progressBar'
+        );
+
+    const questionLabel =
+        document.getElementById(
+            'questionLabel'
+        );
+
+    const questionText =
+        document.getElementById(
+            'questionText'
+        );
+
+    const optionsContainer =
+        document.getElementById(
+            'optionsContainer'
+        );
+
+    const answerInfo =
+        document.getElementById(
+            'answerInfo'
+        );
+
+    const previousBtn =
+        document.getElementById(
+            'previousBtn'
+        );
+
+    const nextBtn =
+        document.getElementById(
+            'nextBtn'
+        );
+
+    const resultCard =
+        document.getElementById(
+            'resultCard'
+        );
+
+    const resultScore =
+        document.getElementById(
+            'resultScore'
+        );
+
+    const resultDetail =
+        document.getElementById(
+            'resultDetail'
+        );
+
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
+    function setStatus(
+        message,
+        type = 'loading'
+    ) {
+
+        statusBox.textContent =
+            message;
+
+        statusBox.className =
+            'status-box show status-' +
+            type;
     }
 
 
-    const subject =
-        SUBJECTS[subjectKey];
+    function clearStatus() {
 
-    if (!subject) {
-        return;
+        statusBox.textContent = '';
+
+        statusBox.className =
+            'status-box';
     }
 
 
-    yearSelect.disabled =
-        true;
+    /* =========================================================
+       FETCH ACTUAL FLEXI QUESTION BANK
+       ========================================================= */
 
-    yearSelect.innerHTML =
-        '<option value="">Loading years...</option>';
+    async function fetchQuestionBank(
+        subjectKey
+    ) {
 
+        const subject =
+            SUBJECT_MAP[subjectKey];
 
-    try {
+        if (!subject) {
+
+            throw new Error(
+                'The selected subject is not available.'
+            );
+        }
+
 
         const url =
-            'https://raw.githubusercontent.com/' +
-            'flexisystems2000/Flexi-JAMB-CBT-App-/main/question_bank/' +
-            encodeURIComponent(subject.file);
+            RAW_BASE_URL +
+            encodeURIComponent(
+                subject.file
+            );
 
 
         const response =
-            await fetch(url, {
-                cache: 'no-store'
-            });
+            await fetch(
+                url,
+                {
+                    cache: 'no-store'
+                }
+            );
 
 
         if (!response.ok) {
+
             throw new Error(
-                'Unable to load question bank.'
+                'The Flexi CBT question bank could not be loaded. HTTP ' +
+                response.status
             );
         }
 
@@ -2706,1291 +2738,1703 @@ async function loadSubjectYears(subjectKey)
             await response.json();
 
 
-        const questions =
-            Array.isArray(data)
-                ? data
-                : (
-                    data.questions ||
-                    data.data ||
-                    data.items ||
-                    []
-                );
+        /*
+         * The repository currently stores the question bank
+         * as an array. The extra checks make this tolerant of
+         * a future object wrapper without changing the source.
+         */
 
+        if (Array.isArray(data)) {
 
-        const years =
-            [...new Set(
-                questions
-                    .map(q => String(q.year || '').trim())
-                    .filter(Boolean)
-            )]
-            .sort(
-                (a, b) =>
-                    Number(b) - Number(a)
-            );
+            return data;
 
-
-        yearSelect.innerHTML =
-            '<option value="">Select a year</option>';
-
-
-        years.forEach(year => {
-
-            const option =
-                document.createElement('option');
-
-            option.value =
-                year;
-
-            option.textContent =
-                year;
-
-            yearSelect.appendChild(
-                option
-            );
-
-        });
-
-
-        yearSelect.disabled =
-            years.length === 0;
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        yearSelect.innerHTML =
-            '<option value="">Unable to load years</option>';
-
-        yearSelect.disabled =
-            true;
-    }
-}
-
-
-// ============================================================
-// SUBJECT CHANGE
-// ============================================================
-
-subjectSelect.addEventListener(
-    'change',
-    function ()
-    {
-        const subject =
-            this.value;
-
-        const params =
-            new URLSearchParams();
-
-        if (subject) {
-            params.set(
-                'subject',
-                subject
-            );
         }
 
-        window.history.replaceState(
-            {},
-            '',
-            'study.php' +
-            (
-                params.toString()
-                    ? '?' + params.toString()
-                    : ''
-            )
+
+        if (
+            data &&
+            Array.isArray(data.questions)
+        ) {
+
+            return data.questions;
+
+        }
+
+
+        if (
+            data &&
+            Array.isArray(data.data)
+        ) {
+
+            return data.data;
+
+        }
+
+
+        if (
+            data &&
+            Array.isArray(data.items)
+        ) {
+
+            return data.items;
+
+        }
+
+
+        throw new Error(
+            'The selected question bank has an unsupported format.'
         );
-
-
-        loadSubjectYears(subject);
     }
-);
 
 
-// ============================================================
-// START PRACTICE
-// ============================================================
+    /* =========================================================
+       NORMALISE QUESTION
+       ========================================================= */
 
-startBtn.addEventListener(
-    'click',
-    function ()
-    {
-        const subject =
-            subjectSelect.value;
+    function normaliseQuestion(
+        item
+    ) {
+
+        const question =
+            String(
+                item?.question ??
+                item?.text ??
+                ''
+            ).trim();
+
+
+        let options =
+            item?.options;
+
+
+        if (!Array.isArray(options)) {
+
+            options = [];
+
+        }
+
+
+        options =
+            options.map(
+                option =>
+                    String(option)
+            );
+
+
+        let answer =
+            item?.answer ??
+            item?.correctAnswer ??
+            item?.correct ??
+            '';
+
+
+        answer =
+            String(answer)
+                .trim()
+                .toUpperCase();
+
 
         const year =
-            yearSelect.value;
+            String(
+                item?.year ??
+                ''
+            ).trim();
 
 
-        if (!subject) {
-
-            alert(
-                'Please select a subject.'
-            );
-
-            return;
-        }
-
-
-        if (!year) {
-
-            alert(
-                'Please select an examination year.'
-            );
-
-            return;
-        }
-
-
-        window.location.href =
-            'study.php?subject=' +
-            encodeURIComponent(subject) +
-            '&year=' +
-            encodeURIComponent(year);
+        return {
+            question,
+            options,
+            answer,
+            year,
+            raw: item
+        };
     }
-);
 
 
-// ============================================================
-// CBT STATE
-// ============================================================
+    /* =========================================================
+       EXTRACT YEARS
+       ========================================================= */
 
-let questions =
-    Array.isArray(SERVER_QUESTIONS)
-        ? SERVER_QUESTIONS
-        : [];
-
-let currentIndex =
-    0;
-
-let userAnswers =
-    {};
-
-let score =
-    0;
-
-let answeredQuestions =
-    new Set();
-
-
-// ============================================================
-// SHUFFLE
-// Mirrors the Flexi CBT practice logic.
-// ============================================================
-
-function shuffleArray(array)
-{
-    const copy =
-        [...array];
-
-    for (
-        let i = copy.length - 1;
-        i > 0;
-        i--
+    function getAvailableYears(
+        questions
     ) {
 
-        const j =
-            Math.floor(
-                Math.random() *
-                (i + 1)
-            );
+        const years =
+            new Set();
 
-        [
-            copy[i],
-            copy[j]
-        ] =
-        [
-            copy[j],
-            copy[i]
-        ];
-    }
 
-    return copy;
-}
+        questions.forEach(
+            item => {
 
+                const question =
+                    normaliseQuestion(
+                        item
+                    );
 
-// Randomize questions only once
-if (questions.length > 1) {
-
-    questions =
-        shuffleArray(
-            questions
-        );
-}
-
-
-// ============================================================
-// MATH FORMATTING
-// ============================================================
-
-function escapeHtml(text)
-{
-    const div =
-        document.createElement('div');
-
-    div.textContent =
-        String(text ?? '');
-
-    return div.innerHTML;
-}
-
-
-function formatMathText(text)
-{
-    if (!text) {
-        return '';
-    }
-
-
-    let value =
-        String(text);
-
-
-    // Existing MathJax syntax should remain untouched.
-    if (
-        /\\\(|\\\[|\$\$/.test(value)
-    ) {
-
-        return escapeHtml(
-            value
-        )
-        .replace(
-            /&amp;/g,
-            '&'
-        );
-
-    }
-
-
-    value =
-        escapeHtml(
-            value
-        );
-
-
-    value =
-        value.replace(
-            /√(\d+)/g,
-            '\\\\sqrt{$1}'
-        );
-
-
-    value =
-        value.replace(
-            /√([A-Za-z])/g,
-            '\\\\sqrt{$1}'
-        );
-
-
-    value =
-        value.replace(
-            /π/g,
-            '\\\\pi'
-        );
-
-
-    value =
-        value.replace(
-            /θ/g,
-            '\\\\theta'
-        );
-
-
-    value =
-        value.replace(
-            /α/g,
-            '\\\\alpha'
-        );
-
-
-    value =
-        value.replace(
-            /β/g,
-            '\\\\beta'
-        );
-
-
-    value =
-        value.replace(
-            /γ/g,
-            '\\\\gamma'
-        );
-
-
-    value =
-        value.replace(
-            /Δ/g,
-            '\\\\Delta'
-        );
-
-
-    value =
-        value.replace(
-            /∞/g,
-            '\\\\infty'
-        );
-
-
-    value =
-        value.replace(
-            /≤/g,
-            '\\\\leq'
-        );
-
-
-    value =
-        value.replace(
-            /≥/g,
-            '\\\\geq'
-        );
-
-
-    value =
-        value.replace(
-            /×/g,
-            '\\\\times'
-        );
-
-
-    value =
-        value.replace(
-            /÷/g,
-            '\\\\div'
-        );
-
-
-    return value;
-}
-
-
-// ============================================================
-// TYPESCRIPT / MATHJAX-LIKE RENDERING
-// ============================================================
-
-function typesetMath()
-{
-    if (
-        window.MathJax &&
-        typeof window.MathJax.typesetPromise ===
-        'function'
-    ) {
-
-        window.MathJax
-            .typesetPromise([
-                questionText,
-                optionsContainer
-            ])
-            .catch(
-                error =>
-                    console.warn(
-                        'Math rendering:',
-                        error
-                    )
-            );
-    }
-}
-
-
-// ============================================================
-// RENDER QUESTION
-// ============================================================
-
-function renderQuestion()
-{
-    if (
-        !questions.length
-    ) {
-        return;
-    }
-
-
-    const question =
-        questions[currentIndex];
-
-
-    const total =
-        questions.length;
-
-
-    questionNumber.textContent =
-        'Question ' +
-        (currentIndex + 1) +
-        ' of ' +
-        total;
-
-
-    yearBadge.textContent =
-        question.year ||
-        SELECTED_YEAR ||
-        'JAMB';
-
-
-    questionText.innerHTML =
-        formatMathText(
-            question.question
-        );
-
-
-    optionsContainer.innerHTML =
-        '';
-
-
-    const options =
-        Array.isArray(question.options)
-            ? question.options
-            : [];
-
-
-    options.forEach(
-        (option, index) =>
-        {
-
-            const button =
-                document.createElement(
-                    'button'
-                );
-
-            button.type =
-                'button';
-
-            button.className =
-                'option-btn';
-
-
-            const letter =
-                String.fromCharCode(
-                    65 + index
-                );
-
-
-            const letterBox =
-                document.createElement(
-                    'span'
-                );
-
-            letterBox.className =
-                'option-letter';
-
-            letterBox.textContent =
-                letter;
-
-
-            const content =
-                document.createElement(
-                    'span'
-                );
-
-            content.className =
-                'option-content';
-
-            content.innerHTML =
-                formatMathText(
-                    option
-                );
-
-
-            button.appendChild(
-                letterBox
-            );
-
-            button.appendChild(
-                content
-            );
-
-
-            const saved =
-                userAnswers[currentIndex];
-
-
-            if (
-                saved &&
-                saved.index === index
-            ) {
-
-                button.classList.add(
-                    'selected'
-                );
 
                 if (
-                    saved.correct
+                    question.year &&
+                    /^\d{4}$/.test(
+                        question.year
+                    )
+                ) {
+
+                    years.add(
+                        question.year
+                    );
+
+                }
+
+            }
+        );
+
+
+        return Array.from(
+            years
+        ).sort(
+            (a, b) =>
+                Number(b) -
+                Number(a)
+        );
+    }
+
+
+    /* =========================================================
+       SUBJECT CHANGED
+       ========================================================= */
+
+    subjectSelect.addEventListener(
+        'change',
+        async function () {
+
+            const subjectKey =
+                this.value;
+
+
+            yearSelect.innerHTML =
+                '<option value="">Loading years...</option>';
+
+            yearSelect.disabled =
+                true;
+
+
+            clearStatus();
+
+
+            if (!subjectKey) {
+
+                yearSelect.innerHTML =
+                    '<option value="">Select subject first</option>';
+
+                return;
+            }
+
+
+            try {
+
+                setStatus(
+                    'Loading the available years from the Flexi JAMB CBT question bank...',
+                    'loading'
+                );
+
+
+                const questions =
+                    await fetchQuestionBank(
+                        subjectKey
+                    );
+
+
+                const years =
+                    getAvailableYears(
+                        questions
+                    );
+
+
+                yearSelect.innerHTML =
+                    '';
+
+
+                const allOption =
+                    document.createElement(
+                        'option'
+                    );
+
+                allOption.value =
+                    'ALL';
+
+                allOption.textContent =
+                    'All Available Years';
+
+                yearSelect.appendChild(
+                    allOption
+                );
+
+
+                years.forEach(
+                    year => {
+
+                        const option =
+                            document.createElement(
+                                'option'
+                            );
+
+                        option.value =
+                            year;
+
+                        option.textContent =
+                            year;
+
+                        yearSelect.appendChild(
+                            option
+                        );
+
+                    }
+                );
+
+
+                yearSelect.disabled =
+                    false;
+
+
+                setStatus(
+                    years.length +
+                    ' year' +
+                    (years.length === 1 ? '' : 's') +
+                    ' available for ' +
+                    SUBJECT_MAP[subjectKey].label +
+                    '.',
+                    'success'
+                );
+
+            }
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                yearSelect.innerHTML =
+                    '<option value="">Unable to load years</option>';
+
+                yearSelect.disabled =
+                    true;
+
+
+                setStatus(
+                    error.message,
+                    'error'
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       START PRACTICE
+       ========================================================= */
+
+    startBtn.addEventListener(
+        'click',
+        async function () {
+
+            const subjectKey =
+                subjectSelect.value;
+
+
+            const selectedYear =
+                yearSelect.value;
+
+
+            if (!subjectKey) {
+
+                setStatus(
+                    'Please select a subject first.',
+                    'error'
+                );
+
+                return;
+            }
+
+
+            if (!selectedYear) {
+
+                setStatus(
+                    'Please select an examination year.',
+                    'error'
+                );
+
+                return;
+            }
+
+
+            try {
+
+                startBtn.disabled =
+                    true;
+
+                startBtn.innerHTML =
+                    'Loading Questions...';
+
+
+                setStatus(
+                    'Fetching the selected questions from the Flexi JAMB CBT App repository...',
+                    'loading'
+                );
+
+
+                const rawQuestions =
+                    await fetchQuestionBank(
+                        subjectKey
+                    );
+
+
+                let questions =
+                    rawQuestions.map(
+                        normaliseQuestion
+                    ).filter(
+                        item =>
+                            item.question &&
+                            item.options.length > 0
+                    );
+
+
+                if (
+                    selectedYear !== 'ALL'
+                ) {
+
+                    questions =
+                        questions.filter(
+                            item =>
+                                item.year ===
+                                selectedYear
+                        );
+
+                }
+
+
+                if (
+                    questions.length === 0
+                ) {
+
+                    throw new Error(
+                        'No questions were found for the selected subject and year.'
+                    );
+
+                }
+
+
+                /*
+                 * Preserve the repository questions.
+                 * We only shuffle the order presented in the
+                 * simulator; the source data is not changed.
+                 */
+
+                questions =
+                    shuffleArray(
+                        questions
+                    );
+
+
+                currentQuestions =
+                    questions;
+
+                currentIndex = 0;
+
+                selectedAnswers = {};
+
+                completedAnswers = {};
+
+                activeSubject =
+                    subjectKey;
+
+                activeYear =
+                    selectedYear;
+
+
+                simulatorSubject.textContent =
+                    SUBJECT_MAP[
+                        subjectKey
+                    ].label;
+
+
+                simulatorMeta.textContent =
+                    selectedYear === 'ALL'
+                        ? 'All available years • Flexi CBT Past Questions'
+                        : selectedYear +
+                          ' JAMB • Flexi CBT Past Questions';
+
+
+                simulatorSection.classList.add(
+                    'active'
+                );
+
+
+                resultCard.classList.remove(
+                    'active'
+                );
+
+
+                renderQuestion();
+
+
+                clearStatus();
+
+
+                setTimeout(
+                    () => {
+
+                        simulatorSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+
+                    },
+                    80
+                );
+
+            }
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                setStatus(
+                    error.message ||
+                    'Unable to load the questions.',
+                    'error'
+                );
+
+            }
+            finally {
+
+                startBtn.disabled =
+                    false;
+
+                startBtn.innerHTML = `
+                    <svg
+                        class="svg-icon"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M8 5v14l11-7z"></path>
+                    </svg>
+                    Start Practice
+                `;
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       SHUFFLE
+       ========================================================= */
+
+    function shuffleArray(
+        array
+    ) {
+
+        const copy =
+            [...array];
+
+
+        for (
+            let i =
+                copy.length - 1;
+            i > 0;
+            i--
+        ) {
+
+            const j =
+                Math.floor(
+                    Math.random() *
+                    (i + 1)
+                );
+
+
+            [
+                copy[i],
+                copy[j]
+            ] =
+            [
+                copy[j],
+                copy[i]
+            ];
+
+        }
+
+
+        return copy;
+    }
+
+
+    /* =========================================================
+       FORMAT MATHEMATICS
+       ========================================================= */
+
+    function formatMathText(
+        value
+    ) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return '';
+
+        }
+
+
+        let text =
+            String(value);
+
+
+        /*
+         * If the repository already contains
+         * MathJax delimiters, preserve them.
+         */
+
+        if (
+            text.includes('\\(') ||
+            text.includes('\\[') ||
+            text.includes('$$')
+        ) {
+
+            return text;
+
+        }
+
+
+        /*
+         * HTML escape before adding MathJax.
+         */
+
+        text =
+            text
+                .replace(
+                    /&/g,
+                    '&amp;'
+                )
+                .replace(
+                    /</g,
+                    '&lt;'
+                )
+                .replace(
+                    />/g,
+                    '&gt;'
+                );
+
+
+        /*
+         * Common mathematical symbols.
+         */
+
+        text =
+            text
+                .replace(
+                    /π/g,
+                    '\\pi'
+                )
+                .replace(
+                    /θ/g,
+                    '\\theta'
+                )
+                .replace(
+                    /α/g,
+                    '\\alpha'
+                )
+                .replace(
+                    /β/g,
+                    '\\beta'
+                )
+                .replace(
+                    /γ/g,
+                    '\\gamma'
+                )
+                .replace(
+                    /δ/g,
+                    '\\delta'
+                )
+                .replace(
+                    /Δ/g,
+                    '\\Delta'
+                )
+                .replace(
+                    /∞/g,
+                    '\\infty'
+                )
+                .replace(
+                    /≤/g,
+                    '\\leq'
+                )
+                .replace(
+                    /≥/g,
+                    '\\geq'
+                )
+                .replace(
+                    /±/g,
+                    '\\pm'
+                )
+                .replace(
+                    /×/g,
+                    '\\times'
+                )
+                .replace(
+                    /÷/g,
+                    '\\div'
+                );
+
+
+        /*
+         * Square root notation.
+         */
+
+        text =
+            text.replace(
+                /√\(([^)]+)\)/g,
+                '\\sqrt{$1}'
+            );
+
+
+        text =
+            text.replace(
+                /√([A-Za-z0-9]+)/g,
+                '\\sqrt{$1}'
+            );
+
+
+        /*
+         * Superscripts such as x^2.
+         */
+
+        text =
+            text.replace(
+                /([A-Za-z0-9)])\^(-?\d+)/g,
+                '$1^{$2}'
+            );
+
+
+        /*
+         * Render obvious mathematical fragments.
+         */
+
+        const mathPattern =
+            /(?:\\(?:sqrt|pi|theta|alpha|beta|gamma|delta|Delta|infty|leq|geq|pm|times|div)|[A-Za-z]+\^\{[^}]+\}|[A-Za-z0-9]+\^\{[^}]+\}|\\sqrt\{[^}]+\})/g;
+
+
+        text =
+            text.replace(
+                mathPattern,
+                match => {
+
+                    if (
+                        match.startsWith('\\(') ||
+                        match.startsWith('\\[')
+                    ) {
+
+                        return match;
+
+                    }
+
+                    return '\\(' +
+                        match +
+                        '\\)';
+
+                }
+            );
+
+
+        return text;
+    }
+
+
+    /* =========================================================
+       RENDER QUESTION
+       ========================================================= */
+
+    function renderQuestion() {
+
+        if (
+            !currentQuestions.length
+        ) {
+
+            return;
+        }
+
+
+        const question =
+            currentQuestions[
+                currentIndex
+            ];
+
+
+        const total =
+            currentQuestions.length;
+
+
+        const number =
+            currentIndex + 1;
+
+
+        questionLabel.textContent =
+            'QUESTION ' +
+            number;
+
+
+        questionCounter.textContent =
+            'Question ' +
+            number +
+            ' of ' +
+            total;
+
+
+        progressBar.style.width =
+            (
+                number /
+                total *
+                100
+            ) +
+            '%';
+
+
+        questionText.innerHTML =
+            formatMathText(
+                question.question
+            );
+
+
+        optionsContainer.innerHTML =
+            '';
+
+
+        answerInfo.classList.remove(
+            'visible'
+        );
+
+        answerInfo.innerHTML =
+            '';
+
+
+        const options =
+            question.options;
+
+
+        options.forEach(
+            (
+                option,
+                optionIndex
+            ) => {
+
+                const button =
+                    document.createElement(
+                        'button'
+                    );
+
+
+                button.type =
+                    'button';
+
+                button.className =
+                    'option-btn';
+
+
+                const letter =
+                    String.fromCharCode(
+                        65 +
+                        optionIndex
+                    );
+
+
+                const letterDiv =
+                    document.createElement(
+                        'span'
+                    );
+
+                letterDiv.className =
+                    'option-letter';
+
+                letterDiv.textContent =
+                    letter;
+
+
+                const content =
+                    document.createElement(
+                        'span'
+                    );
+
+                content.className =
+                    'option-content';
+
+                content.innerHTML =
+                    formatMathText(
+                        option
+                    );
+
+
+                button.appendChild(
+                    letterDiv
+                );
+
+                button.appendChild(
+                    content
+                );
+
+
+                const stored =
+                    selectedAnswers[
+                        currentIndex
+                    ];
+
+
+                if (
+                    stored === letter
                 ) {
 
                     button.classList.add(
-                        'correct'
+                        'selected'
                     );
 
-                } else {
-
-                    button.classList.add(
-                        'wrong'
-                    );
                 }
+
+
+                if (
+                    completedAnswers[
+                        currentIndex
+                    ]
+                ) {
+
+                    applyAnswerState(
+                        button,
+                        letter,
+                        question.answer
+                    );
+
+                }
+
+
+                button.addEventListener(
+                    'click',
+                    () => {
+
+                        selectAnswer(
+                            letter
+                        );
+
+                    }
+                );
+
+
+                optionsContainer.appendChild(
+                    button
+                );
+
             }
+        );
 
 
-            button.addEventListener(
-                'click',
-                function ()
-                {
-                    selectAnswer(
-                        index,
-                        option
-                    );
-                }
-            );
+        previousBtn.disabled =
+            currentIndex === 0;
 
 
-            optionsContainer.appendChild(
-                button
-            );
+        if (
+            currentIndex ===
+            currentQuestions.length - 1
+        ) {
+
+            nextBtn.innerHTML = `
+                Finish
+                <svg
+                    class="svg-icon"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="m5 12 5 5L19 7"></path>
+                </svg>
+            `;
 
         }
-    );
+        else {
+
+            nextBtn.innerHTML = `
+                Next
+                <svg
+                    class="svg-icon"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="m9 18 6-6-6-6"></path>
+                </svg>
+            `;
+
+        }
 
 
-    previousBtn.disabled =
-        currentIndex === 0;
+        typesetMath();
+
+    }
 
 
-    nextBtn.textContent =
-        currentIndex ===
-        total - 1
-            ? 'Finish'
-            : 'Next';
+    /* =========================================================
+       SELECT ANSWER
+       ========================================================= */
 
-
-    const percentage =
-        Math.round(
-            (
-                (currentIndex + 1) /
-                total
-            ) * 100
-        );
-
-
-    progressQuestion.textContent =
-        'Question ' +
-        (currentIndex + 1) +
-        ' of ' +
-        total;
-
-
-    progressPercent.textContent =
-        percentage +
-        '%';
-
-
-    progressFill.style.width =
-        percentage +
-        '%';
-
-
-    renderPalette();
-
-
-    typesetMath();
-}
-
-
-// ============================================================
-// SELECT ANSWER
-// ============================================================
-
-function selectAnswer(
-    optionIndex,
-    optionText
-)
-{
-
-    const question =
-        questions[currentIndex];
-
-
-    const correctAnswer =
-        String(
-            question.answer ||
-            ''
-        )
-        .trim()
-        .toUpperCase();
-
-
-    const selectedLetter =
-        String.fromCharCode(
-            65 + optionIndex
-        );
-
-
-    const isCorrect =
-        selectedLetter ===
-        correctAnswer;
-
-
-    // Do not allow the question
-    // to add points repeatedly.
-
-    const previous =
-        userAnswers[currentIndex];
-
-
-    if (
-        !previous &&
-        isCorrect
+    function selectAnswer(
+        selectedLetter
     ) {
 
-        score++;
-    }
-
-
-    userAnswers[currentIndex] = {
-
-        index:
-            optionIndex,
-
-        answer:
-            optionText,
-
-        correct:
-            isCorrect
-    };
-
-
-    answeredQuestions.add(
-        currentIndex
-    );
-
-
-    renderQuestion();
-}
-
-
-// ============================================================
-// QUESTION PALETTE
-// ============================================================
-
-function renderPalette()
-{
-    questionPalette.innerHTML =
-        '';
-
-
-    questions.forEach(
-        function (_, index)
-        {
-
-            const button =
-                document.createElement(
-                    'button'
-                );
-
-
-            button.type =
-                'button';
-
-
-            button.className =
-                'palette-btn';
-
-
-            button.textContent =
-                index + 1;
-
-
-            if (
-                index ===
+        const question =
+            currentQuestions[
                 currentIndex
-            ) {
+            ];
 
-                button.classList.add(
-                    'current'
-                );
-            }
-
-
-            if (
-                userAnswers[index]
-            ) {
-
-                button.classList.add(
-                    'answered'
-                );
-            }
-
-
-            button.addEventListener(
-                'click',
-                function ()
-                {
-                    currentIndex =
-                        index;
-
-                    resultCard.classList.remove(
-                        'active'
-                    );
-
-                    renderQuestion();
-                }
-            );
-
-
-            questionPalette.appendChild(
-                button
-            );
-
-        }
-    );
-}
-
-
-// ============================================================
-// PREVIOUS
-// ============================================================
-
-previousBtn.addEventListener(
-    'click',
-    function ()
-    {
 
         if (
-            currentIndex > 0
+            completedAnswers[
+                currentIndex
+            ]
         ) {
-
-            currentIndex--;
-
-            renderQuestion();
-        }
-
-    }
-);
-
-
-// ============================================================
-// NEXT
-// ============================================================
-
-nextBtn.addEventListener(
-    'click',
-    function ()
-    {
-
-        if (
-            currentIndex <
-            questions.length - 1
-        ) {
-
-            currentIndex++;
-
-            renderQuestion();
 
             return;
+
         }
 
 
-        finishPractice();
+        selectedAnswers[
+            currentIndex
+        ] =
+            selectedLetter;
+
+
+        completedAnswers[
+            currentIndex
+        ] =
+            true;
+
+
+        const buttons =
+            optionsContainer.querySelectorAll(
+                '.option-btn'
+            );
+
+
+        buttons.forEach(
+            button => {
+
+                const letter =
+                    button
+                        .querySelector(
+                            '.option-letter'
+                        )
+                        .textContent;
+
+
+                applyAnswerState(
+                    button,
+                    letter,
+                    question.answer,
+                    selectedLetter
+                );
+
+            }
+        );
+
+
+        const isCorrect =
+            normaliseAnswer(
+                selectedLetter
+            ) ===
+            normaliseAnswer(
+                question.answer
+            );
+
+
+        answerInfo.classList.add(
+            'visible'
+        );
+
+
+        if (isCorrect) {
+
+            answerInfo.innerHTML =
+                '<strong>Correct.</strong> Your answer matches the answer recorded in the Flexi CBT question bank.';
+
+        }
+        else {
+
+            answerInfo.innerHTML =
+                '<strong>Correct answer:</strong> ' +
+                esc(
+                    question.answer
+                );
+
+        }
+
+
+        typesetMath();
 
     }
-);
 
 
-// ============================================================
-// FINISH PRACTICE
-// ============================================================
+    /* =========================================================
+       NORMALISE ANSWER
+       ========================================================= */
 
-function finishPractice()
-{
-    const total =
-        questions.length;
+    function normaliseAnswer(
+        answer
+    ) {
 
-
-    const percentage =
-        total
-            ? Math.round(
-                (score / total) *
-                100
+        return String(
+            answer || ''
+        )
+            .trim()
+            .toUpperCase()
+            .replace(
+                /[\.\)\s]+$/g,
+                ''
             )
-            : 0;
+            .charAt(0);
+    }
 
 
-    resultScore.textContent =
-        percentage +
-        '%';
+    /* =========================================================
+       ANSWER STATE
+       ========================================================= */
+
+    function applyAnswerState(
+        button,
+        letter,
+        correctAnswer,
+        selectedLetter = null
+    ) {
+
+        const correct =
+            normaliseAnswer(
+                correctAnswer
+            );
 
 
-    resultSummary.textContent =
-        'You scored ' +
-        score +
-        ' out of ' +
-        total +
-        ' questions.';
+        const selected =
+            selectedLetter ||
+            selectedAnswers[
+                currentIndex
+            ];
 
 
-    resultCard.classList.add(
-        'active'
+        if (
+            letter === correct
+        ) {
+
+            button.classList.add(
+                'correct'
+            );
+
+
+            const badge =
+                document.createElement(
+                    'span'
+                );
+
+            badge.className =
+                'answer-badge correct';
+
+            badge.textContent =
+                'Correct';
+
+            button.appendChild(
+                badge
+            );
+
+        }
+
+
+        if (
+            selected &&
+            letter ===
+            normaliseAnswer(
+                selected
+            ) &&
+            selected !==
+            correctAnswer
+        ) {
+
+            button.classList.add(
+                'wrong'
+            );
+
+
+            const badge =
+                document.createElement(
+                    'span'
+                );
+
+            badge.className =
+                'answer-badge wrong';
+
+            badge.textContent =
+                'Your answer';
+
+            button.appendChild(
+                badge
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       NEXT
+       ========================================================= */
+
+    nextBtn.addEventListener(
+        'click',
+        function () {
+
+            if (
+                currentIndex <
+                currentQuestions.length - 1
+            ) {
+
+                currentIndex++;
+
+                renderQuestion();
+
+                return;
+            }
+
+
+            finishPractice();
+
+        }
     );
 
 
-    resultCard.scrollIntoView({
-        behavior:
-            'smooth',
-        block:
-            'center'
-    });
-}
+    /* =========================================================
+       PREVIOUS
+       ========================================================= */
+
+    previousBtn.addEventListener(
+        'click',
+        function () {
+
+            if (
+                currentIndex > 0
+            ) {
+
+                currentIndex--;
+
+                renderQuestion();
+
+            }
+
+        }
+    );
 
 
-// ============================================================
-// RESTART
-// ============================================================
+    /* =========================================================
+       FINISH
+       ========================================================= */
 
-restartBtn.addEventListener(
-    'click',
-    function ()
-    {
+    function finishPractice() {
 
-        userAnswers =
-            {};
-
-        answeredQuestions =
-            new Set();
-
-        score =
+        let answered =
             0;
 
-        currentIndex =
+        let correct =
             0;
 
 
-        resultCard.classList.remove(
+        currentQuestions.forEach(
+            (
+                question,
+                index
+            ) => {
+
+                const selected =
+                    selectedAnswers[
+                        index
+                    ];
+
+
+                if (
+                    selected
+                ) {
+
+                    answered++;
+
+
+                    if (
+                        normaliseAnswer(
+                            selected
+                        ) ===
+                        normaliseAnswer(
+                            question.answer
+                        )
+                    ) {
+
+                        correct++;
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        const total =
+            currentQuestions.length;
+
+
+        const percentage =
+            total
+                ? Math.round(
+                    correct /
+                    total *
+                    100
+                )
+                : 0;
+
+
+        resultScore.textContent =
+            percentage +
+            '%';
+
+
+        resultDetail.textContent =
+            correct +
+            ' correct out of ' +
+            total +
+            ' questions • ' +
+            answered +
+            ' answered';
+
+
+        resultCard.classList.add(
             'active'
         );
 
 
-        if (
-            questions.length > 1
-        ) {
-
-            questions =
-                shuffleArray(
-                    questions
-                );
-        }
-
-
-        renderQuestion();
+        resultCard.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
 
     }
-);
 
 
-// ============================================================
-// CALCULATOR
-// ============================================================
+    /* =========================================================
+       RESTART
+       ========================================================= */
 
-const calculatorOverlay =
-    document.getElementById(
-        'calculatorOverlay'
-    );
+    document
+        .getElementById(
+            'restartBtn'
+        )
+        .addEventListener(
+            'click',
+            function () {
 
-const calculatorDisplay =
-    document.getElementById(
-        'calculatorDisplay'
-    );
+                if (
+                    activeSubject
+                ) {
 
-const calculatorClose =
-    document.getElementById(
-        'calculatorClose'
-    );
-
-
-let calculatorValue =
-    '';
-
-
-function updateCalculator()
-{
-    calculatorDisplay.textContent =
-        calculatorValue ||
-        '0';
-}
-
-
-document
-    .querySelectorAll(
-        '[data-calc]'
-    )
-    .forEach(
-        button =>
-        {
-
-            button.addEventListener(
-                'click',
-                function ()
-                {
-
-                    const value =
-                        this.dataset.calc;
-
-
-                    if (
-                        value ===
-                        'AC'
-                    ) {
-
-                        calculatorValue =
-                            '';
-
-                        updateCalculator();
-
-                        return;
-                    }
-
-
-                    if (
-                        value ===
-                        'DEL'
-                    ) {
-
-                        calculatorValue =
-                            calculatorValue.slice(
-                                0,
-                                -1
-                            );
-
-                        updateCalculator();
-
-                        return;
-                    }
-
-
-                    if (
-                        value ===
-                        '='
-                    ) {
-
-                        calculateResult();
-
-                        return;
-                    }
-
-
-                    calculatorValue +=
-                        value;
-
-                    updateCalculator();
+                    startBtn.click();
 
                 }
-            );
 
-        }
-    );
-
-
-function calculateResult()
-{
-    try {
-
-        // Restrict calculator
-        // evaluation to mathematical
-        // characters only.
-
-        if (
-            !/^[0-9+\-*/().\s]+$/.test(
-                calculatorValue
-            )
-        ) {
-
-            calculatorValue =
-                'Error';
-
-            updateCalculator();
-
-            return;
-        }
-
-
-        const result =
-            Function(
-                '"use strict"; return (' +
-                calculatorValue +
-                ')'
-            )();
-
-
-        if (
-            Number.isFinite(result)
-        ) {
-
-            calculatorValue =
-                String(result);
-
-        } else {
-
-            calculatorValue =
-                'Error';
-        }
-
-    } catch (error) {
-
-        calculatorValue =
-            'Error';
-
-    }
-
-
-    updateCalculator();
-}
-
-
-// ============================================================
-// OPEN CALCULATOR
-// Only useful for Mathematics,
-// but available inside CBT mode.
-// ============================================================
-
-function addCalculatorButton()
-{
-    if (
-        document.getElementById(
-            'calculatorOpen'
-        )
-    ) {
-        return;
-    }
-
-
-    const button =
-        document.createElement(
-            'button'
+            }
         );
 
 
-    button.type =
-        'button';
+    /* =========================================================
+       MATHJAX TYPESSETTING
+       ========================================================= */
 
-    button.id =
-        'calculatorOpen';
+    function typesetMath() {
 
-    button.title =
-        'Calculator';
+        if (
+            window.MathJax &&
+            typeof
+                window.MathJax.typesetPromise ===
+                'function'
+        ) {
 
-    button.style.cssText = `
-        position:fixed;
-        right:20px;
-        bottom:20px;
-        width:52px;
-        height:52px;
-        border:none;
-        border-radius:50%;
-        background:#0757a0;
-        color:#fff;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        box-shadow:0 8px 25px rgba(0,0,0,.2);
-        z-index:500;
-    `;
-
-
-    button.innerHTML = `
-        <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
-            <rect
-                x="4"
-                y="2"
-                width="16"
-                height="20"
-                rx="2"
-            ></rect>
-
-            <line
-                x1="8"
-                y1="6"
-                x2="16"
-                y2="6"
-            ></line>
-
-            <line
-                x1="8"
-                y1="10"
-                x2="8"
-                y2="10"
-            ></line>
-
-            <line
-                x1="12"
-                y1="10"
-                x2="12"
-                y2="10"
-            ></line>
-
-            <line
-                x1="16"
-                y1="10"
-                x2="16"
-                y2="10"
-            ></line>
-
-            <line
-                x1="8"
-                y1="14"
-                x2="8"
-                y2="14"
-            ></line>
-
-            <line
-                x1="12"
-                y1="14"
-                x2="12"
-                y2="14"
-            ></line>
-
-            <line
-                x1="16"
-                y1="14"
-                x2="16"
-                y2="14"
-            ></line>
-        </svg>
-    `;
-
-
-    button.addEventListener(
-        'click',
-        function ()
-        {
-            calculatorOverlay.classList.add(
-                'active'
+            window.MathJax.typesetPromise(
+                [
+                    questionText,
+                    optionsContainer,
+                    answerInfo
+                ]
+            ).catch(
+                error =>
+                    console.warn(
+                        'MathJax typesetting:',
+                        error
+                    )
             );
+
         }
-    );
+
+    }
 
 
-    document.body.appendChild(
-        button
-    );
-}
+    /* =========================================================
+       CALCULATOR
+       ========================================================= */
+
+    const calculatorOverlay =
+        document.getElementById(
+            'calculatorOverlay'
+        );
+
+    const calculatorBtn =
+        document.getElementById(
+            'calculatorBtn'
+        );
+
+    const calculatorClose =
+        document.getElementById(
+            'calculatorClose'
+        );
+
+    const calcDisplay =
+        document.getElementById(
+            'calcDisplay'
+        );
 
 
-calculatorClose.addEventListener(
-    'click',
-    function ()
-    {
+    function openCalculator() {
+
+        calculatorOverlay.classList.add(
+            'active'
+        );
+
+        calculatorOverlay.setAttribute(
+            'aria-hidden',
+            'false'
+        );
+
+    }
+
+
+    function closeCalculator() {
+
         calculatorOverlay.classList.remove(
             'active'
         );
-    }
-);
 
-
-calculatorOverlay.addEventListener(
-    'click',
-    function (event)
-    {
-
-        if (
-            event.target ===
-            calculatorOverlay
-        ) {
-
-            calculatorOverlay.classList.remove(
-                'active'
-            );
-        }
+        calculatorOverlay.setAttribute(
+            'aria-hidden',
+            'true'
+        );
 
     }
-);
 
 
-// ============================================================
-// INITIALIZATION
-// ============================================================
-
-document.addEventListener(
-    'DOMContentLoaded',
-    function ()
-    {
-
-        if (
-            SELECTED_SUBJECT &&
-            !SELECTED_YEAR
-        ) {
-
-            loadSubjectYears(
-                SELECTED_SUBJECT
-            );
-        }
+    calculatorBtn.addEventListener(
+        'click',
+        openCalculator
+    );
 
 
-        if (
-            questions.length
-        ) {
+    calculatorClose.addEventListener(
+        'click',
+        closeCalculator
+    );
 
-            renderQuestion();
 
-            addCalculatorButton();
+    calculatorOverlay.addEventListener(
+        'click',
+        function (event) {
 
-            cbtShell.scrollIntoView({
-                behavior:
-                    'smooth',
-                block:
-                    'start'
-            });
+            if (
+                event.target ===
+                calculatorOverlay
+            ) {
+
+                closeCalculator();
+
+            }
 
         }
+    );
+
+
+    document
+        .querySelectorAll(
+            '[data-calc]'
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    'click',
+                    function () {
+
+                        const value =
+                            this.dataset.calc;
+
+
+                        if (
+                            value ===
+                            'AC'
+                        ) {
+
+                            calculationValue =
+                                '';
+
+                        }
+                        else if (
+                            value ===
+                            'DEL'
+                        ) {
+
+                            calculationValue =
+                                calculationValue.slice(
+                                    0,
+                                    -1
+                                );
+
+                        }
+                        else if (
+                            value ===
+                            '='
+                        ) {
+
+                            calculateResult();
+
+                            return;
+
+                        }
+                        else {
+
+                            calculationValue +=
+                                value;
+
+                        }
+
+
+                        updateCalculatorDisplay();
+
+                    }
+                );
+
+            }
+        );
+
+
+    function updateCalculatorDisplay() {
+
+        calcDisplay.textContent =
+            calculationValue ||
+            '0';
 
     }
-);
+
+
+    function calculateResult() {
+
+        if (
+            !calculationValue
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * Calculator is intentionally restricted
+         * to simple arithmetic characters.
+         */
+
+        if (
+            !/^[0-9+\-*/().\s]+$/.test(
+                calculationValue
+            )
+        ) {
+
+            calculationValue =
+                '';
+
+            updateCalculatorDisplay();
+
+            return;
+
+        }
+
+
+        try {
+
+            const result =
+                Function(
+                    '"use strict"; return (' +
+                    calculationValue +
+                    ')'
+                )();
+
+
+            if (
+                Number.isFinite(
+                    result
+                )
+            ) {
+
+                calculationValue =
+                    String(result);
+
+            }
+            else {
+
+                calculationValue =
+                    '';
+
+            }
+
+        }
+        catch {
+
+            calculationValue =
+                '';
+
+        }
+
+
+        updateCalculatorDisplay();
+
+    }
+
+
+    /* =========================================================
+       MOBILE MENU
+       ========================================================= */
+
+    document
+        .getElementById(
+            'mobileMenuBtn'
+        )
+        .addEventListener(
+            'click',
+            function () {
+
+                /*
+                 * The main website's menu can remain in control
+                 * of the full navigation. This page deliberately
+                 * does not replace the existing menu system.
+                 */
+
+                window.location.href =
+                    'index.php';
+
+            }
+        );
+
+
+    /* =========================================================
+       APP PROMOTION
+       ========================================================= */
+
+    document
+        .getElementById(
+            'appPromotionLink'
+        )
+        .addEventListener(
+            'click',
+            function (event) {
+
+                /*
+                 * Keep the card as an image-loaded advertisement.
+                 * If the site's existing app URL is supplied later,
+                 * only this href needs to be changed.
+                 */
+
+                const appUrl =
+                    'https://github.com/flexisystems2000/Flexi-JAMB-CBT-App-';
+
+                if (
+                    appUrl &&
+                    appUrl !== '#'
+                ) {
+
+                    event.preventDefault();
+
+                    window.open(
+                        appUrl,
+                        '_blank',
+                        'noopener,noreferrer'
+                    );
+
+                }
+
+            }
+        );
+
+
+    /* =========================================================
+       KEYBOARD SHORTCUTS
+       ========================================================= */
+
+    document.addEventListener(
+        'keydown',
+        function (event) {
+
+            if (
+                simulatorSection.classList.contains(
+                    'active'
+                )
+            ) {
+
+                if (
+                    event.key ===
+                    'ArrowRight'
+                ) {
+
+                    nextBtn.click();
+
+                }
+
+
+                if (
+                    event.key ===
+                    'ArrowLeft'
+                ) {
+
+                    previousBtn.click();
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       ESCAPE CALCULATOR
+       ========================================================= */
+
+    document.addEventListener(
+        'keydown',
+        function (event) {
+
+            if (
+                event.key ===
+                'Escape'
+            ) {
+
+                closeCalculator();
+
+            }
+
+        }
+    );
 
 </script>
-
-
-<!-- ==========================================================
-     OPTIONAL MATHJAX
-     Loaded only when needed by questions.
-     ========================================================== -->
-
-<script>
-window.MathJax = {
-    tex: {
-        inlineMath: [
-            ['\\(', '\\)']
-        ],
-        displayMath: [
-            ['\\[', '\\]']
-        ],
-        processEscapes: true
-    },
-
-    options: {
-        skipHtmlTags: [
-            'script',
-            'noscript',
-            'style',
-            'textarea',
-            'pre',
-            'code'
-        ]
-    },
-
-    svg: {
-        fontCache:
-            'global'
-    }
-};
-</script>
-
-<script
-    async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-></script>
 
 </body>
 </html>
