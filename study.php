@@ -231,11 +231,24 @@ foreach ($subjectMap as $key => $item) {
         };
     </script>
 
+    <!-- MathJax engine: use the same engine as the Flexi JAMB CBT App.
+         A CDN fallback is provided in case the repository copy is unavailable. -->
     <script
         id="MathJax-script"
         async
-        src="./tex-mml-chtml.js"
+        src="https://raw.githubusercontent.com/flexisystems2000/Flexi-JAMB-CBT-App-/main/tex-mml-chtml.js"
+        onerror="loadMathJaxFallback()"
     ></script>
+    <script>
+        function loadMathJaxFallback() {
+            if (window.__mathJaxFallbackLoaded) return;
+            window.__mathJaxFallbackLoaded = true;
+            var fallback = document.createElement('script');
+            fallback.async = true;
+            fallback.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+            document.head.appendChild(fallback);
+        }
+    </script>
 
 
     <style>
@@ -4483,7 +4496,7 @@ document.addEventListener('click', (e) => {
        MATHJAX TYPESSETTING
        ========================================================= */
 
-    function typesetMath() {
+    function typesetMath(retryCount = 0) {
 
         const nodes = [
             questionText,
@@ -4491,33 +4504,43 @@ document.addEventListener('click', (e) => {
             answerInfo
         ].filter(Boolean);
 
+        if (!nodes.length) return;
+
+        // MathJax is loaded asynchronously. Wait for the actual engine
+        // before trying to typeset the newly-rendered question.
         if (
             window.MathJax &&
             typeof window.MathJax.typesetPromise ===
                 'function'
         ) {
 
-            if (typeof window.MathJax.typesetClear === 'function') {
-                window.MathJax.typesetClear(nodes);
+            try {
+                if (typeof window.MathJax.typesetClear === 'function') {
+                    window.MathJax.typesetClear(nodes);
+                }
+
+                window.MathJax.typesetPromise(nodes).catch(error => {
+                    console.warn('MathJax typesetting:', error);
+                });
+            } catch (error) {
+                console.warn('MathJax typesetting:', error);
             }
 
-            window.MathJax.typesetPromise(nodes).catch(
-                error =>
-                    console.warn(
-                        'MathJax typesetting:',
-                        error
-                    )
-            );
+            return;
+        }
 
-        } else if (window.MathJax && window.MathJax.startup) {
-
-            window.MathJax.startup.promise.then(() => {
-                window.MathJax.typesetPromise(nodes).catch(() => {});
-            });
-
+        // If the engine has not finished loading yet, retry briefly.
+        if (retryCount < 60) {
+            setTimeout(() => typesetMath(retryCount + 1), 150);
         }
 
     }
+
+    // Also typeset after the page has completely loaded, covering the case
+    // where MathJax finishes after the first question was rendered.
+    window.addEventListener('load', () => {
+        typesetMath();
+    });
 
 
     /* =========================================================
