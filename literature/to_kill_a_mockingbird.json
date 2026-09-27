@@ -1,0 +1,563 @@
+{
+  "play_info": {
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "category": "African Literature text for SSCE",
+    "summary": {
+      "overview": "To Kill a Mockingbird is a coming-of-age novel by Harper Lee, published in 1960. Set in the fictional town of Maycomb, Alabama, during the Great Depression, it is narrated by Jean Louise 'Scout' Finch as she looks back on important events from her childhood. Through Scout's experiences, the novel examines racism, social injustice, class prejudice, moral courage, empathy, childhood innocence and the loss of innocence. The story is particularly concerned with the unjust trial of Tom Robinson, a Black man falsely accused of assaulting Mayella Ewell. It also follows the children's changing understanding of their mysterious neighbour, Arthur 'Boo' Radley. The title comes from Atticus Finch's lesson that it is a sin to harm innocent people who do no wrong.",
+      "plot_summary": "Scout Finch lives with her older brother Jem and their widowed father, Atticus Finch, a lawyer in Maycomb. Their cook, Calpurnia, helps raise them, while their friend Dill Harris visits during the summer. The children become fascinated by the Radley family, especially Boo Radley, a reclusive man whom Maycomb has turned into a frightening legend. As the children grow older, they gradually discover that Boo is kind and protective rather than monstrous. The main conflict begins when Atticus is appointed to defend Tom Robinson, a Black man accused of assaulting Mayella Ewell, the daughter of the poor and abusive Bob Ewell. Although the evidence shows that Tom could not have committed the crime and that Mayella was probably attacked by her father, the all-white jury finds Tom guilty because of racial prejudice. Tom is later killed while attempting to escape prison. The trial exposes Maycomb's racism and deeply affects Jem and Scout. Bob Ewell blames Atticus for humiliating him in court and later attacks Jem and Scout on their way home from a school pageant. Boo Radley rescues the children and kills or fatally wounds Bob while defending them. Sheriff Heck Tate decides to report Bob's death as an accident because exposing Boo would subject him to unwanted public attention. Scout finally understands Atticus's lesson about empathy: one cannot truly understand another person until one considers life from that person's point of view."
+    }
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of To Kill a Mockingbird?",
+      "options": [
+        "A) Harper Lee",
+        "B) Toni Morrison",
+        "C) Maya Angelou",
+        "D) Emily Brontë"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 2,
+      "question": "In what year was To Kill a Mockingbird published?",
+      "options": [
+        "A) 1935",
+        "B) 1945",
+        "C) 1960",
+        "D) 1975"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 3,
+      "question": "Where is the novel mainly set?",
+      "options": [
+        "A) Maycomb, Alabama",
+        "B) Atlanta, Georgia",
+        "C) Jackson, Mississippi",
+        "D) Birmingham, England"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 4,
+      "question": "During which historical period does the main action take place?",
+      "options": [
+        "A) The Victorian era",
+        "B) The Great Depression",
+        "C) The First World War",
+        "D) The American Civil War"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 5,
+      "question": "Who narrates the novel?",
+      "options": [
+        "A) Atticus Finch",
+        "B) Jem Finch",
+        "C) Scout Finch",
+        "D) Dill Harris"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 6,
+      "question": "What is Scout Finch's formal name?",
+      "options": [
+        "A) Jean Louise Finch",
+        "B) Caroline Louise Finch",
+        "C) Mary Jean Finch",
+        "D) Louise Alexandra Finch"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 7,
+      "question": "Who is Scout's older brother?",
+      "options": [
+        "A) Walter Cunningham",
+        "B) Jeremy Finch",
+        "C) Francis Hancock",
+        "D) Charles Baker Harris"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 8,
+      "question": "What is Jem's full name?",
+      "options": [
+        "A) Jeremy Atticus Finch",
+        "B) James Edward Finch",
+        "C) John Ernest Finch",
+        "D) Joseph Edgar Finch"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 9,
+      "question": "Who is Atticus Finch?",
+      "options": [
+        "A) A school headmaster",
+        "B) Scout and Jem's widowed father and a lawyer",
+        "C) The sheriff of Maycomb",
+        "D) Tom Robinson's brother"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 10,
+      "question": "What is the name of the Finch children's cook and caregiver?",
+      "options": [
+        "A) Miss Maudie",
+        "B) Calpurnia",
+        "C) Aunt Alexandra",
+        "D) Mayella Ewell"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 11,
+      "question": "Who is Charles Baker Harris, commonly called Dill?",
+      "options": [
+        "A) Scout's summer friend",
+        "B) Atticus's employer",
+        "C) Tom Robinson's lawyer",
+        "D) Bob Ewell's son"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 12,
+      "question": "Why does Dill become fascinated with Boo Radley?",
+      "options": [
+        "A) Boo is a famous politician",
+        "B) Boo is a mysterious recluse surrounded by frightening stories",
+        "C) Boo is Scout's teacher",
+        "D) Boo owns the local courthouse"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 13,
+      "question": "What is Boo Radley's real name?",
+      "options": [
+        "A) Arthur Radley",
+        "B) Robert Radley",
+        "C) Nathan Radley",
+        "D) Arthur Ewell"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 14,
+      "question": "How does the Maycomb community initially view Boo Radley?",
+      "options": [
+        "A) As a respected judge",
+        "B) As a frightening and dangerous outcast",
+        "C) As a successful businessman",
+        "D) As a popular schoolteacher"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 15,
+      "question": "What gradually changes Scout and Jem's opinion of Boo?",
+      "options": [
+        "A) They discover that he secretly helps and protects them",
+        "B) He becomes the town mayor",
+        "C) He gives evidence against Tom Robinson",
+        "D) He moves away from Maycomb"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 16,
+      "question": "Why is Atticus appointed to defend Tom Robinson?",
+      "options": [
+        "A) He volunteers to prosecute him",
+        "B) He is the lawyer assigned to represent Tom",
+        "C) Tom is a member of the Finch family",
+        "D) The sheriff asks him to investigate Bob Ewell"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 17,
+      "question": "What is Tom Robinson accused of doing?",
+      "options": [
+        "A) Stealing from the courthouse",
+        "B) Assaulting Mayella Ewell",
+        "C) Attacking Bob Ewell",
+        "D) Burning the Radley house"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 18,
+      "question": "Who is Mayella Ewell?",
+      "options": [
+        "A) Atticus's sister",
+        "B) The daughter of Bob Ewell and the accuser of Tom Robinson",
+        "C) Scout's teacher",
+        "D) Boo Radley's sister"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 19,
+      "question": "Who is Bob Ewell?",
+      "options": [
+        "A) A respected judge",
+        "B) Mayella's father and a poor, abusive and prejudiced man",
+        "C) Tom Robinson's employer",
+        "D) The town doctor"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 20,
+      "question": "What important fact about Tom Robinson's physical condition is revealed during the trial?",
+      "options": [
+        "A) His right arm is badly disabled",
+        "B) He is blind in both eyes",
+        "C) He cannot walk",
+        "D) He has a broken leg"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 21,
+      "question": "Why is Tom's disabled arm significant to the case?",
+      "options": [
+        "A) It suggests that he could not have inflicted the injuries on Mayella",
+        "B) It proves that he stole money",
+        "C) It shows that he was a soldier",
+        "D) It explains why he left Maycomb"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 22,
+      "question": "What does Mayella's testimony reveal about the Ewell family?",
+      "options": [
+        "A) The family is wealthy and highly educated",
+        "B) The family is poor, neglected and socially isolated",
+        "C) The family is respected throughout Maycomb",
+        "D) The family has close ties with Atticus"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 23,
+      "question": "What does Tom say happened when Mayella asked him to enter the Ewell house?",
+      "options": [
+        "A) She asked him to help with chores, then embraced and kissed him",
+        "B) She attacked him with a knife",
+        "C) She asked him to call the sheriff",
+        "D) She ordered him to leave immediately"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 24,
+      "question": "What does the evidence suggest about Bob Ewell's role in Mayella's injuries?",
+      "options": [
+        "A) He may have beaten her",
+        "B) He rescued her from Tom",
+        "C) He was absent from Maycomb",
+        "D) He testified in Tom's favour"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 25,
+      "question": "Why does the jury find Tom Robinson guilty despite the evidence?",
+      "options": [
+        "A) The evidence clearly proves his guilt",
+        "B) Racial prejudice influences the all-white jury",
+        "C) Atticus refuses to defend him",
+        "D) Tom confesses in court"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 26,
+      "question": "What happens to Tom Robinson after the trial?",
+      "options": [
+        "A) He becomes a lawyer",
+        "B) He escapes to another country",
+        "C) He is killed while attempting to escape prison",
+        "D) He is released by the jury"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 27,
+      "question": "What does Tom Robinson's trial expose about Maycomb?",
+      "options": [
+        "A) The town's commitment to complete equality",
+        "B) The depth of racial injustice and prejudice in the community",
+        "C) The weakness of the school system only",
+        "D) The success of the legal system"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 28,
+      "question": "Why does Atticus accept Tom Robinson's case seriously?",
+      "options": [
+        "A) He wants to become famous",
+        "B) He believes justice requires him to defend an innocent man",
+        "C) He wants to oppose the sheriff",
+        "D) He is paid a large private fee"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 29,
+      "question": "What does Atticus mean by saying that courage is 'not a man with a gun in his hand'?",
+      "options": [
+        "A) Courage involves avoiding all danger",
+        "B) True courage means continuing a difficult moral struggle even when defeat is likely",
+        "C) Courage belongs only to soldiers",
+        "D) Physical strength is more important than morality"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 30,
+      "question": "Who is Mrs. Dubose?",
+      "options": [
+        "A) An elderly and outspoken neighbour of the Finch family",
+        "B) Tom Robinson's mother",
+        "C) Scout's schoolteacher",
+        "D) Bob Ewell's wife"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 31,
+      "question": "Why does Jem have to read to Mrs. Dubose?",
+      "options": [
+        "A) As punishment for destroying her camellias",
+        "B) To help her overcome her morphine addiction",
+        "C) To prepare her for court",
+        "D) To teach her about the Radleys"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 32,
+      "question": "Why does Atticus call Mrs. Dubose the bravest person he ever knew?",
+      "options": [
+        "A) She fights a difficult personal battle and overcomes her addiction before dying",
+        "B) She defeats Bob Ewell in court",
+        "C) She protects Tom Robinson from the mob",
+        "D) She joins the army"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 33,
+      "question": "What lesson does Atticus try to teach Scout when he says, 'You never really understand a person until you consider things from his point of view'?",
+      "options": [
+        "A) The value of empathy",
+        "B) The importance of wealth",
+        "C) The need to win arguments",
+        "D) The dangers of education"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 34,
+      "question": "What does the mockingbird symbolise in the novel?",
+      "options": [
+        "A) Innocence and harmless people who are unjustly harmed",
+        "B) Wealth and political influence",
+        "C) Fear of the natural world",
+        "D) Military power"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 35,
+      "question": "Which two characters are most directly associated with the mockingbird symbol?",
+      "options": [
+        "A) Bob Ewell and Mayella Ewell",
+        "B) Tom Robinson and Boo Radley",
+        "C) Atticus Finch and Aunt Alexandra",
+        "D) Dill Harris and Walter Cunningham"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 36,
+      "question": "Why is it described as a sin to kill a mockingbird?",
+      "options": [
+        "A) Mockingbirds are dangerous animals",
+        "B) They do no harm and only provide beautiful music",
+        "C) They destroy crops",
+        "D) They are symbols of political authority"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 37,
+      "question": "What does the courthouse symbolize during Tom Robinson's trial?",
+      "options": [
+        "A) The struggle between the ideal of justice and the reality of prejudice",
+        "B) The complete absence of law",
+        "C) The wealth of the Ewell family",
+        "D) The children's school life"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 38,
+      "question": "What does Calpurnia's visit to her church with Jem and Scout reveal?",
+      "options": [
+        "A) The existence of a Black community with its own social and religious life",
+        "B) That Calpurnia has abandoned the Finch family",
+        "C) That Atticus opposes all churches",
+        "D) That Maycomb has no racial divisions"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 39,
+      "question": "Who is Aunt Alexandra?",
+      "options": [
+        "A) Atticus's sister who emphasizes family background and social respectability",
+        "B) Tom Robinson's lawyer",
+        "C) Mayella's teacher",
+        "D) Boo Radley's aunt"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 40,
+      "question": "What does Aunt Alexandra's attitude mainly represent?",
+      "options": [
+        "A) Traditional class consciousness and concern with family reputation",
+        "B) Complete rejection of Southern traditions",
+        "C) Support for Tom Robinson's acquittal",
+        "D) Opposition to all forms of education"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 41,
+      "question": "What happens to Jem and Scout after the school pageant?",
+      "options": [
+        "A) They are attacked by Bob Ewell",
+        "B) They are arrested for trespassing",
+        "C) They run away to Dill's home",
+        "D) They discover Tom Robinson is alive"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 42,
+      "question": "Who saves Jem and Scout from Bob Ewell?",
+      "options": [
+        "A) Heck Tate",
+        "B) Atticus Finch",
+        "C) Boo Radley",
+        "D) Walter Cunningham"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 43,
+      "question": "Why does Sheriff Heck Tate decide not to expose Boo Radley publicly?",
+      "options": [
+        "A) He wants to punish Boo secretly",
+        "B) He believes exposing Boo would be like killing a mockingbird",
+        "C) He is afraid of Atticus",
+        "D) He does not know who saved the children"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 44,
+      "question": "What does Scout finally understand about Boo Radley?",
+      "options": [
+        "A) He is a dangerous criminal",
+        "B) He is a compassionate human being whom the town misunderstood",
+        "C) He caused Tom Robinson's conviction",
+        "D) He is related to the Ewells"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 45,
+      "question": "How does Scout's understanding of Boo connect with Atticus's advice?",
+      "options": [
+        "A) She learns to judge him through rumours",
+        "B) She understands his life by seeing events from his point of view",
+        "C) She decides never to speak to him",
+        "D) She believes all strangers are dangerous"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 46,
+      "question": "What kind of narrator is Scout in the novel?",
+      "options": [
+        "A) A third-person omniscient narrator",
+        "B) A first-person narrator who recounts childhood events with adult understanding",
+        "C) An unreliable narrator who knows nothing about the events",
+        "D) A narrator who is never involved in the story"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 47,
+      "question": "What is one important effect of using Scout as the narrator?",
+      "options": [
+        "A) The novel presents social prejudice through a child's developing understanding",
+        "B) The novel avoids all moral questions",
+        "C) The novel becomes a detective story only",
+        "D) The novel presents only Atticus's private thoughts"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 48,
+      "question": "Which statement best describes Jem's development?",
+      "options": [
+        "A) He becomes more aware of injustice and loses some of his childhood innocence",
+        "B) He becomes more prejudiced than Bob Ewell",
+        "C) He stops caring about Scout",
+        "D) He becomes a professional criminal"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 49,
+      "question": "Which major theme is illustrated by Tom Robinson's trial?",
+      "options": [
+        "A) Racial prejudice can corrupt the administration of justice",
+        "B) Wealth always guarantees freedom",
+        "C) Children should never question adults",
+        "D) Violence solves social problems"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 50,
+      "question": "What is the central moral lesson of To Kill a Mockingbird?",
+      "options": [
+        "A) People should judge others according to rumours",
+        "B) Society should practise empathy, oppose injustice and protect the innocent",
+        "C) Social class is more important than character",
+        "D) Personal safety is more valuable than moral courage"
+      ],
+      "correct_answer": "B"
+    }
+  ]
+}
