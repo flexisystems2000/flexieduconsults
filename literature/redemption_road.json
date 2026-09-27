@@ -1,0 +1,1127 @@
+{
+  "play_info": {
+    "title": "An Inspector Calls",
+    "author": "J.B. Priestley",
+    "category": "English Drama / Twentieth-Century Literature",
+    "summary": {
+      "overview": "An Inspector Calls is a famous 1945 stage play by English dramatist J.B. Priestley. Set in 1912 in the fictional industrial city of Brumley, it examines the affluent Birling family, whose comfortable celebratory dinner party is abruptly interrupted by the arrival of a mysterious police inspector investigating the suicide of a young working-class woman named Eva Smith.",
+      "plot_summary": "The play opens with Arthur Birling celebrating his daughter Sheila's engagement to Gerald Croft, expressing capitalist views on individualism and business ('community and all that nonsense'). Suddenly, Inspector Goole arrives, announcing that a young woman named Eva Smith (later known as Daisy Renton) has died by suicide after drinking disinfectant. Through a meticulous chain of interrogation, the Inspector reveals how each family member—and Gerald—played a contributory role in her downward spiral: Arthur Birling fired her for demanding higher wages; Sheila had her dismissed from her next job out of jealousy; Gerald kept her as his mistress before discarding her; Eric forced himself upon her and stole money to support her; and Sybil Birling refused her charitable aid when she was pregnant and desperate. As the Inspector departs with a stern warning about social responsibility, Gerald returns with news that no Inspector Goole exists at the local police force and no girl has recently died. While the older Birlings (Arthur and Sybil) and Gerald dismiss the entire ordeal as a hoax and celebrate, the younger generation (Sheila and Eric) remain deeply shaken by their moral guilt. The play concludes with a chilling climax: a real phone call announces that a young woman has just died by suicide, and a real inspector is on his way to interrogate them."
+    }
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of the play 'An Inspector Calls'?",
+      "options": [
+        "A) George Bernard Shaw",
+        "B) J.B. Priestley",
+        "C) Oscar Wilde",
+        "D) Arthur Miller"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 2,
+      "question": "In what year was the play written and first performed?",
+      "options": [
+        "A) 1912",
+        "B) 1939",
+        "C) 1945",
+        "D) 1950"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 3,
+      "question": "In what year is the play's action specifically set?",
+      "options": [
+        "A) 1912",
+        "B) 1914",
+        "C) 1918",
+        "D) 1945"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 4,
+      "question": "What is the name of the fictional industrial city where the play takes place?",
+      "options": [
+        "A) Manchester",
+        "B) Brumley",
+        "C) Liverpool",
+        "D) Birmingham"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 5,
+      "question": "What occasion is the Birling family celebrating at the beginning of the play?",
+      "options": [
+        "A) Arthur Birling's knighthood",
+        "B) Sheila Birling and Gerald Croft's engagement",
+        "C) Eric Birling's birthday",
+        "D) A successful business merger"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 6,
+      "question": "What is the name of the company owned by Arthur Birling?",
+      "options": [
+        "A) Birling & Co.",
+        "B) Croft & Birling Ltd.",
+        "C) Brumley Works",
+        "D) Imperial Steels"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 7,
+      "question": "Which family does Gerald Croft belong to, and why is the alliance important to Arthur Birling?",
+      "options": [
+        "A) The Birlings; it keeps money in the family",
+        "B) Crofts Limited; it is a larger, rival company that could mean a potential business merger",
+        "C) The royal family; it brings political power",
+        "D) The local church; it brings moral respectability"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 8,
+      "question": "What political and economic view does Arthur Birling aggressively champion early in the play?",
+      "options": [
+        "A) Socialism",
+        "B) Radical communism",
+        "C) Capitalistic individualism ('every man for himself')",
+        "D) Absolute monarchy"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 9,
+      "question": "Which historical events does Arthur Birling foolishly mock and dismiss as impossible in his opening dinner speech?",
+      "options": [
+        "A) The sinking of the Titanic and a future world war",
+        "B) The invention of the airplane and telephone",
+        "C) The collapse of the British monarchy",
+        "D) The Russian Revolution"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 10,
+      "question": "What is the name of the inspector who arrives at the Birling household?",
+      "options": [
+        "A) Inspector Poole",
+        "B) Inspector Goole",
+        "C) Inspector Cole",
+        "D) Inspector Sharp"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 11,
+      "question": "What tragic news does the Inspector bring when he first enters?",
+      "options": [
+        "A) A local bank has crashed",
+        "B) A young woman named Eva Smith has committed suicide by drinking disinfectant",
+        "C) A factory fire has destroyed Birling & Co.",
+        "D) World War I has officially broken out"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 12,
+      "question": "Why did Arthur Birling fire Eva Smith from his factory in 1910?",
+      "options": [
+        "A) She stole company money",
+        "B) She led a strike demanding higher wages (twenty-five shillings a week)",
+        "C) She insulted his wife",
+        "D) She was habitually late for work"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 13,
+      "question": "How does Arthur Birling justify firing Eva Smith?",
+      "options": [
+        "A) He claims he had to make an example to keep labor costs down and run a profitable business",
+        "B) He admits he acted out of personal malice",
+        "C) He says she was completely unqualified",
+        "D) He claims she attacked a manager"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 14,
+      "question": "What role did Sheila Birling play in Eva Smith's downfall?",
+      "options": [
+        "A) She fired her from Milwards clothing store out of petty jealousy and bad temper",
+        "B) She stole money and framed Eva",
+        "C) She bullied her at school",
+        "D) She refused to give her food"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 15,
+      "question": "What alias did Eva Smith adopt when she met Gerald Croft?",
+      "options": [
+        "A) Rose Maybud",
+        "B) Daisy Renton",
+        "C) Clara Smith",
+        "D) Martha Jones"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 16,
+      "question": "Where did Gerald Croft meet Daisy Renton, and what did he do for her?",
+      "options": [
+        "A) At a church; he helped her find a job",
+        "B) At the Palace Music Hall bar; he rescued her from Alderman Meggarty's unwanted advances, housed her, and made her his mistress",
+        "C) On a ship to America; he paid for her ticket",
+        "D) In a park; he gave her charity money"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 17,
+      "question": "How does Gerald feel when he breaks off his relationship with Daisy Renton?",
+      "options": [
+        "A) He feels completely indifferent and heartless",
+        "B) He genuinely cared for her and kept her as a cherished friend",
+        "C) He genuinely cared for her as a mistress when it suited him, but discarded her when he had to leave for the summer",
+        "D) He hated her from the start"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 18,
+      "question": "Who is the father of Eva Smith's unborn child?",
+      "options": [
+        "A) Gerald Croft",
+        "B) Arthur Birling",
+        "C) Eric Birling",
+        "D) Inspector Goole"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 19,
+      "question": "How did Eric Birling fund his financial support for Eva Smith when she was pregnant?",
+      "options": [
+        "A) He earned extra money working overtime",
+        "B) He stole fifty pounds from his father's office safe",
+        "C) He won money gambling",
+        "D) He borrowed it from Gerald"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 20,
+      "question": "Why did Eva Smith refuse to accept money from Eric when she discovered it was stolen?",
+      "options": [
+        "A) She was wealthy on her own",
+        "B) She had high moral integrity and knew the money was stolen",
+        "C) She hated Eric",
+        "D) She wanted money from Gerald instead"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 21,
+      "question": "What is Sybil Birling's connection to Eva Smith?",
+      "options": [
+        "A) Sybil was her former schoolteacher",
+        "B) As head of the Brumley Women's Charity Organization, Sybil cruelly turned down Eva's application for financial aid",
+        "C) Sybil hired her as a personal maid",
+        "D) Sybil is secretly her biological aunt"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 22,
+      "question": "Why does Sybil Birling reject Eva Smith's appeal for charity?",
+      "options": [
+        "A) The committee had run out of funds completely",
+        "B) Eva used the name 'Mrs. Birling,' which Sybil viewed as impertinent and offensive",
+        "C) Eva refused to answer questions",
+        "D) Sybil knew Eric was the father"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 23,
+      "question": "Whom does Sybil Birling blame entirely for the girl's death just before she realizes Eric is involved?",
+      "options": [
+        "A) Herself",
+        "B) The father of the child, insisting he should be publicly made an example of and forced to confess",
+        "C) Arthur Birling",
+        "D) The Inspector"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 24,
+      "question": "How does Sheila's reaction to the Inspector's investigation differ from her parents' reaction?",
+      "options": [
+        "A) She remains cold and unrepentant",
+        "B) She immediately accepts moral responsibility, feels deep remorse, and matures significantly",
+        "C) She faints and forgets everything",
+        "D) She joins her father in attacking the Inspector"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 25,
+      "question": "What generational divide is heavily emphasized throughout the play?",
+      "options": [
+        "A) Between the rich and the poor",
+        "B) Between the older generation (inflexible, unrepentant capitalists) and the younger generation (impressionable, socially conscious)",
+        "C) Between men and women",
+        "D) Between British citizens and foreigners"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 26,
+      "question": "What is symbolic about the name 'Goole'?",
+      "options": [
+        "A) It sounds like 'gold', representing greed",
+        "B) It sounds like 'ghoul', suggesting he is a spirit, ghost, or supernatural judge of conscience",
+        "C) It means 'good citizen'",
+        "D) It is a common Scottish surname"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 27,
+      "question": "What famous socialist warning does Inspector Goole deliver in his final speech?",
+      "options": [
+        "A) 'We are responsible for each other... if men will not learn that lesson, then they will be taught it in fire and blood and anguish.'",
+        "B) 'Capitalism will destroy the world if taxes are raised.'",
+        "C) 'Always look after your own family first.'",
+        "D) 'Government should control every factory in England.'"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 28,
+      "question": "What startling discovery does Gerald Croft make after the Inspector leaves?",
+      "options": [
+        "A) That Eva Smith is still alive",
+        "B) That there is no Inspector Goole registered with the Brumley police force",
+        "C) That Arthur Birling is bankrupt",
+        "D) That Sheila is married"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 29,
+      "question": "What further revelation does a phone call or local check confirm regarding the girl?",
+      "options": [
+        "A) A girl died in the infirmary, but multiple photographs showed different girls, implying it might have been several different women",
+        "B) No girl has committed suicide in Brumley for years",
+        "C) Eva Smith was actually a fictitious person",
+        "D) The police have arrested Eric"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 30,
+      "question": "How do Arthur and Sybil Birling react once they suspect the Inspector was a fake?",
+      "options": [
+        "A) They repent and change their lifestyle",
+        "B) They are immensely relieved, laugh it off, and refuse to accept any moral guilt",
+        "C) They call the police to report Gerald",
+        "D) They leave the country"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 31,
+      "question": "How do Sheila and Eric react to the news that the Inspector might have been a hoax?",
+      "options": [
+        "A) They join their parents in celebrating",
+        "B) They remain deeply troubled, recognizing that whether the inspector was real or fake, their immoral actions still happened",
+        "C) They run away from home",
+        "D) They demand Gerald break off the engagement"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 32,
+      "question": "What shocking final twist occurs at the very end of the play?",
+      "options": [
+        "A) The house catches fire",
+        "B) Arthur Birling receives a phone call stating a real girl has just died by suicide, and a real police inspector is on his way to question them",
+        "C) Inspector Goole returns with handcuffs",
+        "D) Sheila announces she is leaving"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 33,
+      "question": "What dramatic genre best describes 'An Inspector Calls'?",
+      "options": [
+        "A) Slapstick comedy",
+        "B) A well-made play / Morality play / Detective mystery thriller",
+        "C) Science fiction epic",
+        "D) Historical romance"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 34,
+      "question": "What theatrical device does Priestley use to maintain tension and unity of place?",
+      "options": [
+        "A) Multiple revolving stage sets",
+        "B) A single dining room set that remains lit throughout while the surrounding stage is in darkness",
+        "C) Actors entering from the audience seats",
+        "D) Silent film projections"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 35,
+      "question": "What does the lighting change from 'pink and intimate' to 'brighter and harder' signify when the Inspector enters?",
+      "options": [
+        "A) The sun is coming up",
+        "B) The shift from comfortable bourgeois illusion and rose-colored self-deception to harsh truth and exposure",
+        "C) A power outage in Brumley",
+        "D) The transition to a party atmosphere"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 36,
+      "question": "What does Arthur Birling's obsession with respectability and his impending knighthood highlight?",
+      "options": [
+        "A) His deep Christian charity",
+        "B) His shallow social ambition and bourgeois materialism",
+        "C) His military heroism",
+        "D) His dedication to working-class welfare"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 37,
+      "question": "Which character acts as the Inspector's primary foil, aggressively challenging his authority?",
+      "options": [
+        "A) Sheila Birling",
+        "B) Arthur Birling",
+        "C) Eric Birling",
+        "D) Edna"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 38,
+      "question": "What is the name of the Birlings' domestic servant?",
+      "options": [
+        "A) Martha",
+        "B) Edna",
+        "C) Sarah",
+        "D) Clara"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 39,
+      "question": "How does Edna function symbolically in the play?",
+      "options": [
+        "A) As the comic relief",
+        "B) As the silent, marginalized working-class figure serving the wealthy upper class",
+        "C) As a secret detective",
+        "D) As Arthur Birling's secret partner"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 40,
+      "question": "Why is the setting of 1912 significant to a 1945 audience?",
+      "options": [
+        "A) It allowed the audience to laugh at outdated fashion",
+        "B) It was written right after WWII; the 1912 setting allowed Priestley to use dramatic irony to mock Arthur Birling's blind optimism before two world wars and the General Strike",
+        "C) It was the year Queen Victoria died",
+        "D) It represented a golden era of British socialism"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 41,
+      "question": "What does the ring symbolize when Gerald gives it back to Sheila and she returns it?",
+      "options": [
+        "A) Eternal love",
+        "B) The superficiality of upper-class engagements broken by moral truth, though Sheila accepts it back later when Gerald reverts to denial",
+        "C) A family heirloom lost in the war",
+        "D) A bribe"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 42,
+      "question": "What does Eric's heavy drinking reveal about his character and family life?",
+      "options": [
+        "A) He is a professional bartender",
+        "B) Underlying tension, guilt, and the stifling, emotionally repressed nature of the Birling household",
+        "C) His love for French wine",
+        "D) That he is an athletic champion"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 43,
+      "question": "What does Inspector Goole show to each family member individually that no one else sees at the same time?",
+      "options": [
+        "A) A pistol",
+        "B) A photograph of Eva Smith",
+        "C) A suicide note",
+        "D) A stolen watch"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 44,
+      "question": "Why is the mystery of whether it was the *same* girl in everyone's story left ambiguous?",
+      "options": [
+        "A) Because Priestley forgot to write the ending",
+        "B) Because the Inspector emphasizes that collective guilt and collective social responsibility matter more than individual legal identity",
+        "C) Because Eva Smith had an identical twin",
+        "D) Because the actors lost the script"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 45,
+      "question": "How does Arthur Birling view the working class?",
+      "options": [
+        "A) As equal partners in industry",
+        "B) As cheap labor and commodities to be exploited for profit rather than human beings",
+        "C) As future political leaders",
+        "D) With deep affectionate friendship"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 46,
+      "question": "What is the core moral message J.B. Priestley promotes through the play?",
+      "options": [
+        "A) Never trust police inspectors",
+        "B) Society is interconnected; we must look out for one another and share collective responsibility",
+        "C) Capitalism always brings world peace",
+        "D) Parents should never listen to their children"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 47,
+      "question": "How does Sheila's perspective on her father change by the end of the play?",
+      "options": [
+        "A) She admires his business acumen more than ever",
+        "B) She loses respect for his lack of moral conscience and inability to learn from the experience",
+        "C) She decides to take over his company",
+        "D) She agrees to marry someone else"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 48,
+      "question": "What role does class prejudice play in Sybil Birling's treatment of Eva Smith?",
+      "options": [
+        "A) She treats her with excessive maternal sympathy",
+        "B) She assumes working-class women do not have moral feelings, fine sensibilities, or genuine suffering",
+        "C) She invites her to live in their home",
+        "D) She offers her a job as a maid"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 49,
+      "question": "What dramatic function does the cyclical nature of the play's final moments serve?",
+      "options": [
+        "A) It confuses the audience",
+        "B) It suggests that if society refuses to learn its moral lesson, humanity is doomed to repeat its errors in endless cycles of judgment ('fire and blood')",
+        "C) It proves the Inspector was a ghost",
+        "D) It shows that time travel is real"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 50,
+      "question": "Why is 'An Inspector Calls' regarded as a masterpiece of British drama?",
+      "options": [
+        "A) For its elaborate musical dance numbers",
+        "B) For its brilliant fusion of an engaging thriller mystery with a profound socialist-morality critique of human conscience",
+        "C) For its realistic depiction of outer space travel",
+        "D) For its use of Shakespearean verse"
+      ],
+      "correct_answer": "B"
+    }
+  ]
+}
+
+{
+  "play_info": {
+    "title": "Redemption Road",
+    "author": "Elma Shaw",
+    "category": "African Literature text for SSCE",
+    "summary": {
+      "overview": "Redemption Road is a Liberian prose work about the psychological and social consequences of civil war. Set mainly in Monrovia during the administration of former Liberian president Charles Taylor, the novel follows Bendu Lewis, a survivor of wartime violence who works to help other victims while struggling with memories and guilt from her own past. Through Bendu and other survivors, Elma Shaw examines trauma, justice, forgiveness, corruption, resilience, reconciliation and the difficult process of rebuilding a nation after conflict. The work presents redemption as a demanding journey that requires truth, courage, accountability and personal healing. Bendu's decision to confront Commander Cobra, the warlord who once held her captive, brings her into conflict with a corrupt justice system and forces her to face a painful secret concerning a child she bore during the war. ",[1][2][3]
+      "plot_summary": "The narrative opens around the memorial service for Bendu Lewis's grandmother, Granny, whose death recalls the losses suffered during Liberia's civil war. Bendu is a counsellor and co-director of Peace in Practice, an organisation that assists traumatised war survivors. Although she helps others, she continues to suffer from nightmares and the psychological effects of her own captivity and abuse. Her troubled past becomes urgent when Moses Varney, also known as Commander Cobra, a former rebel commander responsible for atrocities, reappears in Monrovia. Bendu decides to pursue justice for his victims and to confront the man connected with her own suffering. With the help of Agnes, journalist Calvin Daniels and other allies, she seeks evidence and attempts to use the legal system against Cobra. However, corruption, political influence and the manipulation of the courts obstruct justice; Judge Solomon Dagoseh is presented as a particularly corrupt figure. Bendu's investigation also exposes the continuing effects of war on survivors such as Tenneh and reveals the difficult relationship between justice and forgiveness. In the course of confronting Cobra, Bendu must acknowledge her own wartime secret: the child she bore for a rebel and later abandoned. Her healing begins when she faces the truth, accepts responsibility and moves towards self-forgiveness. The novel ultimately suggests that Liberia's recovery depends on truth, justice, reconciliation and the resilience of ordinary people, especially women, who continue to rebuild their lives and country. "[3][4][5][6]
+    }
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of Redemption Road?",
+      "options": [
+        "A) Buchi Emecheta",
+        "B) Elma Shaw",
+        "C) Chimamanda Ngozi Adichie",
+        "D) Ama Ata Aidoo"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 2,
+      "question": "What country provides the principal setting for Redemption Road?",
+      "options": [
+        "A) Sierra Leone",
+        "B) Nigeria",
+        "C) Liberia",
+        "D) Ghana"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 3,
+      "question": "Which city is the major setting of the novel?",
+      "options": [
+        "A) Freetown",
+        "B) Monrovia",
+        "C) Accra",
+        "D) Abuja"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 4,
+      "question": "During whose administration is the story mainly set?",
+      "options": [
+        "A) Ellen Johnson Sirleaf",
+        "B) William Tubman",
+        "C) Charles Taylor",
+        "D) Samuel Doe"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 5,
+      "question": "What major historical experience forms the background of the novel?",
+      "options": [
+        "A) The struggle against apartheid",
+        "B) The Liberian civil war",
+        "C) The Nigerian civil war",
+        "D) The First World War"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 6,
+      "question": "Who is the central character in Redemption Road?",
+      "options": [
+        "A) Agnes",
+        "B) Tenneh",
+        "C) Bendu Lewis",
+        "D) Siatta"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 7,
+      "question": "What kind of work does Bendu Lewis do after the war?",
+      "options": [
+        "A) She works as a judge",
+        "B) She counsels survivors of the civil war",
+        "C) She serves as a soldier",
+        "D) She works as a government minister"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 8,
+      "question": "Which organisation is associated with Bendu's work?",
+      "options": [
+        "A) Justice for Liberia",
+        "B) Peace in Practice",
+        "C) Women for Democracy",
+        "D) The Temple of Justice"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 9,
+      "question": "What event at the beginning of the novel brings memories of the past to the surface?",
+      "options": [
+        "A) A political election",
+        "B) A wedding ceremony",
+        "C) The memorial service for Bendu's grandmother",
+        "D) A military parade"
+      ],
+      "correct_answer": "C"
+    },
+    {
+      "id": 10,
+      "question": "What is Bendu's grandmother commonly called?",
+      "options": [
+        "A) Mama Peace",
+        "B) Granny",
+        "C) Auntie Tenneh",
+        "D) Mother Liberia"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 11,
+      "question": "Who is Commander Cobra?",
+      "options": [
+        "A) A foreign journalist",
+        "B) A former rebel commander associated with wartime atrocities",
+        "C) A peaceful religious leader",
+        "D) Bendu's employer"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 12,
+      "question": "What is Commander Cobra's other name?",
+      "options": [
+        "A) Moses Varney",
+        "B) Calvin Daniels",
+        "C) Terrance Clarke",
+        "D) Solomon Dagoseh"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 13,
+      "question": "Why does Bendu become determined to pursue Commander Cobra?",
+      "options": [
+        "A) She wants to obtain his property",
+        "B) She wants justice for his victims and healing for herself",
+        "C) She wants him to employ her",
+        "D) She wants to leave Liberia with him"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 14,
+      "question": "What does Bendu's reaction to Cobra's reappearance reveal about her character?",
+      "options": [
+        "A) She is completely indifferent to the past",
+        "B) She possesses courage and a strong sense of justice despite her fear",
+        "C) She is interested only in financial gain",
+        "D) She has forgotten the war"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 15,
+      "question": "What is one of Bendu's major internal struggles?",
+      "options": [
+        "A) Her inability to read",
+        "B) Her conflict between helping others and confronting her own trauma",
+        "C) Her desire to become a soldier",
+        "D) Her hatred of all journalists"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 16,
+      "question": "What psychological effect of war is especially associated with Bendu?",
+      "options": [
+        "A) Recurring nightmares and painful memories",
+        "B) Total loss of speech from birth",
+        "C) Amnesia concerning her family",
+        "D) Fear of travelling by sea"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 17,
+      "question": "Who is Agnes in the novel?",
+      "options": [
+        "A) Bendu's colleague and associate in peacebuilding work",
+        "B) Commander Cobra's mother",
+        "C) A corrupt judge",
+        "D) A foreign soldier"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 18,
+      "question": "What role does Calvin Daniels play in Bendu's campaign?",
+      "options": [
+        "A) He is a journalist who helps expose the truth",
+        "B) He is a judge who protects Cobra",
+        "C) He is a rebel commander",
+        "D) He is Bendu's childhood teacher"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 19,
+      "question": "Which character is presented as a survivor suffering from depression?",
+      "options": [
+        "A) Tenneh",
+        "B) Agnes",
+        "C) Granny",
+        "D) Siatta"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 20,
+      "question": "What does Tenneh's depression demonstrate?",
+      "options": [
+        "A) The long-term psychological effects of war",
+        "B) The success of the corrupt courts",
+        "C) The wealth of post-war Liberia",
+        "D) The superiority of military rule"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 21,
+      "question": "What central question does Bendu's struggle with Cobra raise?",
+      "options": [
+        "A) Whether education is useful",
+        "B) Whether peace can exist without justice",
+        "C) Whether wealth creates happiness",
+        "D) Whether travel improves society"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 22,
+      "question": "Which statement best expresses a major idea in the novel?",
+      "options": [
+        "A) Peace without justice is an empty promise",
+        "B) Silence always guarantees safety",
+        "C) War permanently improves society",
+        "D) Wealth removes all suffering"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 23,
+      "question": "What does the title Redemption Road primarily suggest?",
+      "options": [
+        "A) A literal highway built by the government",
+        "B) A difficult journey towards healing, forgiveness and moral restoration",
+        "C) A road used only by soldiers",
+        "D) A route to escape from Africa"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 24,
+      "question": "Which theme is most closely connected with Bendu's work among survivors?",
+      "options": [
+        "A) Psychological healing",
+        "B) Romantic rivalry",
+        "C) Agricultural development",
+        "D) Comic entertainment"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 25,
+      "question": "How does the novel portray the effects of civil war on society?",
+      "options": [
+        "A) As effects that end immediately when fighting stops",
+        "B) As physical, emotional, moral and social wounds that continue after the war",
+        "C) As benefits enjoyed by every citizen",
+        "D) As a problem affecting only politicians"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 26,
+      "question": "What does the novel suggest about women in post-war Liberia?",
+      "options": [
+        "A) Women are irrelevant to national recovery",
+        "B) Women suffer greatly but also demonstrate resilience and help rebuild society",
+        "C) Women are responsible for starting every conflict",
+        "D) Women are protected from wartime violence"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 27,
+      "question": "What is the importance of truth in the novel?",
+      "options": [
+        "A) Truth deepens trauma and should always be hidden",
+        "B) Speaking the truth is necessary for justice and healing",
+        "C) Truth is useful only to corrupt politicians",
+        "D) Truth has no connection with forgiveness"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 28,
+      "question": "What does silence often represent in Redemption Road?",
+      "options": [
+        "A) Complete recovery",
+        "B) The continued suppression of pain and injustice",
+        "C) Political success",
+        "D) Religious celebration"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 29,
+      "question": "What problem in the justice system obstructs Bendu's pursuit of Cobra?",
+      "options": [
+        "A) Lack of any written language",
+        "B) Corruption and political influence",
+        "C) Excessive concern for victims",
+        "D) The absence of all courts in Liberia"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 30,
+      "question": "Who is Judge Solomon Dagoseh?",
+      "options": [
+        "A) A survivor who leads Bendu's organisation",
+        "B) A corrupt figure in the justice system",
+        "C) A journalist who exposes Cobra",
+        "D) Bendu's grandmother"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 31,
+      "question": "What does Judge Dagoseh's character mainly symbolise?",
+      "options": [
+        "A) The failure of institutions corrupted by money and influence",
+        "B) Perfect justice and impartiality",
+        "C) The innocence of children",
+        "D) The power of traditional religion"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 32,
+      "question": "How is money presented in relation to the justice system?",
+      "options": [
+        "A) It is never mentioned",
+        "B) It can be used to manipulate or legalise wrongdoing",
+        "C) It is distributed equally to victims",
+        "D) It prevents all forms of corruption"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 33,
+      "question": "What painful secret must Bendu confront?",
+      "options": [
+        "A) She secretly stole money from her organisation",
+        "B) She bore a child for a rebel and later abandoned the child",
+        "C) She caused the civil war",
+        "D) She falsely accused her grandmother"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 34,
+      "question": "Why is Bendu's secret important to her development?",
+      "options": [
+        "A) It shows that she has no connection with the war",
+        "B) It forces her to accept personal responsibility and seek self-forgiveness",
+        "C) It proves that Cobra was innocent",
+        "D) It makes her abandon all concern for victims"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 35,
+      "question": "What does Bendu's journey towards redemption require?",
+      "options": [
+        "A) Denial of the past",
+        "B) Courage, truth, responsibility and forgiveness",
+        "C) Revenge without reflection",
+        "D) Wealth and political office"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 36,
+      "question": "Which statement best describes Commander Cobra's role in the novel?",
+      "options": [
+        "A) He represents the victims' innocence",
+        "B) He represents wartime cruelty and the problem of unpunished violence",
+        "C) He represents successful reconciliation",
+        "D) He represents the healing power of education"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 37,
+      "question": "What is the main conflict between Bendu and Commander Cobra?",
+      "options": [
+        "A) A dispute over business ownership",
+        "B) Bendu's demand for accountability for his wartime crimes",
+        "C) A disagreement over a political election",
+        "D) A family inheritance dispute"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 38,
+      "question": "What does forgiveness mean in the context of the novel?",
+      "options": [
+        "A) Forgetting every crime without confronting it",
+        "B) A difficult process that may help victims and perpetrators move beyond destructive hatred",
+        "C) Allowing criminals to control the courts",
+        "D) Refusing to acknowledge suffering"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 39,
+      "question": "What distinction does the novel make between forgiveness and justice?",
+      "options": [
+        "A) They are always exactly the same",
+        "B) Forgiveness does not necessarily remove the need for accountability and justice",
+        "C) Justice is always harmful to victims",
+        "D) Forgiveness means abandoning all moral standards"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 40,
+      "question": "What does Bendu's counselling of other survivors create in the narrative?",
+      "options": [
+        "A) A contrast between her public strength and private suffering",
+        "B) Proof that she has never experienced trauma",
+        "C) A comic subplot unrelated to the war",
+        "D) Evidence that the war has been forgotten"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 41,
+      "question": "What narrative effect is created by combining Bendu's present work with memories of wartime events?",
+      "options": [
+        "A) It shows how the past continues to shape the present",
+        "B) It removes all tension from the story",
+        "C) It changes the novel into a historical romance",
+        "D) It proves that the events are imaginary"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 42,
+      "question": "What does the memorial service for Granny contribute to the novel?",
+      "options": [
+        "A) It introduces the importance of memory, family and grief",
+        "B) It shows that Bendu has no family",
+        "C) It celebrates Commander Cobra's victory",
+        "D) It marks the beginning of a military campaign"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 43,
+      "question": "Which of the following best describes the tone of Redemption Road?",
+      "options": [
+        "A) Light-hearted and purely comic",
+        "B) Serious, reflective and hopeful despite its tragic subject matter",
+        "C) Carefree and romantic",
+        "D) Satirical without any emotional depth"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 44,
+      "question": "What does Liberia's post-war condition reveal in the novel?",
+      "options": [
+        "A) Political peace automatically restores every damaged life",
+        "B) Rebuilding a nation requires more than ending armed conflict",
+        "C) Ordinary citizens have no role in national recovery",
+        "D) Justice is unnecessary after a ceasefire"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 45,
+      "question": "What does the novel suggest about national reconciliation?",
+      "options": [
+        "A) It can be achieved by suppressing victims' memories",
+        "B) It requires acknowledgement of suffering, accountability and a willingness to heal",
+        "C) It depends only on foreign aid",
+        "D) It is impossible in every post-war society"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 46,
+      "question": "Which literary technique is used when wartime experiences are revealed gradually?",
+      "options": [
+        "A) Flashback",
+        "B) Hyperbole",
+        "C) Punctuation",
+        "D) Parody"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 47,
+      "question": "What is the significance of the contrast between Bendu's professional identity and her personal trauma?",
+      "options": [
+        "A) It illustrates that people who help others may also need healing themselves",
+        "B) It proves that counselling is ineffective",
+        "C) It shows that Bendu is dishonest in every area of life",
+        "D) It removes sympathy for other survivors"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 48,
+      "question": "Which statement best describes the novel's treatment of resilience?",
+      "options": [
+        "A) Resilience means pretending that suffering never occurred",
+        "B) Resilience is the ability to endure suffering and continue rebuilding life with courage",
+        "C) Resilience belongs only to former soldiers",
+        "D) Resilience requires revenge against every enemy"
+      ],
+      "correct_answer": "B"
+    },
+    {
+      "id": 49,
+      "question": "What major lesson does Bendu's experience communicate?",
+      "options": [
+        "A) Personal healing begins when painful truths are confronted rather than buried",
+        "B) Victims should remain silent to protect society",
+        "C) Justice can never be pursued after war",
+        "D) Forgetting the past is the only route to peace"
+      ],
+      "correct_answer": "A"
+    },
+    {
+      "id": 50,
+      "question": "Why is Redemption Road suitable for the study of African literature at SSCE level?",
+      "options": [
+        "A) It examines African history, conflict, identity, social responsibility, justice and the struggle for national recovery",
+        "B) It deals only with supernatural events",
+        "C) It avoids social and political issues",
+        "D) It is concerned exclusively with romantic relationships"
+      ],
+      "correct_answer": "A"
+    }
+  ]
+}
