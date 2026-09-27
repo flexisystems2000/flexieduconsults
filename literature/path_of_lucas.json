@@ -1,0 +1,313 @@
+{
+  "play_info": {
+    "title": "Path of Lucas: The Journey He Endured",
+    "author": "Susanne Bellefeuille",
+    "category": "African Literature text for SSCE",
+    "summary": {
+      "overview": "Path of Lucas: The Journey He Endured (2017) is a Canadian autobiographical novel by Susanne Bellefeuille, a graduate of Social Work and a strong advocate for people with intellectual disabilities. The story is a fictionalised account of her own family experiences, including teenage pregnancy, depression, mental health struggles, poverty, and the sacrifices made by her father Lucas during his wife Isabelle’s illness. It is studied in SSCE Nigerian schools as a text on resilience, family trauma, self-discovery, and the power of human connection.",
+      "plot_summary": "The novel follows Lucas, a young man born in the mid-20th century in Canada. Growing up in a family marked by poverty, violence, and loss, Lucas faces homelessness, betrayal, heartbreak, job loss, and eviction. His path is marked by depression, teenage pregnancy in the family, his mother Isabelle’s struggle with mental illness, and the air crash death of his friend Steve. Despite these hardships, Lucas embarks on a journey of self-discovery and personal growth. He reconciles with his strained family relationships, finds strength through friendships and meaningful connections, and ultimately learns perseverance, compassion, and resilience. The title symbolises the long and difficult path he endures, with the “path” representing life’s journey and personal growth."
+    }
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of Path of Lucas: The Journey He Endured?",
+      "options": ["A) Wole Soyinka", "B) Chinua Achebe", "C) Susanne Bellefeuille", "D) Pede Hollist"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 2,
+      "question": "What is the genre of Path of Lucas: The Journey He Endured?",
+      "options": ["A) Historical fiction", "B) Autobiographical novel", "C) Science fiction", "D) Fantasy"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 3,
+      "question": "In which country is the story set?",
+      "options": ["A) Nigeria", "B) Canada", "C) Britain", "D) South Africa"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 4,
+      "question": "What is the main character’s name?",
+      "options": ["A) Isabelle", "B) Lucas", "C) Steve", "D) Lucy"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 5,
+      "question": "Who is Lucas’s mother?",
+      "options": ["A) Lucy", "B) Isabelle", "C) Frances", "D) Elizabeth"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 6,
+      "question": "What major event changes Lucas’s life in the early part of the story?",
+      "options": ["A) He wins a lottery", "B) He loses his job and becomes homeless", "C) He becomes a father", "D) He inherits money"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 7,
+      "question": "What symbolises the theme of life’s journey in the novel?",
+      "options": ["A) A house", "B) The path", "C) A river", "D) A car"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 8,
+      "question": "What historical event does Lucas’s friend Steve die in?",
+      "options": ["A) World War II", "B) An air crash", "C) A car accident", "D) A fire"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 9,
+      "question": "Why does Lucas’s mother Isabelle suffer?",
+      "options": ["A) She has a career", "B) She struggles with mental illness and depression", "C) She is rich", "D) She is a doctor"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 10,
+      "question": "What does Lucas learn about resilience by the end of the novel?",
+      "options": ["He should give up", "He must persevere despite setbacks", "He should stay silent", "He should blame others"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 11,
+      "question": "Who is Lucy in the story?",
+      "options": ["Lucas’s daughter", "Lucas’s mother", "Lucas’s wife", "Lucas’s sister"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 12,
+      "question": "What relationship does Lucas have with John Clarkson and Elizabeth Clarkson?",
+      "options": ["They are enemies", "They are his parents", "They are his teachers", "They are strangers"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 13,
+      "question": "How does Lucas feel when he faces homelessness?",
+      "options": ["He is happy", "He feels determined and starts self-discovery", "He gives up immediately", "He blames his mother"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 14,
+      "question": "What does the shadow symbolise in the novel?",
+      "options": ["Happiness", "Fears and doubts", "Money", "Love"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 15,
+      "question": "Who is Steve Lewis?",
+      "options": ["Lucas’s brother", "Lucas’s friend who dies in an air crash", "Lucas’s father", "Lucas’s neighbour"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 16,
+      "question": "What major sacrifice does Lucas’s father make?",
+      "options": ["He leaves the family", "He supports Lucas’s mother Isabelle during her illness", "He abandons Lucas", "He marries another woman"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 17,
+      "question": "What is the central theme of the play?",
+      "options": ["War and peace", "Self-discovery and resilience", "Love only", "Money and power"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 18,
+      "question": "How does the novel end for Lucas?",
+      "options": ["He dies", "He finds peace and reconciles with family", "He moves to another country", "He becomes rich"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 19,
+      "question": "What does Lucas’s heart being ‘as heavy as a stone’ suggest?",
+      "options": ["His emotional burden", "His happiness", "His wealth", "His strength"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 20,
+      "question": "Who is the wise old man/guide in the novel?",
+      "options": ["Lucas’s father", "A stranger who gives him wisdom", "His brother", "His mother"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 21,
+      "question": "What does Lucas do after losing his job?",
+      "options": ["He stays in the apartment", "He faces eviction and makes difficult decisions", "He becomes a criminal", "He leaves Canada"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 22,
+      "question": "What does the novel use to show the power of human connection?",
+      "options": ["Friendships and relationships", "Money", "Power", "War"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 23,
+      "question": "What is the significance of the setting in Canada (1956–1993)?",
+      "options": ["It is only modern times", "It shows the struggles of ordinary people in 20th-century Canada", "It is a beautiful place", "It is a fantasy world"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 24,
+      "question": "How does Lucas respond to each challenge?",
+      "options": ["He gives up", "He responds with determination and perseverance", "He blames everyone", "He runs away"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 25,
+      "question": "What does the novel say about mental health?",
+      "options": ["It is unimportant", "It is important and families should support each other", "Only rich people have it", "It is a curse"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 26,
+      "question": "Who is the protagonist’s father?",
+      "options": ["John Clarkson", "Lucas’s father", "Steve Lewis", "The mayor"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 27,
+      "question": "What does Lucas’s journey teach about forgiveness?",
+      "options": ["He should never forgive", "He learns to forgive himself and family", "He forgives only enemies", "He forgives only strangers"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 28,
+      "question": "What is the cause of Lucas’s early troubles?",
+      "options": ["His own laziness", "Poverty, violence, loss, and family trauma", "His intelligence", "His beauty"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 29,
+      "question": "How does the novel use imagery?",
+      "options": ["Vivid descriptions of landscapes and emotions", "Only dialogue", "No imagery", "Only numbers"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 30,
+      "question": "What does the guide’s words being ‘as soothing as a balm’ suggest?",
+      "options": ["They are painful", "They are comforting and helpful", "They are useless", "They are lies"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 31,
+      "question": "Who is Frances in the story?",
+      "options": ["Lucas’s wife", "Lucas’s sister", "Lucas’s mother", "Lucas’s daughter"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 32,
+      "question": "What does Lucas discover about himself?",
+      "options": ["He is useless", "He has the power of resilience and the importance of connections", "He is a failure", "He is rich"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 33,
+      "question": "What does the novel criticise?",
+      "options": ["The importance of education", "The struggles of mental illness and family trauma", "The beauty of Canada", "Modern technology"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 34,
+      "question": "How does Lucas change by the end?",
+      "options": ["He becomes angry", "He becomes wiser, more compassionate, and resilient", "He leaves the country", "He joins the army"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 35,
+      "question": "What does the novel suggest about the past?",
+      "options": ["The past should be forgotten", "The past must be carried and healed", "The past is gone forever", "The past is only for books"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 36,
+      "question": "What does Lucas’s father say about his sacrifices?",
+      "options": ["He feels no guilt", "He carried guilt but supported the family", "He is selfish", "He left them on purpose"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 37,
+      "question": "Who is the only person Lucas trusts completely at the end?",
+      "options": ["His mother", "His friends and family", "The mayor", "No one"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 38,
+      "question": "What is the core moral message?",
+      "options": ["Never forgive", "Society is interconnected; we must look out for one another", "Capitalism is good", "Parents should never listen to children"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 39,
+      "question": "How does the novel use personification?",
+      "options": ["The path unfolded before Lucas like a canvas", "The shadow loomed like a dark cloud", "Both A and B", "None"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 40,
+      "question": "What is the significance of Lucas’s children in the story?",
+      "options": ["They are unimportant", "They show the next generation and continuity", "They are the main conflict", "They are enemies"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 41,
+      "question": "What does the novel say about the power of forgiveness?",
+      "options": ["It is unnecessary", "It can heal deep family wounds", "It is for weak people", "It is impossible"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 42,
+      "question": "Who is Krissy Cameron?",
+      "options": ["Lucas’s love interest", "Lucas’s bully", "Lucas’s friend", "Lucas’s sister"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 43,
+      "question": "What does the novel say about the human spirit?",
+      "options": ["It is weak", "It is indomitable and refuses to be defined by circumstances", "It is only for the rich", "It is gone forever"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 44,
+      "question": "How does the novel use symbolism?",
+      "options": ["The path represents life’s journey", "The shadow symbolises fears", "Both A and B", "Only money"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 45,
+      "question": "What is the final message for readers?",
+      "options": ["The journey is over", "We must embrace resilience, compassion, and forgiveness", "We should stay silent", "We should only focus on money"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 46,
+      "question": "Who is the mayor’s son that bullies Lucas?",
+      "options": ["William", "Krissy Cameron", "Steve Lewis", "Lucas’s brother"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 47,
+      "question": "What does Lucas learn about perseverance?",
+      "options": ["It is not important", "It is the key to overcoming adversity", "It means giving up", "It means blaming others"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 48,
+      "question": "How does the novel show the interconnectedness of people?",
+      "options": ["Through friendships and family support", "Through war only", "Through money", "Through silence"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 49,
+      "question": "What is the role of the path in the novel?",
+      "options": ["It is just a road", "It represents the long journey of life and personal growth", "It is dangerous only", "It is closed"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 50,
+      "question": "Why is Path of Lucas regarded as an important text in Nigerian schools?",
+      "options": ["For its music", "For its message on resilience, mental health, and family healing after trauma", "For its science fiction", "For its lack of plot"],
+      "correct_answer": "B"
+    }
+  ]
+}
