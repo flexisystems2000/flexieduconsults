@@ -255,8 +255,6 @@ if (!empty($announcementDocuments)) {
 // ============================================================
 // SERVER-SIDE: BUILD COMPLETE SYSTEM UPDATE HTML
 // ============================================================
-// The complete ticker markup is assembled here on the server.
-// JavaScript does not fetch, create, or inject the announcement.
 $serverSystemTickerHtml = '';
 
 if ($serverAnnouncement) {
@@ -308,7 +306,6 @@ if ($serverAnnouncement) {
         $announcementLinkEnd .
         '</span>';
 
-    // Duplicate item keeps the original continuous ticker structure.
     $serverSystemTickerDuplicateItem =
         '<span class="system-ticker-item">' .
         $announcementLinkStart .
@@ -596,7 +593,6 @@ function buildPagination(
         '<div class="pagination-bar" ' .
         'id="pagination-controls">';
 
-    // Previous
     if ($currentPage > 1) {
 
         $html .=
@@ -614,8 +610,6 @@ function buildPagination(
             '</span>';
     }
 
-
-    // Page range
     $range = 2;
 
     $start =
@@ -630,8 +624,6 @@ function buildPagination(
             $currentPage + $range
         );
 
-
-    // First page
     if ($start > 1) {
 
         $html .=
@@ -646,8 +638,6 @@ function buildPagination(
         }
     }
 
-
-    // Page numbers
     for (
         $i = $start;
         $i <= $end;
@@ -672,8 +662,6 @@ function buildPagination(
         }
     }
 
-
-    // Last page
     if ($end < $totalPages) {
 
         if ($end < $totalPages - 1) {
@@ -691,8 +679,6 @@ function buildPagination(
             '</a>';
     }
 
-
-    // Next
     if ($currentPage < $totalPages) {
 
         $html .=
@@ -709,7 +695,6 @@ function buildPagination(
             '›' .
             '</span>';
     }
-
 
     $html .= '</div>';
 
@@ -864,7 +849,6 @@ $currentYear = date('Y');
         name="keywords"
         content="flexieduconsult, Flexi Educational Consult, Flexi Tutors, JAMB, WAEC, NECO, Flexi, CBT, jamb tutorials, waec tutorials, ssce tutorials, tutorials in shomolu, tutorials in bariga">
 
-
     <meta
         property="og:title"
         content="Flexi Tutors | JAMB, WAEC & CBT Prep Nigeria">
@@ -885,7 +869,6 @@ $currentYear = date('Y');
         property="og:type"
         content="website">
 
-
     <meta
         name="twitter:card"
         content="summary_large_image">
@@ -902,7 +885,6 @@ $currentYear = date('Y');
         name="twitter:image"
         content="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
 
-
     <link
         rel="canonical"
         href="https://flexieduconsult.com.ng/<?php
@@ -910,7 +892,6 @@ $currentYear = date('Y');
                 ? '?page=' . $currentPage
                 : '';
         ?>" />
-
 
     <title>
         Flexi Tutors | JAMB, WAEC & CBT Prep Nigeria<?php
@@ -920,12 +901,10 @@ $currentYear = date('Y');
         ?>
     </title>
 
-
     <link
         rel="stylesheet"
         type="text/css"
         href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
 
     <script type="application/ld+json">
     {
@@ -961,11 +940,18 @@ $currentYear = date('Y');
 
     :root {
         --blue: #003366;
+        --blue-dark: #002548;
+        --blue-soft: #064d88;
         --green: #2E8B57;
+        --green-light: #e9f7ef;
         --yellow: #FFD700;
         --bg: #f4f7f6;
+        --white: #ffffff;
+        --text: #333;
+        --muted: #64748b;
         --radius: 12px;
         --shadow: 0 4px 18px rgba(0,0,0,0.06);
+        --menu-shadow: 0 20px 55px rgba(0,0,0,.28);
     }
 
 
@@ -991,7 +977,7 @@ $currentYear = date('Y');
         margin: 0;
         padding: 0;
 
-        color: #333;
+        color: var(--text);
     }
 
 
@@ -1008,11 +994,21 @@ $currentYear = date('Y');
     }
 
 
+    /* ========================================================
+       HEADER
+       ======================================================== */
+
     header {
-        background: var(--blue);
+        background:
+            linear-gradient(
+                135deg,
+                var(--blue) 0%,
+                var(--blue-dark) 100%
+            );
+
         color: white;
 
-        height: 52px;
+        height: 58px;
 
         display: flex;
         align-items: center;
@@ -1026,6 +1022,9 @@ $currentYear = date('Y');
         top: 0;
 
         z-index: 1000;
+
+        box-shadow:
+            0 3px 14px rgba(0,0,0,.12);
     }
 
 
@@ -1033,16 +1032,23 @@ $currentYear = date('Y');
         display: flex;
         align-items: center;
         gap: 12px;
+
+        min-width: 0;
     }
 
 
     .logo-img {
-        height: 34px;
-        width: 34px;
+        height: 36px;
+        width: 36px;
 
         object-fit: contain;
 
-        border-radius: 4px;
+        border-radius: 7px;
+
+        background: white;
+
+        box-shadow:
+            0 2px 7px rgba(0,0,0,.18);
     }
 
 
@@ -1050,6 +1056,8 @@ $currentYear = date('Y');
         font-size: 15px;
         font-weight: 700;
         letter-spacing: 0.2px;
+
+        white-space: nowrap;
     }
 
 
@@ -1274,19 +1282,19 @@ $currentYear = date('Y');
 
 
     .slider-slide {
-    position: absolute;
-   width: 100%;
-    height: 100%;
-    opacity: 0;
-    pointer-events: none;
-   transition: opacity .6s ease;
-}
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .6s ease;
+    }
 
 
     .slider-slide.active {
-    opacity: 1;
-    pointer-events: auto;
-}
+        opacity: 1;
+        pointer-events: auto;
+    }
 
 
     .slider-slide img {
@@ -1584,7 +1592,7 @@ $currentYear = date('Y');
 
 
     /* ========================================================
-       MENU
+       NEW MENU UI
        ======================================================== */
 
     .menu-container {
@@ -1593,16 +1601,18 @@ $currentYear = date('Y');
 
 
     .menu-btn {
-        width: 36px;
-        height: 36px;
+        width: 42px;
+        height: 42px;
 
         cursor: pointer;
 
-        background: none;
+        background:
+            rgba(255,255,255,.08);
 
-        border: 1px solid rgba(255,255,255,.3);
+        border: 1px solid
+            rgba(255,255,255,.24);
 
-        border-radius: 6px;
+        border-radius: 10px;
 
         display: flex;
 
@@ -1613,68 +1623,522 @@ $currentYear = date('Y');
         align-items: center;
 
         gap: 4px;
+
+        transition:
+            background .2s ease,
+            border-color .2s ease,
+            transform .2s ease;
+
+        position: relative;
+    }
+
+
+    .menu-btn:hover,
+    .menu-btn[aria-expanded="true"] {
+        background:
+            rgba(255,255,255,.16);
+
+        border-color:
+            rgba(255,255,255,.45);
+    }
+
+
+    .menu-btn:active {
+        transform: scale(.95);
     }
 
 
     .menu-btn span {
-        width: 18px;
+        width: 19px;
         height: 2px;
 
         background: white;
+
+        border-radius: 5px;
+
+        transition:
+            transform .25s ease,
+            opacity .2s ease;
+    }
+
+
+    .menu-btn[aria-expanded="true"] span:nth-child(1) {
+        transform:
+            translateY(6px)
+            rotate(45deg);
+    }
+
+
+    .menu-btn[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+
+    .menu-btn[aria-expanded="true"] span:nth-child(3) {
+        transform:
+            translateY(-6px)
+            rotate(-45deg);
     }
 
 
     .square-menu {
-        display: none;
-
         position: absolute;
 
-        top: 48px;
+        top: calc(100% + 10px);
+
         right: 0;
 
-        width: 240px;
+        width: 310px;
 
-        background: var(--blue);
+        max-width:
+            calc(100vw - 24px);
 
-        border: 2px solid var(--green);
+        background:
+            rgba(255,255,255,.98);
 
-        border-radius: 10px;
+        border:
+            1px solid rgba(0,51,102,.12);
+
+        border-radius: 16px;
 
         z-index: 2000;
 
         box-shadow:
-            0 12px 32px rgba(0,0,0,.35);
+            var(--menu-shadow);
+
+        overflow: hidden;
+
+        opacity: 0;
+
+        visibility: hidden;
+
+        transform:
+            translateY(-8px)
+            scale(.98);
+
+        transform-origin:
+            top right;
+
+        transition:
+            opacity .2s ease,
+            visibility .2s ease,
+            transform .2s ease;
+
+        backdrop-filter:
+            blur(12px);
+
+        -webkit-backdrop-filter:
+            blur(12px);
+    }
+
+
+    .square-menu.menu-open {
+        opacity: 1;
+
+        visibility: visible;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+
+    .menu-header {
+        padding: 18px 18px 14px;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--blue),
+                var(--blue-soft)
+            );
+
+        color: white;
+
+        border-bottom:
+            3px solid var(--green);
+    }
+
+
+    .menu-header-title {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+
+        font-size: 15px;
+
+        font-weight: 800;
+    }
+
+
+    .menu-header-icon {
+        width: 34px;
+        height: 34px;
+
+        border-radius: 9px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            rgba(255,255,255,.14);
+
+        color: white;
+    }
+
+
+    .menu-header-subtitle {
+        margin: 6px 0 0 45px;
+
+        color:
+            rgba(255,255,255,.72);
+
+        font-size: 11px;
+    }
+
+
+    .menu-body {
+        padding: 8px;
+    }
+
+
+    .menu-section-label {
+        padding:
+            8px 12px 5px;
+
+        color:
+            #8a98a8;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        letter-spacing: 1px;
+
+        text-transform: uppercase;
+    }
+
+
+    .menu-item {
+        width: 100%;
+
+        min-height: 48px;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 10px 12px;
+
+        color:
+            #243447;
+
+        background: transparent;
+
+        border: none;
+
+        border-radius: 10px;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-align: left;
+
+        cursor: pointer;
+
+        transition:
+            background .18s ease,
+            color .18s ease,
+            transform .18s ease;
+    }
+
+
+    .menu-item:hover {
+        background:
+            #f0f6f3;
+
+        color:
+            var(--blue);
+
+        transform:
+            translateX(2px);
+    }
+
+
+    .menu-item-icon {
+        width: 34px;
+        height: 34px;
+
+        min-width: 34px;
+
+        border-radius: 9px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background:
+            #edf3f7;
+
+        color:
+            var(--blue);
+
+        transition:
+            background .18s ease,
+            color .18s ease;
+    }
+
+
+    .menu-item:hover .menu-item-icon {
+        background:
+            var(--green);
+
+        color: white;
+    }
+
+
+    .menu-item-text {
+        flex: 1;
+
+        min-width: 0;
+    }
+
+
+    .menu-item-title {
+        display: block;
+
+        line-height: 1.25;
+    }
+
+
+    .menu-item-description {
+        display: block;
+
+        margin-top: 2px;
+
+        color:
+            #8a98a8;
+
+        font-size: 10px;
+
+        font-weight: 500;
+    }
+
+
+    .menu-chevron {
+        width: 18px;
+        height: 18px;
+
+        transition:
+            transform .25s ease;
+
+        color:
+            #8a98a8;
+
+        flex-shrink: 0;
+    }
+
+
+    .menu-item.study-toggle[aria-expanded="true"] {
+        background:
+            #eef7f2;
+
+        color:
+            var(--blue);
+    }
+
+
+    .menu-item.study-toggle[aria-expanded="true"]
+    .menu-item-icon {
+        background:
+            var(--green);
+
+        color: white;
+    }
+
+
+    .menu-item.study-toggle[aria-expanded="true"]
+    .menu-chevron {
+        transform:
+            rotate(180deg);
+
+        color:
+            var(--green);
+    }
+
+
+    .study-submenu {
+        display: grid;
+
+        grid-template-rows:
+            0fr;
+
+        transition:
+            grid-template-rows .25s ease;
+
+        overflow: hidden;
+
+        padding-left: 12px;
+    }
+
+
+    .study-submenu-inner {
+        min-height: 0;
 
         overflow: hidden;
     }
 
 
-    .square-menu a {
-        display: block;
+    .study-submenu.open {
+        grid-template-rows:
+            1fr;
+    }
 
-        padding: 14px 16px;
 
-        color: white;
+    .study-subitem {
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 9px 12px 9px 14px;
+
+        margin:
+            2px 0 2px 22px;
+
+        color:
+            #526273;
 
         text-decoration: none;
 
-        font-size: 14px;
+        border-left:
+            2px solid #dce8e1;
 
-        border-bottom:
-            1px solid rgba(255,255,255,.1);
+        border-radius:
+            0 8px 8px 0;
 
-        transition: background 0.15s;
+        font-size: 12px;
+
+        font-weight: 600;
+
+        transition:
+            background .18s ease,
+            color .18s ease,
+            border-color .18s ease;
     }
 
 
-    .square-menu a:hover {
+    .study-subitem:hover {
         background:
-            rgba(255,255,255,0.08);
+            #f1f7f4;
+
+        color:
+            var(--green);
+
+        border-left-color:
+            var(--green);
     }
 
 
-    .square-menu a:last-child {
-        border-bottom: none;
+    .study-subitem-icon {
+        width: 26px;
+        height: 26px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 7px;
+
+        background:
+            #f0f4f7;
+
+        color:
+            var(--blue);
+    }
+
+
+    .menu-divider {
+        height: 1px;
+
+        background:
+            #edf0f2;
+
+        margin:
+            7px 8px;
+    }
+
+
+    .menu-featured {
+        background:
+            linear-gradient(
+                135deg,
+                #eef9f2,
+                #f5fbf7
+            ) !important;
+
+        border:
+            1px solid #d7eddf;
+
+        margin-bottom: 3px;
+    }
+
+
+    .menu-featured .menu-item-icon {
+        background:
+            var(--green);
+
+        color: white;
+    }
+
+
+    .menu-featured .menu-item-title {
+        color:
+            #16633c;
+    }
+
+
+    .menu-auth {
+        background:
+            #f7f9fb;
+
+        border:
+            1px solid #edf0f3;
+    }
+
+
+    .menu-auth .menu-item-icon {
+        background:
+            var(--blue);
+
+        color: white;
+    }
+
+
+    .menu-footer {
+        padding:
+            11px 16px;
+
+        text-align: center;
+
+        font-size: 9px;
+
+        color:
+            #9aa7b4;
+
+        border-top:
+            1px solid #edf0f2;
     }
 
 
@@ -2125,7 +2589,7 @@ $currentYear = date('Y');
 
 
         header {
-            height: 56px;
+            height: 60px;
 
             padding: 0 28px;
         }
@@ -2137,8 +2601,8 @@ $currentYear = date('Y');
 
 
         .logo-img {
-            height: 36px;
-            width: 36px;
+            height: 38px;
+            width: 38px;
         }
 
 
@@ -2191,6 +2655,11 @@ $currentYear = date('Y');
 
         .card {
             padding: 28px 32px;
+        }
+
+
+        .square-menu {
+            width: 330px;
         }
     }
 
@@ -2256,6 +2725,23 @@ $currentYear = date('Y');
         .td-title {
             font-size: 14px;
         }
+
+
+        .square-menu {
+            width: 300px;
+
+            right: -4px;
+        }
+
+
+        .menu-item {
+            min-height: 46px;
+        }
+
+
+        .menu-header {
+            padding: 15px;
+        }
     }
 
 
@@ -2276,6 +2762,22 @@ $currentYear = date('Y');
             grid-template-columns: 1fr;
 
             gap: 28px;
+        }
+    }
+
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .square-menu,
+        .study-submenu,
+        .menu-btn span,
+        .menu-item,
+        .menu-item-icon {
+            transition: none !important;
+        }
+
+        .system-ticker-track {
+            animation: none;
         }
     }
 
@@ -2303,12 +2805,20 @@ $currentYear = date('Y');
     </div>
 
 
+    <!-- ====================================================
+         NEW NAVIGATION MENU
+         ==================================================== -->
+
     <div class="menu-container">
 
         <button
             class="menu-btn"
+            id="menuToggle"
+            type="button"
             onclick="toggleMenu()"
-            aria-label="Toggle Navigation Menu">
+            aria-label="Open navigation menu"
+            aria-controls="squareMenu"
+            aria-expanded="false">
 
             <span></span>
             <span></span>
@@ -2317,57 +2827,776 @@ $currentYear = date('Y');
         </button>
 
 
-        <div
+        <nav
             class="square-menu"
-            id="squareMenu">
+            id="squareMenu"
+            aria-label="Main navigation">
 
-            <a href="/index.php">
-                Home
-            </a>
+            <div class="menu-header">
 
-            <a href="/videos.html">
-                Watch Video Lessons
-            </a>
+                <div class="menu-header-title">
 
-            <a href="/syllabus.html">
-                Access the JAMB and WAEC syllabus here
-            </a>
+                    <div class="menu-header-icon">
 
-            <a href="/brochure.html">
-                Access JAMB Brochure
-            </a>
+                        <svg
+                            width="19"
+                            height="19"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
 
-            <a href="/cbt.html">
-                CBT Simulator
-            </a>
+                            <path
+                                d="M3 12l9-9 9 9"/>
 
-            <a href="/groups.html">
-                Classroom (Groups and chats)
-            </a>
+                            <path
+                                d="M5 10v10h14V10"/>
 
-            <a href="/purchase.html">
-                Purchase Scratch Cards
-            </a>
+                            <path
+                                d="M9 20v-6h6v6"/>
 
-            <a href="/pdf.html">
-                Get your PDFs from here
-            </a>
+                        </svg>
 
-            <a href="/location.html">
-                Tutorial Centers Near You
-            </a>
+                    </div>
 
-            <a href="/profile.html">
-                User Profile
-            </a>
+                    <span>
+                        Flexi Menu
+                    </span>
 
-            <a
-                href="#"
-                id="auth-menu-btn">
-                Login
-            </a>
+                </div>
 
-        </div>
+                <div class="menu-header-subtitle">
+                    Explore Flexi Educational Consult
+                </div>
+
+            </div>
+
+
+            <div class="menu-body">
+
+                <div class="menu-section-label">
+                    Main
+                </div>
+
+
+                <!-- HOME -->
+
+                <a
+                    href="/index.php"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M3 11.5L12 4l9 7.5"/>
+
+                            <path
+                                d="M5 10.5V20h14v-9.5"/>
+
+                            <path
+                                d="M9 20v-6h6v6"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            Home
+                        </span>
+
+                        <span class="menu-item-description">
+                            Return to homepage
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- STUDY -->
+
+                <button
+                    type="button"
+                    class="menu-item study-toggle"
+                    id="studyToggle"
+                    aria-expanded="false"
+                    aria-controls="studySubmenu">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+
+                            <path
+                                d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            Study
+                        </span>
+
+                        <span class="menu-item-description">
+                            Learn, practise and prepare
+                        </span>
+
+                    </span>
+
+
+                    <svg
+                        class="menu-chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.2">
+
+                        <path
+                            d="M6 9l6 6 6-6"/>
+
+                    </svg>
+
+                </button>
+
+
+                <!-- STUDY SUBMENU -->
+
+                <div
+                    class="study-submenu"
+                    id="studySubmenu">
+
+                    <div class="study-submenu-inner">
+
+
+                        <a
+                            href="/study.php"
+                            class="study-subitem">
+
+                            <span class="study-subitem-icon">
+
+                                <svg
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2">
+
+                                    <path
+                                        d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+
+                                    <path
+                                        d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+
+                                </svg>
+
+                            </span>
+
+                            Past Questions
+
+                        </a>
+
+
+                        <a
+                            href="/novel.php"
+                            class="study-subitem">
+
+                            <span class="study-subitem-icon">
+
+                                <svg
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2">
+
+                                    <path
+                                        d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+
+                                    <path
+                                        d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+
+                                    <path
+                                        d="M8 7h8M8 11h8"/>
+
+                                </svg>
+
+                            </span>
+
+                            Novels
+
+                        </a>
+
+
+                        <a
+                            href="/scholarship.php"
+                            class="study-subitem">
+
+                            <span class="study-subitem-icon">
+
+                                <svg
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2">
+
+                                    <path
+                                        d="M12 3l9 5-9 5-9-5 9-5z"/>
+
+                                    <path
+                                        d="M5 10v5c0 2 3.1 4 7 4s7-2 7-4v-5"/>
+
+                                    <path
+                                        d="M21 8v6"/>
+
+                                </svg>
+
+                            </span>
+
+                            Scholarships
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- DOWNLOAD FLEXI -->
+
+                <a
+                    href="/download-app.php"
+                    class="menu-item menu-featured">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M12 3v12"/>
+
+                            <path
+                                d="M7 10l5 5 5-5"/>
+
+                            <path
+                                d="M5 21h14"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            Download Flexi
+                        </span>
+
+                        <span class="menu-item-description">
+                            Get the Flexi app
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <div class="menu-divider"></div>
+
+
+                <div class="menu-section-label">
+                    Resources
+                </div>
+
+
+                <!-- VIDEO LESSONS -->
+
+                <a
+                    href="/videos.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2"/>
+
+                            <path
+                                d="M10 9l5 3-5 3V9z"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            Watch Video Lessons
+                        </span>
+
+                        <span class="menu-item-description">
+                            Learn from Flexi tutorials
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- SYLLABUS -->
+
+                <a
+                    href="/syllabus.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M4 4h16v16H4z"/>
+
+                            <path
+                                d="M8 8h8M8 12h8M8 16h5"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            JAMB & WAEC Syllabus
+                        </span>
+
+                        <span class="menu-item-description">
+                            Access examination syllabuses
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- BROCHURE -->
+
+                <a
+                    href="/brochure.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M6 3h12v18H6z"/>
+
+                            <path
+                                d="M9 7h6M9 11h6M9 15h4"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            JAMB Brochure
+                        </span>
+
+                        <span class="menu-item-description">
+                            Courses, institutions & requirements
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- CBT -->
+
+                <a
+                    href="/cbt.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <rect
+                                x="3"
+                                y="4"
+                                width="18"
+                                height="14"
+                                rx="2"/>
+
+                            <path
+                                d="M7 21h10M12 18v3"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            CBT Simulator
+                        </span>
+
+                        <span class="menu-item-description">
+                            Practise computer-based exams
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- CLASSROOM -->
+
+                <a
+                    href="/groups.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
+
+                            <circle
+                                cx="10"
+                                cy="7"
+                                r="4"/>
+
+                            <path
+                                d="M21 21v-2a4 4 0 0 0-3-3.87"/>
+
+                            <path
+                                d="M16 3.13a4 4 0 0 1 0 7.75"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            Classroom
+                        </span>
+
+                        <span class="menu-item-description">
+                            Groups and academic chats
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- PURCHASE -->
+
+                <a
+                    href="/purchase.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M6 2l1.5 4h9L18 2"/>
+
+                            <path
+                                d="M4 6h16l-1 15H5L4 6z"/>
+
+                            <path
+                                d="M9 10v5M15 10v5"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            Purchase Scratch Cards
+                        </span>
+
+                        <span class="menu-item-description">
+                            Access Flexi examination services
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- PDF -->
+
+                <a
+                    href="/pdf.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M6 2h9l4 4v16H6z"/>
+
+                            <path
+                                d="M14 2v5h5"/>
+
+                            <path
+                                d="M9 13h6M9 17h6"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            PDFs & Materials
+                        </span>
+
+                        <span class="menu-item-description">
+                            Download educational resources
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- LOCATION -->
+
+                <a
+                    href="/location.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/>
+
+                            <circle
+                                cx="12"
+                                cy="10"
+                                r="2.5"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            Tutorial Centres
+                        </span>
+
+                        <span class="menu-item-description">
+                            Find a centre near you
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <div class="menu-divider"></div>
+
+
+                <div class="menu-section-label">
+                    Account
+                </div>
+
+
+                <!-- PROFILE -->
+
+                <a
+                    href="/profile.html"
+                    class="menu-item">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="4"/>
+
+                            <path
+                                d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span class="menu-item-title">
+                            User Profile
+                        </span>
+
+                        <span class="menu-item-description">
+                            Manage your Flexi account
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <!-- AUTH -->
+
+                <a
+                    href="/login.html"
+                    id="auth-menu-btn"
+                    class="menu-item menu-auth">
+
+                    <span class="menu-item-icon">
+
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+
+                            <path
+                                d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+
+                            <path
+                                d="M10 17l5-5-5-5"/>
+
+                            <path
+                                d="M15 12H3"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="menu-item-text">
+
+                        <span
+                            class="menu-item-title"
+                            id="auth-menu-title">
+                            Login
+                        </span>
+
+                        <span class="menu-item-description">
+                            Sign in to your account
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+            <div class="menu-footer">
+                Flexi Educational Consult • Learn. Practise. Succeed.
+            </div>
+
+        </nav>
 
     </div>
 
@@ -2400,20 +3629,10 @@ $currentYear = date('Y');
     </div>
 
 
-    <!-- ======================================================
-         SERVER-BUILT SYSTEM UPDATE
-         The complete ticker HTML is constructed by PHP before
-         the page is rendered. No JavaScript builds this content.
-         ====================================================== -->
-
     <?php
     echo $serverSystemTickerHtml;
     ?>
 
-
-    <!-- ======================================================
-         SERVER-RENDERED MOTIVATIONAL QUOTES
-         ====================================================== -->
 
     <?php if (!empty($serverQuotes)): ?>
 
@@ -2446,30 +3665,52 @@ $currentYear = date('Y');
          ====================================================== -->
 
     <div class="slider-container">
-       <a href="/download-app.php" class="slider-slide active">
-   <img
-        src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg"
-        alt="JAMB UTME CBT Online Exam Practice Banner">
-</a>
 
-       <a href="/purchase.html" class="slider-slide">
-   <img src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg"
-        alt="WAEC NECO SSCE Preparation Tutorials Banner"></a>
+        <a
+            href="/download-app.php"
+            class="slider-slide active">
 
-       <a href="/purchase.html" class="slider-slide">
+            <img
+                src="https://i.postimg.cc/XvkqQc3F/20260418-185555-2.jpg"
+                alt="JAMB UTME CBT Online Exam Practice Banner">
 
-    <img
-        src="https://i.postimg.cc/76p3Srkc/Screenshot-20260418-191139-2.png"
-        alt="Flexi Educational Consult Academic Registration Banner">
+        </a>
 
-</a>
+
+        <a
+            href="/purchase.html"
+            class="slider-slide">
+
+            <img
+                src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg"
+                alt="WAEC NECO SSCE Preparation Tutorials Banner">
+
+        </a>
+
+
+        <a
+            href="/purchase.html"
+            class="slider-slide">
+
+            <img
+                src="https://i.postimg.cc/76p3Srkc/Screenshot-20260418-191139-2.png"
+                alt="Flexi Educational Consult Academic Registration Banner">
+
+        </a>
+
 
         <div class="slider-dots">
+
             <span class="dot active-dot"></span>
+
             <span class="dot"></span>
+
             <span class="dot"></span>
+
         </div>
+
     </div>
+
 
     <!-- ======================================================
          NEWS
@@ -2479,12 +3720,17 @@ $currentYear = date('Y');
         News Updates
     </h2>
 
-   <table class="news-table">
-       <tbody id="news-table-body">
+
+    <table class="news-table">
+
+        <tbody id="news-table-body">
+
             <?php
             echo $serverNewsHtml;
             ?>
+
         </tbody>
+
     </table>
 
 
@@ -2967,9 +4213,6 @@ $currentYear = date('Y');
 
 // ============================================================
 // FIREBASE AUTH ONLY
-//
-// Announcement and quotes have been moved to PHP.
-// They are NO LONGER fetched from Firestore here.
 // ============================================================
 
 import {
@@ -3050,6 +4293,11 @@ onAuthStateChanged(
                 'auth-menu-btn'
             );
 
+        const authMenuTitle =
+            document.getElementById(
+                'auth-menu-title'
+            );
+
         const contactEmail =
             document.getElementById(
                 'contact-email'
@@ -3074,12 +4322,14 @@ onAuthStateChanged(
                 </span> 👋`;
 
 
-            authMenuBtn.innerText =
-                "Logout";
+            if (authMenuTitle) {
+                authMenuTitle.innerText =
+                    "Logout";
+            }
 
 
             authMenuBtn.style.color =
-                "#ff4d4d";
+                "#b22222";
 
 
             authMenuBtn.onclick =
@@ -3108,12 +4358,14 @@ onAuthStateChanged(
                 "none";
 
 
-            authMenuBtn.innerText =
-                "Login";
+            if (authMenuTitle) {
+                authMenuTitle.innerText =
+                    "Login";
+            }
 
 
             authMenuBtn.style.color =
-                "white";
+                "#243447";
 
 
             authMenuBtn.onclick =
@@ -3252,55 +4504,224 @@ contactForm.addEventListener(
 
 
 // ============================================================
-// MOBILE / DESKTOP MENU
+// NEW MENU SYSTEM
+// ============================================================
+
+const menu =
+    document.getElementById(
+        'squareMenu'
+    );
+
+
+const menuButton =
+    document.getElementById(
+        'menuToggle'
+    );
+
+
+const studyToggle =
+    document.getElementById(
+        'studyToggle'
+    );
+
+
+const studySubmenu =
+    document.getElementById(
+        'studySubmenu'
+    );
+
+
+// ============================================================
+// OPEN / CLOSE MAIN MENU
 // ============================================================
 
 window.toggleMenu =
     () => {
 
-        const m =
-            document.getElementById(
-                'squareMenu'
+        if (!menu || !menuButton) {
+            return;
+        }
+
+
+        const isOpen =
+            menu.classList.contains(
+                'menu-open'
             );
 
 
-        m.style.display =
-            (m.style.display === "block")
-                ? "none"
-                : "block";
+        if (isOpen) {
+
+            closeMenu();
+
+        } else {
+
+            openMenu();
+
+        }
 
     };
 
+
+function openMenu() {
+
+    menu.classList.add(
+        'menu-open'
+    );
+
+    menuButton.setAttribute(
+        'aria-expanded',
+        'true'
+    );
+
+    menuButton.setAttribute(
+        'aria-label',
+        'Close navigation menu'
+    );
+
+}
+
+
+function closeMenu() {
+
+    menu.classList.remove(
+        'menu-open'
+    );
+
+    menuButton.setAttribute(
+        'aria-expanded',
+        'false'
+    );
+
+    menuButton.setAttribute(
+        'aria-label',
+        'Open navigation menu'
+    );
+
+}
+
+
+// ============================================================
+// STUDY DROPDOWN
+// ============================================================
+
+if (studyToggle && studySubmenu) {
+
+    studyToggle.addEventListener(
+        'click',
+        (e) => {
+
+            e.preventDefault();
+
+            e.stopPropagation();
+
+
+            const isOpen =
+                studySubmenu.classList.contains(
+                    'open'
+                );
+
+
+            if (isOpen) {
+
+                studySubmenu.classList.remove(
+                    'open'
+                );
+
+                studyToggle.setAttribute(
+                    'aria-expanded',
+                    'false'
+                );
+
+            } else {
+
+                studySubmenu.classList.add(
+                    'open'
+                );
+
+                studyToggle.setAttribute(
+                    'aria-expanded',
+                    'true'
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// CLOSE MENU WHEN CLICKING OUTSIDE
+// ============================================================
 
 document.addEventListener(
     'click',
     (e) => {
 
-        const m =
-            document.getElementById(
-                'squareMenu'
-            );
-
-        const b =
-            document.querySelector(
-                '.menu-btn'
-            );
+        if (!menu || !menuButton) {
+            return;
+        }
 
 
         if (
-            m &&
-            m.style.display === "block" &&
-            !m.contains(e.target) &&
-            !b.contains(e.target)
+            menu.classList.contains(
+                'menu-open'
+            ) &&
+            !menu.contains(e.target) &&
+            !menuButton.contains(e.target)
         ) {
 
-            m.style.display =
-                "none";
+            closeMenu();
 
         }
 
     }
 );
+
+
+// ============================================================
+// ESCAPE KEY CLOSES MENU
+// ============================================================
+
+document.addEventListener(
+    'keydown',
+    (e) => {
+
+        if (e.key === 'Escape') {
+
+            closeMenu();
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// CLOSE MENU AFTER NAVIGATION
+// ============================================================
+
+if (menu) {
+
+    menu.querySelectorAll(
+        'a'
+    ).forEach(
+        (link) => {
+
+            link.addEventListener(
+                'click',
+                () => {
+
+                    closeMenu();
+
+                }
+            );
+
+        }
+    );
+
+}
 
 
 // ============================================================
@@ -3395,10 +4816,6 @@ setInterval(
 
 // ============================================================
 // SERVER-RENDERED QUOTE SLIDER
-//
-// PHP already placed all quote HTML in the page.
-// JavaScript only changes which server-rendered quote
-// is visible.
 // ============================================================
 
 const quoteSlides =
