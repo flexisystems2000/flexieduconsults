@@ -234,11 +234,16 @@ foreach ($subjectMap as $key => $item) {
     <script
         id="MathJax-script"
         async
-        src="https://raw.githubusercontent.com/flexisystems2000/Flexi-JAMB-CBT-App-/main/tex-mml-chtml.js"
+        src="./tex-mml-chtml.js"
     ></script>
 
 
     <style>
+
+        /* MathJax Fine-Tuning — same rendering scale used by practice.html */
+        .MathJax, mjx-container {
+            font-size: 105% !important;
+        }
 
         /* =====================================================
            ROOT
@@ -3806,180 +3811,74 @@ document.addEventListener('click', (e) => {
        FORMAT MATHEMATICS
        ========================================================= */
 
-    function formatMathText(
-        value
-    ) {
+    function formatMathText(text) {
 
-        if (
-            value === null ||
-            value === undefined
-        ) {
+        if (!text) return "";
 
-            return '';
+        let s = String(text);
 
-        }
+        // Preserve MathJax markup already supplied by the question bank.
+        if (/\\\(|\\\[|\$\$/.test(s)) return s;
 
+        // Escape HTML before adding MathJax markup.
+        s = s
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
 
-        let text =
-            String(value);
+        // Square roots.
+        s = s.replace(/√(\d+)/g, "\\sqrt{$1}");
+        s = s.replace(/√([A-Za-z])/g, "\\sqrt{$1}");
+        s = s.replace(/√\(([^)]+)\)/g, "\\sqrt{$1}");
+        s = s.replace(/√/g, "\\sqrt{}");
 
+        // Common mathematical symbols.
+        s = s
+            .replace(/π/g, "\\pi")
+            .replace(/θ/g, "\\theta")
+            .replace(/α/g, "\\alpha")
+            .replace(/β/g, "\\beta")
+            .replace(/γ/g, "\\gamma")
+            .replace(/δ/g, "\\delta")
+            .replace(/Δ/g, "\\Delta")
+            .replace(/∞/g, "\\infty")
+            .replace(/≤/g, "\\leq")
+            .replace(/≥/g, "\\geq")
+            .replace(/±/g, "\\pm")
+            .replace(/×/g, "\\times")
+            .replace(/÷/g, "\\div")
+            .replace(/→/g, "\\rightarrow")
+            .replace(/°/g, "^{\\circ}");
 
-        /*
-         * If the repository already contains
-         * MathJax delimiters, preserve them.
-         */
+        // Superscripts and subscripts.
+        s = s.replace(
+            /(\b[A-Za-z0-9]+|\([^)]+\))\^(-?\d+)/g,
+            "$1^{$2}"
+        );
 
-        if (
-            text.includes('\\(') ||
-            text.includes('\\[') ||
-            text.includes('$$')
-        ) {
+        s = s.replace(
+            /(\b[A-Za-z0-9]+|\([^)]+\))\^\(([^)]+)\)/g,
+            "$1^{$2}"
+        );
 
-            return text;
+        s = s.replace(
+            /(\b[A-Za-z]+)_([A-Za-z0-9]+)\b/g,
+            "$1_{$2}"
+        );
 
-        }
+        // Wrap recognizable mathematical fragments in MathJax delimiters.
+        s = s.replace(
+            /(\\sqrt\{[^}]*\}|\\pi|\\theta|\\alpha|\\beta|\\gamma|\\delta|\\Delta|\\infty|\\leq|\\geq|\\pm|\\times|\\div|\\rightarrow|[A-Za-z0-9]+[\^_]\{[^}]+\}|[A-Za-z0-9]*\\sqrt\{[^}]*\}[A-Za-z0-9]*)/g,
+            function(match) {
+                if (match.startsWith("\\(")) return match;
+                return "\\(" + match + "\\)";
+            }
+        );
 
+        // Keep plain text readable while allowing mixed text + mathematics.
+        s = s.replace(/\\\(\s*\\\)/g, "");
 
-        /*
-         * HTML escape before adding MathJax.
-         */
-
-        text =
-            text
-                .replace(
-                    /&/g,
-                    '&amp;'
-                )
-                .replace(
-                    /</g,
-                    '&lt;'
-                )
-                .replace(
-                    />/g,
-                    '&gt;'
-                );
-
-
-        /*
-         * Common mathematical symbols.
-         */
-
-        text =
-            text
-                .replace(
-                    /π/g,
-                    '\\pi'
-                )
-                .replace(
-                    /θ/g,
-                    '\\theta'
-                )
-                .replace(
-                    /α/g,
-                    '\\alpha'
-                )
-                .replace(
-                    /β/g,
-                    '\\beta'
-                )
-                .replace(
-                    /γ/g,
-                    '\\gamma'
-                )
-                .replace(
-                    /δ/g,
-                    '\\delta'
-                )
-                .replace(
-                    /Δ/g,
-                    '\\Delta'
-                )
-                .replace(
-                    /∞/g,
-                    '\\infty'
-                )
-                .replace(
-                    /≤/g,
-                    '\\leq'
-                )
-                .replace(
-                    /≥/g,
-                    '\\geq'
-                )
-                .replace(
-                    /±/g,
-                    '\\pm'
-                )
-                .replace(
-                    /×/g,
-                    '\\times'
-                )
-                .replace(
-                    /÷/g,
-                    '\\div'
-                );
-
-
-        /*
-         * Square root notation.
-         */
-
-        text =
-            text.replace(
-                /√\(([^)]+)\)/g,
-                '\\sqrt{$1}'
-            );
-
-
-        text =
-            text.replace(
-                /√([A-Za-z0-9]+)/g,
-                '\\sqrt{$1}'
-            );
-
-
-        /*
-         * Superscripts such as x^2.
-         */
-
-        text =
-            text.replace(
-                /([A-Za-z0-9)])\^(-?\d+)/g,
-                '$1^{$2}'
-            );
-
-
-        /*
-         * Render obvious mathematical fragments.
-         */
-
-        const mathPattern =
-            /(?:\\(?:sqrt|pi|theta|alpha|beta|gamma|delta|Delta|infty|leq|geq|pm|times|div)|[A-Za-z]+\^\{[^}]+\}|[A-Za-z0-9]+\^\{[^}]+\}|\\sqrt\{[^}]+\})/g;
-
-
-        text =
-            text.replace(
-                mathPattern,
-                match => {
-
-                    if (
-                        match.startsWith('\\(') ||
-                        match.startsWith('\\[')
-                    ) {
-
-                        return match;
-
-                    }
-
-                    return '\\(' +
-                        match +
-                        '\\)';
-
-                }
-            );
-
-
-        return text;
+        return s;
     }
 
 
@@ -4586,26 +4485,35 @@ document.addEventListener('click', (e) => {
 
     function typesetMath() {
 
+        const nodes = [
+            questionText,
+            optionsContainer,
+            answerInfo
+        ].filter(Boolean);
+
         if (
             window.MathJax &&
-            typeof
-                window.MathJax.typesetPromise ===
+            typeof window.MathJax.typesetPromise ===
                 'function'
         ) {
 
-            window.MathJax.typesetPromise(
-                [
-                    questionText,
-                    optionsContainer,
-                    answerInfo
-                ]
-            ).catch(
+            if (typeof window.MathJax.typesetClear === 'function') {
+                window.MathJax.typesetClear(nodes);
+            }
+
+            window.MathJax.typesetPromise(nodes).catch(
                 error =>
                     console.warn(
                         'MathJax typesetting:',
                         error
                     )
             );
+
+        } else if (window.MathJax && window.MathJax.startup) {
+
+            window.MathJax.startup.promise.then(() => {
+                window.MathJax.typesetPromise(nodes).catch(() => {});
+            });
 
         }
 
