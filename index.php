@@ -1744,6 +1744,100 @@ $appDownloadTargetUrl = '/download-app.php';
 
 
     /* ========================================================
+       STUDY SUBMENU
+       ======================================================== */
+
+    .study-menu-toggle {
+        width: 100%;
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 15px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        border: 0;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        background: transparent;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: left;
+        transition: background .15s ease, padding-left .15s ease;
+    }
+
+    .study-menu-toggle:hover {
+        background: rgba(255,255,255,0.12);
+        padding-left: 19px;
+    }
+
+    .study-menu-toggle .menu-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,.96);
+    }
+
+    .study-menu-toggle .menu-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+    .study-chevron {
+        margin-left: auto;
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+        transition: transform .2s ease;
+    }
+
+    .study-menu-toggle[aria-expanded="true"] .study-chevron {
+        transform: rotate(180deg);
+    }
+
+    .study-submenu {
+        display: none;
+        margin: 0 8px 5px 34px;
+        padding: 4px;
+        border-left: 1px solid rgba(255,255,255,.20);
+        background: rgba(0,0,0,.10);
+        border-radius: 0 8px 8px 0;
+    }
+
+    .study-submenu.open {
+        display: block;
+    }
+
+    .study-submenu a {
+        min-height: 40px;
+        padding: 9px 10px;
+        font-size: 13px;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .study-submenu a:last-child {
+        border-bottom: none;
+    }
+
+    .study-submenu .menu-icon {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+    }
+
+    .study-submenu .menu-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+
+    /* ========================================================
        TESTIMONIALS
        ======================================================== */
 
@@ -2395,6 +2489,16 @@ $appDownloadTargetUrl = '/download-app.php';
             font-size: 14px;
         }
 
+        .study-menu-toggle {
+            min-height: 50px;
+            padding: 14px 17px;
+            font-size: 14px;
+        }
+
+        .study-submenu {
+            margin-left: 38px;
+        }
+
     }
 
 
@@ -2558,10 +2662,54 @@ $appDownloadTargetUrl = '/download-app.php';
                 <span class="menu-label">Watch Video Lessons</span>
             </a>
 
-            <a href="/study.html">
-                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 7h8M8 11h6M8 15h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            <button
+                type="button"
+                class="study-menu-toggle"
+                id="study-menu-toggle"
+                onclick="toggleStudyMenu(event)"
+                aria-expanded="false"
+                aria-controls="study-submenu">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M4 5.5V19M8 7h8M8 11h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </span>
                 <span class="menu-label">Study</span>
-            </a>
+                <svg class="study-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <div class="study-submenu" id="study-submenu">
+                <a href="/study.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M4 5.5V19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Past Questions</span>
+                </a>
+                <a href="/novel.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v18H7.5A2.5 2.5 0 0 0 5 22V4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M5 4.5V19M9 7h6M9 11h7M9 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Novels</span>
+                </a>
+                <a href="/scholarship.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 8.5 12 4l9 4.5-9 4.5-9-4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M6 11.5V16c2.8 2.2 9.2 2.2 12 0v-4.5M21 9v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Scholarships</span>
+                </a>
+            </div>
 
             <a href="/download-app.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.5 10.5L12 15l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 20h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
@@ -3555,6 +3703,45 @@ window.toggleMenu =
     };
 
 
+// ============================================================
+// STUDY SUBMENU
+// ============================================================
+window.toggleStudyMenu =
+    (event) => {
+
+        if (event) {
+            event.stopPropagation();
+        }
+
+        const submenu =
+            document.getElementById(
+                'study-submenu'
+            );
+
+        const button =
+            document.getElementById(
+                'study-menu-toggle'
+            );
+
+        if (!submenu || !button) {
+            return;
+        }
+
+        const isOpen =
+            submenu.classList.contains('open');
+
+        submenu.classList.toggle(
+            'open',
+            !isOpen
+        );
+
+        button.setAttribute(
+            'aria-expanded',
+            String(!isOpen)
+        );
+    };
+
+
 document.addEventListener(
     'click',
     (e) => {
@@ -3578,6 +3765,27 @@ document.addEventListener(
         ) {
 
             m.classList.remove('menu-open');
+
+            const submenu =
+                document.getElementById(
+                    'study-submenu'
+                );
+
+            const studyButton =
+                document.getElementById(
+                    'study-menu-toggle'
+                );
+
+            if (submenu) {
+                submenu.classList.remove('open');
+            }
+
+            if (studyButton) {
+                studyButton.setAttribute(
+                    'aria-expanded',
+                    'false'
+                );
+            }
 
         }
 
