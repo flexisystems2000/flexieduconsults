@@ -1,0 +1,313 @@
+{
+  "play_info": {
+    "title": "A Man for All Seasons",
+    "author": "Robert Bolt",
+    "category": "African Literature text for SSCE",
+    "summary": {
+      "overview": "A Man for All Seasons (1960) by Robert Bolt is a historical drama play set in 16th-century England under King Henry VIII. It dramatizes the conflict between Sir Thomas More's unwavering integrity and the king's demand for obedience regarding the Act of Supremacy and royal divorce. The play employs the Common Man as a chorus-like narrator and servant to highlight themes of conscience versus power. Originally a radio play (1954), it was adapted for stage (1960) and film (1966). It is studied in SSCE curricula as a classic of English drama exploring moral courage, hypocrisy, and the supremacy of personal conscience.",
+      "plot_summary": "Act 1 introduces the Common Man playing multiple roles. Sir Thomas More debates with Richard Rich, refuses Cardinal Wolsey's request to endorse Henry VIII's divorce from Catherine of Aragon, and later confronts the king's pressure at a surprise supper. He refuses to support the marriage to Anne Boleyn. Act 2 covers two years later: More resigns as Lord Chancellor when Henry creates the Church of England, faces bribes and accusations from Thomas Cromwell (using Rich as witness), is imprisoned in the Tower of London, and is tried for treason. He dies by beheading, prioritizing conscience over life or oath. The Common Man ends by advising the audience to avoid trouble."
+    }
+  },
+  "cbt_questions": [
+    {
+      "id": 1,
+      "question": "Who is the author of A Man for All Seasons?",
+      "options": ["A) William Shakespeare", "B) Robert Bolt", "C) John Milton", "D) Bernard Shaw"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 2,
+      "question": "Which character does the Common Man play throughout the play?",
+      "options": ["A) Cardinal Wolsey", "B) Thomas Cromwell", "C) Richard Rich", "D) A multiple servant and minor roles"],
+      "correct_answer": "D"
+    },
+    {
+      "id": 3,
+      "question": "What is the primary conflict in the play?",
+      "options": ["A) War between England and France", "B) Henry VIII's desire for a male heir versus Thomas More's conscience", "C) A love triangle", "D) A political conspiracy against the king"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 4,
+      "question": "What does Sir Thomas More refuse to do for Henry VIII?",
+      "options": ["A) Sign a letter to the Pope", "B) Write a book on theology", "C) Fight in the war", "D) Join the king's court"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 5,
+      "question": "Who is Sir Thomas More's daughter?",
+      "options": ["A) Alice", "B) Margaret", "C) Anne", "D) Jane"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 6,
+      "question": "What position does Thomas Cromwell hold under Henry VIII?",
+      "options": ["A) Cardinal", "B) Lord Chancellor", "C) Secretary and chief minister", "D) Spanish Ambassador"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 7,
+      "question": "Why does More initially refuse William Roper as a suitor for his daughter?",
+      "options": ["A) Roper is too poor", "B) Roper is a Protestant heretic", "C) Roper is already married", "D) More dislikes his daughter"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 8,
+      "question": "Where does the play begin?",
+      "options": ["A) The Tower of London", "B) Hampton Court Palace", "C) A Thames boat", "D) Westminster Abbey"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 9,
+      "question": "What bribe does Richard Rich attempt to give More?",
+      "options": ["A) Gold coins", "B) A silver cup from a woman", "C) A horse", "D) A letter of introduction"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 10,
+      "question": "Who becomes Lord Chancellor after Wolsey?",
+      "options": ["A) Thomas Cromwell", "B) Sir Thomas More", "C) Richard Rich", "D) Chapuys"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 11,
+      "question": "What does More mean by 'a man for all seasons'?",
+      "options": ["A) Someone who adapts to all situations", "B) A man whose principles are valid for all times", "C) A politician who changes parties", "D) A sailor who travels everywhere"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 12,
+      "question": "How does More describe his silence in political matters?",
+      "options": ["It is a lie", "It shows guilt", "It is deliberate and consistent", "It is a mistake"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 13,
+      "question": "What does the Common Man say about Cromwell's relationship with Rich?",
+      "options": ["They are friends", "Cromwell is blackmailing Rich", "They are rivals", "Cromwell hired Rich"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 14,
+      "question": "Who informs Rich that More accepted a bribe?",
+      "options": ["A) Norfolk", "B) Chapuys", "C) Alice", "D) Margaret"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 15,
+      "question": "What does More refuse to do even under torture or threat?",
+      "options": ["A) Swear on the Bible", "B) Lie under oath", "C) Denounce the king", "D) Convert to Protestantism"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 16,
+      "question": "In which scene does Henry VIII visit More's house unannounced?",
+      "options": ["A) Act 1, supper scene", "B) Act 2, trial", "C) Act 1, boat scene", "D) Act 2, jail"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 17,
+      "question": "What does Rich become after betraying More?",
+      "options": ["A) Collector of Revenues", "B) Cardinal", "C) King", "D) Lord Chancellor"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 18,
+      "question": "Who is the Spanish Ambassador in the play?",
+      "options": ["A) Thomas Cromwell", "B) Richard Rich", "C) Signor Chapuys", "D) Wolsey"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 19,
+      "question": "What oath does More refuse to take?",
+      "options": ["A) To serve the king", "B) To support the Church of England", "C) To marry Anne Boleyn", "D) To join the army"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 20,
+      "question": "How does the Common Man die?",
+      "options": ["A) Of old age", "B) In battle", "C) By hanging", "D) By beheading as executioner"],
+      "correct_answer": "D"
+    },
+    {
+      "id": 21,
+      "question": "What historical event marks the break from Rome in the play?",
+      "options": ["A) The Battle of Agincourt", "B) The creation of the Church of England", "C) The Spanish Armada", "D) The French Revolution"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 22,
+      "question": "What does Alice beg More to do?",
+      "options": ["A) Stay at home", "B) Sign the document", "C) Fight the king", "D) Leave the country"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 23,
+      "question": "Who plays the boatman in the play?",
+      "options": ["A) Richard Rich", "B) The Common Man", "C) Norfolk", "D) Wolsey"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 24,
+      "question": "What does More say about the law of God?",
+      "options": ["It can be broken for state reasons", "It is subject to the king's will", "It is superior to man's law", "It is optional"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 25,
+      "question": "Who visits More in the Tower of London?",
+      "options": ["A) Henry VIII", "B) Norfolk, Cromwell and Cranmer", "C) Chapuys only", "D) Rich only"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 26,
+      "question": "What does Rich claim More said about the king's supremacy?",
+      "options": ["He supported it", "He opposed it", "He was neutral", "He laughed at it"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 27,
+      "question": "How does More describe his conscience?",
+      "options": ["It is the king's will", "It is a burden to be ignored", "It is the voice of God", "It is a tool for politics"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 28,
+      "question": "What does the play suggest about power?",
+      "options": ["Power corrupts absolutely", "Power is always just", "Power depends on truth", "Power is irrelevant"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 29,
+      "question": "Who is Norfolk?",
+      "options": ["A) The executioner", "B) The king's friend and More's ally", "C) The king's rival", "D) The pope's messenger"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 30,
+      "question": "What bribe does Rich give More in Act 1?",
+      "options": ["A) A letter", "B) A silver cup", "C) Gold", "D) A horse"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 31,
+      "question": "Why does More resign his position?",
+      "options": ["He is ill", "He cannot support Henry's actions", "He wants to retire", "He is accused"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 32,
+      "question": "What does the Common Man say about the audience at the end?",
+      "options": ["They should be more like More", "They should avoid trouble", "They are important", "They are heroes"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 33,
+      "question": "Who accuses More of treason?",
+      "options": ["A) Wolsey", "B) Richard Rich", "C) Henry VIII", "D) Chapuys"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 34,
+      "question": "What does Alice say More is protecting?",
+      "options": ["His reputation", "His family from poverty", "His soul", "His position"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 35,
+      "question": "How long does More spend in the Tower?",
+      "options": ["A few months", "Over a year", "Six months", "A week"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 36,
+      "question": "What does More refuse to accept even from Chapuys?",
+      "options": ["A food", "A letter of support", "Money", "A gift"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 37,
+      "question": "Who is the jailer in the Tower?",
+      "options": ["A) The Common Man", "B) Cromwell", "C) Rich", "D) Norfolk"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 38,
+      "question": "What does Rich's position as Collector of Revenues mean?",
+      "options": ["He is rich now", "He collects taxes for the king", "He is promoted", "He is a spy"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 39,
+      "question": "What is the name of More's wife?",
+      "options": ["A) Margaret", "B) Alice", "C) Anne", "D) Jane"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 40,
+      "question": "How does More feel about Rich's perjury?",
+      "options": ["He is glad", "He is sorry for Rich", "He is angry", "He ignores it"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 41,
+      "question": "What does the Common Man say the king is?",
+      "options": ["A wise ruler", "A tyrant", "A good man", "An old man"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 42,
+      "question": "Who warns More to swear the oath?",
+      "options": ["Alice and Norfolk", "Cromwell alone", "Chapuys", "Rich"],
+      "correct_answer": "A"
+    },
+    {
+      "id": 43,
+      "question": "What does More say he is 'sorrier for' than his peril?",
+      "options": ["His family", "Rich's perjury", "The king", "His conscience"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 44,
+      "question": "Where does More pray before the king's visit?",
+      "options": ["In the garden", "At vespers", "In the boat", "In the Tower"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 45,
+      "question": "What does the play use the Common Man to do?",
+      "options": ["Carry the plot", "Comment on the action and show hypocrisy", "Fight the battles", "Sing songs"],
+      "correct_answer": "B"
+    },
+    {
+      "id": 46,
+      "question": "Who does More refuse to support even in private?",
+      "options": ["His daughter Margaret", "His wife Alice", "His friend Norfolk", "The king Henry"],
+      "correct_answer": "D"
+    },
+    {
+      "id": 47,
+      "question": "What historical fact does the play dramatize?",
+      "options": ["Henry VIII's marriage to Anne Boleyn", "The English Reformation", "The trial of More", "All of the above"],
+      "correct_answer": "D"
+    },
+    {
+      "id": 48,
+      "question": "How does the play end?",
+      "options": ["With a celebration", "With a battle", "With More's beheading", "With a wedding"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 49,
+      "question": "Who is the Duke of Norfolk in relation to More?",
+      "options": ["His enemy", "His son", "His friend who urges him to lie", "His servant"],
+      "correct_answer": "C"
+    },
+    {
+      "id": 50,
+      "question": "What is the main theme of A Man for All Seasons?",
+      "options": ["Love and marriage", "War and peace", "The importance of conscience and integrity", "Money and power"],
+      "correct_answer": "C"
+    }
+  ]
+}
