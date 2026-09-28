@@ -54,6 +54,11 @@ if ($curlError || ($httpCode && ($httpCode < 200 || $httpCode >= 300))) {
     $hasError = true;
 }
 
+
+/* ============================================================
+   HELPERS
+============================================================ */
+
 function e($value)
 {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
@@ -114,769 +119,1102 @@ function scholarshipImage($image)
         </svg>'
     );
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <meta name="theme-color" content="#003366">
+    <meta
+        name="theme-color"
+        content="#003366">
 
-    <title>Scholarships | Flexi Educational Consult</title>
+    <title>
+        Scholarships | Flexi Educational Consult
+    </title>
 
-    <meta name="description"
-          content="Find current scholarship opportunities for secondary school, undergraduate, postgraduate and international students through Flexi Educational Consult.">
+    <meta
+        name="description"
+        content="Find current scholarship opportunities for secondary school, undergraduate, postgraduate and international students through Flexi Educational Consult.">
 
-    <meta name="keywords"
-          content="scholarships, Nigerian scholarships, undergraduate scholarships, postgraduate scholarships, international scholarships, Flexi Educational Consult">
+    <meta
+        name="keywords"
+        content="scholarships, Nigerian scholarships, undergraduate scholarships, postgraduate scholarships, international scholarships, Flexi Educational Consult">
 
-    <link rel="canonical"
-          href="https://flexieduconsult.com.ng/scholarship.php">
+    <link
+        rel="canonical"
+        href="https://flexieduconsult.com.ng/scholarship.php">
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fa;
-            color: #1f2937;
-            line-height: 1.6;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        button,
-        input,
-        select {
-            font: inherit;
-        }
-
-        /* =====================================================
-           HEADER
-        ===================================================== */
-
-        .top-header {
-            background: #003366;
-            color: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,.12);
-        }
-
-        .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 72px;
-            padding: 10px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            min-width: 0;
-        }
-
-        .brand-logo {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            background: #fff;
-            color: #003366;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: 800;
-            flex-shrink: 0;
-        }
-
-        .brand-text {
-            min-width: 0;
-        }
-
-        .brand-name {
-            margin: 0;
-            font-size: 17px;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .brand-tagline {
-            margin: 1px 0 0;
-            font-size: 11px;
-            opacity: .85;
-        }
-
-        .desktop-nav {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .desktop-nav a {
-            color: #fff;
-            padding: 9px 11px;
-            border-radius: 7px;
-            font-size: 14px;
-            transition: background .2s ease;
-        }
-
-        .desktop-nav a:hover,
-        .desktop-nav a.active {
-            background: rgba(255,255,255,.14);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            width: 42px;
-            height: 42px;
-            border: 0;
-            border-radius: 8px;
-            background: rgba(255,255,255,.12);
-            color: #fff;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mobile-menu {
-            display: none;
-            background: #00284f;
-            border-top: 1px solid rgba(255,255,255,.1);
-        }
-
-        .mobile-menu.open {
-            display: block;
-        }
-
-        .mobile-menu a {
-            display: block;
-            padding: 13px 20px;
-            color: #fff;
-            border-bottom: 1px solid rgba(255,255,255,.08);
-            font-size: 14px;
-        }
-
-        /* =====================================================
-           HERO
-        ===================================================== */
-
-        .hero {
-            background:
-                linear-gradient(135deg, #003366 0%, #004b80 55%, #2E8B57 100%);
-            color: #fff;
-            padding: 58px 18px 62px;
-        }
-
-        .hero-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 7px 12px;
-            border-radius: 30px;
-            background: rgba(255,255,255,.12);
-            border: 1px solid rgba(255,255,255,.2);
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .hero h1 {
-            margin: 0 auto 12px;
-            max-width: 800px;
-            font-size: clamp(30px, 6vw, 48px);
-            line-height: 1.12;
-        }
-
-        .hero p {
-            max-width: 720px;
-            margin: 0 auto;
-            font-size: 16px;
-            opacity: .92;
-        }
-
-        /* =====================================================
-           MAIN
-        ===================================================== */
-
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 18px 60px;
-        }
-
-        /* =====================================================
-           SEARCH / FILTERS
-        ===================================================== */
-
-        .filter-box {
-            background: #fff;
-            border-radius: 14px;
-            padding: 18px;
-            margin-top: -48px;
-            position: relative;
-            z-index: 5;
-            box-shadow: 0 7px 28px rgba(0,0,0,.10);
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 230px;
-            gap: 12px;
-        }
-
-        .input-wrap {
-            position: relative;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-            width: 19px;
-            height: 19px;
-            pointer-events: none;
-        }
-
-        .search-input,
-        .study-filter {
-            width: 100%;
-            height: 48px;
-            border: 1px solid #d8dee7;
-            border-radius: 9px;
-            background: #fff;
-            color: #1f2937;
-            outline: none;
-        }
-
-        .search-input {
-            padding: 0 15px 0 44px;
-        }
-
-        .study-filter {
-            padding: 0 13px;
-            cursor: pointer;
-        }
-
-        .search-input:focus,
-        .study-filter:focus {
-            border-color: #2E8B57;
-            box-shadow: 0 0 0 3px rgba(46,139,87,.12);
-        }
-
-        /* =====================================================
-           SECTION HEADER
-        ===================================================== */
-
-        .section-header {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 15px;
-            margin: 35px 0 18px;
-        }
-
-        .section-title {
-            margin: 0;
-            color: #003366;
-            font-size: 25px;
-        }
-
-        .section-subtitle {
-            margin: 4px 0 0;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .result-count {
-            color: #64748b;
-            font-size: 13px;
-            white-space: nowrap;
-        }
-
-        /* =====================================================
-           CARDS
-        ===================================================== */
-
-        .scholarship-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 20px;
-        }
-
-        .scholarship-card {
-            background: #fff;
-            border: 1px solid #e4e8ee;
-            border-radius: 14px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            box-shadow: 0 3px 14px rgba(0,0,0,.045);
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease;
-        }
-
-        .scholarship-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 28px rgba(0,0,0,.09);
-        }
-
-        .card-image-wrap {
-            position: relative;
-            height: 185px;
-            background: #e9eef3;
-            overflow: hidden;
-        }
-
-        .card-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .featured-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: #FFD700;
-            color: #1f2937;
-            padding: 5px 9px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .card-body {
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .organization {
-            color: #2E8B57;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .3px;
-            margin-bottom: 6px;
-        }
-
-        .card-title {
-            margin: 0 0 9px;
-            color: #003366;
-            font-size: 18px;
-            line-height: 1.35;
-        }
-
-        .card-description {
-            margin: 0 0 15px;
-            color: #64748b;
-            font-size: 13px;
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .details {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-            margin-bottom: 18px;
-        }
-
-        .detail-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 9px;
-            color: #475569;
-            font-size: 12px;
-        }
-
-        .detail-icon {
-            width: 17px;
-            height: 17px;
-            flex: 0 0 17px;
-            color: #2E8B57;
-            margin-top: 1px;
-        }
-
-        .detail-label {
-            font-weight: 700;
-            color: #334155;
-        }
-
-        .detail-value {
-            color: #64748b;
-        }
-
-        .apply-btn {
-            margin-top: auto;
-            width: 100%;
-            min-height: 44px;
-            border-radius: 8px;
-            background: #003366;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            transition: background .2s ease;
-        }
-
-        .apply-btn:hover {
-            background: #00284f;
-        }
-
-        .apply-icon {
-            width: 17px;
-            height: 17px;
-        }
-
-        /* =====================================================
-           STATES
-        ===================================================== */
-
-        .state-box {
-            background: #fff;
-            border: 1px solid #e4e8ee;
-            border-radius: 14px;
-            padding: 50px 20px;
-            text-align: center;
-            color: #64748b;
-        }
-
-        .state-icon {
-            width: 42px;
-            height: 42px;
-            margin: 0 auto 13px;
-            color: #2E8B57;
-        }
-
-        .state-box h3 {
-            margin: 0 0 6px;
-            color: #003366;
-            font-size: 18px;
-        }
-
-        .state-box p {
-            margin: 0;
-            font-size: 14px;
-        }
-
-        .spinner {
-            width: 36px;
-            height: 36px;
-            margin: 0 auto 15px;
-            border: 3px solid #dbe4ec;
-            border-top-color: #003366;
-            border-radius: 50%;
-            animation: spin .8s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* =====================================================
-           PAGINATION
-        ===================================================== */
-
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 7px;
-            margin-top: 28px;
-        }
-
-        .page-btn {
-            min-width: 38px;
-            height: 38px;
-            padding: 0 10px;
-            border: 1px solid #d8dee7;
-            background: #fff;
-            color: #334155;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .page-btn:hover {
-            border-color: #003366;
-        }
-
-        .page-btn.active {
-            background: #003366;
-            border-color: #003366;
-            color: #fff;
-        }
-
-        .page-btn:disabled {
-            opacity: .45;
-            cursor: not-allowed;
-        }
-
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-
-        footer {
-            background: #00284f;
-            color: #fff;
-            margin-top: 0;
-        }
-
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 42px 18px 25px;
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr;
-            gap: 35px;
-        }
-
-        .footer-title {
-            margin: 0 0 10px;
-            font-size: 17px;
-        }
-
-        .footer-text {
-            margin: 0;
-            color: rgba(255,255,255,.75);
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        .footer-heading {
-            margin: 0 0 12px;
-            font-size: 14px;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .footer-links a {
-            color: rgba(255,255,255,.75);
-            font-size: 13px;
-        }
-
-        .footer-links a:hover {
-            color: #fff;
-        }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 17px 18px;
-            border-top: 1px solid rgba(255,255,255,.1);
-            color: rgba(255,255,255,.6);
-            font-size: 12px;
-            text-align: center;
-        }
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-
-        @media (max-width: 950px) {
-            .scholarship-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .desktop-nav {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: flex;
-            }
-
-            .footer-inner {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .footer-inner > div:first-child {
-                grid-column: 1 / -1;
-            }
-        }
-
-        @media (max-width: 650px) {
-            .header-inner {
-                min-height: 64px;
-            }
-
-            .brand-name {
-                font-size: 15px;
-            }
-
-            .brand-tagline {
-                display: none;
-            }
-
-            .hero {
-                padding: 45px 16px 58px;
-            }
-
-            .hero p {
-                font-size: 14px;
-            }
-
-            .main-container {
-                padding-left: 14px;
-                padding-right: 14px;
-            }
-
-            .filter-box {
-                grid-template-columns: 1fr;
-                margin-top: -40px;
-            }
-
-            .section-header {
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 5px;
-            }
-
-            .scholarship-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .card-image-wrap {
-                height: 200px;
-            }
-
-            .footer-inner {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-inner > div:first-child {
-                grid-column: auto;
-            }
-        }
+
+/* ============================================================
+   GLOBAL
+============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fa;
+    color: #1f2937;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+
+/* ============================================================
+   EXACT INDEX.PHP HEADER
+============================================================ */
+
+header {
+    background: #003366;
+    color: white;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 3px solid #2E8B57;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    height: 34px;
+    width: 34px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.brand-name {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.menu-container {
+    position: relative;
+}
+
+.menu-btn {
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 6px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 4px;
+}
+
+.menu-btn span {
+    width: 18px;
+    height: 2px;
+    background: white;
+}
+
+.square-menu {
+    display: none;
+
+    position: absolute;
+    top: 48px;
+    right: 0;
+
+    width: 240px;
+
+    background: #003366;
+
+    border: 2px solid #2E8B57;
+    border-radius: 10px;
+
+    z-index: 2000;
+
+    box-shadow: 0 12px 32px rgba(0,0,0,.35);
+
+    overflow: hidden;
+}
+
+.square-menu a {
+    display: block;
+
+    padding: 14px 16px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    border-bottom: 1px solid rgba(255,255,255,.1);
+
+    transition: background .15s;
+}
+
+.square-menu a:hover {
+    background: rgba(255,255,255,.08);
+}
+
+.square-menu a:last-child {
+    border-bottom: none;
+}
+
+
+/* ============================================================
+   SCHOLARSHIP HERO
+============================================================ */
+
+.hero {
+    background:
+        linear-gradient(
+            135deg,
+            #003366 0%,
+            #004b80 55%,
+            #2E8B57 100%
+        );
+
+    color: #fff;
+
+    padding: 58px 18px 62px;
+}
+
+.hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 12px;
+
+    border-radius: 30px;
+
+    background: rgba(255,255,255,.12);
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    margin-bottom: 16px;
+}
+
+.hero h1 {
+    margin: 0 auto 12px;
+
+    max-width: 800px;
+
+    font-size: clamp(30px, 6vw, 48px);
+
+    line-height: 1.12;
+}
+
+.hero p {
+    max-width: 720px;
+
+    margin: 0 auto;
+
+    font-size: 16px;
+
+    opacity: .92;
+}
+
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+.main-container {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 30px 18px 60px;
+}
+
+
+/* ============================================================
+   SEARCH / FILTERS
+============================================================ */
+
+.filter-box {
+    background: #fff;
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    margin-top: -48px;
+
+    position: relative;
+    z-index: 5;
+
+    box-shadow: 0 7px 28px rgba(0,0,0,.10);
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        230px;
+
+    gap: 12px;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #64748b;
+
+    width: 19px;
+    height: 19px;
+
+    pointer-events: none;
+}
+
+.search-input,
+.study-filter {
+    width: 100%;
+
+    height: 48px;
+
+    border: 1px solid #d8dee7;
+
+    border-radius: 9px;
+
+    background: #fff;
+
+    color: #1f2937;
+
+    outline: none;
+}
+
+.search-input {
+    padding: 0 15px 0 44px;
+}
+
+.study-filter {
+    padding: 0 13px;
+
+    cursor: pointer;
+}
+
+.search-input:focus,
+.study-filter:focus {
+    border-color: #2E8B57;
+
+    box-shadow:
+        0 0 0 3px rgba(46,139,87,.12);
+}
+
+
+/* ============================================================
+   SECTION HEADER
+============================================================ */
+
+.section-header {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin: 35px 0 18px;
+}
+
+.section-title {
+    margin: 0;
+
+    color: #003366;
+
+    font-size: 25px;
+}
+
+.section-subtitle {
+    margin: 4px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+.result-count {
+    color: #64748b;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   SCHOLARSHIP CARDS
+============================================================ */
+
+.scholarship-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.scholarship-card {
+    background: #fff;
+
+    border: 1px solid #e4e8ee;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+
+    box-shadow: 0 3px 14px rgba(0,0,0,.045);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.scholarship-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 28px rgba(0,0,0,.09);
+}
+
+.card-image-wrap {
+    position: relative;
+
+    height: 185px;
+
+    background: #e9eef3;
+
+    overflow: hidden;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.featured-badge {
+    position: absolute;
+
+    top: 12px;
+    left: 12px;
+
+    background: #FFD700;
+
+    color: #1f2937;
+
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+.card-body {
+    padding: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    flex: 1;
+}
+
+.organization {
+    color: #2E8B57;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .3px;
+
+    margin-bottom: 6px;
+}
+
+.card-title {
+    margin: 0 0 9px;
+
+    color: #003366;
+
+    font-size: 18px;
+
+    line-height: 1.35;
+}
+
+.card-description {
+    margin: 0 0 15px;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 3;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+.details {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 8px;
+
+    margin-bottom: 18px;
+}
+
+.detail-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    color: #475569;
+
+    font-size: 12px;
+}
+
+.detail-icon {
+    width: 17px;
+    height: 17px;
+
+    flex: 0 0 17px;
+
+    color: #2E8B57;
+
+    margin-top: 1px;
+}
+
+.detail-label {
+    font-weight: 700;
+
+    color: #334155;
+}
+
+.detail-value {
+    color: #64748b;
+}
+
+.deadline-soon {
+    color: #b45309 !important;
+    font-weight: 700;
+}
+
+.deadline-past {
+    color: #b91c1c !important;
+    font-weight: 700;
+}
+
+.apply-btn {
+    margin-top: auto;
+
+    width: 100%;
+
+    min-height: 44px;
+
+    border-radius: 8px;
+
+    background: #003366;
+
+    color: #fff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition: background .2s ease;
+}
+
+.apply-btn:hover {
+    background: #00284f;
+}
+
+.apply-icon {
+    width: 17px;
+    height: 17px;
+}
+
+
+/* ============================================================
+   STATES
+============================================================ */
+
+.state-box {
+    background: #fff;
+
+    border: 1px solid #e4e8ee;
+
+    border-radius: 14px;
+
+    padding: 50px 20px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+.state-icon {
+    width: 42px;
+    height: 42px;
+
+    margin: 0 auto 13px;
+
+    color: #2E8B57;
+}
+
+.state-box h3 {
+    margin: 0 0 6px;
+
+    color: #003366;
+
+    font-size: 18px;
+}
+
+.state-box p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+
+    margin: 0 auto 15px;
+
+    border: 3px solid #dbe4ec;
+
+    border-top-color: #003366;
+
+    border-radius: 50%;
+
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* ============================================================
+   PAGINATION
+============================================================ */
+
+.pagination {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-top: 28px;
+}
+
+.page-btn {
+    min-width: 38px;
+
+    height: 38px;
+
+    padding: 0 10px;
+
+    border: 1px solid #d8dee7;
+
+    background: #fff;
+
+    color: #334155;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+}
+
+.page-btn:hover {
+    border-color: #003366;
+}
+
+.page-btn.active {
+    background: #003366;
+
+    border-color: #003366;
+
+    color: #fff;
+}
+
+.page-btn:disabled {
+    opacity: .45;
+
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   EXACT INDEX.PHP FOOTER
+============================================================ */
+
+.footer {
+    background:
+        linear-gradient(
+            135deg,
+            #011627 0%,
+            #032038 100%
+        );
+
+    color: #e2e8f0;
+
+    padding: 60px 20px 30px;
+
+    margin-top: 50px;
+
+    border-top: 4px solid #2E8B57;
+
+    font-size: 14px;
+}
+
+.footer-grid {
+    display: grid;
+
+    grid-template-columns:
+        1.8fr
+        1.2fr
+        1.3fr
+        1fr;
+
+    gap: 35px;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+}
+
+.footer h4 {
+    color: #FFD700;
+
+    font-size: .9rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+
+    margin: 0 0 16px 0;
+
+    position: relative;
+
+    padding-bottom: 6px;
+}
+
+.footer h4::after {
+    content: '';
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: 0;
+
+    width: 24px;
+
+    height: 2px;
+
+    background: #FFD700;
+
+    opacity: .7;
+
+    border-radius: 2px;
+}
+
+.footer-about {
+    line-height: 1.7;
+
+    color: #94a3b8;
+
+    margin: 0;
+}
+
+.footer-links-list {
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+}
+
+.footer-links-list li {
+    margin-bottom: 10px;
+}
+
+.footer a {
+    color: #cbd5e0;
+
+    text-decoration: none;
+
+    transition: all .25s ease;
+}
+
+.footer-links-list a:hover {
+    color: #FFD700;
+
+    transform: translateX(4px);
+
+    display: inline-block;
+}
+
+.whatsapp-channel-link {
+    color: #25D366 !important;
+
+    font-weight: 600;
+
+    display: inline-block;
+}
+
+.whatsapp-channel-link:hover {
+    opacity: .85;
+
+    transform: translateX(4px);
+}
+
+.contact-group {
+    margin-bottom: 16px;
+}
+
+.contact-group h5 {
+    color: #fff;
+
+    font-size: .82rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .8px;
+
+    margin: 0 0 6px 0;
+
+    opacity: .9;
+}
+
+.contact-group a {
+    display: block;
+
+    color: #94a3b8;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+
+    margin: 40px auto 0;
+
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255,255,255,.08);
+
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #64748b;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (min-width: 768px) {
+
+    header {
+        height: 56px;
+
+        padding: 0 28px;
+    }
+
+    .brand-name {
+        font-size: 16px;
+    }
+
+    .logo-img {
+        height: 36px;
+        width: 36px;
+    }
+
+}
+
+@media (max-width: 950px) {
+
+    .scholarship-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 30px;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .hero {
+        padding: 45px 16px 58px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .main-container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .filter-box {
+        grid-template-columns: 1fr;
+
+        margin-top: -40px;
+    }
+
+    .section-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .scholarship-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-image-wrap {
+        height: 200px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+    }
+
+}
+
+
+/* ============================================================
+   DEADLINE STYLING
+============================================================ */
+
+.deadline-soon {
+    color: #b45309 !important;
+    font-weight: 700;
+}
+
+.deadline-past {
+    color: #b91c1c !important;
+    font-weight: 700;
+}
+
     </style>
+
 </head>
+
 
 <body>
 
-<!-- =========================================================
-     HEADER
-========================================================= -->
 
-<header class="top-header">
+<!-- ============================================================
+     EXACT INDEX.PHP HEADER
+============================================================ -->
 
-    <div class="header-inner">
+<header>
 
-        <a href="/" class="brand" aria-label="Flexi Educational Consult Home">
+    <div class="header-left">
 
-            <div class="brand-logo" aria-hidden="true">
-                F
-            </div>
+        <a
+            href="/index.php"
+            aria-label="Flexi Educational Consult Home">
 
-            <div class="brand-text">
-                <p class="brand-name">Flexi Educational Consult</p>
-                <p class="brand-tagline">Your Education, Our Priority</p>
-            </div>
+            <img
+                src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg"
+                alt="Flexi Educational Consult Official Logo"
+                class="logo-img">
 
         </a>
 
-        <nav class="desktop-nav" aria-label="Main navigation">
-
-            <a href="/">Home</a>
-
-            <a href="/study.php">Study</a>
-
-            <a href="/novel.php">Literature</a>
-
-            <a href="/scholarship.php" class="active">
-                Scholarships
-            </a>
-
-            <a href="/news">News</a>
-
-            <a href="/contactsupport.html">Support</a>
-
-        </nav>
-
-        <button
-            class="mobile-menu-btn"
-            id="mobileMenuBtn"
-            type="button"
-            aria-label="Open navigation menu"
-            aria-expanded="false"
-        >
-            <svg
-                width="21"
-                height="21"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                aria-hidden="true"
-            >
-                <path d="M4 6h16"></path>
-                <path d="M4 12h16"></path>
-                <path d="M4 18h16"></path>
-            </svg>
-        </button>
+        <span class="brand-name">
+            Flexi Educational Consult
+        </span>
 
     </div>
 
-    <div class="mobile-menu" id="mobileMenu">
 
-        <a href="/">Home</a>
-        <a href="/study.php">Study</a>
-        <a href="/novel.php">Literature</a>
-        <a href="/scholarship.php">Scholarships</a>
-        <a href="/news">News</a>
-        <a href="/contactsupport.html">Support</a>
+    <div class="menu-container">
+
+        <button
+            class="menu-btn"
+            onclick="toggleMenu()"
+            type="button"
+            aria-label="Toggle Navigation Menu"
+            aria-expanded="false">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+
+        <div
+            class="square-menu"
+            id="squareMenu">
+
+            <a href="/index.php">
+                Home
+            </a>
+
+            <a href="/videos.html">
+                Watch Video Lessons
+            </a>
+
+            <a href="/syllabus.html">
+                Access the JAMB and WAEC syllabus here
+            </a>
+
+            <a href="/brochure.html">
+                Access JAMB Brochure
+            </a>
+
+            <a href="/cbt.html">
+                CBT Simulator
+            </a>
+
+            <a href="/groups.html">
+                Classroom (Groups and chats)
+            </a>
+
+            <a href="/purchase.html">
+                Purchase Scratch Cards
+            </a>
+
+            <a href="/pdf.html">
+                Get your PDFs from here
+            </a>
+
+            <a href="/location.html">
+                Tutorial Centers Near You
+            </a>
+
+            <a href="/profile.html">
+                User Profile
+            </a>
+
+            <a
+                href="#"
+                id="auth-menu-btn">
+                Login
+            </a>
+
+        </div>
 
     </div>
 
 </header>
 
 
-<!-- =========================================================
-     HERO
-========================================================= -->
+<!-- ============================================================
+     SCHOLARSHIP HERO
+============================================================ -->
 
 <section class="hero">
 
@@ -893,18 +1231,23 @@ function scholarshipImage($image)
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                aria-hidden="true"
-            >
-                <path d="M12 3l2.6 5.27L20.4 9.1l-4.2 4.1.99 5.79L12 16.27 6.81 19l.99-5.79-4.2-4.1 5.8-.83L12 3z"></path>
+                aria-hidden="true">
+
+                <path
+                    d="M12 3l2.6 5.27L20.4 9.1l-4.2 4.1.99 5.79L12 16.27 6.81 19l.99-5.79-4.2-4.1 5.8-.83L12 3z">
+                </path>
+
             </svg>
 
             Scholarship Opportunities
 
         </div>
 
+
         <h1>
             Discover Scholarship Opportunities
         </h1>
+
 
         <p>
             Explore available scholarships and educational funding
@@ -916,15 +1259,18 @@ function scholarshipImage($image)
 </section>
 
 
-<!-- =========================================================
+<!-- ============================================================
      MAIN
-========================================================= -->
+============================================================ -->
 
 <main class="main-container">
 
-    <!-- SEARCH -->
 
-    <section class="filter-box" aria-label="Scholarship search and filters">
+    <!-- SEARCH / FILTER -->
+
+    <section
+        class="filter-box"
+        aria-label="Scholarship search and filters">
 
         <div class="input-wrap">
 
@@ -936,11 +1282,18 @@ function scholarshipImage($image)
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                aria-hidden="true"
-            >
-                <circle cx="11" cy="11" r="7"></circle>
+                aria-hidden="true">
+
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7">
+                </circle>
+
                 <path d="m20 20-4-4"></path>
+
             </svg>
+
 
             <input
                 type="search"
@@ -948,24 +1301,43 @@ function scholarshipImage($image)
                 class="search-input"
                 placeholder="Search scholarships, organizations, fields..."
                 autocomplete="off"
-                aria-label="Search scholarships"
-            >
+                aria-label="Search scholarships">
 
         </div>
+
 
         <select
             id="studyFilter"
             class="study-filter"
-            aria-label="Filter by study level"
-        >
+            aria-label="Filter by study level">
 
-            <option value="">All Study Levels</option>
-            <option value="secondary school">Secondary School</option>
-            <option value="undergraduate">Undergraduate</option>
-            <option value="postgraduate">Postgraduate</option>
-            <option value="master's">Master's</option>
-            <option value="phd">PhD</option>
-            <option value="international students">International Students</option>
+            <option value="">
+                All Study Levels
+            </option>
+
+            <option value="secondary school">
+                Secondary School
+            </option>
+
+            <option value="undergraduate">
+                Undergraduate
+            </option>
+
+            <option value="postgraduate">
+                Postgraduate
+            </option>
+
+            <option value="master's">
+                Master's
+            </option>
+
+            <option value="phd">
+                PhD
+            </option>
+
+            <option value="international students">
+                International Students
+            </option>
 
         </select>
 
@@ -988,12 +1360,14 @@ function scholarshipImage($image)
 
         </div>
 
+
         <div
             class="result-count"
             id="resultCount"
-            aria-live="polite"
-        >
+            aria-live="polite">
+
             Loading...
+
         </div>
 
     </section>
@@ -1003,12 +1377,16 @@ function scholarshipImage($image)
 
     <div
         class="state-box"
-        id="loadingState"
-    >
+        id="loadingState">
 
-        <div class="spinner" aria-hidden="true"></div>
+        <div
+            class="spinner"
+            aria-hidden="true">
+        </div>
 
-        <h3>Loading scholarships</h3>
+        <h3>
+            Loading scholarships
+        </h3>
 
         <p>
             Please wait while we retrieve the latest opportunities.
@@ -1022,8 +1400,7 @@ function scholarshipImage($image)
     <div
         class="state-box"
         id="errorState"
-        style="display:none;"
-    >
+        style="display:none;">
 
         <svg
             class="state-icon"
@@ -1033,14 +1410,24 @@ function scholarshipImage($image)
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            aria-hidden="true"
-        >
-            <circle cx="12" cy="12" r="9"></circle>
+            aria-hidden="true">
+
+            <circle
+                cx="12"
+                cy="12"
+                r="9">
+            </circle>
+
             <path d="M12 8v4"></path>
+
             <path d="M12 16h.01"></path>
+
         </svg>
 
-        <h3>Unable to load scholarships</h3>
+
+        <h3>
+            Unable to load scholarships
+        </h3>
 
         <p>
             We could not retrieve the scholarship list right now.
@@ -1055,8 +1442,7 @@ function scholarshipImage($image)
     <div
         class="state-box"
         id="emptyState"
-        style="display:none;"
-    >
+        style="display:none;">
 
         <svg
             class="state-icon"
@@ -1066,16 +1452,24 @@ function scholarshipImage($image)
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            aria-hidden="true"
-        >
+            aria-hidden="true">
+
             <path d="M4 7h16"></path>
+
             <path d="M6 7l1 13h10l1-13"></path>
+
             <path d="M9 7V4h6v3"></path>
+
             <path d="M10 11v5"></path>
+
             <path d="M14 11v5"></path>
+
         </svg>
 
-        <h3>No scholarships found</h3>
+
+        <h3>
+            No scholarships found
+        </h3>
 
         <p>
             Try another search term or select a different study level.
@@ -1084,13 +1478,13 @@ function scholarshipImage($image)
     </div>
 
 
-    <!-- SCHOLARSHIP CARDS -->
+    <!-- SCHOLARSHIP GRID -->
 
     <section
         class="scholarship-grid"
         id="scholarshipGrid"
-        aria-live="polite"
-    ></section>
+        aria-live="polite">
+    </section>
 
 
     <!-- PAGINATION -->
@@ -1098,84 +1492,239 @@ function scholarshipImage($image)
     <nav
         class="pagination"
         id="pagination"
-        aria-label="Scholarship pagination"
-    ></nav>
+        aria-label="Scholarship pagination">
+    </nav>
 
 </main>
 
 
-<!-- =========================================================
-     FOOTER
-========================================================= -->
+<!-- ============================================================
+     EXACT INDEX.PHP FOOTER
+============================================================ -->
 
-<footer>
+<footer class="footer">
 
-    <div class="footer-inner">
+    <div class="footer-grid">
 
-        <div>
 
-            <h3 class="footer-title">
-                Flexi Educational Consult
-            </h3>
+        <!-- ABOUT -->
 
-            <p class="footer-text">
-                Providing educational resources, scholarship
-                opportunities, examination support and learning
-                information for students.
+        <div class="footer-col">
+
+            <p class="footer-about">
+
+                We empower Nigerian students with admission
+                updates, CBT preparation, tutorials,
+                past questions in PDF, and premium
+                educational support.
+
             </p>
 
         </div>
 
-        <div>
 
-            <h4 class="footer-heading">
-                Resources
-            </h4>
+        <!-- QUICK LINKS -->
 
-            <div class="footer-links">
+        <div class="footer-col">
 
-                <a href="/study.php">Study Resources</a>
-
-                <a href="/novel.php">Literature</a>
-
-                <a href="/scholarship.php">Scholarships</a>
-
-                <a href="/cbt.html">CBT Practice</a>
-
-                <a href="/pdf.html">PDF Resources</a>
-
-            </div>
-
-        </div>
-
-        <div>
-
-            <h4 class="footer-heading">
+            <h4>
                 Quick Links
             </h4>
 
-            <div class="footer-links">
 
-                <a href="/">Home</a>
+            <ul class="footer-links-list">
 
-                <a href="/news">News</a>
+                <li>
+                    <a href="/index.php">
+                        Home
+                    </a>
+                </li>
 
-                <a href="/groups.html">Groups</a>
+                <li>
+                    <a
+                        href="https://elearning.flexieduconsult.com.ng"
+                        target="_blank"
+                        rel="noopener">
 
-                <a href="/location.html">Location</a>
+                        WhatsApp Masterclass (E-Learning)
 
-                <a href="/contactsupport.html">Support</a>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/syllabus.html">
+                        Access the JAMB/WAEC syllabus
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/brochure.html">
+                        Access JAMB Brochure
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/videos.html">
+                        Video Lessons
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/pdf.html">
+                        Past Questions & PDFs
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/cbt.html">
+                        CBT Simulator
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/groups.html">
+                        Classroom Groups and chats
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/location.html">
+                        Tutorial Centres
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- SUPPORT -->
+
+        <div class="footer-col">
+
+            <h4>
+                Support & Community
+            </h4>
+
+
+            <div class="contact-group">
+
+                <a
+                    href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u"
+                    target="_blank"
+                    rel="noopener"
+                    class="whatsapp-channel-link">
+
+                    Join our WhatsApp Channel
+
+                </a>
+
+            </div>
+
+
+            <div class="contact-group">
+
+                <h5>
+                    Contact Us
+                </h5>
+
+                <a href="tel:+2349034159839">
+                    (+234) 903 415 9839
+                </a>
+
+                <a href="tel:+2347033855206">
+                    (+234) 703 385 5206
+                </a>
+
+            </div>
+
+
+            <div class="contact-group">
+
+                <h5>
+                    Email Us
+                </h5>
+
+                <a href="mailto:support@flexieduconsult.com.ng">
+                    support@flexieduconsult.com.ng
+                </a>
+
+                <a href="mailto:info@flexieduconsult.com.ng">
+                    info@flexieduconsult.com.ng
+                </a>
 
             </div>
 
         </div>
 
+
+        <!-- SOCIAL -->
+
+        <div class="footer-col social-links">
+
+            <h4>
+                Follow Us
+            </h4>
+
+
+            <ul class="footer-links-list">
+
+                <li>
+
+                    <a
+                        href="https://www.facebook.com/profile.php?id=61589793118693"
+                        target="_blank"
+                        rel="noopener">
+
+                        Facebook @flexieduconsult
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a
+                        href="https://instagram.com/flexieduconsult2000"
+                        target="_blank"
+                        rel="noopener">
+
+                        Instagram @flexieduconsult2000
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a
+                        href="https://www.tiktok.com/@flexieduconsult"
+                        target="_blank"
+                        rel="noopener">
+
+                        TikTok @flexieduconsult
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+
     </div>
+
 
     <div class="footer-bottom">
 
-        © <?php echo date('Y'); ?>
-        Flexi Educational Consult. All rights reserved.
+        &copy;
+        <?php echo date('Y'); ?>
+
+        Flexi Educational Consult.
+        All Rights Reserved.
 
     </div>
 
@@ -1183,23 +1732,75 @@ function scholarshipImage($image)
 
 
 <script>
+
 /* ============================================================
-   MOBILE MENU
+   EXACT INDEX.PHP MENU BEHAVIOUR
 ============================================================ */
 
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const mobileMenu = document.getElementById('mobileMenu');
+window.toggleMenu = function () {
 
-mobileMenuBtn.addEventListener('click', function () {
+    const menu =
+        document.getElementById('squareMenu');
 
-    const isOpen = mobileMenu.classList.toggle('open');
+    const button =
+        document.querySelector('.menu-btn');
 
-    mobileMenuBtn.setAttribute(
-        'aria-expanded',
-        isOpen ? 'true' : 'false'
-    );
+    if (!menu) {
+        return;
+    }
 
-});
+    const isOpen =
+        menu.style.display === 'block';
+
+    menu.style.display =
+        isOpen ? 'none' : 'block';
+
+    if (button) {
+
+        button.setAttribute(
+            'aria-expanded',
+            isOpen ? 'false' : 'true'
+        );
+
+    }
+
+};
+
+
+document.addEventListener(
+    'click',
+    function (event) {
+
+        const menu =
+            document.getElementById('squareMenu');
+
+        const container =
+            document.querySelector('.menu-container');
+
+        const button =
+            document.querySelector('.menu-btn');
+
+        if (
+            menu &&
+            container &&
+            !container.contains(event.target)
+        ) {
+
+            menu.style.display = 'none';
+
+            if (button) {
+
+                button.setAttribute(
+                    'aria-expanded',
+                    'false'
+                );
+
+            }
+
+        }
+
+    }
+);
 
 
 /* ============================================================
@@ -1207,32 +1808,51 @@ mobileMenuBtn.addEventListener('click', function () {
 ============================================================ */
 
 const scholarshipData = <?php
-    echo json_encode(
-        $scholarships,
-        JSON_UNESCAPED_SLASHES |
-        JSON_UNESCAPED_UNICODE |
-        JSON_HEX_TAG |
-        JSON_HEX_AMP |
-        JSON_HEX_APOS |
-        JSON_HEX_QUOT
-    );
+
+echo json_encode(
+    $scholarships,
+
+    JSON_UNESCAPED_SLASHES |
+    JSON_UNESCAPED_UNICODE |
+    JSON_HEX_TAG |
+    JSON_HEX_AMP |
+    JSON_HEX_APOS |
+    JSON_HEX_QUOT
+);
+
 ?>;
 
-const serverHasError = <?php echo $hasError ? 'true' : 'false'; ?>;
+const serverHasError =
+    <?php echo $hasError ? 'true' : 'false'; ?>;
 
 
 /* ============================================================
    ELEMENTS
 ============================================================ */
 
-const loadingState = document.getElementById('loadingState');
-const errorState = document.getElementById('errorState');
-const emptyState = document.getElementById('emptyState');
-const scholarshipGrid = document.getElementById('scholarshipGrid');
-const pagination = document.getElementById('pagination');
-const resultCount = document.getElementById('resultCount');
-const searchInput = document.getElementById('searchInput');
-const studyFilter = document.getElementById('studyFilter');
+const loadingState =
+    document.getElementById('loadingState');
+
+const errorState =
+    document.getElementById('errorState');
+
+const emptyState =
+    document.getElementById('emptyState');
+
+const scholarshipGrid =
+    document.getElementById('scholarshipGrid');
+
+const pagination =
+    document.getElementById('pagination');
+
+const resultCount =
+    document.getElementById('resultCount');
+
+const searchInput =
+    document.getElementById('searchInput');
+
+const studyFilter =
+    document.getElementById('studyFilter');
 
 
 /* ============================================================
@@ -1242,6 +1862,7 @@ const studyFilter = document.getElementById('studyFilter');
 const ITEMS_PER_PAGE = 9;
 
 let currentPage = 1;
+
 let filteredScholarships = [];
 
 
@@ -1252,93 +1873,152 @@ let filteredScholarships = [];
 const icons = {
 
     calendar: `
-        <svg class="detail-icon"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
-            <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+        <svg
+            class="detail-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+
+            <rect
+                x="3"
+                y="4"
+                width="18"
+                height="17"
+                rx="2">
+            </rect>
+
             <path d="M16 2v4"></path>
+
             <path d="M8 2v4"></path>
+
             <path d="M3 10h18"></path>
+
         </svg>
     `,
+
 
     money: `
-        <svg class="detail-icon"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M15 8.5c-.7-.7-1.7-1-3-1-1.7 0-3 .9-3 2.2 0 3.1 6 1.4 6 4.3 0 1.3-1.2 2.3-3.1 2.3-1.3 0-2.4-.4-3.1-1.1"></path>
+        <svg
+            class="detail-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+
+            <circle
+                cx="12"
+                cy="12"
+                r="9">
+            </circle>
+
+            <path
+                d="M15 8.5c-.7-.7-1.7-1-3-1-1.7 0-3 .9-3 2.2 0 3.1 6 1.4 6 4.3 0 1.3-1.2 2.3-3.1 2.3-1.3 0-2.4-.4-3.1-1.1">
+            </path>
+
             <path d="M12 6v12"></path>
+
         </svg>
     `,
+
 
     location: `
-        <svg class="detail-icon"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
-            <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"></path>
-            <circle cx="12" cy="10" r="2.5"></circle>
+        <svg
+            class="detail-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+
+            <path
+                d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z">
+            </path>
+
+            <circle
+                cx="12"
+                cy="10"
+                r="2.5">
+            </circle>
+
         </svg>
     `,
+
 
     education: `
-        <svg class="detail-icon"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
+        <svg
+            class="detail-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+
             <path d="M3 9l9-5 9 5-9 5-9-5z"></path>
+
             <path d="M7 11v5c3 2 7 2 10 0v-5"></path>
+
             <path d="M21 10v6"></path>
+
         </svg>
     `,
+
 
     book: `
-        <svg class="detail-icon"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
-            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5z"></path>
-            <path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"></path>
+        <svg
+            class="detail-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+
+            <path
+                d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5z">
+            </path>
+
+            <path
+                d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20">
+            </path>
+
         </svg>
     `,
 
+
     external: `
-        <svg class="apply-icon"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
+        <svg
+            class="apply-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+
             <path d="M14 5h5v5"></path>
+
             <path d="M10 14L19 5"></path>
-            <path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"></path>
+
+            <path
+                d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5">
+            </path>
+
         </svg>
     `
+
 };
 
 
@@ -1348,7 +2028,10 @@ const icons = {
 
 function escapeHTML(value) {
 
-    if (value === null || value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
         return '';
     }
 
@@ -1358,6 +2041,7 @@ function escapeHTML(value) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+
 }
 
 
@@ -1371,17 +2055,22 @@ function formatDate(dateString) {
         return 'No deadline specified';
     }
 
-    const date = new Date(dateString + 'T00:00:00');
+    const date =
+        new Date(dateString + 'T00:00:00');
 
     if (Number.isNaN(date.getTime())) {
         return escapeHTML(dateString);
     }
 
-    return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-    });
+    return date.toLocaleDateString(
+        'en-US',
+        {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        }
+    );
+
 }
 
 
@@ -1395,7 +2084,8 @@ function getDeadlineClass(dateString) {
         return '';
     }
 
-    const date = new Date(dateString + 'T23:59:59');
+    const date =
+        new Date(dateString + 'T23:59:59');
 
     if (Number.isNaN(date.getTime())) {
         return '';
@@ -1405,7 +2095,9 @@ function getDeadlineClass(dateString) {
         date.getTime() - Date.now();
 
     const days =
-        Math.ceil(difference / 86400000);
+        Math.ceil(
+            difference / 86400000
+        );
 
     if (days < 0) {
         return 'deadline-past';
@@ -1416,6 +2108,7 @@ function getDeadlineClass(dateString) {
     }
 
     return '';
+
 }
 
 
@@ -1445,32 +2138,50 @@ function filterScholarships() {
         normalizeText(studyFilter.value);
 
     filteredScholarships =
-        scholarshipData.filter(function (item) {
+        scholarshipData.filter(
+            function (item) {
 
-            const searchableText = [
-                item.title,
-                item.organization,
-                item.description,
-                item.eligibility,
-                item.field_of_study,
-                item.location,
-                item.study_level
-            ]
-            .map(normalizeText)
-            .join(' ');
+                const searchableText = [
 
-            const matchesSearch =
-                !search ||
-                searchableText.includes(search);
+                    item.title,
 
-            const matchesLevel =
-                !level ||
-                normalizeText(item.study_level)
-                    .includes(level);
+                    item.organization,
 
-            return matchesSearch && matchesLevel;
+                    item.description,
 
-        });
+                    item.eligibility,
+
+                    item.field_of_study,
+
+                    item.location,
+
+                    item.study_level
+
+                ]
+                .map(normalizeText)
+                .join(' ');
+
+
+                const matchesSearch =
+                    !search ||
+                    searchableText.includes(search);
+
+
+                const matchesLevel =
+                    !level ||
+                    normalizeText(
+                        item.study_level
+                    ).includes(level);
+
+
+                return (
+                    matchesSearch &&
+                    matchesLevel
+                );
+
+            }
+        );
+
 
     currentPage = 1;
 
@@ -1480,13 +2191,17 @@ function filterScholarships() {
 
 
 /* ============================================================
-   CREATE CARD
+   CREATE SCHOLARSHIP CARD
 ============================================================ */
 
 function createCard(item) {
 
     const title =
-        escapeHTML(item.title || 'Scholarship Opportunity');
+        escapeHTML(
+            item.title ||
+            'Scholarship Opportunity'
+        );
+
 
     const organization =
         escapeHTML(
@@ -1494,11 +2209,13 @@ function createCard(item) {
             'Scholarship Provider'
         );
 
+
     const description =
         escapeHTML(
             item.description ||
             'Scholarship opportunity for eligible students.'
         );
+
 
     const amount =
         escapeHTML(
@@ -1506,11 +2223,13 @@ function createCard(item) {
             'Not specified'
         );
 
+
     const location =
         escapeHTML(
             item.location ||
             'Not specified'
         );
+
 
     const studyLevel =
         escapeHTML(
@@ -1518,23 +2237,28 @@ function createCard(item) {
             'Not specified'
         );
 
+
     const field =
         escapeHTML(
             item.field_of_study ||
             'Not specified'
         );
 
+
     const deadline =
         formatDate(item.deadline);
+
 
     const deadlineClassName =
         getDeadlineClass(item.deadline);
 
+
     const image =
         escapeHTML(
             item.image_url ||
-            ''
+            scholarshipImage('')
         );
+
 
     const applicationUrl =
         escapeHTML(
@@ -1542,11 +2266,15 @@ function createCard(item) {
             '#'
         );
 
+
     const featured =
         item.featured === true;
 
+
     return `
+
         <article class="scholarship-card">
+
 
             <div class="card-image-wrap">
 
@@ -1555,8 +2283,8 @@ function createCard(item) {
                     src="${image}"
                     alt="${title}"
                     loading="lazy"
-                    onerror="this.style.display='none';"
-                >
+                    onerror="this.onerror=null;this.src='${scholarshipImage('').replace(/'/g, '&#039;')}';">
+
 
                 ${
                     featured
@@ -1570,55 +2298,75 @@ function createCard(item) {
 
             </div>
 
+
             <div class="card-body">
+
 
                 <div class="organization">
                     ${organization}
                 </div>
 
+
                 <h3 class="card-title">
                     ${title}
                 </h3>
+
 
                 <p class="card-description">
                     ${description}
                 </p>
 
+
                 <div class="details">
 
+
                     <div class="detail-item">
+
                         ${icons.money}
 
                         <div>
+
                             <span class="detail-label">
                                 Amount:
                             </span>
+
                             <span class="detail-value">
                                 ${amount}
                             </span>
+
                         </div>
+
                     </div>
 
+
                     <div class="detail-item">
+
                         ${icons.calendar}
 
                         <div>
+
                             <span class="detail-label">
                                 Deadline:
                             </span>
 
                             <span
-                                class="detail-value ${deadlineClassName}"
-                            >
+                                class="detail-value ${deadlineClassName}">
+
                                 ${deadline}
+
                             </span>
+
                         </div>
+
                     </div>
 
+
                     <div class="detail-item">
+
                         ${icons.education}
 
                         <div>
+
                             <span class="detail-label">
                                 Study Level:
                             </span>
@@ -1626,13 +2374,18 @@ function createCard(item) {
                             <span class="detail-value">
                                 ${studyLevel}
                             </span>
+
                         </div>
+
                     </div>
 
+
                     <div class="detail-item">
+
                         ${icons.book}
 
                         <div>
+
                             <span class="detail-label">
                                 Field:
                             </span>
@@ -1640,13 +2393,18 @@ function createCard(item) {
                             <span class="detail-value">
                                 ${field}
                             </span>
+
                         </div>
+
                     </div>
 
+
                     <div class="detail-item">
+
                         ${icons.location}
 
                         <div>
+
                             <span class="detail-label">
                                 Location:
                             </span>
@@ -1654,25 +2412,34 @@ function createCard(item) {
                             <span class="detail-value">
                                 ${location}
                             </span>
+
                         </div>
+
                     </div>
 
+
                 </div>
+
 
                 <a
                     class="apply-btn"
                     href="${applicationUrl}"
                     target="_blank"
-                    rel="noopener noreferrer"
-                >
+                    rel="noopener noreferrer">
+
                     Apply Now
+
                     ${icons.external}
+
                 </a>
+
 
             </div>
 
         </article>
+
     `;
+
 }
 
 
@@ -1683,10 +2450,13 @@ function createCard(item) {
 function render() {
 
     loadingState.style.display = 'none';
+
     errorState.style.display = 'none';
 
     scholarshipGrid.innerHTML = '';
+
     pagination.innerHTML = '';
+
 
     if (!filteredScholarships.length) {
 
@@ -1696,44 +2466,64 @@ function render() {
             '0 scholarships';
 
         return;
+
     }
 
+
     emptyState.style.display = 'none';
+
 
     const totalItems =
         filteredScholarships.length;
 
+
     const totalPages =
-        Math.ceil(totalItems / ITEMS_PER_PAGE);
+        Math.ceil(
+            totalItems / ITEMS_PER_PAGE
+        );
+
 
     if (currentPage > totalPages) {
         currentPage = totalPages;
     }
 
+
     const start =
         (currentPage - 1) *
         ITEMS_PER_PAGE;
 
+
     const end =
-        start +
-        ITEMS_PER_PAGE;
+        start + ITEMS_PER_PAGE;
+
 
     const pageItems =
-        filteredScholarships.slice(start, end);
+        filteredScholarships.slice(
+            start,
+            end
+        );
+
 
     scholarshipGrid.innerHTML =
         pageItems
             .map(createCard)
             .join('');
 
+
     const firstItem =
         start + 1;
 
+
     const lastItem =
-        Math.min(end, totalItems);
+        Math.min(
+            end,
+            totalItems
+        );
+
 
     resultCount.textContent =
         `${firstItem}-${lastItem} of ${totalItems} scholarship${totalItems === 1 ? '' : 's'}`;
+
 
     renderPagination(totalPages);
 
@@ -1750,13 +2540,19 @@ function renderPagination(totalPages) {
         return;
     }
 
+
     const previousButton =
         document.createElement('button');
 
     previousButton.type = 'button';
+
     previousButton.className = 'page-btn';
+
     previousButton.textContent = 'Previous';
-    previousButton.disabled = currentPage === 1;
+
+    previousButton.disabled =
+        currentPage === 1;
+
 
     previousButton.addEventListener(
         'click',
@@ -1775,14 +2571,25 @@ function renderPagination(totalPages) {
         }
     );
 
-    pagination.appendChild(previousButton);
+
+    pagination.appendChild(
+        previousButton
+    );
 
 
     let startPage =
-        Math.max(1, currentPage - 2);
+        Math.max(
+            1,
+            currentPage - 2
+        );
+
 
     let endPage =
-        Math.min(totalPages, currentPage + 2);
+        Math.min(
+            totalPages,
+            currentPage + 2
+        );
+
 
     for (
         let page = startPage;
@@ -1793,25 +2600,37 @@ function renderPagination(totalPages) {
         const button =
             document.createElement('button');
 
+
         button.type = 'button';
+
 
         button.className =
             'page-btn' +
-            (page === currentPage ? ' active' : '');
+            (
+                page === currentPage
+                    ? ' active'
+                    : ''
+            );
+
 
         button.textContent = page;
+
 
         button.setAttribute(
             'aria-label',
             `Go to page ${page}`
         );
 
+
         if (page === currentPage) {
+
             button.setAttribute(
                 'aria-current',
                 'page'
             );
+
         }
+
 
         button.addEventListener(
             'click',
@@ -1826,7 +2645,10 @@ function renderPagination(totalPages) {
             }
         );
 
-        pagination.appendChild(button);
+
+        pagination.appendChild(
+            button
+        );
 
     }
 
@@ -1834,11 +2656,16 @@ function renderPagination(totalPages) {
     const nextButton =
         document.createElement('button');
 
+
     nextButton.type = 'button';
+
     nextButton.className = 'page-btn';
+
     nextButton.textContent = 'Next';
+
     nextButton.disabled =
         currentPage === totalPages;
+
 
     nextButton.addEventListener(
         'click',
@@ -1857,7 +2684,10 @@ function renderPagination(totalPages) {
         }
     );
 
-    pagination.appendChild(nextButton);
+
+    pagination.appendChild(
+        nextButton
+    );
 
 }
 
@@ -1870,14 +2700,19 @@ function scrollToResults() {
 
     const headerOffset = 90;
 
+
     const position =
         scholarshipGrid.getBoundingClientRect().top +
         window.scrollY -
         headerOffset;
 
+
     window.scrollTo({
+
         top: position,
+
         behavior: 'smooth'
+
     });
 
 }
@@ -1892,6 +2727,7 @@ searchInput.addEventListener(
     filterScholarships
 );
 
+
 studyFilter.addEventListener(
     'change',
     filterScholarships
@@ -1905,7 +2741,9 @@ studyFilter.addEventListener(
 if (serverHasError) {
 
     loadingState.style.display = 'none';
+
     errorState.style.display = 'block';
+
     resultCount.textContent = '';
 
 } else {
@@ -1918,6 +2756,9 @@ if (serverHasError) {
     render();
 
 }
+
 </script>
+
+
 </body>
 </html>
