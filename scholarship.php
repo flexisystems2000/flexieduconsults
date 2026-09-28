@@ -5,26 +5,41 @@
 // ============================================================
 
 $supabaseUrl = 'https://ryvauylmymcvbvvlaceb.supabase.co';
+
 $supabaseKey = 'sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6';
 
-$endpoint = $supabaseUrl . '/rest/v1/scholarships'
-    . '?select=id,title,organization,description,eligibility,amount,deadline,location,study_level,field_of_study,application_url,source_url,image_url,slug,status,featured,created_at,updated_at'
-    . '&status=eq.active'
-    . '&order=featured.desc,deadline.asc,created_at.desc';
+
+// ============================================================
+// FETCH SCHOLARSHIPS FROM SUPABASE
+// ============================================================
+
+$endpoint =
+    $supabaseUrl .
+    '/rest/v1/scholarships' .
+    '?select=id,title,organization,description,eligibility,amount,deadline,location,study_level,field_of_study,application_url,source_url,image_url,slug,status,featured,created_at,updated_at' .
+    '&status=eq.active' .
+    '&order=featured.desc,deadline.asc,created_at.desc';
+
 
 $ch = curl_init($endpoint);
 
 curl_setopt_array($ch, [
+
     CURLOPT_RETURNTRANSFER => true,
+
     CURLOPT_HTTPHEADER => [
         'apikey: ' . $supabaseKey,
         'Authorization: Bearer ' . $supabaseKey,
         'Content-Type: application/json',
         'Accept: application/json'
     ],
-    CURLOPT_TIMEOUT => 15,
+
+    CURLOPT_TIMEOUT => 20,
+
     CURLOPT_CONNECTTIMEOUT => 10
+
 ]);
+
 
 $response = curl_exec($ch);
 
@@ -38,13 +53,22 @@ $curlError = curl_error($ch);
 curl_close($ch);
 
 
+// ============================================================
+// PROCESS RESPONSE
+// ============================================================
+
 $scholarships = [];
+
+$hasError = false;
+
+$errorMessage = '';
+
 
 if (
     !$curlError &&
     $httpCode >= 200 &&
     $httpCode < 300 &&
-    $response
+    $response !== false
 ) {
 
     $decoded = json_decode(
@@ -53,33 +77,40 @@ if (
     );
 
     if (is_array($decoded)) {
+
         $scholarships = $decoded;
+
+    } else {
+
+        $hasError = true;
+
+        $errorMessage =
+            'Invalid response received from the scholarship database.';
+
     }
-}
 
+} else {
 
-/*
- * Detect an actual server/Supabase error.
- */
-$hasError = false;
-
-if (
-    $curlError ||
-    (
-        $httpCode &&
-        (
-            $httpCode < 200 ||
-            $httpCode >= 300
-        )
-    )
-) {
     $hasError = true;
+
+    if ($curlError) {
+
+        $errorMessage =
+            'Unable to connect to the scholarship database.';
+
+    } else {
+
+        $errorMessage =
+            'The scholarship database returned an error.';
+
+    }
+
 }
 
 
-/* ============================================================
-   PHP HELPERS
-============================================================ */
+// ============================================================
+// HELPERS
+// ============================================================
 
 function e($value)
 {
@@ -148,769 +179,995 @@ function scholarshipImage($image)
     }
 
     return 'data:image/svg+xml;charset=UTF-8,' . rawurlencode(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
-            <rect width="800" height="450" fill="#003366"/>
-            <circle cx="400" cy="180" r="70" fill="none" stroke="#FFD700" stroke-width="8"/>
-            <path d="M335 180h130M400 115v130"
-                  stroke="#FFD700"
-                  stroke-width="8"
-                  stroke-linecap="round"/>
-            <text x="400"
-                  y="330"
-                  text-anchor="middle"
-                  font-family="Arial,sans-serif"
-                  font-size="32"
-                  fill="white">
+        '<svg xmlns="http://www.w3.org/2000/svg"
+              width="800"
+              height="450"
+              viewBox="0 0 800 450">
+
+            <rect
+                width="800"
+                height="450"
+                fill="#003366"
+            />
+
+            <path
+                d="M400 100
+                   L515 145
+                   L400 190
+                   L285 145
+                   Z"
+                fill="none"
+                stroke="#FFD700"
+                stroke-width="8"
+                stroke-linejoin="round"
+            />
+
+            <path
+                d="M315 158
+                   V225
+                   C315 260 485 260 485 225
+                   V158"
+                fill="none"
+                stroke="#FFD700"
+                stroke-width="8"
+            />
+
+            <line
+                x1="515"
+                y1="145"
+                x2="515"
+                y2="235"
+                stroke="#FFD700"
+                stroke-width="8"
+            />
+
+            <circle
+                cx="515"
+                cy="247"
+                r="12"
+                fill="#FFD700"
+            />
+
+            <text
+                x="400"
+                y="340"
+                text-anchor="middle"
+                font-family="Arial,sans-serif"
+                font-size="30"
+                font-weight="700"
+                fill="white">
                 Flexi Educational Consult
             </text>
+
         </svg>'
     );
 }
 
 ?>
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#003366"
-    >
-
-    <title>
-        Scholarships | Flexi Educational Consult
-    </title>
-
-    <meta
-        name="description"
-        content="Find current scholarship opportunities for secondary school, undergraduate, postgraduate and international students through Flexi Educational Consult."
-    >
-
-    <meta
-        name="keywords"
-        content="scholarships, Nigerian scholarships, undergraduate scholarships, postgraduate scholarships, international scholarships, Flexi Educational Consult"
-    >
-
-    <link
-        rel="canonical"
-        href="https://flexieduconsult.com.ng/scholarship.php"
-    >
-
-    <style>
-
-        /* ============================================================
-           GLOBAL
-        ============================================================ */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fa;
-            color: #1f2937;
-            line-height: 1.6;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        button,
-        input,
-        select {
-            font: inherit;
-        }
-
-
-        /* ============================================================
-           HEADER
-        ============================================================ */
+<meta charset="UTF-8">
 
-        header {
-            background: #003366;
-            color: white;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            border-bottom: 3px solid #2E8B57;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+<meta
+    name="theme-color"
+    content="#003366"
+>
 
-        .logo-img {
-            height: 34px;
-            width: 34px;
-            object-fit: contain;
-            border-radius: 4px;
-        }
+<title>
+    Scholarships | Flexi Educational Consult
+</title>
 
-        .brand-name {
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: .2px;
-        }
+<meta
+    name="description"
+    content="Find current scholarship opportunities for secondary school, undergraduate, postgraduate and international students through Flexi Educational Consult."
+>
 
+<meta
+    name="keywords"
+    content="scholarships, Nigerian scholarships, undergraduate scholarships, postgraduate scholarships, international scholarships, Flexi Educational Consult"
+>
 
-        /* ============================================================
-           HERO
-        ============================================================ */
+<link
+    rel="canonical"
+    href="https://www.flexieduconsult.com.ng/scholarship.php"
+>
 
-        .hero {
-            background:
-                linear-gradient(
-                    135deg,
-                    #003366 0%,
-                    #004b80 55%,
-                    #2E8B57 100%
-                );
 
-            color: #fff;
+<style>
 
-            padding: 58px 18px 62px;
-        }
+/* ============================================================
+   GLOBAL
+============================================================ */
 
-        .hero-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            text-align: center;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
+html {
+    scroll-behavior: smooth;
+}
 
-            padding: 7px 12px;
+body {
+    margin: 0;
 
-            border-radius: 30px;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-            background: rgba(255,255,255,.12);
+    background: #f5f7fa;
 
-            border: 1px solid rgba(255,255,255,.2);
+    color: #1f2937;
 
-            font-size: 12px;
-            font-weight: 700;
+    line-height: 1.6;
+}
 
-            margin-bottom: 16px;
-        }
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-        .hero h1 {
-            margin: 0 auto 12px;
+button,
+input,
+select {
+    font: inherit;
+}
 
-            max-width: 800px;
 
-            font-size: clamp(30px, 6vw, 48px);
+/* ============================================================
+   HEADER
+============================================================ */
 
-            line-height: 1.12;
-        }
+header {
 
-        .hero p {
-            max-width: 720px;
+    background: #003366;
 
-            margin: 0 auto;
+    color: white;
 
-            font-size: 16px;
+    min-height: 64px;
 
-            opacity: .92;
-        }
+    display: flex;
 
+    align-items: center;
 
-        /* ============================================================
-           MAIN
-        ============================================================ */
+    padding: 10px 20px;
 
-        .main-container {
-            max-width: 1200px;
+    border-bottom:
+        4px solid #2E8B57;
 
-            margin: 0 auto;
+    position: sticky;
 
-            padding: 30px 18px 60px;
-        }
+    top: 0;
 
+    z-index: 1000;
+}
 
-        /* ============================================================
-           SEARCH / FILTER
-        ============================================================ */
+.header-left {
 
-        .filter-box {
-            background: #fff;
+    display: flex;
 
-            border-radius: 14px;
+    align-items: center;
 
-            padding: 18px;
+    gap: 12px;
+}
 
-            margin-top: -48px;
+.logo-img {
 
-            position: relative;
+    height: 40px;
 
-            z-index: 5;
+    width: 40px;
 
-            box-shadow:
-                0 7px 28px rgba(0,0,0,.10);
+    object-fit: contain;
 
-            display: grid;
+    border-radius: 5px;
 
-            grid-template-columns:
-                minmax(0, 1fr)
-                230px;
+    background: white;
+}
 
-            gap: 12px;
-        }
+.brand-name {
 
-        .input-wrap {
-            position: relative;
-        }
+    font-size: 17px;
 
-        .input-icon {
-            position: absolute;
+    font-weight: 700;
 
-            left: 14px;
-            top: 50%;
+    letter-spacing: .2px;
+}
 
-            transform: translateY(-50%);
 
-            color: #64748b;
+/* ============================================================
+   HERO
+============================================================ */
 
-            width: 19px;
-            height: 19px;
+.hero {
 
-            pointer-events: none;
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #003366 0%,
+            #004b80 55%,
+            #2E8B57 100%
+        );
 
-        .search-input,
-        .study-filter {
-            width: 100%;
+    color: white;
 
-            height: 48px;
+    padding:
+        58px
+        18px
+        65px;
+}
 
-            border: 1px solid #d8dee7;
+.hero-inner {
 
-            border-radius: 9px;
+    max-width: 1100px;
 
-            background: #fff;
+    margin: auto;
 
-            color: #1f2937;
+    text-align: center;
+}
 
-            outline: none;
-        }
 
-        .search-input {
-            padding: 0 15px 0 44px;
-        }
+/* SVG HERO ICON */
 
-        .study-filter {
-            padding: 0 13px;
+.hero-badge {
 
-            cursor: pointer;
-        }
+    display: inline-flex;
 
-        .search-input:focus,
-        .study-filter:focus {
-            border-color: #2E8B57;
+    align-items: center;
 
-            box-shadow:
-                0 0 0 3px rgba(46,139,87,.12);
-        }
+    gap: 8px;
 
+    padding:
+        8px
+        14px;
 
-        /* ============================================================
-           SECTION HEADER
-        ============================================================ */
+    border-radius: 30px;
 
-        .section-header {
-            display: flex;
+    background:
+        rgba(255,255,255,.12);
 
-            align-items: flex-end;
+    border:
+        1px solid
+        rgba(255,255,255,.22);
 
-            justify-content: space-between;
+    font-size: 12px;
 
-            gap: 15px;
+    font-weight: 700;
 
-            margin: 35px 0 18px;
-        }
+    margin-bottom: 17px;
+}
 
-        .section-title {
-            margin: 0;
+.hero-badge svg {
 
-            color: #003366;
+    width: 18px;
 
-            font-size: 25px;
-        }
+    height: 18px;
 
-        .section-subtitle {
-            margin: 4px 0 0;
+    flex-shrink: 0;
+}
 
-            color: #64748b;
+.hero h1 {
 
-            font-size: 14px;
-        }
+    margin:
+        0
+        auto
+        12px;
 
-        .result-count {
-            color: #64748b;
+    max-width: 850px;
 
-            font-size: 13px;
+    font-size:
+        clamp(
+            30px,
+            6vw,
+            48px
+        );
 
-            white-space: nowrap;
-        }
+    line-height: 1.12;
+}
 
+.hero p {
 
-        /* ============================================================
-           SCHOLARSHIP GRID
-        ============================================================ */
+    max-width: 720px;
 
-        .scholarship-grid {
-            display: grid;
+    margin: auto;
 
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
+    font-size: 16px;
 
-            gap: 20px;
-        }
+    opacity: .93;
+}
 
 
-        /* ============================================================
-           SCHOLARSHIP CARD
-        ============================================================ */
+/* ============================================================
+   MAIN
+============================================================ */
 
-        .scholarship-card {
-            background: #fff;
+.main-container {
 
-            border: 1px solid #e4e8ee;
+    max-width: 1200px;
 
-            border-radius: 14px;
+    margin: auto;
 
-            overflow: hidden;
+    padding:
+        30px
+        18px
+        70px;
+}
 
-            display: flex;
 
-            flex-direction: column;
+/* ============================================================
+   FILTER
+============================================================ */
 
-            min-width: 0;
+.filter-box {
 
-            box-shadow:
-                0 3px 14px rgba(0,0,0,.045);
+    background: white;
 
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease;
-        }
+    border-radius: 15px;
 
-        .scholarship-card:hover {
-            transform: translateY(-3px);
+    padding: 18px;
 
-            box-shadow:
-                0 10px 28px rgba(0,0,0,.09);
-        }
+    margin-top: -48px;
 
-        .card-image-wrap {
-            position: relative;
+    position: relative;
 
-            height: 185px;
+    z-index: 5;
 
-            background: #e9eef3;
+    box-shadow:
+        0
+        7px
+        28px
+        rgba(0,0,0,.10);
 
-            overflow: hidden;
-        }
+    display: grid;
 
-        .card-image {
-            width: 100%;
-            height: 100%;
+    grid-template-columns:
+        minmax(0,1fr)
+        230px;
 
-            object-fit: cover;
+    gap: 12px;
+}
 
-            display: block;
-        }
+.input-wrap {
 
-        .featured-badge {
-            position: absolute;
+    position: relative;
+}
 
-            top: 12px;
-            left: 12px;
+.input-icon {
 
-            background: #FFD700;
+    position: absolute;
 
-            color: #1f2937;
+    left: 14px;
 
-            padding: 5px 9px;
+    top: 50%;
 
-            border-radius: 6px;
+    transform:
+        translateY(-50%);
 
-            font-size: 11px;
+    width: 19px;
 
-            font-weight: 800;
-        }
+    height: 19px;
 
-        .card-body {
-            padding: 18px;
+    color: #64748b;
 
-            display: flex;
+    pointer-events: none;
+}
 
-            flex-direction: column;
+.search-input,
+.study-filter {
 
-            flex: 1;
-        }
+    width: 100%;
 
-        .organization {
-            color: #2E8B57;
+    height: 48px;
 
-            font-size: 12px;
+    border:
+        1px solid
+        #d8dee7;
 
-            font-weight: 700;
+    border-radius: 9px;
 
-            text-transform: uppercase;
+    background: white;
 
-            letter-spacing: .3px;
+    color: #1f2937;
 
-            margin-bottom: 6px;
-        }
+    outline: none;
+}
 
-        .card-title {
-            margin: 0 0 9px;
+.search-input {
 
-            color: #003366;
+    padding:
+        0
+        15px
+        0
+        44px;
+}
 
-            font-size: 18px;
+.study-filter {
 
-            line-height: 1.35;
-        }
+    padding:
+        0
+        13px;
 
-        .card-description {
-            margin: 0 0 15px;
+    cursor: pointer;
+}
 
-            color: #64748b;
+.search-input:focus,
+.study-filter:focus {
 
-            font-size: 13px;
+    border-color:
+        #2E8B57;
 
-            line-height: 1.6;
+    box-shadow:
+        0
+        0
+        0
+        3px
+        rgba(46,139,87,.12);
+}
 
-            display: -webkit-box;
 
-            -webkit-line-clamp: 3;
+/* ============================================================
+   SECTION HEADER
+============================================================ */
 
-            -webkit-box-orient: vertical;
+.section-header {
 
-            overflow: hidden;
-        }
+    display: flex;
 
-        .details {
-            display: grid;
+    align-items: flex-end;
 
-            grid-template-columns: 1fr;
+    justify-content: space-between;
 
-            gap: 8px;
+    gap: 15px;
 
-            margin-bottom: 18px;
-        }
+    margin:
+        35px
+        0
+        18px;
+}
 
-        .detail-item {
-            display: flex;
+.section-title {
 
-            align-items: flex-start;
+    margin: 0;
 
-            gap: 9px;
+    color: #003366;
 
-            color: #475569;
+    font-size: 25px;
+}
 
-            font-size: 12px;
-        }
+.section-subtitle {
 
-        .detail-icon {
-            width: 17px;
-            height: 17px;
+    margin:
+        4px
+        0
+        0;
 
-            flex: 0 0 17px;
+    color: #64748b;
 
-            color: #2E8B57;
+    font-size: 14px;
+}
 
-            margin-top: 1px;
-        }
+.result-count {
 
-        .detail-label {
-            font-weight: 700;
+    color: #64748b;
 
-            color: #334155;
-        }
+    font-size: 13px;
 
-        .detail-value {
-            color: #64748b;
-        }
+    white-space: nowrap;
+}
 
-        .deadline-soon {
-            color: #b45309 !important;
 
-            font-weight: 700;
-        }
+/* ============================================================
+   GRID
+============================================================ */
 
-        .deadline-past {
-            color: #b91c1c !important;
+.scholarship-grid {
 
-            font-weight: 700;
-        }
+    display: grid;
 
-        .apply-btn {
-            margin-top: auto;
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0,1fr)
+        );
 
-            width: 100%;
+    gap: 20px;
+}
 
-            min-height: 44px;
 
-            border-radius: 8px;
+/* ============================================================
+   CARD
+============================================================ */
 
-            background: #003366;
+.scholarship-card {
 
-            color: #fff;
+    background: white;
 
-            display: flex;
+    border:
+        1px solid
+        #e4e8ee;
 
-            align-items: center;
+    border-radius: 14px;
 
-            justify-content: center;
+    overflow: hidden;
 
-            gap: 8px;
+    display: flex;
 
-            font-size: 14px;
+    flex-direction: column;
 
-            font-weight: 700;
+    min-width: 0;
 
-            transition:
-                background .2s ease;
-        }
+    box-shadow:
+        0
+        3px
+        14px
+        rgba(0,0,0,.045);
 
-        .apply-btn:hover {
-            background: #00284f;
-        }
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
 
-        .apply-icon {
-            width: 17px;
-            height: 17px;
-        }
+.scholarship-card:hover {
 
+    transform:
+        translateY(-3px);
 
-        /* ============================================================
-           STATES
-        ============================================================ */
+    box-shadow:
+        0
+        10px
+        28px
+        rgba(0,0,0,.09);
+}
 
-        .state-box {
-            background: #fff;
 
-            border: 1px solid #e4e8ee;
+/* ============================================================
+   IMAGE
+============================================================ */
 
-            border-radius: 14px;
+.card-image-wrap {
 
-            padding: 50px 20px;
+    position: relative;
 
-            text-align: center;
+    height: 185px;
 
-            color: #64748b;
-        }
+    background: #e9eef3;
 
-        .state-icon {
-            width: 42px;
-            height: 42px;
+    overflow: hidden;
+}
 
-            margin: 0 auto 13px;
+.card-image {
 
-            color: #2E8B57;
-        }
+    width: 100%;
 
-        .state-box h3 {
-            margin: 0 0 6px;
+    height: 100%;
 
-            color: #003366;
+    object-fit: cover;
 
-            font-size: 18px;
-        }
+    display: block;
+}
 
-        .state-box p {
-            margin: 0;
+.featured-badge {
 
-            font-size: 14px;
-        }
+    position: absolute;
 
-        .spinner {
-            width: 36px;
-            height: 36px;
+    top: 12px;
 
-            margin: 0 auto 15px;
+    left: 12px;
 
-            border: 3px solid #dbe4ec;
+    background: #FFD700;
 
-            border-top-color: #003366;
+    color: #1f2937;
 
-            border-radius: 50%;
+    padding:
+        5px
+        9px;
 
-            animation:
-                spin .8s linear infinite;
-        }
+    border-radius: 6px;
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+    font-size: 11px;
 
+    font-weight: 800;
 
-        /* ============================================================
-           PAGINATION
-        ============================================================ */
+    display: flex;
 
-        .pagination {
-            display: flex;
+    align-items: center;
 
-            align-items: center;
+    gap: 5px;
+}
 
-            justify-content: center;
+.featured-badge svg {
 
-            flex-wrap: wrap;
+    width: 13px;
 
-            gap: 7px;
+    height: 13px;
+}
 
-            margin-top: 28px;
-        }
 
-        .page-btn {
-            min-width: 38px;
+/* ============================================================
+   CARD BODY
+============================================================ */
 
-            height: 38px;
+.card-body {
 
-            padding: 0 10px;
+    padding: 18px;
 
-            border: 1px solid #d8dee7;
+    display: flex;
 
-            background: #fff;
+    flex-direction: column;
 
-            color: #334155;
+    flex: 1;
+}
 
-            border-radius: 7px;
+.organization {
 
-            cursor: pointer;
+    color: #2E8B57;
 
-            font-size: 13px;
-        }
+    font-size: 12px;
 
-        .page-btn:hover {
-            border-color: #003366;
-        }
+    font-weight: 700;
 
-        .page-btn.active {
-            background: #003366;
+    text-transform: uppercase;
 
-            color: white;
+    letter-spacing: .3px;
 
-            border-color: #003366;
-        }
+    margin-bottom: 6px;
+}
 
-        .page-btn:disabled {
-            opacity: .45;
+.card-title {
 
-            cursor: not-allowed;
-        }
+    margin:
+        0
+        0
+        9px;
 
+    color: #003366;
 
-        /* ============================================================
-           FOOTER
-        ============================================================ */
+    font-size: 18px;
 
-        footer {
-            border-top: 6px solid #2E8B57;
+    line-height: 1.35;
+}
 
-            background: #003366;
+.card-description {
 
-            color: white;
+    margin:
+        0
+        0
+        15px;
 
-            padding: 25px 18px;
+    color: #64748b;
 
-            text-align: center;
+    font-size: 13px;
 
-            font-size: 13px;
-        }
+    line-height: 1.6;
 
+    display: -webkit-box;
 
-        /* ============================================================
-           RESPONSIVE
-        ============================================================ */
+    -webkit-line-clamp: 3;
 
-        @media (max-width: 950px) {
+    -webkit-box-orient: vertical;
 
-            .scholarship-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
+    overflow: hidden;
+}
 
-        }
 
+/* ============================================================
+   DETAILS
+============================================================ */
 
-        @media (max-width: 700px) {
+.details {
 
-            header {
-                height: 52px;
+    display: grid;
 
-                padding:
-                    0 12px;
-            }
+    grid-template-columns: 1fr;
 
-            .brand-name {
-                font-size: 14px;
-            }
+    gap: 9px;
 
-            .hero {
-                padding:
-                    55px 18px 60px;
-            }
+    margin-bottom: 18px;
+}
 
-            .filter-box {
-                grid-template-columns: 1fr;
+.detail-item {
 
-                margin-top: -42px;
-            }
+    display: flex;
 
-            .section-header {
-                align-items: flex-start;
+    align-items: flex-start;
 
-                flex-direction: column;
+    gap: 9px;
 
-                margin-top: 30px;
-            }
+    color: #475569;
 
-            .result-count {
-                white-space: normal;
-            }
+    font-size: 12px;
+}
 
-            .scholarship-grid {
-                grid-template-columns: 1fr;
-            }
+.detail-icon {
 
-            .card-image-wrap {
-                height: 205px;
-            }
+    width: 17px;
 
-        }
+    height: 17px;
 
-    </style>
+    flex:
+        0
+        0
+        17px;
+
+    color: #2E8B57;
+
+    margin-top: 1px;
+}
+
+.detail-label {
+
+    font-weight: 700;
+
+    color: #334155;
+}
+
+.detail-value {
+
+    color: #64748b;
+}
+
+.deadline-soon {
+
+    color: #b45309 !important;
+
+    font-weight: 700;
+}
+
+.deadline-past {
+
+    color: #b91c1c !important;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   APPLY BUTTON
+============================================================ */
+
+.apply-btn {
+
+    margin-top: auto;
+
+    width: 100%;
+
+    min-height: 44px;
+
+    border-radius: 8px;
+
+    background: #003366;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition:
+        background .2s ease;
+}
+
+.apply-btn:hover {
+
+    background: #00284f;
+}
+
+.apply-icon {
+
+    width: 17px;
+
+    height: 17px;
+}
+
+
+/* ============================================================
+   STATE BOX
+============================================================ */
+
+.state-box {
+
+    background: white;
+
+    border:
+        1px solid
+        #e4e8ee;
+
+    border-radius: 14px;
+
+    padding:
+        50px
+        20px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+.state-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    margin:
+        0
+        auto
+        13px;
+
+    color: #2E8B57;
+}
+
+.state-box h3 {
+
+    margin:
+        0
+        0
+        6px;
+
+    color: #003366;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+footer {
+
+    background: #003366;
+
+    color: white;
+
+    text-align: center;
+
+    padding:
+        25px
+        18px;
+
+    border-top:
+        4px solid
+        #2E8B57;
+}
+
+footer p {
+
+    margin: 4px 0;
+
+    font-size: 13px;
+
+    opacity: .9;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 950px) {
+
+    .scholarship-grid {
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    header {
+
+        padding:
+            9px
+            15px;
+    }
+
+    .brand-name {
+
+        font-size: 15px;
+    }
+
+    .hero {
+
+        padding:
+            50px
+            15px
+            62px;
+    }
+
+    .hero h1 {
+
+        font-size: 34px;
+    }
+
+    .filter-box {
+
+        grid-template-columns: 1fr;
+
+        margin-top: -42px;
+    }
+
+    .section-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        margin-top: 30px;
+    }
+
+    .scholarship-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+    .card-image-wrap {
+
+        height: 200px;
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .main-container {
+
+        padding-left: 12px;
+
+        padding-right: 12px;
+    }
+
+    .hero h1 {
+
+        font-size: 30px;
+    }
+
+    .hero p {
+
+        font-size: 14px;
+    }
+
+    .section-title {
+
+        font-size: 23px;
+    }
+
+}
+
+
+/* ============================================================
+   HIDDEN
+============================================================ */
+
+.hidden {
+
+    display: none !important;
+}
+
+</style>
 
 </head>
 
@@ -927,9 +1184,9 @@ function scholarshipImage($image)
     <div class="header-left">
 
         <img
-            class="logo-img"
-            src="https://www.flexieduconsult.com.ng/assets/images/logo.png"
+            src="https://www.flexieduconsult.com.ng/assets/logo.png"
             alt="Flexi Educational Consult"
+            class="logo-img"
             onerror="this.style.display='none';"
         >
 
@@ -952,7 +1209,46 @@ function scholarshipImage($image)
 
         <div class="hero-badge">
 
-            🎓
+            <!-- SCHOLARSHIP SVG ICON -->
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path
+                    d="M2 8.5
+                       12 4
+                       22 8.5
+                       12 13
+                       2 8.5Z"
+                />
+
+                <path
+                    d="M6 10.5
+                       V15
+                       C6 17
+                       18 17
+                       18 15
+                       V10.5"
+                />
+
+                <path
+                    d="M22 8.5
+                       V15"
+                />
+
+                <circle
+                    cx="22"
+                    cy="17"
+                    r="1"
+                />
+
+            </svg>
 
             Scholarship Opportunities
 
@@ -988,12 +1284,17 @@ function scholarshipImage($image)
 
         <div class="input-wrap">
 
+            <!-- SEARCH SVG -->
+
             <svg
                 class="input-icon"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
             >
 
                 <circle
@@ -1003,7 +1304,8 @@ function scholarshipImage($image)
                 />
 
                 <path
-                    d="m20 20-3.5-3.5"
+                    d="M20 20
+                       L16.2 16.2"
                 />
 
             </svg>
@@ -1029,36 +1331,12 @@ function scholarshipImage($image)
                 All Study Levels
             </option>
 
-            <option value="secondary">
-                Secondary
-            </option>
-
-            <option value="undergraduate">
-                Undergraduate
-            </option>
-
-            <option value="postgraduate">
-                Postgraduate
-            </option>
-
-            <option value="masters">
-                Masters
-            </option>
-
-            <option value="phd">
-                PhD
-            </option>
-
-            <option value="international">
-                International
-            </option>
-
         </select>
 
     </div>
 
 
-    <!-- SECTION HEADER -->
+    <!-- SECTION TITLE -->
 
     <div class="section-header">
 
@@ -1083,131 +1361,635 @@ function scholarshipImage($image)
     </div>
 
 
-    <!-- LOADING -->
+    <!-- SCHOLARSHIPS -->
 
     <div
-        id="loadingState"
-        class="state-box"
-    >
-
-        <div class="spinner"></div>
-
-        <h3>
-            Loading scholarships...
-        </h3>
-
-        <p>
-            Please wait while we load the latest opportunities.
-        </p>
-
-    </div>
-
-
-    <!-- ERROR -->
-
-    <div
-        id="errorState"
-        class="state-box"
-        style="display:none;"
-    >
-
-        <svg
-            class="state-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-
-            <circle
-                cx="12"
-                cy="12"
-                r="9"
-            />
-
-            <line
-                x1="12"
-                y1="8"
-                x2="12"
-                y2="12"
-            />
-
-            <line
-                x1="12"
-                y1="16"
-                x2="12.01"
-                y2="16"
-            />
-
-        </svg>
-
-
-        <h3>
-            Unable to load scholarships
-        </h3>
-
-
-        <p>
-            Please try again later.
-        </p>
-
-    </div>
-
-
-    <!-- EMPTY -->
-
-    <div
-        id="emptyState"
-        class="state-box"
-        style="display:none;"
-    >
-
-        <svg
-            class="state-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-
-            <path
-                d="M4 5h16v14H4z"
-            />
-
-            <path
-                d="M8 9h8M8 13h5"
-            />
-
-        </svg>
-
-
-        <h3>
-            No scholarships found
-        </h3>
-
-
-        <p>
-            Try changing your search or study-level filter.
-        </p>
-
-    </div>
-
-
-    <!-- SCHOLARSHIP GRID -->
-
-    <div
-        id="scholarshipGrid"
+        id="scholarshipContainer"
         class="scholarship-grid"
-    ></div>
+    >
+
+        <?php if ($hasError): ?>
+
+            <div
+                class="state-box"
+                style="grid-column:1/-1;"
+            >
+
+                <!-- ERROR SVG -->
+
+                <svg
+                    class="state-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                    />
+
+                    <path
+                        d="M12 8v5"
+                    />
+
+                    <circle
+                        cx="12"
+                        cy="16.5"
+                        r=".7"
+                        fill="currentColor"
+                    />
+
+                </svg>
 
 
-    <!-- PAGINATION -->
+                <h3>
+                    Unable to load scholarships
+                </h3>
 
-    <div
-        id="pagination"
-        class="pagination"
-    ></div>
+                <p>
+                    Please try again later.
+                </p>
 
+            </div>
+
+
+        <?php elseif (empty($scholarships)): ?>
+
+
+            <div
+                class="state-box"
+                style="grid-column:1/-1;"
+            >
+
+                <!-- EMPTY BOOK SVG -->
+
+                <svg
+                    class="state-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+
+                    <path
+                        d="M4 5.5
+                           C4 4.7 4.7 4 5.5 4
+                           H10
+                           C11.1 4 12 4.9 12 6
+                           V20
+                           C12 18.9 11.1 18 10 18
+                           H5.5
+                           C4.7 18 4 17.3 4 16.5
+                           V5.5Z"
+                    />
+
+                    <path
+                        d="M20 5.5
+                           C20 4.7 19.3 4 18.5 4
+                           H14
+                           C12.9 4 12 4.9 12 6
+                           V20
+                           C12 18.9 12.9 18 14 18
+                           H18.5
+                           C19.3 18 20 17.3 20 16.5
+                           V5.5Z"
+                    />
+
+                </svg>
+
+
+                <h3>
+                    No scholarships available
+                </h3>
+
+                <p>
+                    Check back later for new scholarship opportunities.
+                </p>
+
+            </div>
+
+
+        <?php else: ?>
+
+
+            <?php foreach ($scholarships as $scholarship): ?>
+
+                <?php
+
+                $title =
+                    $scholarship['title'] ??
+                    'Untitled Scholarship';
+
+                $organization =
+                    $scholarship['organization'] ??
+                    '';
+
+                $description =
+                    $scholarship['description'] ??
+                    '';
+
+                $amount =
+                    $scholarship['amount'] ??
+                    '';
+
+                $deadline =
+                    $scholarship['deadline'] ??
+                    '';
+
+                $location =
+                    $scholarship['location'] ??
+                    '';
+
+                $studyLevel =
+                    $scholarship['study_level'] ??
+                    '';
+
+                $field =
+                    $scholarship['field_of_study'] ??
+                    '';
+
+                $applicationUrl =
+                    $scholarship['application_url'] ??
+                    '';
+
+                $sourceUrl =
+                    $scholarship['source_url'] ??
+                    '';
+
+                $image =
+                    scholarshipImage(
+                        $scholarship['image_url'] ?? ''
+                    );
+
+                $featured =
+                    !empty(
+                        $scholarship['featured']
+                    );
+
+                ?>
+
+
+                <article
+                    class="scholarship-card"
+                    data-title="<?= e($title) ?>"
+                    data-organization="<?= e($organization) ?>"
+                    data-description="<?= e($description) ?>"
+                    data-study-level="<?= e($studyLevel) ?>"
+                >
+
+
+                    <!-- IMAGE -->
+
+                    <div class="card-image-wrap">
+
+                        <img
+                            src="<?= e($image) ?>"
+                            alt="<?= e($title) ?>"
+                            class="card-image"
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='<?= e(scholarshipImage('')) ?>';"
+                        >
+
+
+                        <?php if ($featured): ?>
+
+                            <div class="featured-badge">
+
+                                <!-- STAR SVG -->
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                >
+
+                                    <path
+                                        d="M12 2.8
+                                           L14.8 8.5
+                                           L21.1 9.4
+                                           L16.5 13.8
+                                           L17.6 20
+                                           L12 17.1
+                                           L6.4 20
+                                           L7.5 13.8
+                                           L2.9 9.4
+                                           L9.2 8.5
+                                           Z"
+                                    />
+
+                                </svg>
+
+                                Featured
+
+                            </div>
+
+                        <?php endif; ?>
+
+                    </div>
+
+
+                    <!-- BODY -->
+
+                    <div class="card-body">
+
+
+                        <?php if ($organization): ?>
+
+                            <div class="organization">
+                                <?= e($organization) ?>
+                            </div>
+
+                        <?php endif; ?>
+
+
+                        <h3 class="card-title">
+                            <?= e($title) ?>
+                        </h3>
+
+
+                        <?php if ($description): ?>
+
+                            <p class="card-description">
+                                <?= e($description) ?>
+                            </p>
+
+                        <?php endif; ?>
+
+
+                        <div class="details">
+
+
+                            <?php if ($amount): ?>
+
+                                <div class="detail-item">
+
+                                    <!-- MONEY SVG -->
+
+                                    <svg
+                                        class="detail-icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+
+                                        <rect
+                                            x="3"
+                                            y="5"
+                                            width="18"
+                                            height="14"
+                                            rx="2"
+                                        />
+
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="3"
+                                        />
+
+                                        <path
+                                            d="M7 9h.01M17 15h.01"
+                                        />
+
+                                    </svg>
+
+
+                                    <div>
+
+                                        <span class="detail-label">
+                                            Benefits:
+                                        </span>
+
+                                        <span class="detail-value">
+                                            <?= e($amount) ?>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            <?php endif; ?>
+
+
+                            <?php if ($deadline): ?>
+
+                                <div class="detail-item">
+
+                                    <!-- CALENDAR SVG -->
+
+                                    <svg
+                                        class="detail-icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+
+                                        <rect
+                                            x="3"
+                                            y="4"
+                                            width="18"
+                                            height="17"
+                                            rx="2"
+                                        />
+
+                                        <path
+                                            d="M16 2v4M8 2v4M3 9h18"
+                                        />
+
+                                    </svg>
+
+
+                                    <div>
+
+                                        <span class="detail-label">
+                                            Deadline:
+                                        </span>
+
+                                        <span
+                                            class="detail-value <?= e(deadlineClass($deadline)) ?>"
+                                        >
+                                            <?= e(formatDeadline($deadline)) ?>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            <?php endif; ?>
+
+
+                            <?php if ($location): ?>
+
+                                <div class="detail-item">
+
+                                    <!-- LOCATION SVG -->
+
+                                    <svg
+                                        class="detail-icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+
+                                        <path
+                                            d="M20 10
+                                               C20 15
+                                               12 21
+                                               12 21
+                                               C12 21
+                                               4 15
+                                               4 10
+                                               A8 8 0 0 1 20 10Z"
+                                        />
+
+                                        <circle
+                                            cx="12"
+                                            cy="10"
+                                            r="2.5"
+                                        />
+
+                                    </svg>
+
+
+                                    <div>
+
+                                        <span class="detail-label">
+                                            Location:
+                                        </span>
+
+                                        <span class="detail-value">
+                                            <?= e($location) ?>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            <?php endif; ?>
+
+
+                            <?php if ($studyLevel): ?>
+
+                                <div class="detail-item">
+
+                                    <!-- EDUCATION SVG -->
+
+                                    <svg
+                                        class="detail-icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+
+                                        <path
+                                            d="M2 8.5
+                                               L12 4
+                                               L22 8.5
+                                               L12 13
+                                               L2 8.5Z"
+                                        />
+
+                                        <path
+                                            d="M6 10.5
+                                               V15
+                                               C6 17
+                                               18 17
+                                               18 15
+                                               V10.5"
+                                        />
+
+                                        <path
+                                            d="M22 8.5V15"
+                                        />
+
+                                    </svg>
+
+
+                                    <div>
+
+                                        <span class="detail-label">
+                                            Study Level:
+                                        </span>
+
+                                        <span class="detail-value">
+                                            <?= e($studyLevel) ?>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            <?php endif; ?>
+
+
+                            <?php if ($field): ?>
+
+                                <div class="detail-item">
+
+                                    <!-- BOOK SVG -->
+
+                                    <svg
+                                        class="detail-icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+
+                                        <path
+                                            d="M4 5.5
+                                               C4 4.7 4.7 4 5.5 4
+                                               H10
+                                               C11.1 4 12 4.9 12 6
+                                               V20
+                                               C12 18.9 11.1 18 10 18
+                                               H5.5
+                                               C4.7 18 4 17.3 4 16.5
+                                               V5.5Z"
+                                        />
+
+                                        <path
+                                            d="M20 5.5
+                                               C20 4.7 19.3 4 18.5 4
+                                               H14
+                                               C12.9 4 12 4.9 12 6
+                                               V20
+                                               C12 18.9 12.9 18 14 18
+                                               H18.5
+                                               C19.3 18 20 17.3 20 16.5
+                                               V5.5Z"
+                                        />
+
+                                    </svg>
+
+
+                                    <div>
+
+                                        <span class="detail-label">
+                                            Field:
+                                        </span>
+
+                                        <span class="detail-value">
+                                            <?= e($field) ?>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            <?php endif; ?>
+
+
+                        </div>
+
+
+                        <?php
+
+                        $applyLink =
+                            $applicationUrl
+                            ?: $sourceUrl;
+
+                        ?>
+
+
+                        <?php if ($applyLink): ?>
+
+                            <a
+                                href="<?= e($applyLink) ?>"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="apply-btn"
+                            >
+
+                                Apply / View Details
+
+                                <!-- EXTERNAL LINK SVG -->
+
+                                <svg
+                                    class="apply-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+
+                                    <path
+                                        d="M14 3h7v7"
+                                    />
+
+                                    <path
+                                        d="M10 14L21 3"
+                                    />
+
+                                    <path
+                                        d="M21 14v5
+                                           a2 2 0 0 1-2 2H5
+                                           a2 2 0 0 1-2-2V5
+                                           a2 2 0 0 1 2-2h5"
+                                    />
+
+                                </svg>
+
+                            </a>
+
+                        <?php else: ?>
+
+                            <div
+                                class="apply-btn"
+                                style="
+                                    background:#94a3b8;
+                                    cursor:not-allowed;
+                                "
+                            >
+
+                                Details unavailable
+
+                            </div>
+
+                        <?php endif; ?>
+
+
+                    </div>
+
+                </article>
+
+
+            <?php endforeach; ?>
+
+
+        <?php endif; ?>
+
+    </div>
 
 </main>
 
@@ -1218,9 +2000,14 @@ function scholarshipImage($image)
 
 <footer>
 
-    © <?php echo date('Y'); ?>
-    Flexi Educational Consult.
-    All rights reserved.
+    <p>
+        © <?= date('Y') ?>
+        Flexi Educational Consult
+    </p>
+
+    <p>
+        Scholarships and educational opportunities
+    </p>
 
 </footer>
 
@@ -1228,66 +2015,25 @@ function scholarshipImage($image)
 <script>
 
 /* ============================================================
-   SERVER DATA
+   DATA FROM PHP
 ============================================================ */
 
-/*
- * PHP fetches the scholarships from Supabase.
- *
- * json_encode safely transfers the PHP array into JavaScript.
- */
-
-const scholarshipData =
-    <?php echo json_encode(
-        $scholarships,
-        JSON_UNESCAPED_SLASHES |
-        JSON_UNESCAPED_UNICODE
-    ); ?>;
-
-
-const serverHasError =
-    <?php echo $hasError ? 'true' : 'false'; ?>;
-
-
-/* ============================================================
-   ELEMENTS
-============================================================ */
+const scholarshipCards =
+    Array.from(
+        document.querySelectorAll(
+            '.scholarship-card'
+        )
+    );
 
 const searchInput =
     document.getElementById(
         'searchInput'
     );
 
-
 const studyFilter =
     document.getElementById(
         'studyFilter'
     );
-
-
-const scholarshipGrid =
-    document.getElementById(
-        'scholarshipGrid'
-    );
-
-
-const loadingState =
-    document.getElementById(
-        'loadingState'
-    );
-
-
-const errorState =
-    document.getElementById(
-        'errorState'
-    );
-
-
-const emptyState =
-    document.getElementById(
-        'emptyState'
-    );
-
 
 const resultCount =
     document.getElementById(
@@ -1295,880 +2041,127 @@ const resultCount =
     );
 
 
-const pagination =
-    document.getElementById(
-        'pagination'
-    );
-
-
 /* ============================================================
-   STATE
+   CREATE STUDY LEVEL FILTER OPTIONS
 ============================================================ */
 
-let filteredScholarships = [];
-
-let currentPage = 1;
-
-const ITEMS_PER_PAGE = 9;
+const studyLevels =
+    new Set();
 
 
-/* ============================================================
-   ICONS
-============================================================ */
+scholarshipCards.forEach(
+    function(card) {
 
-const icons = {
+        const level =
+            card.dataset.studyLevel
+                ? card.dataset.studyLevel.trim()
+                : '';
 
-    money: `
-        <svg
-            class="detail-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-            <rect
-                x="3"
-                y="5"
-                width="18"
-                height="14"
-                rx="2"
-            />
-            <path d="M7 12h10"/>
-            <circle
-                cx="12"
-                cy="12"
-                r="2"
-            />
-        </svg>
-    `,
+        if (level) {
 
+            studyLevels.add(level);
 
-    calendar: `
-        <svg
-            class="detail-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-            <rect
-                x="3"
-                y="4"
-                width="18"
-                height="17"
-                rx="2"
-            />
-            <path d="M16 2v4M8 2v4M3 9h18"/>
-        </svg>
-    `,
-
-
-    education: `
-        <svg
-            class="detail-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-            <path
-                d="m3 10 9-5 9 5-9 5-9-5z"
-            />
-            <path
-                d="M7 12v5c3 2 7 2 10 0v-5"
-            />
-        </svg>
-    `,
-
-
-    book: `
-        <svg
-            class="detail-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-            <path
-                d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5z"
-            />
-            <path
-                d="M4 19a2.5 2.5 0 0 1 2.5-2.5H20"
-            />
-        </svg>
-    `,
-
-
-    location: `
-        <svg
-            class="detail-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-            <path
-                d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"
-            />
-            <circle
-                cx="12"
-                cy="9"
-                r="2.5"
-            />
-        </svg>
-    `,
-
-
-    external: `
-        <svg
-            class="apply-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-        >
-            <path
-                d="M14 3h7v7"
-            />
-            <path
-                d="M10 14 21 3"
-            />
-            <path
-                d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"
-            />
-        </svg>
-    `
-
-};
-
-
-/* ============================================================
-   ESCAPE HTML
-============================================================ */
-
-function escapeHTML(value) {
-
-    return String(
-        value ?? ''
-    )
-    .replace(
-        /&/g,
-        '&amp;'
-    )
-    .replace(
-        /</g,
-        '&lt;'
-    )
-    .replace(
-        />/g,
-        '&gt;'
-    )
-    .replace(
-        /"/g,
-        '&quot;'
-    )
-    .replace(
-        /'/g,
-        '&#039;'
-    );
-
-}
-
-
-/* ============================================================
-   FORMAT DATE
-============================================================ */
-
-function formatDate(dateString) {
-
-    if (!dateString) {
-        return 'No deadline specified';
-    }
-
-
-    const date =
-        new Date(
-            dateString +
-            'T00:00:00'
-        );
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return escapeHTML(
-            dateString
-        );
+        }
 
     }
+);
 
 
-    return date.toLocaleDateString(
-        'en-NG',
-        {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
+Array.from(studyLevels)
+    .sort()
+    .forEach(
+        function(level) {
+
+            const option =
+                document.createElement(
+                    'option'
+                );
+
+            option.value =
+                level;
+
+            option.textContent =
+                level;
+
+            studyFilter.appendChild(
+                option
+            );
+
         }
     );
 
-}
-
 
 /* ============================================================
-   DEADLINE CLASS
-============================================================ */
-
-function getDeadlineClass(
-    dateString
-) {
-
-    if (!dateString) {
-        return '';
-    }
-
-
-    const date =
-        new Date(
-            dateString +
-            'T23:59:59'
-        );
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return '';
-
-    }
-
-
-    const difference =
-        date.getTime() -
-        Date.now();
-
-
-    const days =
-        Math.ceil(
-            difference /
-            86400000
-        );
-
-
-    if (days < 0) {
-        return 'deadline-past';
-    }
-
-
-    if (days <= 14) {
-        return 'deadline-soon';
-    }
-
-
-    return '';
-
-}
-
-
-/* ============================================================
-   JAVASCRIPT FALLBACK IMAGE
-============================================================ */
-
-/*
- * IMPORTANT FIX
- *
- * The old code called:
- *
- *     scholarshipImage('')
- *
- * inside JavaScript.
- *
- * scholarshipImage() is a PHP function and therefore does not
- * exist in the browser.
- *
- * That caused:
- *
- *     ReferenceError: scholarshipImage is not defined
- *
- * and stopped createCard() before it could render the card.
- *
- * The fallback image is now generated entirely in JavaScript.
- */
-
-const fallbackImage =
-    'data:image/svg+xml;charset=UTF-8,' +
-    encodeURIComponent(`
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="800"
-            height="450"
-            viewBox="0 0 800 450"
-        >
-
-            <rect
-                width="800"
-                height="450"
-                fill="#003366"
-            />
-
-            <circle
-                cx="400"
-                cy="180"
-                r="70"
-                fill="none"
-                stroke="#FFD700"
-                stroke-width="8"
-            />
-
-            <path
-                d="M335 180h130M400 115v130"
-                stroke="#FFD700"
-                stroke-width="8"
-                stroke-linecap="round"
-            />
-
-            <text
-                x="400"
-                y="330"
-                text-anchor="middle"
-                font-family="Arial,sans-serif"
-                font-size="32"
-                fill="white"
-            >
-                Flexi Educational Consult
-            </text>
-
-        </svg>
-    `);
-
-
-/* ============================================================
-   NORMALIZE TEXT
-============================================================ */
-
-function normalizeText(value) {
-
-    return String(
-        value || ''
-    )
-    .toLowerCase()
-    .trim();
-
-}
-
-
-/* ============================================================
-   FILTER
+   FILTER SCHOLARSHIPS
 ============================================================ */
 
 function filterScholarships() {
 
     const search =
-        normalizeText(
-            searchInput.value
-        );
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+    const selectedLevel =
+        studyFilter.value
+            .trim()
+            .toLowerCase();
 
 
-    const level =
-        normalizeText(
-            studyFilter.value
-        );
+    let visible = 0;
 
 
-    filteredScholarships =
-        scholarshipData.filter(
-            function(item) {
+    scholarshipCards.forEach(
+        function(card) {
 
-                const searchableText = [
+            const text = [
 
-                    item.title,
+                card.dataset.title,
 
-                    item.organization,
+                card.dataset.organization,
 
-                    item.description,
+                card.dataset.description,
 
-                    item.eligibility,
+                card.dataset.studyLevel
 
-                    item.field_of_study,
+            ]
+            .join(' ')
+            .toLowerCase();
 
-                    item.location,
 
-                    item.study_level
-
-                ]
-                .map(
-                    normalizeText
+            const level =
+                (
+                    card.dataset.studyLevel ||
+                    ''
                 )
-                .join(' ');
+                .trim()
+                .toLowerCase();
 
 
-                const matchesSearch =
-                    !search ||
-                    searchableText.includes(
-                        search
-                    );
+            const matchesSearch =
+                !search ||
+                text.includes(search);
 
 
-                const matchesLevel =
-                    !level ||
-                    normalizeText(
-                        item.study_level
-                    ).includes(
-                        level
-                    );
+            const matchesLevel =
+                !selectedLevel ||
+                level === selectedLevel;
 
-
-                return (
-                    matchesSearch &&
-                    matchesLevel
-                );
-
-            }
-        );
-
-
-    currentPage = 1;
-
-    render();
-
-}
-
-
-/* ============================================================
-   CREATE CARD
-============================================================ */
-
-function createCard(item) {
-
-    const title =
-        escapeHTML(
-            item.title ||
-            'Scholarship Opportunity'
-        );
-
-
-    const organization =
-        escapeHTML(
-            item.organization ||
-            'Scholarship Provider'
-        );
-
-
-    const description =
-        escapeHTML(
-            item.description ||
-            'Scholarship opportunity for eligible students.'
-        );
-
-
-    const amount =
-        escapeHTML(
-            item.amount ||
-            'Not specified'
-        );
-
-
-    const location =
-        escapeHTML(
-            item.location ||
-            'Not specified'
-        );
-
-
-    const studyLevel =
-        escapeHTML(
-            item.study_level ||
-            'Not specified'
-        );
-
-
-    const field =
-        escapeHTML(
-            item.field_of_study ||
-            'Not specified'
-        );
-
-
-    const deadline =
-        formatDate(
-            item.deadline
-        );
-
-
-    const deadlineClassName =
-        getDeadlineClass(
-            item.deadline
-        );
-
-
-    /*
-     * FIXED:
-     *
-     * Do NOT call the PHP scholarshipImage()
-     * function here.
-     *
-     * JavaScript now uses its own fallback.
-     */
-
-    const image =
-        escapeHTML(
-            item.image_url ||
-            fallbackImage
-        );
-
-
-    const applicationUrl =
-        escapeHTML(
-            item.application_url ||
-            '#'
-        );
-
-
-    const featured =
-        item.featured === true;
-
-
-    return `
-
-        <article class="scholarship-card">
-
-
-            <div class="card-image-wrap">
-
-                <img
-                    class="card-image"
-                    src="${image}"
-                    alt="${title}"
-                    loading="lazy"
-                    onerror="
-                        this.onerror=null;
-                        this.src='${fallbackImage}';
-                    "
-                >
-
-
-                ${
-                    featured
-                    ? `
-                        <span class="featured-badge">
-                            Featured Scholarship
-                        </span>
-                    `
-                    : ''
-                }
-
-            </div>
-
-
-            <div class="card-body">
-
-
-                <div class="organization">
-                    ${organization}
-                </div>
-
-
-                <h3 class="card-title">
-                    ${title}
-                </h3>
-
-
-                <p class="card-description">
-                    ${description}
-                </p>
-
-
-                <div class="details">
-
-
-                    <div class="detail-item">
-
-                        ${icons.money}
-
-                        <div>
-
-                            <span class="detail-label">
-                                Amount:
-                            </span>
-
-                            <span class="detail-value">
-                                ${amount}
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        ${icons.calendar}
-
-                        <div>
-
-                            <span class="detail-label">
-                                Deadline:
-                            </span>
-
-                            <span
-                                class="detail-value ${deadlineClassName}"
-                            >
-                                ${deadline}
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        ${icons.education}
-
-                        <div>
-
-                            <span class="detail-label">
-                                Study Level:
-                            </span>
-
-                            <span class="detail-value">
-                                ${studyLevel}
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        ${icons.book}
-
-                        <div>
-
-                            <span class="detail-label">
-                                Field:
-                            </span>
-
-                            <span class="detail-value">
-                                ${field}
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        ${icons.location}
-
-                        <div>
-
-                            <span class="detail-label">
-                                Location:
-                            </span>
-
-                            <span class="detail-value">
-                                ${location}
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-                <a
-                    class="apply-btn"
-                    href="${applicationUrl}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-
-                    Apply Now
-
-                    ${icons.external}
-
-                </a>
-
-
-            </div>
-
-        </article>
-
-    `;
-
-}
-
-
-/* ============================================================
-   RENDER
-============================================================ */
-
-function render() {
-
-    loadingState.style.display =
-        'none';
-
-    errorState.style.display =
-        'none';
-
-    scholarshipGrid.innerHTML =
-        '';
-
-    pagination.innerHTML =
-        '';
-
-
-    if (
-        !filteredScholarships.length
-    ) {
-
-        emptyState.style.display =
-            'block';
-
-
-        resultCount.textContent =
-            '0 scholarships';
-
-
-        return;
-
-    }
-
-
-    emptyState.style.display =
-        'none';
-
-
-    const totalItems =
-        filteredScholarships.length;
-
-
-    const totalPages =
-        Math.ceil(
-            totalItems /
-            ITEMS_PER_PAGE
-        );
-
-
-    if (
-        currentPage >
-        totalPages
-    ) {
-
-        currentPage =
-            totalPages;
-
-    }
-
-
-    const start =
-        (
-            currentPage - 1
-        ) *
-        ITEMS_PER_PAGE;
-
-
-    const end =
-        start +
-        ITEMS_PER_PAGE;
-
-
-    const pageItems =
-        filteredScholarships.slice(
-            start,
-            end
-        );
-
-
-    scholarshipGrid.innerHTML =
-        pageItems
-            .map(
-                createCard
-            )
-            .join('');
-
-
-    const firstItem =
-        start + 1;
-
-
-    const lastItem =
-        Math.min(
-            end,
-            totalItems
-        );
-
-
-    resultCount.textContent =
-        `${firstItem}-${lastItem} of ${totalItems} scholarship${totalItems === 1 ? '' : 's'}`;
-
-
-    renderPagination(
-        totalPages
-    );
-
-}
-
-
-/* ============================================================
-   PAGINATION
-============================================================ */
-
-function renderPagination(
-    totalPages
-) {
-
-    if (totalPages <= 1) {
-        return;
-    }
-
-
-    const previousButton =
-        document.createElement(
-            'button'
-        );
-
-
-    previousButton.type =
-        'button';
-
-
-    previousButton.className =
-        'page-btn';
-
-
-    previousButton.textContent =
-        'Previous';
-
-
-    previousButton.disabled =
-        currentPage === 1;
-
-
-    previousButton.addEventListener(
-        'click',
-        function() {
 
             if (
-                currentPage > 1
+                matchesSearch &&
+                matchesLevel
             ) {
 
-                currentPage--;
+                card.style.display =
+                    '';
 
-                render();
+                visible++;
 
-                scrollToResults();
+            } else {
+
+                card.style.display =
+                    'none';
 
             }
 
@@ -2176,169 +2169,127 @@ function renderPagination(
     );
 
 
-    pagination.appendChild(
-        previousButton
-    );
-
-
-    const startPage =
-        Math.max(
-            1,
-            currentPage - 2
-        );
-
-
-    const endPage =
-        Math.min(
-            totalPages,
-            currentPage + 2
-        );
-
-
-    for (
-        let page = startPage;
-        page <= endPage;
-        page++
-    ) {
-
-        const button =
-            document.createElement(
-                'button'
-            );
-
-
-        button.type =
-            'button';
-
-
-        button.className =
-            'page-btn' +
-            (
-                page === currentPage
-                    ? ' active'
-                    : ''
-            );
-
-
-        button.textContent =
-            page;
-
-
-        button.setAttribute(
-            'aria-label',
-            `Go to page ${page}`
-        );
-
+    if (resultCount) {
 
         if (
-            page === currentPage
+            !search &&
+            !selectedLevel
         ) {
 
-            button.setAttribute(
-                'aria-current',
-                'page'
-            );
+            resultCount.textContent =
+                scholarshipCards.length +
+                (
+                    scholarshipCards.length === 1
+                        ? ' scholarship'
+                        : ' scholarships'
+                );
+
+        } else {
+
+            resultCount.textContent =
+                visible +
+                (
+                    visible === 1
+                        ? ' scholarship found'
+                        : ' scholarships found'
+                );
 
         }
-
-
-        button.addEventListener(
-            'click',
-            function() {
-
-                currentPage =
-                    page;
-
-                render();
-
-                scrollToResults();
-
-            }
-        );
-
-
-        pagination.appendChild(
-            button
-        );
 
     }
 
 
-    const nextButton =
-        document.createElement(
-            'button'
-        );
-
-
-    nextButton.type =
-        'button';
-
-
-    nextButton.className =
-        'page-btn';
-
-
-    nextButton.textContent =
-        'Next';
-
-
-    nextButton.disabled =
-        currentPage === totalPages;
-
-
-    nextButton.addEventListener(
-        'click',
-        function() {
-
-            if (
-                currentPage <
-                totalPages
-            ) {
-
-                currentPage++;
-
-                render();
-
-                scrollToResults();
-
-            }
-
-        }
-    );
-
-
-    pagination.appendChild(
-        nextButton
+    updateEmptySearchState(
+        visible
     );
 
 }
 
 
 /* ============================================================
-   SCROLL TO RESULTS
+   SEARCH EMPTY STATE
 ============================================================ */
 
-function scrollToResults() {
+function updateEmptySearchState(
+    visible
+) {
 
-    const headerOffset =
-        90;
-
-
-    const position =
-        scholarshipGrid
-            .getBoundingClientRect()
-            .top +
-        window.scrollY -
-        headerOffset;
+    const existing =
+        document.getElementById(
+            'searchEmptyState'
+        );
 
 
-    window.scrollTo({
+    if (existing) {
 
-        top: position,
+        existing.remove();
 
-        behavior: 'smooth'
+    }
 
-    });
+
+    if (
+        visible === 0 &&
+        scholarshipCards.length > 0
+    ) {
+
+        const box =
+            document.createElement(
+                'div'
+            );
+
+        box.id =
+            'searchEmptyState';
+
+        box.className =
+            'state-box';
+
+        box.style.gridColumn =
+            '1 / -1';
+
+
+        box.innerHTML = `
+
+            <svg
+                class="state-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                />
+
+                <path
+                    d="M20 20L16.2 16.2"
+                />
+
+            </svg>
+
+            <h3>
+                No scholarship found
+            </h3>
+
+            <p>
+                Try another search term or study level.
+            </p>
+
+        `;
+
+
+        document
+            .getElementById(
+                'scholarshipContainer'
+            )
+            .appendChild(box);
+
+    }
 
 }
 
@@ -2347,47 +2298,35 @@ function scrollToResults() {
    EVENTS
 ============================================================ */
 
-searchInput.addEventListener(
-    'input',
-    filterScholarships
-);
+if (searchInput) {
 
-
-studyFilter.addEventListener(
-    'change',
-    filterScholarships
-);
-
-
-/* ============================================================
-   INITIALIZE
-============================================================ */
-
-if (serverHasError) {
-
-    loadingState.style.display =
-        'none';
-
-    errorState.style.display =
-        'block';
-
-    resultCount.textContent =
-        '';
-
-} else {
-
-    filteredScholarships =
-        Array.isArray(
-            scholarshipData
-        )
-            ? scholarshipData
-            : [];
-
-
-    render();
+    searchInput.addEventListener(
+        'input',
+        filterScholarships
+    );
 
 }
 
+
+if (studyFilter) {
+
+    studyFilter.addEventListener(
+        'change',
+        filterScholarships
+    );
+
+}
+
+
+/* ============================================================
+   INITIAL COUNT
+============================================================ */
+
+filterScholarships();
+
 </script>
+
+
 </body>
+
 </html>
