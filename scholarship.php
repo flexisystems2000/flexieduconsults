@@ -27,36 +27,69 @@ curl_setopt_array($ch, [
 ]);
 
 $response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+$httpCode = curl_getinfo(
+    $ch,
+    CURLINFO_HTTP_CODE
+);
+
 $curlError = curl_error($ch);
 
 curl_close($ch);
 
+
 $scholarships = [];
 
-if (!$curlError && $httpCode >= 200 && $httpCode < 300 && $response) {
-    $decoded = json_decode($response, true);
+if (
+    !$curlError &&
+    $httpCode >= 200 &&
+    $httpCode < 300 &&
+    $response
+) {
+
+    $decoded = json_decode(
+        $response,
+        true
+    );
 
     if (is_array($decoded)) {
         $scholarships = $decoded;
     }
 }
 
+
+/*
+ * Detect an actual server/Supabase error.
+ */
 $hasError = false;
 
-if ($curlError || ($httpCode && ($httpCode < 200 || $httpCode >= 300))) {
+if (
+    $curlError ||
+    (
+        $httpCode &&
+        (
+            $httpCode < 200 ||
+            $httpCode >= 300
+        )
+    )
+) {
     $hasError = true;
 }
 
 
 /* ============================================================
-   HELPERS
+   PHP HELPERS
 ============================================================ */
 
 function e($value)
 {
-    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(
+        (string)$value,
+        ENT_QUOTES,
+        'UTF-8'
+    );
 }
+
 
 function formatDeadline($date)
 {
@@ -70,8 +103,12 @@ function formatDeadline($date)
         return $date;
     }
 
-    return date('M j, Y', $timestamp);
+    return date(
+        'M j, Y',
+        $timestamp
+    );
 }
+
 
 function deadlineClass($date)
 {
@@ -85,7 +122,12 @@ function deadlineClass($date)
         return '';
     }
 
-    $days = floor(($timestamp - time()) / 86400);
+    $days = floor(
+        (
+            $timestamp -
+            time()
+        ) / 86400
+    );
 
     if ($days < 0) {
         return 'deadline-past';
@@ -98,6 +140,7 @@ function deadlineClass($date)
     return '';
 }
 
+
 function scholarshipImage($image)
 {
     if (!empty($image)) {
@@ -108,8 +151,18 @@ function scholarshipImage($image)
         '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
             <rect width="800" height="450" fill="#003366"/>
             <circle cx="400" cy="180" r="70" fill="none" stroke="#FFD700" stroke-width="8"/>
-            <path d="M335 180h130M400 115v130" stroke="#FFD700" stroke-width="8" stroke-linecap="round"/>
-            <text x="400" y="330" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" fill="white">Flexi Educational Consult</text>
+            <path d="M335 180h130M400 115v130"
+                  stroke="#FFD700"
+                  stroke-width="8"
+                  stroke-linecap="round"/>
+            <text x="400"
+                  y="330"
+                  text-anchor="middle"
+                  font-family="Arial,sans-serif"
+                  font-size="32"
+                  fill="white">
+                Flexi Educational Consult
+            </text>
         </svg>'
     );
 }
@@ -124,898 +177,738 @@ function scholarshipImage($image)
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
 
     <meta
         name="theme-color"
-        content="#003366">
+        content="#003366"
+    >
 
-    <title>Scholarships | Flexi Educational Consult</title>
+    <title>
+        Scholarships | Flexi Educational Consult
+    </title>
 
     <meta
         name="description"
-        content="Find current scholarship opportunities for secondary school, undergraduate, postgraduate and international students through Flexi Educational Consult.">
+        content="Find current scholarship opportunities for secondary school, undergraduate, postgraduate and international students through Flexi Educational Consult."
+    >
 
     <meta
         name="keywords"
-        content="scholarships, Nigerian scholarships, undergraduate scholarships, postgraduate scholarships, international scholarships, Flexi Educational Consult">
+        content="scholarships, Nigerian scholarships, undergraduate scholarships, postgraduate scholarships, international scholarships, Flexi Educational Consult"
+    >
 
     <link
         rel="canonical"
-        href="https://flexieduconsult.com.ng/scholarship.php">
+        href="https://flexieduconsult.com.ng/scholarship.php"
+    >
 
     <style>
 
-/* ============================================================
-   GLOBAL
-============================================================ */
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5f7fa;
-    color: #1f2937;
-    line-height: 1.6;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-button,
-input,
-select {
-    font: inherit;
-}
-
-
-/* ============================================================
-   HEADER
-   MENU REMOVED
-============================================================ */
+        /* ============================================================
+           GLOBAL
+        ============================================================ */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
 
-header {
-    background: #003366;
-    color: white;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    border-bottom: 3px solid #2E8B57;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+        header {
+            background: #003366;
+            color: white;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 3px solid #2E8B57;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.logo-img {
-    height: 34px;
-    width: 34px;
-    object-fit: contain;
-    border-radius: 4px;
-}
+        .logo-img {
+            height: 34px;
+            width: 34px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
 
-.brand-name {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: .2px;
-}
+        .brand-name {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
 
 
-/* ============================================================
-   HERO
-============================================================ */
+        /* ============================================================
+           HERO
+        ============================================================ */
 
-.hero {
-    background:
-        linear-gradient(
-            135deg,
-            #003366 0%,
-            #004b80 55%,
-            #2E8B57 100%
-        );
+        .hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #003366 0%,
+                    #004b80 55%,
+                    #2E8B57 100%
+                );
 
-    color: #fff;
+            color: #fff;
 
-    padding: 58px 18px 62px;
-}
+            padding: 58px 18px 62px;
+        }
 
-.hero-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    text-align: center;
-}
+        .hero-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
 
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
 
-    padding: 7px 12px;
+            padding: 7px 12px;
 
-    border-radius: 30px;
+            border-radius: 30px;
 
-    background: rgba(255,255,255,.12);
+            background: rgba(255,255,255,.12);
 
-    border: 1px solid rgba(255,255,255,.2);
+            border: 1px solid rgba(255,255,255,.2);
 
-    font-size: 12px;
-    font-weight: 700;
+            font-size: 12px;
+            font-weight: 700;
 
-    margin-bottom: 16px;
-}
+            margin-bottom: 16px;
+        }
 
-.hero h1 {
-    margin: 0 auto 12px;
+        .hero h1 {
+            margin: 0 auto 12px;
 
-    max-width: 800px;
+            max-width: 800px;
 
-    font-size: clamp(30px, 6vw, 48px);
+            font-size: clamp(30px, 6vw, 48px);
 
-    line-height: 1.12;
-}
+            line-height: 1.12;
+        }
 
-.hero p {
-    max-width: 720px;
+        .hero p {
+            max-width: 720px;
 
-    margin: 0 auto;
+            margin: 0 auto;
 
-    font-size: 16px;
+            font-size: 16px;
 
-    opacity: .92;
-}
+            opacity: .92;
+        }
 
 
-/* ============================================================
-   MAIN
-============================================================ */
+        /* ============================================================
+           MAIN
+        ============================================================ */
 
-.main-container {
-    max-width: 1200px;
+        .main-container {
+            max-width: 1200px;
 
-    margin: 0 auto;
+            margin: 0 auto;
 
-    padding: 30px 18px 60px;
-}
+            padding: 30px 18px 60px;
+        }
 
 
-/* ============================================================
-   SEARCH / FILTER
-============================================================ */
+        /* ============================================================
+           SEARCH / FILTER
+        ============================================================ */
 
-.filter-box {
-    background: #fff;
+        .filter-box {
+            background: #fff;
 
-    border-radius: 14px;
+            border-radius: 14px;
 
-    padding: 18px;
+            padding: 18px;
 
-    margin-top: -48px;
+            margin-top: -48px;
 
-    position: relative;
+            position: relative;
 
-    z-index: 5;
+            z-index: 5;
 
-    box-shadow: 0 7px 28px rgba(0,0,0,.10);
+            box-shadow:
+                0 7px 28px rgba(0,0,0,.10);
 
-    display: grid;
+            display: grid;
 
-    grid-template-columns:
-        minmax(0, 1fr)
-        230px;
+            grid-template-columns:
+                minmax(0, 1fr)
+                230px;
 
-    gap: 12px;
-}
+            gap: 12px;
+        }
 
-.input-wrap {
-    position: relative;
-}
+        .input-wrap {
+            position: relative;
+        }
 
-.input-icon {
-    position: absolute;
+        .input-icon {
+            position: absolute;
 
-    left: 14px;
-    top: 50%;
+            left: 14px;
+            top: 50%;
 
-    transform: translateY(-50%);
+            transform: translateY(-50%);
 
-    color: #64748b;
+            color: #64748b;
 
-    width: 19px;
-    height: 19px;
+            width: 19px;
+            height: 19px;
 
-    pointer-events: none;
-}
+            pointer-events: none;
+        }
 
-.search-input,
-.study-filter {
-    width: 100%;
+        .search-input,
+        .study-filter {
+            width: 100%;
 
-    height: 48px;
+            height: 48px;
 
-    border: 1px solid #d8dee7;
+            border: 1px solid #d8dee7;
 
-    border-radius: 9px;
+            border-radius: 9px;
 
-    background: #fff;
+            background: #fff;
 
-    color: #1f2937;
+            color: #1f2937;
 
-    outline: none;
-}
+            outline: none;
+        }
 
-.search-input {
-    padding: 0 15px 0 44px;
-}
+        .search-input {
+            padding: 0 15px 0 44px;
+        }
 
-.study-filter {
-    padding: 0 13px;
+        .study-filter {
+            padding: 0 13px;
 
-    cursor: pointer;
-}
+            cursor: pointer;
+        }
 
-.search-input:focus,
-.study-filter:focus {
-    border-color: #2E8B57;
+        .search-input:focus,
+        .study-filter:focus {
+            border-color: #2E8B57;
 
-    box-shadow:
-        0 0 0 3px rgba(46,139,87,.12);
-}
+            box-shadow:
+                0 0 0 3px rgba(46,139,87,.12);
+        }
 
 
-/* ============================================================
-   SECTION HEADER
-============================================================ */
+        /* ============================================================
+           SECTION HEADER
+        ============================================================ */
 
-.section-header {
-    display: flex;
+        .section-header {
+            display: flex;
 
-    align-items: flex-end;
+            align-items: flex-end;
 
-    justify-content: space-between;
+            justify-content: space-between;
 
-    gap: 15px;
+            gap: 15px;
 
-    margin: 35px 0 18px;
-}
+            margin: 35px 0 18px;
+        }
 
-.section-title {
-    margin: 0;
+        .section-title {
+            margin: 0;
 
-    color: #003366;
+            color: #003366;
 
-    font-size: 25px;
-}
+            font-size: 25px;
+        }
 
-.section-subtitle {
-    margin: 4px 0 0;
+        .section-subtitle {
+            margin: 4px 0 0;
 
-    color: #64748b;
+            color: #64748b;
 
-    font-size: 14px;
-}
+            font-size: 14px;
+        }
 
-.result-count {
-    color: #64748b;
+        .result-count {
+            color: #64748b;
 
-    font-size: 13px;
+            font-size: 13px;
 
-    white-space: nowrap;
-}
+            white-space: nowrap;
+        }
 
 
-/* ============================================================
-   SCHOLARSHIP GRID
-============================================================ */
+        /* ============================================================
+           SCHOLARSHIP GRID
+        ============================================================ */
 
-.scholarship-grid {
-    display: grid;
+        .scholarship-grid {
+            display: grid;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
 
-    gap: 20px;
-}
+            gap: 20px;
+        }
 
 
-/* ============================================================
-   SCHOLARSHIP CARD
-============================================================ */
+        /* ============================================================
+           SCHOLARSHIP CARD
+        ============================================================ */
 
-.scholarship-card {
-    background: #fff;
+        .scholarship-card {
+            background: #fff;
 
-    border: 1px solid #e4e8ee;
+            border: 1px solid #e4e8ee;
 
-    border-radius: 14px;
+            border-radius: 14px;
 
-    overflow: hidden;
+            overflow: hidden;
 
-    display: flex;
+            display: flex;
 
-    flex-direction: column;
+            flex-direction: column;
 
-    min-width: 0;
+            min-width: 0;
 
-    box-shadow:
-        0 3px 14px rgba(0,0,0,.045);
+            box-shadow:
+                0 3px 14px rgba(0,0,0,.045);
 
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease;
-}
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
 
-.scholarship-card:hover {
-    transform: translateY(-3px);
+        .scholarship-card:hover {
+            transform: translateY(-3px);
 
-    box-shadow:
-        0 10px 28px rgba(0,0,0,.09);
-}
+            box-shadow:
+                0 10px 28px rgba(0,0,0,.09);
+        }
 
-.card-image-wrap {
-    position: relative;
+        .card-image-wrap {
+            position: relative;
 
-    height: 185px;
+            height: 185px;
 
-    background: #e9eef3;
+            background: #e9eef3;
 
-    overflow: hidden;
-}
+            overflow: hidden;
+        }
 
-.card-image {
-    width: 100%;
-    height: 100%;
+        .card-image {
+            width: 100%;
+            height: 100%;
 
-    object-fit: cover;
+            object-fit: cover;
 
-    display: block;
-}
+            display: block;
+        }
 
-.featured-badge {
-    position: absolute;
+        .featured-badge {
+            position: absolute;
 
-    top: 12px;
-    left: 12px;
+            top: 12px;
+            left: 12px;
 
-    background: #FFD700;
+            background: #FFD700;
 
-    color: #1f2937;
+            color: #1f2937;
 
-    padding: 5px 9px;
+            padding: 5px 9px;
 
-    border-radius: 6px;
+            border-radius: 6px;
 
-    font-size: 11px;
+            font-size: 11px;
 
-    font-weight: 800;
-}
+            font-weight: 800;
+        }
 
-.card-body {
-    padding: 18px;
+        .card-body {
+            padding: 18px;
 
-    display: flex;
+            display: flex;
 
-    flex-direction: column;
+            flex-direction: column;
 
-    flex: 1;
-}
+            flex: 1;
+        }
 
-.organization {
-    color: #2E8B57;
+        .organization {
+            color: #2E8B57;
 
-    font-size: 12px;
+            font-size: 12px;
 
-    font-weight: 700;
+            font-weight: 700;
 
-    text-transform: uppercase;
+            text-transform: uppercase;
 
-    letter-spacing: .3px;
+            letter-spacing: .3px;
 
-    margin-bottom: 6px;
-}
+            margin-bottom: 6px;
+        }
 
-.card-title {
-    margin: 0 0 9px;
+        .card-title {
+            margin: 0 0 9px;
 
-    color: #003366;
+            color: #003366;
 
-    font-size: 18px;
+            font-size: 18px;
 
-    line-height: 1.35;
-}
+            line-height: 1.35;
+        }
 
-.card-description {
-    margin: 0 0 15px;
+        .card-description {
+            margin: 0 0 15px;
 
-    color: #64748b;
+            color: #64748b;
 
-    font-size: 13px;
+            font-size: 13px;
 
-    line-height: 1.6;
+            line-height: 1.6;
 
-    display: -webkit-box;
+            display: -webkit-box;
 
-    -webkit-line-clamp: 3;
+            -webkit-line-clamp: 3;
 
-    -webkit-box-orient: vertical;
+            -webkit-box-orient: vertical;
 
-    overflow: hidden;
-}
+            overflow: hidden;
+        }
 
-.details {
-    display: grid;
+        .details {
+            display: grid;
 
-    grid-template-columns: 1fr;
+            grid-template-columns: 1fr;
 
-    gap: 8px;
+            gap: 8px;
 
-    margin-bottom: 18px;
-}
+            margin-bottom: 18px;
+        }
 
-.detail-item {
-    display: flex;
+        .detail-item {
+            display: flex;
 
-    align-items: flex-start;
+            align-items: flex-start;
 
-    gap: 9px;
+            gap: 9px;
 
-    color: #475569;
+            color: #475569;
 
-    font-size: 12px;
-}
+            font-size: 12px;
+        }
 
-.detail-icon {
-    width: 17px;
-    height: 17px;
+        .detail-icon {
+            width: 17px;
+            height: 17px;
 
-    flex: 0 0 17px;
+            flex: 0 0 17px;
 
-    color: #2E8B57;
+            color: #2E8B57;
 
-    margin-top: 1px;
-}
+            margin-top: 1px;
+        }
 
-.detail-label {
-    font-weight: 700;
+        .detail-label {
+            font-weight: 700;
 
-    color: #334155;
-}
+            color: #334155;
+        }
 
-.detail-value {
-    color: #64748b;
-}
+        .detail-value {
+            color: #64748b;
+        }
 
-.deadline-soon {
-    color: #b45309 !important;
+        .deadline-soon {
+            color: #b45309 !important;
 
-    font-weight: 700;
-}
+            font-weight: 700;
+        }
 
-.deadline-past {
-    color: #b91c1c !important;
+        .deadline-past {
+            color: #b91c1c !important;
 
-    font-weight: 700;
-}
+            font-weight: 700;
+        }
 
-.apply-btn {
-    margin-top: auto;
+        .apply-btn {
+            margin-top: auto;
 
-    width: 100%;
+            width: 100%;
 
-    min-height: 44px;
+            min-height: 44px;
 
-    border-radius: 8px;
+            border-radius: 8px;
 
-    background: #003366;
+            background: #003366;
 
-    color: #fff;
+            color: #fff;
 
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    justify-content: center;
+            justify-content: center;
 
-    gap: 8px;
+            gap: 8px;
 
-    font-size: 14px;
+            font-size: 14px;
 
-    font-weight: 700;
+            font-weight: 700;
 
-    transition: background .2s ease;
-}
+            transition:
+                background .2s ease;
+        }
 
-.apply-btn:hover {
-    background: #00284f;
-}
+        .apply-btn:hover {
+            background: #00284f;
+        }
 
-.apply-icon {
-    width: 17px;
-    height: 17px;
-}
+        .apply-icon {
+            width: 17px;
+            height: 17px;
+        }
 
 
-/* ============================================================
-   STATES
-============================================================ */
+        /* ============================================================
+           STATES
+        ============================================================ */
 
-.state-box {
-    background: #fff;
+        .state-box {
+            background: #fff;
 
-    border: 1px solid #e4e8ee;
+            border: 1px solid #e4e8ee;
 
-    border-radius: 14px;
+            border-radius: 14px;
 
-    padding: 50px 20px;
+            padding: 50px 20px;
 
-    text-align: center;
+            text-align: center;
 
-    color: #64748b;
-}
+            color: #64748b;
+        }
 
-.state-icon {
-    width: 42px;
-    height: 42px;
+        .state-icon {
+            width: 42px;
+            height: 42px;
 
-    margin: 0 auto 13px;
+            margin: 0 auto 13px;
 
-    color: #2E8B57;
-}
+            color: #2E8B57;
+        }
 
-.state-box h3 {
-    margin: 0 0 6px;
+        .state-box h3 {
+            margin: 0 0 6px;
 
-    color: #003366;
+            color: #003366;
 
-    font-size: 18px;
-}
+            font-size: 18px;
+        }
 
-.state-box p {
-    margin: 0;
+        .state-box p {
+            margin: 0;
 
-    font-size: 14px;
-}
+            font-size: 14px;
+        }
 
-.spinner {
-    width: 36px;
-    height: 36px;
+        .spinner {
+            width: 36px;
+            height: 36px;
 
-    margin: 0 auto 15px;
+            margin: 0 auto 15px;
 
-    border: 3px solid #dbe4ec;
+            border: 3px solid #dbe4ec;
 
-    border-top-color: #003366;
+            border-top-color: #003366;
 
-    border-radius: 50%;
+            border-radius: 50%;
 
-    animation: spin .8s linear infinite;
-}
+            animation:
+                spin .8s linear infinite;
+        }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
 
-/* ============================================================
-   PAGINATION
-============================================================ */
+        /* ============================================================
+           PAGINATION
+        ============================================================ */
 
-.pagination {
-    display: flex;
+        .pagination {
+            display: flex;
 
-    align-items: center;
+            align-items: center;
 
-    justify-content: center;
+            justify-content: center;
 
-    flex-wrap: wrap;
+            flex-wrap: wrap;
 
-    gap: 7px;
+            gap: 7px;
 
-    margin-top: 28px;
-}
+            margin-top: 28px;
+        }
 
-.page-btn {
-    min-width: 38px;
+        .page-btn {
+            min-width: 38px;
 
-    height: 38px;
+            height: 38px;
 
-    padding: 0 10px;
+            padding: 0 10px;
 
-    border: 1px solid #d8dee7;
+            border: 1px solid #d8dee7;
 
-    background: #fff;
+            background: #fff;
 
-    color: #334155;
+            color: #334155;
 
-    border-radius: 7px;
+            border-radius: 7px;
 
-    cursor: pointer;
+            cursor: pointer;
 
-    font-size: 13px;
-}
+            font-size: 13px;
+        }
 
-.page-btn:hover {
-    border-color: #003366;
-}
+        .page-btn:hover {
+            border-color: #003366;
+        }
 
-.page-btn.active {
-    background: #003366;
+        .page-btn.active {
+            background: #003366;
 
-    border-color: #003366;
+            color: white;
 
-    color: #fff;
-}
+            border-color: #003366;
+        }
 
-.page-btn:disabled {
-    opacity: .45;
+        .page-btn:disabled {
+            opacity: .45;
 
-    cursor: not-allowed;
-}
+            cursor: not-allowed;
+        }
 
 
-/* ============================================================
-   FOOTER
-============================================================ */
+        /* ============================================================
+           FOOTER
+        ============================================================ */
 
-.footer {
-    background:
-        linear-gradient(
-            135deg,
-            #011627 0%,
-            #032038 100%
-        );
+        footer {
+            border-top: 6px solid #2E8B57;
 
-    color: #e2e8f0;
+            background: #003366;
 
-    padding: 60px 20px 30px;
+            color: white;
 
-    margin-top: 50px;
+            padding: 25px 18px;
 
-    border-top: 4px solid #2E8B57;
+            text-align: center;
 
-    font-size: 14px;
-}
+            font-size: 13px;
+        }
 
-.footer-grid {
-    display: grid;
 
-    grid-template-columns:
-        1.8fr
-        1.2fr
-        1.3fr
-        1fr;
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
 
-    gap: 35px;
+        @media (max-width: 950px) {
 
-    max-width: 1200px;
+            .scholarship-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
 
-    margin: 0 auto;
-}
+        }
 
-.footer h4 {
-    color: #FFD700;
 
-    font-size: .9rem;
+        @media (max-width: 700px) {
 
-    text-transform: uppercase;
+            header {
+                height: 52px;
 
-    letter-spacing: 1.2px;
+                padding:
+                    0 12px;
+            }
 
-    margin: 0 0 16px 0;
+            .brand-name {
+                font-size: 14px;
+            }
 
-    position: relative;
+            .hero {
+                padding:
+                    55px 18px 60px;
+            }
 
-    padding-bottom: 6px;
-}
+            .filter-box {
+                grid-template-columns: 1fr;
 
-.footer h4::after {
-    content: '';
+                margin-top: -42px;
+            }
 
-    position: absolute;
+            .section-header {
+                align-items: flex-start;
 
-    left: 0;
-    bottom: 0;
+                flex-direction: column;
 
-    width: 24px;
-    height: 2px;
+                margin-top: 30px;
+            }
 
-    background: #FFD700;
+            .result-count {
+                white-space: normal;
+            }
 
-    opacity: .7;
+            .scholarship-grid {
+                grid-template-columns: 1fr;
+            }
 
-    border-radius: 2px;
-}
+            .card-image-wrap {
+                height: 205px;
+            }
 
-.footer-about {
-    line-height: 1.7;
-
-    color: #94a3b8;
-
-    margin: 0;
-}
-
-.footer-links-list {
-    list-style: none;
-
-    padding: 0;
-
-    margin: 0;
-}
-
-.footer-links-list li {
-    margin-bottom: 10px;
-}
-
-.footer a {
-    color: #cbd5e0;
-
-    text-decoration: none;
-
-    transition: all .25s ease;
-}
-
-.footer-links-list a:hover {
-    color: #FFD700;
-
-    transform: translateX(4px);
-
-    display: inline-block;
-}
-
-.whatsapp-channel-link {
-    color: #25D366 !important;
-
-    font-weight: 600;
-
-    display: inline-block;
-}
-
-.whatsapp-channel-link:hover {
-    opacity: .85;
-
-    transform: translateX(4px);
-}
-
-.contact-group {
-    margin-bottom: 16px;
-}
-
-.contact-group h5 {
-    color: #fff;
-
-    font-size: .82rem;
-
-    text-transform: uppercase;
-
-    letter-spacing: .8px;
-
-    margin: 0 0 6px 0;
-
-    opacity: .9;
-}
-
-.contact-group a {
-    display: block;
-
-    color: #94a3b8;
-}
-
-.footer-bottom {
-    max-width: 1200px;
-
-    margin: 40px auto 0;
-
-    padding-top: 20px;
-
-    border-top: 1px solid rgba(255,255,255,.08);
-
-    text-align: center;
-
-    font-size: 13px;
-
-    color: #64748b;
-}
-
-
-/* ============================================================
-   RESPONSIVE
-============================================================ */
-
-@media (min-width: 768px) {
-
-    header {
-        height: 56px;
-
-        padding: 0 28px;
-    }
-
-    .brand-name {
-        font-size: 16px;
-    }
-
-    .logo-img {
-        height: 36px;
-        width: 36px;
-    }
-
-}
-
-@media (max-width: 950px) {
-
-    .scholarship-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .footer-grid {
-        grid-template-columns:
-            1fr 1fr;
-
-        gap: 30px;
-    }
-
-}
-
-@media (max-width: 650px) {
-
-    .hero {
-        padding: 45px 16px 58px;
-    }
-
-    .hero p {
-        font-size: 14px;
-    }
-
-    .main-container {
-        padding-left: 14px;
-        padding-right: 14px;
-    }
-
-    .filter-box {
-        grid-template-columns: 1fr;
-
-        margin-top: -40px;
-    }
-
-    .section-header {
-        align-items: flex-start;
-
-        flex-direction: column;
-
-        gap: 5px;
-    }
-
-    .scholarship-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .card-image-wrap {
-        height: 200px;
-    }
-
-    .footer-grid {
-        grid-template-columns: 1fr;
-
-        gap: 28px;
-    }
-
-}
+        }
 
     </style>
 
@@ -1027,27 +920,22 @@ header {
 
 <!-- ============================================================
      HEADER
-     MENU COMPLETELY REMOVED
 ============================================================ -->
 
 <header>
 
     <div class="header-left">
 
-        <a
-            href="/index.php"
-            aria-label="Flexi Educational Consult Home">
+        <img
+            class="logo-img"
+            src="https://www.flexieduconsult.com.ng/assets/images/logo.png"
+            alt="Flexi Educational Consult"
+            onerror="this.style.display='none';"
+        >
 
-            <img
-                src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg"
-                alt="Flexi Educational Consult Official Logo"
-                class="logo-img">
-
-        </a>
-
-        <span class="brand-name">
+        <div class="brand-name">
             Flexi Educational Consult
-        </span>
+        </div>
 
     </div>
 
@@ -1064,21 +952,7 @@ header {
 
         <div class="hero-badge">
 
-            <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round">
-
-                <path
-                    d="M12 3l2.6 5.27L20.4 9.1l-4.2 4.1.99 5.79L12 16.27 6.81 19l.99-5.79-4.2-4.1 5.8-.83L12 3z">
-                </path>
-
-            </svg>
+            🎓
 
             Scholarship Opportunities
 
@@ -1091,8 +965,9 @@ header {
 
 
         <p>
-            Explore available scholarships and educational funding
-            opportunities for students at different levels of study.
+            Explore available scholarships and educational
+            funding opportunities for students at different
+            levels of study.
         </p>
 
     </div>
@@ -1107,7 +982,7 @@ header {
 <main class="main-container">
 
 
-    <!-- SEARCH / FILTER -->
+    <!-- SEARCH -->
 
     <div class="filter-box">
 
@@ -1119,16 +994,17 @@ header {
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round">
+            >
 
                 <circle
                     cx="11"
                     cy="11"
-                    r="7">
-                </circle>
+                    r="7"
+                />
 
-                <path d="M20 20l-4-4"></path>
+                <path
+                    d="m20 20-3.5-3.5"
+                />
 
             </svg>
 
@@ -1137,22 +1013,24 @@ header {
                 type="search"
                 id="searchInput"
                 class="search-input"
-                placeholder="Search scholarships, organizations, fields..."
-                autocomplete="off">
+                placeholder="Search scholarships, organizations..."
+                autocomplete="off"
+            >
 
         </div>
 
 
         <select
             id="studyFilter"
-            class="study-filter">
+            class="study-filter"
+        >
 
             <option value="">
                 All Study Levels
             </option>
 
             <option value="secondary">
-                Secondary School
+                Secondary
             </option>
 
             <option value="undergraduate">
@@ -1199,8 +1077,8 @@ header {
 
         <div
             id="resultCount"
-            class="result-count">
-        </div>
+            class="result-count"
+        ></div>
 
     </div>
 
@@ -1209,7 +1087,8 @@ header {
 
     <div
         id="loadingState"
-        class="state-box">
+        class="state-box"
+    >
 
         <div class="spinner"></div>
 
@@ -1218,7 +1097,7 @@ header {
         </h3>
 
         <p>
-            Please wait while we load available opportunities.
+            Please wait while we load the latest opportunities.
         </p>
 
     </div>
@@ -1229,7 +1108,8 @@ header {
     <div
         id="errorState"
         class="state-box"
-        style="display:none;">
+        style="display:none;"
+    >
 
         <svg
             class="state-icon"
@@ -1237,24 +1117,35 @@ header {
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
+        >
 
             <circle
                 cx="12"
                 cy="12"
-                r="9">
-            </circle>
+                r="9"
+            />
 
-            <path d="M12 8v4"></path>
+            <line
+                x1="12"
+                y1="8"
+                x2="12"
+                y2="12"
+            />
 
-            <path d="M12 16h.01"></path>
+            <line
+                x1="12"
+                y1="16"
+                x2="12.01"
+                y2="16"
+            />
 
         </svg>
+
 
         <h3>
             Unable to load scholarships
         </h3>
+
 
         <p>
             Please try again later.
@@ -1268,7 +1159,8 @@ header {
     <div
         id="emptyState"
         class="state-box"
-        style="display:none;">
+        style="display:none;"
+    >
 
         <svg
             class="state-icon"
@@ -1276,18 +1168,23 @@ header {
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
+        >
 
-            <path d="M4 19V5"></path>
+            <path
+                d="M4 5h16v14H4z"
+            />
 
-            <path d="M4 5c5-3 10 3 16 0v14c-6 3-11-3-16 0"></path>
+            <path
+                d="M8 9h8M8 13h5"
+            />
 
         </svg>
+
 
         <h3>
             No scholarships found
         </h3>
+
 
         <p>
             Try changing your search or study-level filter.
@@ -1300,16 +1197,17 @@ header {
 
     <div
         id="scholarshipGrid"
-        class="scholarship-grid">
-    </div>
+        class="scholarship-grid"
+    ></div>
 
 
     <!-- PAGINATION -->
 
     <div
         id="pagination"
-        class="pagination">
-    </div>
+        class="pagination"
+    ></div>
+
 
 </main>
 
@@ -1318,228 +1216,11 @@ header {
      FOOTER
 ============================================================ -->
 
-<footer class="footer">
-
-    <div class="footer-grid">
-
-
-        <!-- ABOUT -->
-
-        <div class="footer-col">
-
-            <p class="footer-about">
-
-                We empower Nigerian students with admission
-                updates, CBT preparation, tutorials,
-                past questions in PDF, and premium
-                educational support.
-
-            </p>
-
-        </div>
-
-
-        <!-- QUICK LINKS -->
-
-        <div class="footer-col">
-
-            <h4>
-                Quick Links
-            </h4>
-
-            <ul class="footer-links-list">
-
-                <li>
-                    <a href="/index.php">
-                        Home
-                    </a>
-                </li>
-
-                <li>
-                    <a
-                        href="https://elearning.flexieduconsult.com.ng"
-                        target="_blank"
-                        rel="noopener">
-
-                        WhatsApp Masterclass (E-Learning)
-
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/syllabus.html">
-                        Access the JAMB/WAEC syllabus
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/brochure.html">
-                        Access JAMB Brochure
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/videos.html">
-                        Video Lessons
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/pdf.html">
-                        Past Questions & PDFs
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/cbt.html">
-                        CBT Simulator
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/groups.html">
-                        Classroom Groups and chats
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/location.html">
-                        Tutorial Centres
-                    </a>
-                </li>
-
-            </ul>
-
-        </div>
-
-
-        <!-- SUPPORT -->
-
-        <div class="footer-col">
-
-            <h4>
-                Support & Community
-            </h4>
-
-
-            <div class="contact-group">
-
-                <a
-                    href="https://whatsapp.com/channel/0029Vb6Lhoc3rZZW8SRooE3u"
-                    target="_blank"
-                    rel="noopener"
-                    class="whatsapp-channel-link">
-
-                    Join our WhatsApp Channel
-
-                </a>
-
-            </div>
-
-
-            <div class="contact-group">
-
-                <h5>
-                    Contact Us
-                </h5>
-
-                <a href="tel:+2349034159839">
-                    (+234) 903 415 9839
-                </a>
-
-                <a href="tel:+2347033855206">
-                    (+234) 703 385 5206
-                </a>
-
-            </div>
-
-
-            <div class="contact-group">
-
-                <h5>
-                    Email Us
-                </h5>
-
-                <a href="mailto:support@flexieduconsult.com.ng">
-                    support@flexieduconsult.com.ng
-                </a>
-
-                <a href="mailto:info@flexieduconsult.com.ng">
-                    info@flexieduconsult.com.ng
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <!-- SOCIAL -->
-
-        <div class="footer-col social-links">
-
-            <h4>
-                Follow Us
-            </h4>
-
-            <ul class="footer-links-list">
-
-                <li>
-
-                    <a
-                        href="https://www.facebook.com/profile.php?id=61589793118693"
-                        target="_blank"
-                        rel="noopener">
-
-                        Facebook @flexieduconsult
-
-                    </a>
-
-                </li>
-
-
-                <li>
-
-                    <a
-                        href="https://instagram.com/flexieduconsult2000"
-                        target="_blank"
-                        rel="noopener">
-
-                        Instagram @flexieduconsult2000
-
-                    </a>
-
-                </li>
-
-
-                <li>
-
-                    <a
-                        href="https://www.tiktok.com/@flexieduconsult"
-                        target="_blank"
-                        rel="noopener">
-
-                        TikTok @flexieduconsult
-
-                    </a>
-
-                </li>
-
-            </ul>
-
-        </div>
-
-    </div>
-
-
-    <div class="footer-bottom">
-
-        &copy;
-        <?php echo date('Y'); ?>
-
-        Flexi Educational Consult.
-        All Rights Reserved.
-
-    </div>
+<footer>
+
+    © <?php echo date('Y'); ?>
+    Flexi Educational Consult.
+    All rights reserved.
 
 </footer>
 
@@ -1547,22 +1228,21 @@ header {
 <script>
 
 /* ============================================================
-   SCHOLARSHIP DATA FROM PHP
+   SERVER DATA
 ============================================================ */
 
-const scholarshipData = <?php
+/*
+ * PHP fetches the scholarships from Supabase.
+ *
+ * json_encode safely transfers the PHP array into JavaScript.
+ */
 
-echo json_encode(
-    $scholarships,
-    JSON_UNESCAPED_SLASHES |
-    JSON_UNESCAPED_UNICODE |
-    JSON_HEX_TAG |
-    JSON_HEX_AMP |
-    JSON_HEX_APOS |
-    JSON_HEX_QUOT
-);
-
-?>;
+const scholarshipData =
+    <?php echo json_encode(
+        $scholarships,
+        JSON_UNESCAPED_SLASHES |
+        JSON_UNESCAPED_UNICODE
+    ); ?>;
 
 
 const serverHasError =
@@ -1573,40 +1253,63 @@ const serverHasError =
    ELEMENTS
 ============================================================ */
 
-const loadingState =
-    document.getElementById('loadingState');
-
-const errorState =
-    document.getElementById('errorState');
-
-const emptyState =
-    document.getElementById('emptyState');
-
-const scholarshipGrid =
-    document.getElementById('scholarshipGrid');
-
-const pagination =
-    document.getElementById('pagination');
-
-const resultCount =
-    document.getElementById('resultCount');
-
 const searchInput =
-    document.getElementById('searchInput');
+    document.getElementById(
+        'searchInput'
+    );
+
 
 const studyFilter =
-    document.getElementById('studyFilter');
+    document.getElementById(
+        'studyFilter'
+    );
+
+
+const scholarshipGrid =
+    document.getElementById(
+        'scholarshipGrid'
+    );
+
+
+const loadingState =
+    document.getElementById(
+        'loadingState'
+    );
+
+
+const errorState =
+    document.getElementById(
+        'errorState'
+    );
+
+
+const emptyState =
+    document.getElementById(
+        'emptyState'
+    );
+
+
+const resultCount =
+    document.getElementById(
+        'resultCount'
+    );
+
+
+const pagination =
+    document.getElementById(
+        'pagination'
+    );
 
 
 /* ============================================================
-   SETTINGS
+   STATE
 ============================================================ */
 
-const ITEMS_PER_PAGE = 9;
+let filteredScholarships = [];
 
 let currentPage = 1;
 
-let filteredScholarships = [];
+const ITEMS_PER_PAGE = 9;
 
 
 /* ============================================================
@@ -1615,33 +1318,6 @@ let filteredScholarships = [];
 
 const icons = {
 
-    calendar: `
-        <svg
-            class="detail-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
-            <rect
-                x="3"
-                y="4"
-                width="18"
-                height="17"
-                rx="2">
-            </rect>
-
-            <path d="M16 2v4"></path>
-
-            <path d="M8 2v4"></path>
-
-            <path d="M3 10h18"></path>
-
-        </svg>
-    `,
-
     money: `
         <svg
             class="detail-icon"
@@ -1649,46 +1325,43 @@ const icons = {
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
+        >
+            <rect
+                x="3"
+                y="5"
+                width="18"
+                height="14"
+                rx="2"
+            />
+            <path d="M7 12h10"/>
             <circle
                 cx="12"
                 cy="12"
-                r="9">
-            </circle>
-
-            <path
-                d="M15 8.5c-.7-.7-1.7-1-3-1-1.7 0-3 .9-3 2.2 0 3.1 6 1.4 6 4.3 0 1.3-1.2 2.3-3.1 2.3-1.3 0-2.4-.4-3.1-1.1">
-            </path>
-
-            <path d="M12 6v12"></path>
-
+                r="2"
+            />
         </svg>
     `,
 
-    location: `
+
+    calendar: `
         <svg
             class="detail-icon"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
-            <path
-                d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z">
-            </path>
-
-            <circle
-                cx="12"
-                cy="10"
-                r="2.5">
-            </circle>
-
+        >
+            <rect
+                x="3"
+                y="4"
+                width="18"
+                height="17"
+                rx="2"
+            />
+            <path d="M16 2v4M8 2v4M3 9h18"/>
         </svg>
     `,
+
 
     education: `
         <svg
@@ -1697,17 +1370,16 @@ const icons = {
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
-            <path d="M3 9l9-5 9 5-9 5-9-5z"></path>
-
-            <path d="M7 11v5c3 2 7 2 10 0v-5"></path>
-
-            <path d="M21 10v6"></path>
-
+        >
+            <path
+                d="m3 10 9-5 9 5-9 5-9-5z"
+            />
+            <path
+                d="M7 12v5c3 2 7 2 10 0v-5"
+            />
         </svg>
     `,
+
 
     book: `
         <svg
@@ -1716,19 +1388,36 @@ const icons = {
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
+        >
             <path
-                d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5z">
-            </path>
-
+                d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5z"
+            />
             <path
-                d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20">
-            </path>
-
+                d="M4 19a2.5 2.5 0 0 1 2.5-2.5H20"
+            />
         </svg>
     `,
+
+
+    location: `
+        <svg
+            class="detail-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <path
+                d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"
+            />
+            <circle
+                cx="12"
+                cy="9"
+                r="2.5"
+            />
+        </svg>
+    `,
+
 
     external: `
         <svg
@@ -1737,17 +1426,16 @@ const icons = {
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-
-            <path d="M14 5h5v5"></path>
-
-            <path d="M10 14L19 5"></path>
-
+        >
             <path
-                d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5">
-            </path>
-
+                d="M14 3h7v7"
+            />
+            <path
+                d="M10 14 21 3"
+            />
+            <path
+                d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"
+            />
         </svg>
     `
 
@@ -1760,19 +1448,29 @@ const icons = {
 
 function escapeHTML(value) {
 
-    if (
-        value === null ||
-        value === undefined
-    ) {
-        return '';
-    }
-
-    return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+    return String(
+        value ?? ''
+    )
+    .replace(
+        /&/g,
+        '&amp;'
+    )
+    .replace(
+        /</g,
+        '&lt;'
+    )
+    .replace(
+        />/g,
+        '&gt;'
+    )
+    .replace(
+        /"/g,
+        '&quot;'
+    )
+    .replace(
+        /'/g,
+        '&#039;'
+    );
 
 }
 
@@ -1787,15 +1485,29 @@ function formatDate(dateString) {
         return 'No deadline specified';
     }
 
-    const date =
-        new Date(dateString + 'T00:00:00');
 
-    if (Number.isNaN(date.getTime())) {
-        return escapeHTML(dateString);
+    const date =
+        new Date(
+            dateString +
+            'T00:00:00'
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return escapeHTML(
+            dateString
+        );
+
     }
 
+
     return date.toLocaleDateString(
-        'en-US',
+        'en-NG',
         {
             month: 'short',
             day: 'numeric',
@@ -1810,38 +1522,130 @@ function formatDate(dateString) {
    DEADLINE CLASS
 ============================================================ */
 
-function getDeadlineClass(dateString) {
+function getDeadlineClass(
+    dateString
+) {
 
     if (!dateString) {
         return '';
     }
 
-    const date =
-        new Date(dateString + 'T23:59:59');
 
-    if (Number.isNaN(date.getTime())) {
+    const date =
+        new Date(
+            dateString +
+            'T23:59:59'
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
         return '';
+
     }
 
+
     const difference =
-        date.getTime() - Date.now();
+        date.getTime() -
+        Date.now();
+
 
     const days =
         Math.ceil(
-            difference / 86400000
+            difference /
+            86400000
         );
+
 
     if (days < 0) {
         return 'deadline-past';
     }
 
+
     if (days <= 14) {
         return 'deadline-soon';
     }
 
+
     return '';
 
 }
+
+
+/* ============================================================
+   JAVASCRIPT FALLBACK IMAGE
+============================================================ */
+
+/*
+ * IMPORTANT FIX
+ *
+ * The old code called:
+ *
+ *     scholarshipImage('')
+ *
+ * inside JavaScript.
+ *
+ * scholarshipImage() is a PHP function and therefore does not
+ * exist in the browser.
+ *
+ * That caused:
+ *
+ *     ReferenceError: scholarshipImage is not defined
+ *
+ * and stopped createCard() before it could render the card.
+ *
+ * The fallback image is now generated entirely in JavaScript.
+ */
+
+const fallbackImage =
+    'data:image/svg+xml;charset=UTF-8,' +
+    encodeURIComponent(`
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="800"
+            height="450"
+            viewBox="0 0 800 450"
+        >
+
+            <rect
+                width="800"
+                height="450"
+                fill="#003366"
+            />
+
+            <circle
+                cx="400"
+                cy="180"
+                r="70"
+                fill="none"
+                stroke="#FFD700"
+                stroke-width="8"
+            />
+
+            <path
+                d="M335 180h130M400 115v130"
+                stroke="#FFD700"
+                stroke-width="8"
+                stroke-linecap="round"
+            />
+
+            <text
+                x="400"
+                y="330"
+                text-anchor="middle"
+                font-family="Arial,sans-serif"
+                font-size="32"
+                fill="white"
+            >
+                Flexi Educational Consult
+            </text>
+
+        </svg>
+    `);
 
 
 /* ============================================================
@@ -1850,9 +1654,11 @@ function getDeadlineClass(dateString) {
 
 function normalizeText(value) {
 
-    return String(value || '')
-        .toLowerCase()
-        .trim();
+    return String(
+        value || ''
+    )
+    .toLowerCase()
+    .trim();
 
 }
 
@@ -1867,6 +1673,7 @@ function filterScholarships() {
         normalizeText(
             searchInput.value
         );
+
 
     const level =
         normalizeText(
@@ -1895,20 +1702,26 @@ function filterScholarships() {
                     item.study_level
 
                 ]
-                .map(normalizeText)
+                .map(
+                    normalizeText
+                )
                 .join(' ');
 
 
                 const matchesSearch =
                     !search ||
-                    searchableText.includes(search);
+                    searchableText.includes(
+                        search
+                    );
 
 
                 const matchesLevel =
                     !level ||
                     normalizeText(
                         item.study_level
-                    ).includes(level);
+                    ).includes(
+                        level
+                    );
 
 
                 return (
@@ -1994,9 +1807,14 @@ function createCard(item) {
         );
 
 
-    const fallbackImage =
-        scholarshipImage('');
-
+    /*
+     * FIXED:
+     *
+     * Do NOT call the PHP scholarshipImage()
+     * function here.
+     *
+     * JavaScript now uses its own fallback.
+     */
 
     const image =
         escapeHTML(
@@ -2020,6 +1838,7 @@ function createCard(item) {
 
         <article class="scholarship-card">
 
+
             <div class="card-image-wrap">
 
                 <img
@@ -2027,7 +1846,12 @@ function createCard(item) {
                     src="${image}"
                     alt="${title}"
                     loading="lazy"
-                    onerror="this.onerror=null;this.src='${fallbackImage}';">
+                    onerror="
+                        this.onerror=null;
+                        this.src='${fallbackImage}';
+                    "
+                >
+
 
                 ${
                     featured
@@ -2043,6 +1867,7 @@ function createCard(item) {
 
 
             <div class="card-body">
+
 
                 <div class="organization">
                     ${organization}
@@ -2092,10 +1917,9 @@ function createCard(item) {
                             </span>
 
                             <span
-                                class="detail-value ${deadlineClassName}">
-
+                                class="detail-value ${deadlineClassName}"
+                            >
                                 ${deadline}
-
                             </span>
 
                         </div>
@@ -2159,6 +1983,7 @@ function createCard(item) {
 
                     </div>
 
+
                 </div>
 
 
@@ -2166,13 +1991,15 @@ function createCard(item) {
                     class="apply-btn"
                     href="${applicationUrl}"
                     target="_blank"
-                    rel="noopener noreferrer">
+                    rel="noopener noreferrer"
+                >
 
                     Apply Now
 
                     ${icons.external}
 
                 </a>
+
 
             </div>
 
@@ -2189,28 +2016,38 @@ function createCard(item) {
 
 function render() {
 
-    loadingState.style.display = 'none';
+    loadingState.style.display =
+        'none';
 
-    errorState.style.display = 'none';
+    errorState.style.display =
+        'none';
 
-    scholarshipGrid.innerHTML = '';
+    scholarshipGrid.innerHTML =
+        '';
 
-    pagination.innerHTML = '';
+    pagination.innerHTML =
+        '';
 
 
-    if (!filteredScholarships.length) {
+    if (
+        !filteredScholarships.length
+    ) {
 
-        emptyState.style.display = 'block';
+        emptyState.style.display =
+            'block';
+
 
         resultCount.textContent =
             '0 scholarships';
+
 
         return;
 
     }
 
 
-    emptyState.style.display = 'none';
+    emptyState.style.display =
+        'none';
 
 
     const totalItems =
@@ -2219,22 +2056,32 @@ function render() {
 
     const totalPages =
         Math.ceil(
-            totalItems / ITEMS_PER_PAGE
+            totalItems /
+            ITEMS_PER_PAGE
         );
 
 
-    if (currentPage > totalPages) {
-        currentPage = totalPages;
+    if (
+        currentPage >
+        totalPages
+    ) {
+
+        currentPage =
+            totalPages;
+
     }
 
 
     const start =
-        (currentPage - 1) *
+        (
+            currentPage - 1
+        ) *
         ITEMS_PER_PAGE;
 
 
     const end =
-        start + ITEMS_PER_PAGE;
+        start +
+        ITEMS_PER_PAGE;
 
 
     const pageItems =
@@ -2246,7 +2093,9 @@ function render() {
 
     scholarshipGrid.innerHTML =
         pageItems
-            .map(createCard)
+            .map(
+                createCard
+            )
             .join('');
 
 
@@ -2276,7 +2125,9 @@ function render() {
    PAGINATION
 ============================================================ */
 
-function renderPagination(totalPages) {
+function renderPagination(
+    totalPages
+) {
 
     if (totalPages <= 1) {
         return;
@@ -2284,16 +2135,22 @@ function renderPagination(totalPages) {
 
 
     const previousButton =
-        document.createElement('button');
+        document.createElement(
+            'button'
+        );
+
 
     previousButton.type =
         'button';
 
+
     previousButton.className =
         'page-btn';
 
+
     previousButton.textContent =
         'Previous';
+
 
     previousButton.disabled =
         currentPage === 1;
@@ -2303,7 +2160,9 @@ function renderPagination(totalPages) {
         'click',
         function() {
 
-            if (currentPage > 1) {
+            if (
+                currentPage > 1
+            ) {
 
                 currentPage--;
 
@@ -2343,7 +2202,9 @@ function renderPagination(totalPages) {
     ) {
 
         const button =
-            document.createElement('button');
+            document.createElement(
+                'button'
+            );
 
 
         button.type =
@@ -2369,7 +2230,9 @@ function renderPagination(totalPages) {
         );
 
 
-        if (page === currentPage) {
+        if (
+            page === currentPage
+        ) {
 
             button.setAttribute(
                 'aria-current',
@@ -2402,17 +2265,22 @@ function renderPagination(totalPages) {
 
 
     const nextButton =
-        document.createElement('button');
+        document.createElement(
+            'button'
+        );
 
 
     nextButton.type =
         'button';
 
+
     nextButton.className =
         'page-btn';
 
+
     nextButton.textContent =
         'Next';
+
 
     nextButton.disabled =
         currentPage === totalPages;
@@ -2452,7 +2320,8 @@ function renderPagination(totalPages) {
 
 function scrollToResults() {
 
-    const headerOffset = 90;
+    const headerOffset =
+        90;
 
 
     const position =
@@ -2508,16 +2377,17 @@ if (serverHasError) {
 } else {
 
     filteredScholarships =
-        Array.isArray(scholarshipData)
+        Array.isArray(
+            scholarshipData
+        )
             ? scholarshipData
             : [];
+
 
     render();
 
 }
 
 </script>
-
-
 </body>
 </html>
