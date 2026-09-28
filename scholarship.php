@@ -2,12 +2,6 @@
 // ============================================================
 // FLEXI EDUCATIONAL CONSULT
 // SCHOLARSHIP PAGE
-//
-// Data source:
-// Supabase -> public.scholarships
-//
-// Publicly displayed scholarships must have:
-// status = active
 // ============================================================
 
 $supabaseUrl = 'https://ryvauylmymcvbvvlaceb.supabase.co';
@@ -136,9 +130,7 @@ function scholarshipImage($image)
         name="theme-color"
         content="#003366">
 
-    <title>
-        Scholarships | Flexi Educational Consult
-    </title>
+    <title>Scholarships | Flexi Educational Consult</title>
 
     <meta
         name="description"
@@ -187,7 +179,8 @@ select {
 
 
 /* ============================================================
-   EXACT INDEX.PHP HEADER
+   HEADER
+   MENU REMOVED
 ============================================================ */
 
 header {
@@ -196,7 +189,6 @@ header {
     height: 52px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 0 20px;
     border-bottom: 3px solid #2E8B57;
     position: sticky;
@@ -220,83 +212,12 @@ header {
 .brand-name {
     font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.2px;
-}
-
-.menu-container {
-    position: relative;
-}
-
-.menu-btn {
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-    background: none;
-    border: 1px solid rgba(255,255,255,.3);
-    border-radius: 6px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    gap: 4px;
-}
-
-.menu-btn span {
-    width: 18px;
-    height: 2px;
-    background: white;
-}
-
-.square-menu {
-    display: none;
-
-    position: absolute;
-    top: 48px;
-    right: 0;
-
-    width: 240px;
-
-    background: #003366;
-
-    border: 2px solid #2E8B57;
-    border-radius: 10px;
-
-    z-index: 2000;
-
-    box-shadow: 0 12px 32px rgba(0,0,0,.35);
-
-    overflow: hidden;
-}
-
-.square-menu a {
-    display: block;
-
-    padding: 14px 16px;
-
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 14px;
-
-    border-bottom: 1px solid rgba(255,255,255,.1);
-
-    transition: background .15s;
-}
-
-.square-menu a:hover {
-    background: rgba(255,255,255,.08);
-}
-
-.square-menu a:last-child {
-    border-bottom: none;
+    letter-spacing: .2px;
 }
 
 
 /* ============================================================
-   SCHOLARSHIP HERO
+   HERO
 ============================================================ */
 
 .hero {
@@ -373,7 +294,7 @@ header {
 
 
 /* ============================================================
-   SEARCH / FILTERS
+   SEARCH / FILTER
 ============================================================ */
 
 .filter-box {
@@ -386,6 +307,7 @@ header {
     margin-top: -48px;
 
     position: relative;
+
     z-index: 5;
 
     box-shadow: 0 7px 28px rgba(0,0,0,.10);
@@ -497,7 +419,7 @@ header {
 
 
 /* ============================================================
-   SCHOLARSHIP CARDS
+   SCHOLARSHIP GRID
 ============================================================ */
 
 .scholarship-grid {
@@ -508,6 +430,11 @@ header {
 
     gap: 20px;
 }
+
+
+/* ============================================================
+   SCHOLARSHIP CARD
+============================================================ */
 
 .scholarship-card {
     background: #fff;
@@ -524,7 +451,8 @@ header {
 
     min-width: 0;
 
-    box-shadow: 0 3px 14px rgba(0,0,0,.045);
+    box-shadow:
+        0 3px 14px rgba(0,0,0,.045);
 
     transition:
         transform .2s ease,
@@ -673,11 +601,13 @@ header {
 
 .deadline-soon {
     color: #b45309 !important;
+
     font-weight: 700;
 }
 
 .deadline-past {
     color: #b91c1c !important;
+
     font-weight: 700;
 }
 
@@ -776,11 +706,9 @@ header {
 }
 
 @keyframes spin {
-
     to {
         transform: rotate(360deg);
     }
-
 }
 
 
@@ -842,7 +770,7 @@ header {
 
 
 /* ============================================================
-   EXACT INDEX.PHP FOOTER
+   FOOTER
 ============================================================ */
 
 .footer {
@@ -902,11 +830,9 @@ header {
     position: absolute;
 
     left: 0;
-
     bottom: 0;
 
     width: 24px;
-
     height: 2px;
 
     background: #FFD700;
@@ -1038,7 +964,8 @@ header {
     }
 
     .footer-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+            1fr 1fr;
 
         gap: 30px;
     }
@@ -1090,21 +1017,6 @@ header {
 
 }
 
-
-/* ============================================================
-   DEADLINE STYLING
-============================================================ */
-
-.deadline-soon {
-    color: #b45309 !important;
-    font-weight: 700;
-}
-
-.deadline-past {
-    color: #b91c1c !important;
-    font-weight: 700;
-}
-
     </style>
 
 </head>
@@ -1114,7 +1026,8 @@ header {
 
 
 <!-- ============================================================
-     EXACT INDEX.PHP HEADER
+     HEADER
+     MENU COMPLETELY REMOVED
 ============================================================ -->
 
 <header>
@@ -1138,82 +1051,11 @@ header {
 
     </div>
 
-
-    <div class="menu-container">
-
-        <button
-            class="menu-btn"
-            onclick="toggleMenu()"
-            type="button"
-            aria-label="Toggle Navigation Menu"
-            aria-expanded="false">
-
-            <span></span>
-            <span></span>
-            <span></span>
-
-        </button>
-
-
-        <div
-            class="square-menu"
-            id="squareMenu">
-
-            <a href="/index.php">
-                Home
-            </a>
-
-            <a href="/videos.html">
-                Watch Video Lessons
-            </a>
-
-            <a href="/syllabus.html">
-                Access the JAMB and WAEC syllabus here
-            </a>
-
-            <a href="/brochure.html">
-                Access JAMB Brochure
-            </a>
-
-            <a href="/cbt.html">
-                CBT Simulator
-            </a>
-
-            <a href="/groups.html">
-                Classroom (Groups and chats)
-            </a>
-
-            <a href="/purchase.html">
-                Purchase Scratch Cards
-            </a>
-
-            <a href="/pdf.html">
-                Get your PDFs from here
-            </a>
-
-            <a href="/location.html">
-                Tutorial Centers Near You
-            </a>
-
-            <a href="/profile.html">
-                User Profile
-            </a>
-
-            <a
-                href="#"
-                id="auth-menu-btn">
-                Login
-            </a>
-
-        </div>
-
-    </div>
-
 </header>
 
 
 <!-- ============================================================
-     SCHOLARSHIP HERO
+     HERO
 ============================================================ -->
 
 <section class="hero">
@@ -1230,8 +1072,7 @@ header {
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true">
+                stroke-linejoin="round">
 
                 <path
                     d="M12 3l2.6 5.27L20.4 9.1l-4.2 4.1.99 5.79L12 16.27 6.81 19l.99-5.79-4.2-4.1 5.8-.83L12 3z">
@@ -1268,9 +1109,7 @@ header {
 
     <!-- SEARCH / FILTER -->
 
-    <section
-        class="filter-box"
-        aria-label="Scholarship search and filters">
+    <div class="filter-box">
 
         <div class="input-wrap">
 
@@ -1281,8 +1120,7 @@ header {
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true">
+                stroke-linejoin="round">
 
                 <circle
                     cx="11"
@@ -1290,7 +1128,7 @@ header {
                     r="7">
                 </circle>
 
-                <path d="m20 20-4-4"></path>
+                <path d="M20 20l-4-4"></path>
 
             </svg>
 
@@ -1300,22 +1138,20 @@ header {
                 id="searchInput"
                 class="search-input"
                 placeholder="Search scholarships, organizations, fields..."
-                autocomplete="off"
-                aria-label="Search scholarships">
+                autocomplete="off">
 
         </div>
 
 
         <select
             id="studyFilter"
-            class="study-filter"
-            aria-label="Filter by study level">
+            class="study-filter">
 
             <option value="">
                 All Study Levels
             </option>
 
-            <option value="secondary school">
+            <option value="secondary">
                 Secondary School
             </option>
 
@@ -1327,26 +1163,26 @@ header {
                 Postgraduate
             </option>
 
-            <option value="master's">
-                Master's
+            <option value="masters">
+                Masters
             </option>
 
             <option value="phd">
                 PhD
             </option>
 
-            <option value="international students">
-                International Students
+            <option value="international">
+                International
             </option>
 
         </select>
 
-    </section>
+    </div>
 
 
     <!-- SECTION HEADER -->
 
-    <section class="section-header">
+    <div class="section-header">
 
         <div>
 
@@ -1355,41 +1191,34 @@ header {
             </h2>
 
             <p class="section-subtitle">
-                Find an opportunity that matches your academic goals.
+                Browse scholarships currently available.
             </p>
 
         </div>
 
 
         <div
-            class="result-count"
             id="resultCount"
-            aria-live="polite">
-
-            Loading...
-
+            class="result-count">
         </div>
 
-    </section>
+    </div>
 
 
     <!-- LOADING -->
 
     <div
-        class="state-box"
-        id="loadingState">
+        id="loadingState"
+        class="state-box">
 
-        <div
-            class="spinner"
-            aria-hidden="true">
-        </div>
+        <div class="spinner"></div>
 
         <h3>
-            Loading scholarships
+            Loading scholarships...
         </h3>
 
         <p>
-            Please wait while we retrieve the latest opportunities.
+            Please wait while we load available opportunities.
         </p>
 
     </div>
@@ -1398,8 +1227,8 @@ header {
     <!-- ERROR -->
 
     <div
-        class="state-box"
         id="errorState"
+        class="state-box"
         style="display:none;">
 
         <svg
@@ -1409,8 +1238,7 @@ header {
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">
+            stroke-linejoin="round">
 
             <circle
                 cx="12"
@@ -1424,13 +1252,11 @@ header {
 
         </svg>
 
-
         <h3>
             Unable to load scholarships
         </h3>
 
         <p>
-            We could not retrieve the scholarship list right now.
             Please try again later.
         </p>
 
@@ -1440,8 +1266,8 @@ header {
     <!-- EMPTY -->
 
     <div
-        class="state-box"
         id="emptyState"
+        class="state-box"
         style="display:none;">
 
         <svg
@@ -1451,28 +1277,20 @@ header {
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">
+            stroke-linejoin="round">
 
-            <path d="M4 7h16"></path>
+            <path d="M4 19V5"></path>
 
-            <path d="M6 7l1 13h10l1-13"></path>
-
-            <path d="M9 7V4h6v3"></path>
-
-            <path d="M10 11v5"></path>
-
-            <path d="M14 11v5"></path>
+            <path d="M4 5c5-3 10 3 16 0v14c-6 3-11-3-16 0"></path>
 
         </svg>
-
 
         <h3>
             No scholarships found
         </h3>
 
         <p>
-            Try another search term or select a different study level.
+            Try changing your search or study-level filter.
         </p>
 
     </div>
@@ -1480,26 +1298,24 @@ header {
 
     <!-- SCHOLARSHIP GRID -->
 
-    <section
-        class="scholarship-grid"
+    <div
         id="scholarshipGrid"
-        aria-live="polite">
-    </section>
+        class="scholarship-grid">
+    </div>
 
 
     <!-- PAGINATION -->
 
-    <nav
-        class="pagination"
+    <div
         id="pagination"
-        aria-label="Scholarship pagination">
-    </nav>
+        class="pagination">
+    </div>
 
 </main>
 
 
 <!-- ============================================================
-     EXACT INDEX.PHP FOOTER
+     FOOTER
 ============================================================ -->
 
 <footer class="footer">
@@ -1530,7 +1346,6 @@ header {
             <h4>
                 Quick Links
             </h4>
-
 
             <ul class="footer-links-list">
 
@@ -1666,7 +1481,6 @@ header {
                 Follow Us
             </h4>
 
-
             <ul class="footer-links-list">
 
                 <li>
@@ -1714,7 +1528,6 @@ header {
 
         </div>
 
-
     </div>
 
 
@@ -1734,84 +1547,13 @@ header {
 <script>
 
 /* ============================================================
-   EXACT INDEX.PHP MENU BEHAVIOUR
-============================================================ */
-
-window.toggleMenu = function () {
-
-    const menu =
-        document.getElementById('squareMenu');
-
-    const button =
-        document.querySelector('.menu-btn');
-
-    if (!menu) {
-        return;
-    }
-
-    const isOpen =
-        menu.style.display === 'block';
-
-    menu.style.display =
-        isOpen ? 'none' : 'block';
-
-    if (button) {
-
-        button.setAttribute(
-            'aria-expanded',
-            isOpen ? 'false' : 'true'
-        );
-
-    }
-
-};
-
-
-document.addEventListener(
-    'click',
-    function (event) {
-
-        const menu =
-            document.getElementById('squareMenu');
-
-        const container =
-            document.querySelector('.menu-container');
-
-        const button =
-            document.querySelector('.menu-btn');
-
-        if (
-            menu &&
-            container &&
-            !container.contains(event.target)
-        ) {
-
-            menu.style.display = 'none';
-
-            if (button) {
-
-                button.setAttribute(
-                    'aria-expanded',
-                    'false'
-                );
-
-            }
-
-        }
-
-    }
-);
-
-
-/* ============================================================
-   SCHOLARSHIP DATA
+   SCHOLARSHIP DATA FROM PHP
 ============================================================ */
 
 const scholarshipData = <?php
 
 echo json_encode(
     $scholarships,
-
     JSON_UNESCAPED_SLASHES |
     JSON_UNESCAPED_UNICODE |
     JSON_HEX_TAG |
@@ -1821,6 +1563,7 @@ echo json_encode(
 );
 
 ?>;
+
 
 const serverHasError =
     <?php echo $hasError ? 'true' : 'false'; ?>;
@@ -1867,7 +1610,7 @@ let filteredScholarships = [];
 
 
 /* ============================================================
-   SVG ICONS
+   ICONS
 ============================================================ */
 
 const icons = {
@@ -1880,8 +1623,7 @@ const icons = {
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">
+            stroke-linejoin="round">
 
             <rect
                 x="3"
@@ -1900,7 +1642,6 @@ const icons = {
         </svg>
     `,
 
-
     money: `
         <svg
             class="detail-icon"
@@ -1909,8 +1650,7 @@ const icons = {
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">
+            stroke-linejoin="round">
 
             <circle
                 cx="12"
@@ -1927,7 +1667,6 @@ const icons = {
         </svg>
     `,
 
-
     location: `
         <svg
             class="detail-icon"
@@ -1936,8 +1675,7 @@ const icons = {
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">
+            stroke-linejoin="round">
 
             <path
                 d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z">
@@ -1952,7 +1690,6 @@ const icons = {
         </svg>
     `,
 
-
     education: `
         <svg
             class="detail-icon"
@@ -1961,8 +1698,7 @@ const icons = {
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">
+            stroke-linejoin="round">
 
             <path d="M3 9l9-5 9 5-9 5-9-5z"></path>
 
@@ -1973,7 +1709,6 @@ const icons = {
         </svg>
     `,
 
-
     book: `
         <svg
             class="detail-icon"
@@ -1982,8 +1717,7 @@ const icons = {
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">
+            stroke-linejoin="round">
 
             <path
                 d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5z">
@@ -1996,7 +1730,6 @@ const icons = {
         </svg>
     `,
 
-
     external: `
         <svg
             class="apply-icon"
@@ -2005,8 +1738,7 @@ const icons = {
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">
+            stroke-linejoin="round">
 
             <path d="M14 5h5v5"></path>
 
@@ -2126,20 +1858,25 @@ function normalizeText(value) {
 
 
 /* ============================================================
-   FILTER SCHOLARSHIPS
+   FILTER
 ============================================================ */
 
 function filterScholarships() {
 
     const search =
-        normalizeText(searchInput.value);
+        normalizeText(
+            searchInput.value
+        );
 
     const level =
-        normalizeText(studyFilter.value);
+        normalizeText(
+            studyFilter.value
+        );
+
 
     filteredScholarships =
         scholarshipData.filter(
-            function (item) {
+            function(item) {
 
                 const searchableText = [
 
@@ -2191,7 +1928,7 @@ function filterScholarships() {
 
 
 /* ============================================================
-   CREATE SCHOLARSHIP CARD
+   CREATE CARD
 ============================================================ */
 
 function createCard(item) {
@@ -2246,17 +1983,25 @@ function createCard(item) {
 
 
     const deadline =
-        formatDate(item.deadline);
+        formatDate(
+            item.deadline
+        );
 
 
     const deadlineClassName =
-        getDeadlineClass(item.deadline);
+        getDeadlineClass(
+            item.deadline
+        );
+
+
+    const fallbackImage =
+        scholarshipImage('');
 
 
     const image =
         escapeHTML(
             item.image_url ||
-            scholarshipImage('')
+            fallbackImage
         );
 
 
@@ -2275,7 +2020,6 @@ function createCard(item) {
 
         <article class="scholarship-card">
 
-
             <div class="card-image-wrap">
 
                 <img
@@ -2283,8 +2027,7 @@ function createCard(item) {
                     src="${image}"
                     alt="${title}"
                     loading="lazy"
-                    onerror="this.onerror=null;this.src='${scholarshipImage('').replace(/'/g, '&#039;')}';">
-
+                    onerror="this.onerror=null;this.src='${fallbackImage}';">
 
                 ${
                     featured
@@ -2300,7 +2043,6 @@ function createCard(item) {
 
 
             <div class="card-body">
-
 
                 <div class="organization">
                     ${organization}
@@ -2417,7 +2159,6 @@ function createCard(item) {
 
                     </div>
 
-
                 </div>
 
 
@@ -2432,7 +2173,6 @@ function createCard(item) {
                     ${icons.external}
 
                 </a>
-
 
             </div>
 
@@ -2525,7 +2265,9 @@ function render() {
         `${firstItem}-${lastItem} of ${totalItems} scholarship${totalItems === 1 ? '' : 's'}`;
 
 
-    renderPagination(totalPages);
+    renderPagination(
+        totalPages
+    );
 
 }
 
@@ -2544,11 +2286,14 @@ function renderPagination(totalPages) {
     const previousButton =
         document.createElement('button');
 
-    previousButton.type = 'button';
+    previousButton.type =
+        'button';
 
-    previousButton.className = 'page-btn';
+    previousButton.className =
+        'page-btn';
 
-    previousButton.textContent = 'Previous';
+    previousButton.textContent =
+        'Previous';
 
     previousButton.disabled =
         currentPage === 1;
@@ -2556,7 +2301,7 @@ function renderPagination(totalPages) {
 
     previousButton.addEventListener(
         'click',
-        function () {
+        function() {
 
             if (currentPage > 1) {
 
@@ -2577,14 +2322,14 @@ function renderPagination(totalPages) {
     );
 
 
-    let startPage =
+    const startPage =
         Math.max(
             1,
             currentPage - 2
         );
 
 
-    let endPage =
+    const endPage =
         Math.min(
             totalPages,
             currentPage + 2
@@ -2601,7 +2346,8 @@ function renderPagination(totalPages) {
             document.createElement('button');
 
 
-        button.type = 'button';
+        button.type =
+            'button';
 
 
         button.className =
@@ -2613,7 +2359,8 @@ function renderPagination(totalPages) {
             );
 
 
-        button.textContent = page;
+        button.textContent =
+            page;
 
 
         button.setAttribute(
@@ -2634,9 +2381,10 @@ function renderPagination(totalPages) {
 
         button.addEventListener(
             'click',
-            function () {
+            function() {
 
-                currentPage = page;
+                currentPage =
+                    page;
 
                 render();
 
@@ -2657,11 +2405,14 @@ function renderPagination(totalPages) {
         document.createElement('button');
 
 
-    nextButton.type = 'button';
+    nextButton.type =
+        'button';
 
-    nextButton.className = 'page-btn';
+    nextButton.className =
+        'page-btn';
 
-    nextButton.textContent = 'Next';
+    nextButton.textContent =
+        'Next';
 
     nextButton.disabled =
         currentPage === totalPages;
@@ -2669,9 +2420,12 @@ function renderPagination(totalPages) {
 
     nextButton.addEventListener(
         'click',
-        function () {
+        function() {
 
-            if (currentPage < totalPages) {
+            if (
+                currentPage <
+                totalPages
+            ) {
 
                 currentPage++;
 
@@ -2702,7 +2456,9 @@ function scrollToResults() {
 
 
     const position =
-        scholarshipGrid.getBoundingClientRect().top +
+        scholarshipGrid
+            .getBoundingClientRect()
+            .top +
         window.scrollY -
         headerOffset;
 
@@ -2719,7 +2475,7 @@ function scrollToResults() {
 
 
 /* ============================================================
-   SEARCH EVENTS
+   EVENTS
 ============================================================ */
 
 searchInput.addEventListener(
@@ -2740,11 +2496,14 @@ studyFilter.addEventListener(
 
 if (serverHasError) {
 
-    loadingState.style.display = 'none';
+    loadingState.style.display =
+        'none';
 
-    errorState.style.display = 'block';
+    errorState.style.display =
+        'block';
 
-    resultCount.textContent = '';
+    resultCount.textContent =
+        '';
 
 } else {
 
