@@ -3188,6 +3188,17 @@ $appDownloadTargetUrl = '/download-app.php';
                     </a>
                 </li>
 
+                <li>
+    <a href="/terms.php">
+        Terms and Conditions
+    </a>
+</li>
+
+<li>
+    <a href="/policy.php">
+        Privacy Policy
+    </a>
+</li>
 
                 <li>
                     <a href="/location.html">
