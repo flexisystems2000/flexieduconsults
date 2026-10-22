@@ -239,6 +239,8 @@
                 <li><a href="pdf.html">Past Questions & PDFs</a></li>
                 <li><a href="cbt.html">CBT Simulator</a></li>
                 <li><a href="groups.html">Classroom</a></li>
+                <li><a href="/terms.php"> Terms and Conditions</a></li>
+                <li><a href="/policy.php"> Privacy Policy</a></li>   
                 <li><a href="location.html">Tutorial Centres</a></li>
             </ul>
         </div>
