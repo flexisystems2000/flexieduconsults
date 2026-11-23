@@ -1,5 +1,4 @@
 User-agent: *
-
 Allow: /
 
-Sitemap: https://www.flexieduconsult.com.ng/sitemap.xml
+Sitemap: https://flexieduconsult.com.ng/sitemap.xml
