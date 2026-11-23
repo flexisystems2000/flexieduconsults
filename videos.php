@@ -17,6 +17,9 @@ $serverVideoError = false;
 try {
     $videoDb = new FlexiFirestore();
     $serverVideos = $videoDb->listCollection('videos', 100);
+    $serverVideos = array_values(array_filter($serverVideos, static function (array $video): bool {
+        return video_youtube_id((string)($video['fields']['link'] ?? '')) !== '';
+    }));
     usort($serverVideos, static function (array $a, array $b): int {
         return strcmp((string)($b['fields']['createdAt'] ?? ''), (string)($a['fields']['createdAt'] ?? ''));
     });
@@ -392,6 +395,10 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
   let userInteractions = {};
   let activeVideoUnsub = null;
 
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+  })[char]);
+
   window.postComment = async (id) => {
     if (!auth.currentUser) {
         alert("Sign in to comment!");
@@ -521,7 +528,7 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
             list.innerHTML = "";
             snap.forEach(r => {
                 const rData = r.data();
-                list.innerHTML += `<div style="margin-bottom:5px;"><strong style="font-size:11px;">${rData.userName}:</strong> <span style="font-size:12px;">${rData.text}</span></div>`;
+                list.innerHTML += `<div style="margin-bottom:5px;"><strong style="font-size:11px;">${escapeHtml(rData.userName || 'Anonymous')}:</strong> <span style="font-size:12px;">${escapeHtml(rData.text || '')}</span></div>`;
             });
         });
     } else {
@@ -570,8 +577,8 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
     const suffix = isModal ? '-modal' : '';
 
     div.innerHTML = `
-        <div style="font-weight: bold; font-size: 13px;">${data.userName || "Anonymous"}</div>
-        <div style="font-size: 14px; margin: 4px 0;">${data.text}</div>
+        <div style="font-weight: bold; font-size: 13px;">${escapeHtml(data.userName || "Anonymous")}</div>
+        <div style="font-size: 14px; margin: 4px 0;">${escapeHtml(data.text || '')}</div>
         <div style="font-size: 12px; display: flex; gap: 15px; color: #475569; font-weight: 600; flex-wrap: wrap;">
             <span style="cursor:pointer;" onclick="reactToComment('${docSnap.id}', 'likes')">Like (${data.likes || 0})</span>
             <span style="cursor:pointer;" onclick="reactToComment('${docSnap.id}', 'dislikes')">Dislike (${data.dislikes || 0})</span>
@@ -655,7 +662,11 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
     activeVideoUnsub = listenToVideoUpdates(selectedVideo.id);
 
     const v = selectedVideo.data();
-    const id = v.link.includes("v=") ? v.link.split("v=")[1].split("&")[0] : v.link.split("/").pop();
+    const videoMatch = String(v.link || '').match(/(?:youtu\\.be\\/|youtube\\.com\\/(?:[^\\/]+\\/.+\\/|(?:v|e(?:mbed)?)\\/|.*[?&]v=))([^"&?\\/\\s]{11})/);
+    const id = videoMatch ? videoMatch[1] : '';
+    if (!id) return;
+    const safeTitle = escapeHtml(v.title || 'Video lesson');
+    const safeDescription = escapeHtml(v.desc || '');
     const others = allVideos.filter(d => d.id !== selectedVideo.id);
     const userChoice = userInteractions[selectedVideo.id];
 
@@ -663,9 +674,9 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
 
     container.innerHTML = `
       <div class="card">
-        <iframe src="https://www.youtube.com/embed/${id}" width="100%" height="315" allowfullscreen title="${v.title || 'Video'}"></iframe>
-        <h3>${v.title}</h3>
-        <p>${v.desc || ''}</p>
+        <iframe src="https://www.youtube.com/embed/${id}" width="100%" height="315" allowfullscreen title="${safeTitle}"></iframe>
+        <h3>${safeTitle}</h3>
+        <p>${safeDescription}</p>
 
         <div class="actions">
           <div class="btn-icon" style="color: ${userChoice === 'likes' ? '#1e3a8a' : 'inherit'};" onclick="toggleInteraction('likes')">
@@ -708,7 +719,7 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
           <div style="position:relative; width:120px; height:80px; flex-shrink:0;">
             <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" alt="" style="width:100%; height:100%; object-fit:cover; border-radius:6px; background:#e2e8f0;">
           </div>
-          <strong style="font-size: 0.95rem; color: #1e293b; line-height: 1.3;">${ov.title}</strong>
+          <strong style="font-size: 0.95rem; color: #1e293b; line-height: 1.3;">${escapeHtml(ov.title || 'Video lesson')}</strong>
         ` : `
           <div style="width:120px; height:80px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; border-radius:6px;">
             <small style="color:#94a3b8;">No Image</small>
