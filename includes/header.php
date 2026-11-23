@@ -131,7 +131,7 @@ if (!function_exists('flexiHeaderIsActive')) {
                 </a>
 
                 <a
-                    href="/purchase.html"
+                    href="/purchase.php"
                     class="flexi-menu-link<?php echo flexiHeaderIsActive('purchase', $currentPage); ?>"
                 >
                     Purchase Scratch Cards
