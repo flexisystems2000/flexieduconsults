@@ -2736,7 +2736,7 @@ $appDownloadTargetUrl = '/download-app.php';
                 <span class="menu-label">Classroom (Groups and chats)</span>
             </a>
 
-            <a href="/purchase.html">
+            <a href="/purchase.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="menu-label">Purchase Scratch Cards</span>
             </a>
@@ -2856,11 +2856,11 @@ $appDownloadTargetUrl = '/download-app.php';
         alt="JAMB UTME CBT Online Exam Practice Banner">
 </a>
 
-       <a href="/purchase.html" class="slider-slide">
+       <a href="/purchase.php" class="slider-slide">
    <img src="https://i.postimg.cc/pXBjLFpj/20260418-190953-2.jpg"
         alt="WAEC NECO SSCE Preparation Tutorials Banner"></a>
 
-       <a href="/purchase.html" class="slider-slide">
+       <a href="/purchase.php" class="slider-slide">
 
     <img
         src="https://i.postimg.cc/76p3Srkc/Screenshot-20260418-191139-2.png"
