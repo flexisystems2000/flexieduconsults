@@ -2,9 +2,9 @@
 /**
  * Flexi Educational Consult XML sitemap.
  *
- * Use one canonical host throughout the sitemap and site metadata.
- * Static pages intentionally omit lastmod because deployment dates are
- * not the same as meaningful content modification dates.
+ * Canonical host: https://flexieduconsult.com.ng
+ * News URLs are sourced from the same Supabase table used by the homepage
+ * and news article viewer, so newly published articles are discoverable.
  */
 header('Content-Type: application/xml; charset=utf-8');
 
@@ -26,16 +26,6 @@ $staticPages = [
     '/pdf.php'         => '0.6',
     '/videos.php'      => '0.6',
     '/novel.php'       => '0.8',
-    '/novel.php?book=a_man_for_all_seasons&view=summary' => '0.7',
-    '/novel.php?book=an_inspector_calls&view=summary' => '0.7',
-    '/novel.php?book=anthony_and_cleopatra&view=summary' => '0.7',
-    '/novel.php?book=marriage_of_anansewa&view=summary' => '0.7',
-    '/novel.php?book=once_upon_an_elephant&view=summary' => '0.7',
-    '/novel.php?book=path_of_lucas&view=summary' => '0.7',
-    '/novel.php?book=redemption_road&view=summary' => '0.7',
-    '/novel.php?book=so_the_path_does_not_die&view=summary' => '0.7',
-    '/novel.php?book=to_kill_a_mockingbird&view=summary' => '0.7',
-    '/novel.php?book=the_lekki_headmaster&view=summary' => '0.7',
     '/scholarship.php' => '0.8',
     '/download-app.php'=> '0.6',
     '/policy.php'      => '0.3',
@@ -50,57 +40,123 @@ foreach ($staticPages as $path => $priority) {
     ];
 }
 
-// News is currently stored in the public Firestore news collection.
-$firebaseProjectId = 'waec2026jamb2027';
-$apiUrl = 'https://firestore.googleapis.com/v1/projects/'
-    . rawurlencode($firebaseProjectId)
-    . '/databases/(default)/documents/news';
+// Add each Literature summary page as a separate indexable resource.
+$literatureBooks = [
+    'a_man_for_all_seasons',
+    'an_inspector_calls',
+    'anthony_and_cleopatra',
+    'marriage_of_anansewa',
+    'once_upon_an_elephant',
+    'path_of_lucas',
+    'redemption_road',
+    'so_the_path_does_not_die',
+    'to_kill_a_mockingbird',
+    'the_lekki_headmaster'
+];
 
-$context = stream_context_create([
-    'http' => [
-        'method' => 'GET',
-        'header' => "Accept: application/json\r\n",
-        'timeout' => 10,
-        'ignore_errors' => true
-    ]
-]);
+foreach ($literatureBooks as $slug) {
+    $urls[] = [
+        'loc' => $baseUrl . '/novel.php?book=' . rawurlencode($slug) . '&view=summary',
+        'priority' => '0.7'
+    ];
+}
 
-$response = @file_get_contents($apiUrl, false, $context);
+// Fetch news from Supabase, matching the live homepage/article data source.
+$supabaseUrl = 'https://ryvauylmymcvbvvlaceb.supabase.co';
+$supabaseKey = 'sb_publishable_zF84MIhSPOZ3MXth_LLqDA_yQ4pIvp6';
+$offset = 0;
+$pageSize = 1000;
+$maxPages = 50;
 
-if ($response !== false) {
-    $data = json_decode($response, true);
+for ($page = 0; $page < $maxPages; $page++) {
+    $apiUrl = $supabaseUrl . '/rest/v1/news'
+        . '?select=id,slug,timestamp'
+        . '&order=timestamp.desc'
+        . '&limit=' . $pageSize
+        . '&offset=' . $offset;
 
-    if (is_array($data) && !empty($data['documents']) && is_array($data['documents'])) {
-        foreach ($data['documents'] as $doc) {
-            $fields = $doc['fields'] ?? [];
-            $docName = (string)($doc['name'] ?? '');
-            $parts = explode('/', $docName);
-            $docId = (string)end($parts);
+    $rows = false;
 
-            if ($docId === '') {
-                continue;
+    if (function_exists('curl_init')) {
+        $ch = curl_init($apiUrl);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'apikey: ' . $supabaseKey,
+                'Authorization: Bearer ' . $supabaseKey,
+                'Accept: application/json'
+            ],
+            CURLOPT_CONNECTTIMEOUT => 8,
+            CURLOPT_TIMEOUT => 15
+        ]);
+
+        $response = curl_exec($ch);
+        $status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response !== false && $status >= 200 && $status < 300) {
+            $decoded = json_decode($response, true);
+            if (is_array($decoded)) {
+                $rows = $decoded;
             }
-
-            $slug = trim((string)($fields['slug']['stringValue'] ?? ''));
-            $loc = $slug !== ''
-                ? $baseUrl . '/news/' . rawurlencode($slug)
-                : $baseUrl . '/news/id/' . rawurlencode($docId);
-
-            $entry = [
-                'loc' => $loc,
-                'priority' => '0.8'
-            ];
-
-            $timestamp = $fields['timestamp']['timestampValue'] ?? null;
-            if (is_string($timestamp) && $timestamp !== '') {
-                $unixTime = strtotime($timestamp);
-                if ($unixTime !== false) {
-                    $entry['lastmod'] = gmdate('Y-m-d', $unixTime);
-                }
-            }
-
-            $urls[] = $entry;
         }
+    } else {
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'GET',
+                'header' => "apikey: {$supabaseKey}\r\n"
+                    . "Authorization: Bearer {$supabaseKey}\r\n"
+                    . "Accept: application/json\r\n",
+                'timeout' => 15,
+                'ignore_errors' => true
+            ]
+        ]);
+
+        $response = @file_get_contents($apiUrl, false, $context);
+        if ($response !== false) {
+            $decoded = json_decode($response, true);
+            if (is_array($decoded)) {
+                $rows = $decoded;
+            }
+        }
+    }
+
+    if (!is_array($rows) || count($rows) === 0) {
+        break;
+    }
+
+    foreach ($rows as $row) {
+        $docId = trim((string)($row['id'] ?? ''));
+        if ($docId === '') {
+            continue;
+        }
+
+        $slug = trim((string)($row['slug'] ?? ''));
+        $loc = $slug !== ''
+            ? $baseUrl . '/news/' . rawurlencode($slug)
+            : $baseUrl . '/news/id/' . rawurlencode($docId);
+
+        $entry = [
+            'loc' => $loc,
+            'priority' => '0.8'
+        ];
+
+        $timestamp = $row['timestamp'] ?? null;
+        if (is_string($timestamp) && $timestamp !== '') {
+            $unixTime = strtotime($timestamp);
+            if ($unixTime !== false) {
+                $entry['lastmod'] = gmdate('Y-m-d', $unixTime);
+            }
+        }
+
+        $urls[] = $entry;
+    }
+
+    $received = count($rows);
+    $offset += $received;
+
+    if ($received < $pageSize) {
+        break;
     }
 }
 
