@@ -922,6 +922,7 @@ $pageDescription =
 
     </p>
 
+    <p><a href="/about-us.php">About Us</a></p>
 </footer>
 
 
