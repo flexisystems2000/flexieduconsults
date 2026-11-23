@@ -3133,6 +3133,7 @@ $appDownloadTargetUrl = '/download-app.php';
                         Home
                     </a>
                 </li>
+                <li><a href="/about-us.php">About Us</a></li>
 
 
                 <li>
