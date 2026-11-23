@@ -126,15 +126,18 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
         'createdAt' => $now
     ];
     $encodedSale = $db->encodedDocument('scratch_card_sales/' . $saleId, $sale);
+    $encodedSale['fields']['createdAt'] = ['timestampValue' => $now];
     $pinName = $db->documentName($pin['path']);
+    $pinFields = $db->encodeFields([
+        'status' => 'sold',
+        'soldAt' => $now,
+        'paymentRef' => $reference
+    ]);
+    $pinFields['soldAt'] = ['timestampValue' => $now];
     $pinUpdate = [
         'update' => [
             'name' => $pinName,
-            'fields' => $db->encodeFields([
-                'status' => 'sold',
-                'soldAt' => $now,
-                'paymentRef' => $reference
-            ])
+            'fields' => $pinFields
         ],
         'updateMask' => ['fieldPaths' => ['status', 'soldAt', 'paymentRef']],
         'currentDocument' => ['updateTime' => $pin['updateTime']]
@@ -148,9 +151,13 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
     if (count($available) === 1) {
         $alertId = 'restock_' . substr(hash('sha256', $reference), 0, 32);
         $writes[] = [
-            'update' => $db->encodedDocument('restock_alerts/' . $alertId, [
-                'item' => $type, 'status' => 'unread', 'timestamp' => $now
-            ]),
+            'update' => (function () use ($db, $alertId, $type, $now) {
+                $doc = $db->encodedDocument('restock_alerts/' . $alertId, [
+                    'item' => $type, 'status' => 'unread', 'timestamp' => $now
+                ]);
+                $doc['fields']['timestamp'] = ['timestampValue' => $now];
+                return $doc;
+            })(),
             'currentDocument' => ['exists' => false]
         ];
     }
@@ -183,9 +190,17 @@ function flexi_issue_subject_pin(FlexiFirestore $db, string $subject, string $re
         'pinCode' => $pinCode,
         'createdAt' => gmdate('Y-m-d\TH:i:s\Z')
     ];
-    $db->commit($db->beginTransaction(), [[
-        'update' => $db->encodedDocument('expo_pin_sales/' . flexi_sale_document_id($reference), $sale),
-        'currentDocument' => ['exists' => false]
-    ]]);
+    $saleDocument = $db->encodedDocument('expo_pin_sales/' . flexi_sale_document_id($reference), $sale);
+    $saleDocument['fields']['createdAt'] = ['timestampValue' => $sale['createdAt']];
+    try {
+        $db->commit($db->beginTransaction(), [[
+            'update' => $saleDocument,
+            'currentDocument' => ['exists' => false]
+        ]]);
+    } catch (Throwable $exception) {
+        $existing = flexi_existing_sale($db, 'expo_pin_sales', $reference);
+        if ($existing) return $existing;
+        throw new RuntimeException('The payment was verified, but PIN delivery needs support review. Keep your payment reference.');
+    }
     return $sale;
 }
