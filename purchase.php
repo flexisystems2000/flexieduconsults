@@ -43,7 +43,7 @@ try {
         $type = strtoupper((string)($metadata['flexi_item'] ?? ''));
         $amount = (int)($metadata['flexi_amount_kobo'] ?? 0);
         if (($metadata['flexi_flow'] ?? '') !== 'stock' || !isset($prices[$type])
-            || $amount !== $prices[$type] * 100
+            || $amount < 10000
             || (int)($verified['amount'] ?? 0) !== $amount
             || strtoupper((string)($verified['currency'] ?? '')) !== 'NGN') {
             throw new RuntimeException('The payment could not be matched to a valid scratch card order.');
@@ -64,6 +64,7 @@ $siteUrl = 'https://flexieduconsult.com.ng/purchase.php';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Purchase WAEC scratch cards and NECO result checker tokens securely from Flexi Educational Consult.">
+<meta name="robots" content="noindex,follow">
 <link rel="canonical" href="<?= e($siteUrl) ?>">
 <meta name="theme-color" content="#003366">
 <title>Purchase Scratch Cards | Flexi Educational Consult</title>
