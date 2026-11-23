@@ -2503,7 +2503,7 @@ header {
             </a>
 
 
-            <a href="/purchase.html">
+            <a href="/purchase.php">
 
                 <span class="menu-icon">
 
