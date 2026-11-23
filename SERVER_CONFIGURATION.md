@@ -13,7 +13,7 @@ The PHP runtime must have OpenSSL enabled and PHP URL stream access (allow_url_f
 
 ## Routes
 
-- /videos.php: renders the published video lesson from Firestore on the server. Existing Firebase client-side comment/reaction enhancements remain progressive enhancements.
+- /videos.php (also available through /video.php): renders published video lessons from Firestore on the server. Existing Firebase client-side comment/reaction enhancements remain progressive enhancements.
 - /purchase.php: server-initializes Paystack checkout, verifies the reference with Paystack, then allocates an available WAEC/NECO card in a Firestore transaction.
 - /prep.php: server-initializes subject PIN checkout, verifies the payment before revealing the subject PIN, and validates PINs on the server before returning study content.
 - /purchase.html and /prep.html: permanently redirect to the PHP routes.
@@ -26,7 +26,7 @@ The server uses a service-account credential, which bypasses Firestore Security 
 - expo_pin_sales
 - payment_issues
 
-Add explicit deny rules for those collections to the existing Firestore rules and deploy the rules. Do not replace the existing rules wholesale without reviewing the other website features. The browser should not be allowed to mark documents in pins as sold or read the sale records.
+Add explicit deny rules for those collections to the existing Firestore rules and deploy the rules. Firestore rules are additive: a narrow deny does not cancel a broader matching allow, so adjust any overlapping broad allow rule. Do not replace the existing rules wholesale without reviewing the other website features. The browser should not be allowed to read card PIN inventory, mark documents in pins as sold, or read sale records. Keep administrative access limited to the existing trusted admin authorization model.
 
 ## Before taking live payments
 
