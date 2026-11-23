@@ -2897,6 +2897,83 @@ $appDownloadTargetUrl = '/download-app.php';
     </a>
 
     <!-- ======================================================
+         ORIGINAL STUDY GUIDANCE
+         ====================================================== -->
+    <section
+        class="card homepage-study-guidance"
+        aria-labelledby="study-guidance-title"
+        style="margin: 24px 0; padding: 24px; line-height: 1.75;">
+
+        <h2 id="study-guidance-title" style="color:#003366; margin:0 0 10px;">
+            A practical way to prepare for your next examination
+        </h2>
+
+        <p style="margin:0 0 18px; color:#475569;">
+            Effective preparation is more than answering many questions. Start with the topics you are expected to know,
+            understand them, practise applying what you have learnt, and use your results to decide what to revise next.
+            Flexi Educational Consult brings learning resources and practice tools together to support that process.
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:18px;">
+
+            <article>
+                <h3 style="color:#2E8B57; margin:0 0 6px;">1. Use the syllabus as your guide</h3>
+                <p style="margin:0; color:#475569;">
+                    Check the relevant examination syllabus before you begin. Divide each subject into manageable topics
+                    and make a realistic weekly study plan. This helps you identify what you have covered and what still
+                    needs attention.
+                </p>
+                <p style="margin:8px 0 0;">
+                    <a href="/syllabus.php">Explore the syllabus resources</a>
+                </p>
+            </article>
+
+            <article>
+                <h3 style="color:#2E8B57; margin:0 0 6px;">2. Learn before you practise</h3>
+                <p style="margin:0; color:#475569;">
+                    Read your notes or watch a lesson, then attempt relevant past questions. When you miss a question,
+                    return to the topic and understand the reason for the correct answer instead of memorising an option.
+                </p>
+                <p style="margin:8px 0 0;">
+                    <a href="/videos.php">Browse video lessons</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="/pdf.php">Find study materials</a>
+                </p>
+            </article>
+
+            <article>
+                <h3 style="color:#2E8B57; margin:0 0 6px;">3. Practise under examination conditions</h3>
+                <p style="margin:0; color:#475569;">
+                    Use timed CBT practice to become familiar with question navigation and time management. Review your
+                    performance after each session and give extra study time to topics where you need more confidence.
+                </p>
+                <p style="margin:8px 0 0;">
+                    <a href="/cbt.php">Open the CBT practice portal</a>
+                </p>
+            </article>
+
+            <article>
+                <h3 style="color:#2E8B57; margin:0 0 6px;">4. Verify important education updates</h3>
+                <p style="margin:0; color:#475569;">
+                    Use education updates as a starting point, then confirm examination dates, admission requirements,
+                    application deadlines and scholarship conditions with the relevant official institution before acting.
+                </p>
+                <p style="margin:8px 0 0;">
+                    <a href="/scholarship.php">View scholarship updates</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="/brochure.php">Check course and institution information</a>
+                </p>
+            </article>
+
+        </div>
+
+        <p style="margin:18px 0 0; padding-top:14px; border-top:1px solid #e2e8f0; color:#64748b; font-size:14px;">
+            Flexi Educational Consult provides independent educational resources and preparation support.
+            Always use the relevant examination body or institution as the final source for official requirements and decisions.
+        </p>
+    </section>
+
+    <!-- ======================================================
          DESKTOP CONTENT GRID
          News and testimonials share the desktop content area;
          mobile keeps the original vertical order.
