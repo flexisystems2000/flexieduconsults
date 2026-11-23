@@ -1,3 +1,38 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/includes/firestore-server.php';
+
+function video_e(mixed $value): string {
+    return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+function video_youtube_id(string $url): string {
+    if (!preg_match('~(?:youtube\.com/(?:watch\?(?:[^#]*&)?v=|embed/|shorts/)|youtu\.be/)([A-Za-z0-9_-]{11})~i', $url, $match)) {
+        return '';
+    }
+    return $match[1];
+}
+
+$serverVideos = [];
+$serverVideoError = false;
+try {
+    $videoDb = new FlexiFirestore();
+    $serverVideos = $videoDb->listCollection('videos', 100);
+    usort($serverVideos, static function (array $a, array $b): int {
+        return strcmp((string)($b['fields']['createdAt'] ?? ''), (string)($a['fields']['createdAt'] ?? ''));
+    });
+} catch (Throwable $exception) {
+    $serverVideoError = true;
+    error_log('[Flexi videos SSR] ' . $exception->getMessage());
+}
+$serverCurrentVideo = $serverVideos[0] ?? null;
+$serverCurrentFields = $serverCurrentVideo['fields'] ?? [];
+$serverCurrentYoutubeId = video_youtube_id((string)($serverCurrentFields['link'] ?? ''));
+$videoCanonical = 'https://flexieduconsult.com.ng/videos.php';
+$videoDescription = trim((string)($serverCurrentFields['desc'] ?? ''));
+if ($videoDescription === '') {
+    $videoDescription = 'Watch educational video lessons for JAMB, WAEC and other examinations with Flexi Educational Consult.';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +41,10 @@
 <link rel="apple-touch-icon" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
 <meta name="theme-color" content="#003366">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Access top-tier educational tutorials for WAEC and JAMB exam preparation. Master your studies with Flexi Edu Consult.">
+  <meta name="description" content="<?= video_e(mb_substr($videoDescription, 0, 155)) ?>">
+  <link rel="canonical" href="<?= video_e($videoCanonical) ?>">
+  <meta property="og:url" content="<?= video_e($videoCanonical) ?>">
+  <meta property="og:description" content="<?= video_e(mb_substr($videoDescription, 0, 200)) ?>">
   <meta name="keywords" content="WAEC preparation, JAMB study materials, educational consultancy, Nigeria students, exam tutorials, Flexi Edu Consult">
   <meta name="author" content="Flexi Edu Consult">
 
@@ -14,7 +52,7 @@
   <meta property="og:description" content="Prepare for your WAEC and JAMB exams with expert video tutorials.">
   <meta property="og:image" content="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
   <meta property="og:type" content="website">
-  <title>Video Lessons | Flexi Educational Consult</title>
+  <title><?= video_e(($serverCurrentFields['title'] ?? 'Video Lessons') . ' | Flexi Educational Consult') ?></title>
   <style>
     :root {
       --brand-blue: #003366;
@@ -23,11 +61,7 @@
     }
     * { 
       box-sizing: border-box; 
-      /* Disable text selection logic globally to make clicking interactive elements smooth */
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      /* Keep text selectable for accessibility, reading and assistive technology. */
     }
     body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: #f4f7f6; }
 
@@ -218,7 +252,30 @@
     <div style="width: 36px;"></div>
 </header>
 
-<div id="mainVideoContainer"></div>
+<div id="mainVideoContainer" data-video-id="<?= video_e($serverCurrentVideo['id'] ?? '') ?>">
+<?php if ($serverCurrentVideo && $serverCurrentYoutubeId !== ''): ?>
+  <article class="card">
+    <iframe src="https://www.youtube.com/embed/<?= video_e($serverCurrentYoutubeId) ?>" width="100%" height="315" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="<?= video_e($serverCurrentFields['title'] ?? 'Educational video lesson') ?>"></iframe>
+    <h1><?= video_e($serverCurrentFields['title'] ?? 'Educational video lesson') ?></h1>
+    <p><?= nl2br(video_e($serverCurrentFields['desc'] ?? '')) ?></p>
+    <p class="muted">This lesson was loaded by Flexi Educational Consult. Sign in to use the available discussion and reaction features.</p>
+    <div id="comments-list" style="margin-top:20px;"></div>
+    <p><a href="/login.php?redirect=%2Fvideos.php">Sign in to comment or react</a></p>
+    <div class="separator"></div>
+    <h2>More Video Lessons</h2>
+    <?php foreach (array_slice($serverVideos, 1) as $video): $vf = $video['fields']; $vid = video_youtube_id((string)($vf['link'] ?? '')); if ($vid === '') continue; ?>
+      <a href="/videos.php?video=<?= video_e($video['id']) ?>" style="display:flex;gap:12px;align-items:center;margin:12px 0;color:#1e293b;text-decoration:none;">
+        <img src="https://img.youtube.com/vi/<?= video_e($vid) ?>/mqdefault.jpg" alt="" width="120" height="80" loading="lazy" style="object-fit:cover;border-radius:6px">
+        <strong><?= video_e($vf['title'] ?? 'Video lesson') ?></strong>
+      </a>
+    <?php endforeach; ?>
+  </article>
+<?php elseif ($serverVideoError): ?>
+  <div class="card"><h1>Video lessons</h1><p>Video lessons are temporarily unavailable. Please refresh the page later.</p></div>
+<?php else: ?>
+  <div class="card"><h1>Video lessons</h1><p>There are no published video lessons at the moment. Please check back soon.</p></div>
+<?php endif; ?>
+</div>
 
 <footer class="footer">
     <div class="footer-grid">
@@ -299,11 +356,6 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
   import { getFirestore, collection, onSnapshot, query, orderBy, doc, increment, updateDoc, addDoc, serverTimestamp, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-
-  // Disable copy/paste and selection behaviors programmatically
-  document.addEventListener('copy', (e) => e.preventDefault());
-  document.addEventListener('cut', (e) => e.preventDefault());
-  document.addEventListener('paste', (e) => e.preventDefault());
 
   const firebaseConfig = {
     apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
