@@ -99,6 +99,29 @@ function flexi_existing_sale(FlexiFirestore $db, string $collection, string $ref
     return $doc ? $db->decodeFields($doc['fields'] ?? []) : null;
 }
 
+function flexi_record_payment_issue(FlexiFirestore $db, string $type, string $reference, string $email, string $reason): void
+{
+    $now = gmdate('Y-m-d\\TH:i:s\\Z');
+    $id = 'issue_' . hash('sha256', $reference);
+    $document = $db->encodedDocument('payment_issues/' . $id, [
+        'paymentReference' => $reference,
+        'email' => $email,
+        'item' => $type,
+        'reason' => $reason,
+        'status' => 'needs_admin_review',
+        'createdAt' => $now
+    ]);
+    $document['fields']['createdAt'] = ['timestampValue' => $now];
+    try {
+        $db->commit($db->beginTransaction(), [[
+            'update' => $document,
+            'currentDocument' => ['exists' => false]
+        ]]);
+    } catch (Throwable $ignored) {
+        // A duplicate issue record is harmless; the original remains available to staff.
+    }
+}
+
 function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $reference, string $email): array
 {
     $saleId = flexi_sale_document_id($reference);
@@ -111,7 +134,10 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
         ['status', 'EQUAL', 'available']
     ], 1000, $transaction);
 
-    if (!$available) throw new RuntimeException('This card type is currently out of stock.');
+    if (!$available) {
+        flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory was empty at allocation time.');
+        throw new RuntimeException('Payment verified, but the last card was just sold. Support has been notified; keep your payment reference.');
+    }
     $pin = $available[0];
     $fields = $pin['fields'];
     $now = gmdate('Y-m-d\TH:i:s\Z');
@@ -168,7 +194,8 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
     } catch (Throwable $e) {
         $existing = flexi_existing_sale($db, 'scratch_card_sales', $reference);
         if ($existing) return $existing;
-        throw new RuntimeException('The payment was verified, but card allocation needs support review. Keep your payment reference.');
+        flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory allocation encountered a concurrent update.');
+        throw new RuntimeException('Payment verified, but card allocation needs support review. Support has been notified; keep your payment reference.');
     }
 }
 
