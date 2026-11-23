@@ -1184,7 +1184,7 @@ footer p {
     <div class="header-left">
 
         <img
-            src="https://www.flexieduconsult.com.ng/assets/logo.png"
+            src="https://flexieduconsult.com.ng/assets/logo.png"
             alt="Flexi Educational Consult"
             class="logo-img"
             onerror="this.style.display='none';"
