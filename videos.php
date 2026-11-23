@@ -24,7 +24,16 @@ try {
     $serverVideoError = true;
     error_log('[Flexi videos SSR] ' . $exception->getMessage());
 }
+$requestedVideoId = trim((string)($_GET['video'] ?? ''));
 $serverCurrentVideo = $serverVideos[0] ?? null;
+if ($requestedVideoId !== '') {
+    foreach ($serverVideos as $candidateVideo) {
+        if (hash_equals((string)$candidateVideo['id'], $requestedVideoId)) {
+            $serverCurrentVideo = $candidateVideo;
+            break;
+        }
+    }
+}
 $serverCurrentFields = $serverCurrentVideo['fields'] ?? [];
 $serverCurrentYoutubeId = video_youtube_id((string)($serverCurrentFields['link'] ?? ''));
 $videoCanonical = 'https://flexieduconsult.com.ng/videos.php';
@@ -41,10 +50,10 @@ if ($videoDescription === '') {
 <link rel="apple-touch-icon" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
 <meta name="theme-color" content="#003366">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<?= video_e(mb_substr($videoDescription, 0, 155)) ?>">
+  <meta name="description" content="<?= video_e(substr($videoDescription, 0, 155)) ?>">
   <link rel="canonical" href="<?= video_e($videoCanonical) ?>">
   <meta property="og:url" content="<?= video_e($videoCanonical) ?>">
-  <meta property="og:description" content="<?= video_e(mb_substr($videoDescription, 0, 200)) ?>">
+  <meta property="og:description" content="<?= video_e(substr($videoDescription, 0, 200)) ?>">
   <meta name="keywords" content="WAEC preparation, JAMB study materials, educational consultancy, Nigeria students, exam tutorials, Flexi Edu Consult">
   <meta name="author" content="Flexi Edu Consult">
 
@@ -703,7 +712,12 @@ if ($videoDescription === '') {
 
   onSnapshot(query(collection(db, "videos"), orderBy("createdAt", "desc")), (snap) => {
     allVideos = snap.docs;
-    if (!selectedVideo && allVideos.length > 0) selectedVideo = allVideos[0];
+    const requestedVideoId = new URLSearchParams(window.location.search).get('video');
+    if (requestedVideoId) {
+        selectedVideo = allVideos.find(video => video.id === requestedVideoId) || allVideos[0] || null;
+    } else if (!selectedVideo && allVideos.length > 0) {
+        selectedVideo = allVideos[0];
+    }
     render();
   });
 
