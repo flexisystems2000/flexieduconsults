@@ -728,7 +728,7 @@ main a.button {
                 <span class="menu-label">Classroom (Groups and chats)</span>
             </a>
 
-            <a href="/purchase.html">
+            <a href="/purchase.php">
                 <span class="menu-icon" aria-hidden="true">▤</span>
                 <span class="menu-label">Purchase Scratch Cards</span>
             </a>
