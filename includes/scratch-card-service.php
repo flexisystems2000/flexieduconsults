@@ -53,6 +53,7 @@ function flexi_start_checkout(string $flow, string $item, string $email, int $am
         'metadata' => [
             'flexi_flow' => $flow,
             'flexi_item' => $item,
+            'flexi_amount_kobo' => $amountKobo,
             'custom_fields' => [[
                 'display_name' => 'Flexi product',
                 'variable_name' => 'flexi_product',
