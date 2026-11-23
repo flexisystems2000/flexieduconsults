@@ -43,6 +43,12 @@
                 </li>
 
                 <li>
+                    <a href="/about-us.php">
+                        About Us
+                    </a>
+                </li>
+
+                <li>
                     <a
                         href="https://elearning.flexieduconsult.com.ng"
                         target="_blank"
