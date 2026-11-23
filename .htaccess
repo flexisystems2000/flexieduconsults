@@ -26,7 +26,7 @@
     RewriteRule ^login\.html$        /login.php [R=301,L]
     RewriteRule ^profile\.html$      /profile.php [R=301,L]
     RewriteRule ^videos\.html$       /videos.php [R=301,L]
-    RewriteRule ^video\\.php$        /videos.php [R=301,L]
+    RewriteRule ^video\.php$        /videos.php [R=301,L]
     RewriteRule ^brochure\.html$     /brochure.php [R=301,L]
     RewriteRule ^syllabus\.html$     /syllabus.php [R=301,L]
     RewriteRule ^cbt\.html$          /cbt.php [R=301,L]
