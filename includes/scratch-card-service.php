@@ -132,7 +132,7 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
     $available = $db->query('pins', [
         ['examType', 'EQUAL', $type],
         ['status', 'EQUAL', 'available']
-    ], 1000, $transaction);
+    ], 2, $transaction);
 
     if (!$available) {
         flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory was empty at allocation time.');
