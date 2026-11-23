@@ -128,75 +128,82 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
     $existing = flexi_existing_sale($db, 'scratch_card_sales', $reference);
     if ($existing) return $existing;
 
-    $transaction = $db->beginTransaction();
-    $available = $db->query('pins', [
-        ['examType', 'EQUAL', $type],
-        ['status', 'EQUAL', 'available']
-    ], 2, $transaction);
+    // Retry optimistic transaction conflicts so simultaneous buyers can claim
+    // different remaining cards instead of unnecessarily entering manual review.
+    for ($attempt = 0; $attempt < 3; $attempt++) {
+        $transaction = $db->beginTransaction();
+        $available = $db->query('pins', [
+            ['examType', 'EQUAL', $type],
+            ['status', 'EQUAL', 'available']
+        ], 2, $transaction);
 
-    if (!$available) {
-        flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory was empty at allocation time.');
-        throw new RuntimeException('Payment verified, but the last card was just sold. Please contact support and keep your payment reference.');
-    }
-    $pin = $available[0];
-    $fields = $pin['fields'];
-    $now = gmdate('Y-m-d\TH:i:s\Z');
+        if (!$available) {
+            flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory was empty at allocation time.');
+            throw new RuntimeException('Payment verified, but the last card was just sold. Please contact support and keep your payment reference.');
+        }
 
-    $sale = [
-        'paymentReference' => $reference,
-        'email' => $email,
-        'examType' => $type,
-        'serial' => (string)($fields['serial'] ?? ''),
-        'pinCode' => (string)($fields['pinCode'] ?? ''),
-        'token' => (string)($fields['token'] ?? ''),
-        'createdAt' => $now
-    ];
-    $encodedSale = $db->encodedDocument('scratch_card_sales/' . $saleId, $sale);
-    $encodedSale['fields']['createdAt'] = ['timestampValue' => $now];
-    $pinName = $db->documentName($pin['path']);
-    $pinFields = $db->encodeFields([
-        'status' => 'sold',
-        'soldAt' => $now,
-        'paymentRef' => $reference
-    ]);
-    $pinFields['soldAt'] = ['timestampValue' => $now];
-    $pinUpdate = [
-        'update' => [
-            'name' => $pinName,
-            'fields' => $pinFields
-        ],
-        'updateMask' => ['fieldPaths' => ['status', 'soldAt', 'paymentRef']],
-        'currentDocument' => ['updateTime' => $pin['updateTime']]
-    ];
-    $saleCreate = [
-        'update' => $encodedSale,
-        'currentDocument' => ['exists' => false]
-    ];
-    $writes = [$pinUpdate, $saleCreate];
-
-    if (count($available) === 1) {
-        $alertId = 'restock_' . substr(hash('sha256', $reference), 0, 32);
-        $writes[] = [
-            'update' => (function () use ($db, $alertId, $type, $now) {
-                $doc = $db->encodedDocument('restock_alerts/' . $alertId, [
-                    'item' => $type, 'status' => 'unread', 'timestamp' => $now
-                ]);
-                $doc['fields']['timestamp'] = ['timestampValue' => $now];
-                return $doc;
-            })(),
-            'currentDocument' => ['exists' => false]
+        $pin = $available[0];
+        $fields = $pin['fields'];
+        $now = gmdate('Y-m-d\\TH:i:s\\Z');
+        $sale = [
+            'paymentReference' => $reference,
+            'email' => $email,
+            'examType' => $type,
+            'serial' => (string)($fields['serial'] ?? ''),
+            'pinCode' => (string)($fields['pinCode'] ?? ''),
+            'token' => (string)($fields['token'] ?? ''),
+            'createdAt' => $now
         ];
+
+        $encodedSale = $db->encodedDocument('scratch_card_sales/' . $saleId, $sale);
+        $encodedSale['fields']['createdAt'] = ['timestampValue' => $now];
+        $pinFields = $db->encodeFields([
+            'status' => 'sold',
+            'soldAt' => $now,
+            'paymentRef' => $reference
+        ]);
+        $pinFields['soldAt'] = ['timestampValue' => $now];
+
+        $writes = [[
+            'update' => [
+                'name' => $db->documentName($pin['path']),
+                'fields' => $pinFields
+            ],
+            'updateMask' => ['fieldPaths' => ['status', 'soldAt', 'paymentRef']],
+            'currentDocument' => ['updateTime' => $pin['updateTime']]
+        ], [
+            'update' => $encodedSale,
+            'currentDocument' => ['exists' => false]
+        ]];
+
+        if (count($available) === 1) {
+            $alertId = 'restock_' . substr(hash('sha256', $reference), 0, 32);
+            $alert = $db->encodedDocument('restock_alerts/' . $alertId, [
+                'item' => $type, 'status' => 'unread', 'timestamp' => $now
+            ]);
+            $alert['fields']['timestamp'] = ['timestampValue' => $now];
+            $writes[] = [
+                'update' => $alert,
+                'currentDocument' => ['exists' => false]
+            ];
+        }
+
+        try {
+            $db->commit($transaction, $writes);
+            return $sale;
+        } catch (Throwable $exception) {
+            $existing = flexi_existing_sale($db, 'scratch_card_sales', $reference);
+            if ($existing) return $existing;
+            if ($attempt < 2) {
+                usleep(100000 * ($attempt + 1));
+                continue;
+            }
+            flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory allocation encountered repeated transaction conflicts.');
+            throw new RuntimeException('Payment verified, but card allocation needs review. Please contact support and keep your payment reference.');
+        }
     }
 
-    try {
-        $db->commit($transaction, $writes);
-        return $sale;
-    } catch (Throwable $e) {
-        $existing = flexi_existing_sale($db, 'scratch_card_sales', $reference);
-        if ($existing) return $existing;
-        flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory allocation encountered a concurrent update.');
-        throw new RuntimeException('Payment verified, but card allocation needs review. Please contact support and keep your payment reference.');
-    }
+    throw new RuntimeException('Card allocation could not be completed. Keep your payment reference and contact support.');
 }
 
 function flexi_issue_subject_pin(FlexiFirestore $db, string $subject, string $reference, string $email): array
