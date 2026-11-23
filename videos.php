@@ -63,8 +63,8 @@ if ($videoDescription === '') {
   <meta name="keywords" content="WAEC preparation, JAMB study materials, educational consultancy, Nigeria students, exam tutorials, Flexi Edu Consult">
   <meta name="author" content="Flexi Edu Consult">
 
-  <meta property="og:title" content="Flexi Edu Consult | Exam Prep Portal">
-  <meta property="og:description" content="Prepare for your WAEC and JAMB exams with expert video tutorials.">
+  <meta property="og:title" content="<?= video_e(($serverCurrentFields['title'] ?? 'Video Lessons') . ' | Flexi Educational Consult') ?>">
+  
   <meta property="og:image" content="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
   <meta property="og:type" content="website">
   <title><?= video_e(($serverCurrentFields['title'] ?? 'Video Lessons') . ' | Flexi Educational Consult') ?></title>
@@ -724,7 +724,7 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
           <div style="width:120px; height:80px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; border-radius:6px;">
             <small style="color:#94a3b8;">No Image</small>
           </div>
-          <strong style="font-size: 0.95rem; color: #1e293b; line-height: 1.3;">${ov.title}</strong>
+          <strong style="font-size: 0.95rem; color: #1e293b; line-height: 1.3;">${escapeHtml(ov.title || 'Video lesson')}</strong>
         `;
 
         item.onclick = () => { selectedVideo = docSnap; container.dataset.videoId = ''; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
