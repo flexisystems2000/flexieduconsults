@@ -278,7 +278,7 @@ function scholarshipImage($image)
 
 <link
     rel="canonical"
-    href="https://www.flexieduconsult.com.ng/scholarship.php"
+    href="https://flexieduconsult.com.ng/scholarship.php"
 >
 
 
