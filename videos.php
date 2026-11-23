@@ -662,7 +662,7 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
     activeVideoUnsub = listenToVideoUpdates(selectedVideo.id);
 
     const v = selectedVideo.data();
-    const videoMatch = String(v.link || '').match(/(?:youtu\\.be\\/|youtube\\.com\\/(?:[^\\/]+\\/.+\\/|(?:v|e(?:mbed)?)\\/|.*[?&]v=))([^"&?\\/\\s]{11})/);
+    const videoMatch = String(v.link || '').match(/(?:youtu\.be\/|youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=))([^"&?\/\s]{11})/);
     const id = videoMatch ? videoMatch[1] : '';
     if (!id) return;
     const safeTitle = escapeHtml(v.title || 'Video lesson');
