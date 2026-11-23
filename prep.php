@@ -88,6 +88,7 @@ if ($study) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Access Flexi Educational Consult subject study resources and examination preparation materials.">
+<meta name="robots" content="noindex,follow">
 <link rel="canonical" href="https://flexieduconsult.com.ng/prep.php">
 <meta name="theme-color" content="#003366">
 <title>Student Study Hub | Flexi Educational Consult</title>
