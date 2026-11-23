@@ -136,7 +136,7 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
 
     if (!$available) {
         flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory was empty at allocation time.');
-        throw new RuntimeException('Payment verified, but the last card was just sold. Support has been notified; keep your payment reference.');
+        throw new RuntimeException('Payment verified, but the last card was just sold. Please contact support and keep your payment reference.');
     }
     $pin = $available[0];
     $fields = $pin['fields'];
@@ -195,7 +195,7 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
         $existing = flexi_existing_sale($db, 'scratch_card_sales', $reference);
         if ($existing) return $existing;
         flexi_record_payment_issue($db, $type, $reference, $email, 'Payment verified but inventory allocation encountered a concurrent update.');
-        throw new RuntimeException('Payment verified, but card allocation needs support review. Support has been notified; keep your payment reference.');
+        throw new RuntimeException('Payment verified, but card allocation needs review. Please contact support and keep your payment reference.');
     }
 }
 
