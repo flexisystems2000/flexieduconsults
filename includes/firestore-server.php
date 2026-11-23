@@ -84,8 +84,12 @@ final class FlexiFirestore
 
     public function request(string $method, string $path, ?array $payload = null, array $query = []): array
     {
-        $url = 'https://firestore.googleapis.com/v1/projects/' . rawurlencode($this->projectId)
-            . '/databases/(default)/documents/' . ltrim($path, '/');
+        $base = 'https://firestore.googleapis.com/v1/projects/' . rawurlencode($this->projectId)
+            . '/databases/(default)/documents';
+        $path = ltrim($path, '/');
+        $url = str_starts_with($path, ':')
+            ? $base . $path
+            : $base . '/' . $path;
         if ($query) $url .= '?' . http_build_query($query);
         $headers = ['Authorization: Bearer ' . $this->token(), 'Accept: application/json'];
         $body = null;
@@ -147,7 +151,7 @@ final class FlexiFirestore
 
     public function listCollection(string $collection, int $pageSize = 100): array
     {
-        $result = $this->request('GET', $collection, null, ['pageSize' => $pageSize, 'orderBy' => 'createdAt desc']);
+        $result = $this->request('GET', $collection, null, ['pageSize' => $pageSize]);
         $docs = [];
         foreach (($result['documents'] ?? []) as $doc) {
             $name = (string)($doc['name'] ?? '');
