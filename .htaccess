@@ -30,6 +30,9 @@
     RewriteRule ^syllabus\.html$     /syllabus.php [R=301,L]
     RewriteRule ^cbt\.html$          /cbt.php [R=301,L]
     RewriteRule ^pdf\.html$          /pdf.php [R=301,L]
+    # Server-rendered purchase and PIN access routes replace browser-only flows
+    RewriteRule ^purchase\.html$      /purchase.php [R=301,L]
+    RewriteRule ^prep\.html$          /prep.php [R=301,L]
 
     # Keep the ?id= query string so old Google links still work
     RewriteRule ^news-view\.html$    /news-view.php [R=301,L,QSA]
