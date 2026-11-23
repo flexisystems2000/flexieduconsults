@@ -37,6 +37,9 @@ if ($requestedVideoId !== '') {
 $serverCurrentFields = $serverCurrentVideo['fields'] ?? [];
 $serverCurrentYoutubeId = video_youtube_id((string)($serverCurrentFields['link'] ?? ''));
 $videoCanonical = 'https://flexieduconsult.com.ng/videos.php';
+$serverVideoPayload = array_map(static function (array $video): array {
+    return ['id' => (string)$video['id'], 'data' => $video['fields']];
+}, $serverVideos);
 $videoDescription = trim((string)($serverCurrentFields['desc'] ?? ''));
 if ($videoDescription === '') {
     $videoDescription = 'Watch educational video lessons for JAMB, WAEC and other examinations with Flexi Educational Consult.';
@@ -261,7 +264,7 @@ if ($videoDescription === '') {
     <div style="width: 36px;"></div>
 </header>
 
-<div id="mainVideoContainer" data-video-id="<?= video_e($serverCurrentVideo['id'] ?? '') ?>">
+<div id="mainVideoContainer" data-video-id="">
 <?php if ($serverCurrentVideo && $serverCurrentYoutubeId !== ''): ?>
   <article class="card">
     <iframe src="https://www.youtube.com/embed/<?= video_e($serverCurrentYoutubeId) ?>" width="100%" height="315" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="<?= video_e($serverCurrentFields['title'] ?? 'Educational video lesson') ?>"></iframe>
@@ -361,6 +364,9 @@ if ($videoDescription === '') {
     </div>
 </div>
 
+<script>
+window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+</script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
   import { getFirestore, collection, onSnapshot, query, orderBy, doc, increment, updateDoc, addDoc, serverTimestamp, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
