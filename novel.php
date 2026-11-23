@@ -594,6 +594,18 @@ $pageTitle =
           ' | Flexi Educational Consult'
         : 'Literature | Flexi Educational Consult';
 
+$pageDescription = $isDetailPage && $overview !== ''
+    ? 'Study ' . $title
+        . ($author !== '' ? ' by ' . $author : '')
+        . '. ' . $overview
+    : 'Explore prescribed Literature texts, study summaries and practice questions for Nigerian examination preparation with Flexi Educational Consult.';
+
+$canonicalUrl = 'https://flexieduconsult.com.ng/novel.php';
+if ($isDetailPage && $currentBook !== null) {
+    $canonicalUrl .= '?book=' . rawurlencode($currentBook['slug'])
+        . '&view=' . rawurlencode($requestedView);
+}
+
 $currentYear =
     date('Y');
 
@@ -615,7 +627,11 @@ $currentYear =
 
     <meta
         name="description"
-        content="Study prescribed Literature texts, summaries and practice questions with Flexi Educational Consult.">
+        content="<?= esc($pageDescription) ?>">
+
+    <link
+        rel="canonical"
+        href="<?= esc($canonicalUrl) ?>">
 
     <link
         rel="icon"
