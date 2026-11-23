@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/includes/scratch-card-service.php';
+header('Cache-Control: no-store, private');
+header('Referrer-Policy: no-referrer');
 
 function e(mixed $value): string { return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 function naira(int $amount): string { return '₦' . number_format($amount); }
@@ -63,6 +65,7 @@ $siteUrl = 'https://flexieduconsult.com.ng/purchase.php';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
 <meta name="description" content="Purchase WAEC scratch cards and NECO result checker tokens securely from Flexi Educational Consult.">
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="<?= e($siteUrl) ?>">
