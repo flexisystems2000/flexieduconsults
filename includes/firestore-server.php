@@ -234,7 +234,8 @@ function flexi_paystack_verify(string $reference): array
     $raw = @file_get_contents($url, false, $context);
     $status = $http_response_header[0] ?? '';
     $result = $raw !== false ? json_decode($raw, true) : null;
-    if (!preg_match('/\s2\d\d\s/', $status) || !is_array($result) || empty($result['status']) || ($result['data']['status'] ?? '') !== 'success') {
+    if (!preg_match('/\s2\d\d\s/', $status) || !is_array($result) || empty($result['status']) || ($result['data']['status'] ?? '') !== 'success'
+        || !hash_equals($reference, (string)($result['data']['reference'] ?? ''))) {
         throw new RuntimeException('Payment could not be verified as successful.');
     }
     return $result['data'];
