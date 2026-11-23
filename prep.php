@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/includes/scratch-card-service.php';
+header('Cache-Control: no-store, private');
+header('Referrer-Policy: no-referrer');
 
 function e(mixed $value): string { return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 function safe_image(mixed $url): string
@@ -87,6 +89,7 @@ if ($study) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
 <meta name="description" content="Access Flexi Educational Consult subject study resources and examination preparation materials.">
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="https://flexieduconsult.com.ng/prep.php">
