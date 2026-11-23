@@ -2197,7 +2197,7 @@ header {
                 <span class="menu-label">Classroom (Groups and chats)</span>
             </a>
 
-            <a href="/purchase.html">
+            <a href="/purchase.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="menu-label">Purchase Scratch Cards</span>
             </a>
