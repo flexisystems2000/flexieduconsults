@@ -2009,6 +2009,7 @@ footer p {
         Scholarships and educational opportunities
     </p>
 
+    <p><a href="/about-us.php">About Us</a></p>
 </footer>
 
 
