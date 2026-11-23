@@ -917,7 +917,7 @@ $pageDescription =
     <p style="margin-top:8px;">
 
         <a href="https://flexieduconsult.com.ng/">
-            www.flexieduconsult.com.ng
+            flexieduconsult.com.ng
         </a>
 
     </p>
