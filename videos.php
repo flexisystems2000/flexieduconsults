@@ -369,7 +369,7 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
 </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore, collection, onSnapshot, query, orderBy, doc, increment, updateDoc, addDoc, serverTimestamp, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { getFirestore, collection, onSnapshot, query, orderBy, where, doc, increment, updateDoc, addDoc, serverTimestamp, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -382,8 +382,13 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  let selectedVideo = null;
-  let allVideos = [];
+  const serverVideoRows = Array.isArray(window.__FLEXI_SERVER_VIDEOS) ? window.__FLEXI_SERVER_VIDEOS : [];
+  let allVideos = serverVideoRows.map(row => ({
+    id: String(row.id),
+    data: () => row.data || {}
+  }));
+  const requestedServerVideoId = new URLSearchParams(window.location.search).get('video');
+  let selectedVideo = allVideos.find(video => video.id === requestedServerVideoId) || allVideos[0] || null;
   let userInteractions = {};
   let activeVideoUnsub = null;
 
@@ -716,44 +721,33 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
     });
   };
 
-  onSnapshot(query(collection(db, "videos"), orderBy("createdAt", "desc")), (snap) => {
-    allVideos = snap.docs;
-    const requestedVideoId = new URLSearchParams(window.location.search).get('video');
-    if (requestedVideoId) {
-        selectedVideo = allVideos.find(video => video.id === requestedVideoId) || allVideos[0] || null;
-    } else if (!selectedVideo && allVideos.length > 0) {
-        selectedVideo = allVideos[0];
-    }
-    render();
-  });
-
   let activeInteractionUnsub = null;
 
+  render();
+
   auth.onAuthStateChanged((user) => {
-    if (!user) {
-        userInteractions = {};
-    }
-
     if (activeInteractionUnsub) activeInteractionUnsub();
+    userInteractions = {};
 
-    activeInteractionUnsub = onSnapshot(collection(db, "interactions"), (snap) => {
-        userInteractions = {};
-        if (user) {
-            snap.docs.forEach(docSnap => {
-                if (docSnap.data().userId === user.uid) {
-                    userInteractions[docSnap.data().videoId] = docSnap.data().type;
+    if (user) {
+        activeInteractionUnsub = onSnapshot(
+            query(collection(db, "interactions"), where("userId", "==", user.uid)),
+            (snap) => {
+                userInteractions = {};
+                snap.docs.forEach(docSnap => {
+                    const data = docSnap.data();
+                    userInteractions[data.videoId] = data.type;
+                });
+
+                if (selectedVideo) {
+                    const videoData = allVideos.find(v => v.id === selectedVideo.id)?.data();
+                    if (videoData) updateCounts(videoData, userInteractions[selectedVideo.id]);
                 }
-            });
-        }
-
-        if (selectedVideo) {
-            const currentVideoId = selectedVideo.id;
-            const videoData = allVideos.find(v => v.id === currentVideoId)?.data();
-            if (videoData) {
-                updateCounts(videoData, userInteractions[currentVideoId]);
             }
-        }
-    });
+        );
+    } else if (selectedVideo) {
+        updateCounts(selectedVideo.data(), undefined);
+    }
   });
 
   document.getElementById('current-year').textContent = new Date().getFullYear();
