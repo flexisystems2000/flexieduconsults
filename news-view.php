@@ -129,17 +129,10 @@ $pageImage =
     "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg";
 
 
-$host =
-    $_SERVER['HTTP_HOST']
-    ?? 'flexieduconsult.com.ng';
-
-$scheme = 'https';
-
-$pageUrl =
-    $scheme .
-    '://' .
-    $host .
-    ($_SERVER['REQUEST_URI'] ?? '/');
+// Always emit the site's preferred HTTPS, non-www canonical host.
+// Use the rewritten request path only; tracking/search query strings are excluded.
+$canonicalPath = $requestPath !== '' ? $requestPath : '/';
+$pageUrl = 'https://flexieduconsult.com.ng' . $canonicalPath;
 
 
 // ============================================================
