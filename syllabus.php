@@ -422,6 +422,7 @@ code {
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
                 <li><a href="index.php">Home</a></li>
+                <li><a href="/about-us.php">About Us</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
                 <li><a href="syllabus.php">Access the JAMB/WAEC syllabus</a></li>
                 <li><a href="brochure.php">Access JAMB Brochure</a></li>
