@@ -82,11 +82,15 @@ if (!is_array($questionImages)) $questionImages = $questionImages ? [$questionIm
 $questionImages = array_values(array_filter(array_map('safe_image', $questionImages)));
 $objectiveImage = safe_image($data['objectiveImg'] ?? '');
 $lightboxUrls = [];
+$theoryImageIndexes = [];
 if ($objectiveImage !== '') $lightboxUrls[] = $objectiveImage;
 foreach ($questionImages as $url) $lightboxUrls[] = $url;
 for ($i = 1; $i <= 20; $i++) {
     $url = safe_image($data['ansImg' . $i] ?? '');
-    if ($url !== '') $lightboxUrls[] = $url;
+    if ($url !== '') {
+        $theoryImageIndexes[$i] = count($lightboxUrls);
+        $lightboxUrls[] = $url;
+    }
 }
 $imgIndex = 0;
 ?>
@@ -299,7 +303,7 @@ input, select {
             <h3>🔑 Unlock Exam Portal</h3>
             <form method="post" action="/prep.php">
                 <input type="hidden" name="action" value="unlock">
-                <input type="text" name="pin" id="login-pin" maxlength="40" placeholder="ENTER PIN" autocomplete="off" required style="text-align:center;letter-spacing:8px;font-weight:bold;">
+                <input type="text" name="pin" id="login-pin" maxlength="4" placeholder="ENTER PIN" autocomplete="off" required style="text-align:center;letter-spacing:8px;font-weight:bold;">
                 <button class="btn btn-blue" id="unlock-btn" type="submit">VIEW ANSWERS</button>
             </form>
         </div>
@@ -310,7 +314,6 @@ input, select {
                 <input type="hidden" name="action" value="buy">
                 <input type="email" name="email" id="user-email" placeholder="Enter email" autocomplete="email" maxlength="254" required style="margin-bottom:10px;">
                 <select id="buy-subject" name="subject" required>
-                    <option value="">Select Subject</option>
                     <?php foreach ($subjectOptions as $subjectOption): ?>
                     <option value="<?= e($subjectOption) ?>"><?= e($subjectOption) ?></option>
                     <?php endforeach; ?>
@@ -335,9 +338,9 @@ input, select {
 
         <h4 style="margin-bottom:10px;color:var(--blue);">QUESTIONS</h4>
         <div id="question-area">
-            <?php foreach ($questionImages as $url): ?>
+            <?php foreach ($questionImages as $questionIndex => $url): ?>
             <div class="img-wrapper">
-                <img src="<?= e($url) ?>" class="study-image" alt="Question page" loading="lazy" onclick="openLightbox(<?= $imgIndex + 1 + array_search($url, $questionImages, true) ?>)">
+                <img src="<?= e($url) ?>" class="study-image" alt="Question page" loading="lazy" onclick="openLightbox(<?= ($objectiveImage !== '' ? 1 : 0) + $questionIndex ?>)">
                 <div class="img-actions">
                     <a href="<?= e($url) ?>" target="_blank" rel="noopener" class="action-btn"><img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" class="btn-icon"> Download</a>
                     <button class="action-btn" type="button" onclick="shareContent(<?= e(json_encode($url, JSON_HEX_APOS | JSON_HEX_QUOT)) ?>)"> <img src="https://cdn-icons-png.flaticon.com/512/1358/1358023.png" class="btn-icon"> Share</button>
@@ -367,7 +370,7 @@ input, select {
                 $answerText = trim((string)($data['ans' . $i] ?? ''));
                 $answerImage = safe_image($data['ansImg' . $i] ?? '');
                 if ($answerText === '' && $answerImage === '') continue;
-                $answerImageIndex = array_search($answerImage, $lightboxUrls, true);
+                $answerImageIndex = $theoryImageIndexes[$i] ?? -1;
             ?>
             <div class="ans-section">
                 <div class="ans-num">NUMBER <?= $i ?></div>
