@@ -31,15 +31,7 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $action = (string)($_POST['action'] ?? '');
-        if ($action === 'buy') {
-            $subject = trim((string)($_POST['subject'] ?? ''));
-            $email = trim((string)($_POST['email'] ?? ''));
-            if (!in_array($subject, $subjectOptions, true)) throw new InvalidArgumentException('Choose a valid subject.');
-            if (!$db->get('expo_pins/' . rawurlencode($subject))) {
-                throw new RuntimeException('The access PIN for this subject has not been set yet.');
-            }
-            flexi_start_checkout('subject', $subject, $email, 1000 * 100);
-        }
+
 
         if ($action === 'unlock') {
             $pin = trim((string)($_POST['pin'] ?? ''));
@@ -103,6 +95,7 @@ $imgIndex = 0;
 <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
+<script src="https://js.paystack.co/v2/inline.js"></script>
 <title>Flexi Tutors | Student Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -310,8 +303,7 @@ input, select {
 
         <div class="card">
             <h3>🛒 Purchase Subject PIN</h3>
-            <form method="post" action="/prep.php">
-                <input type="hidden" name="action" value="buy">
+            <form id="subject-purchase-form">
                 <input type="email" name="email" id="user-email" placeholder="Enter email" autocomplete="email" maxlength="254" required style="margin-bottom:10px;">
                 <select id="buy-subject" name="subject" required>
                     <?php foreach ($subjectOptions as $subjectOption): ?>
@@ -421,6 +413,30 @@ document.getElementById('lb-prev-btn').onclick = () => { if (currentImgIndex > 0
 document.getElementById('lb-next-btn').onclick = () => { if (currentImgIndex < allImageUrls.length - 1) openLightbox(currentImgIndex + 1); };
 document.getElementById('lb-share').onclick = () => { if (allImageUrls[currentImgIndex]) shareContent(allImageUrls[currentImgIndex]); };
 window.openLightbox = openLightbox;
+</script>
+<script>
+const flexiSubjectOptions = <?= json_encode($subjectOptions, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+document.getElementById("subject-purchase-form")?.addEventListener("submit", function(event) {
+    event.preventDefault();
+    const email = document.getElementById("user-email").value.trim();
+    const subject = document.getElementById("buy-subject").value;
+    const button = document.getElementById("pay-btn");
+    if (!email || !subject || !flexiSubjectOptions.includes(subject)) return;
+    if (typeof window.PaystackPop !== "function") { alert("Payment service is unavailable. Please refresh and try again."); return; }
+    button.disabled = true;
+    try {
+        const popup = new PaystackPop();
+        popup.newTransaction({
+            key: "pk_live_bb0c7b83bfdbd0c9990e2c7f7fd73a86d4821a00",
+            email: email,
+            amount: 100000,
+            currency: "NGN",
+            metadata: { flexi_flow: "subject", flexi_item: subject, flexi_amount_kobo: 100000 },
+            onSuccess: (transaction) => { window.location.href = "/prep.php?reference=" + encodeURIComponent(transaction.reference); },
+            onCancel: () => { button.disabled = false; }
+        });
+    } catch (error) { button.disabled = false; alert("Unable to open Paystack checkout. Please try again."); }
+});
 </script>
 </body>
 </html>
