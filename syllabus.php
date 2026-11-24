@@ -1,3 +1,45 @@
+<?php
+function flexiEsc($value){return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');}
+function flexiItems($items){if(!is_array($items))return ''; $html='<ul class="styled-list">';foreach($items as $item){if(is_scalar($item))$html.='<li>'.flexiEsc($item).'</li>';}$html.='</ul>';return $html;}
+function flexiValueText($value){if(is_array($value)){return flexiEsc(implode(', ',array_map('strval',$value)));}return flexiEsc($value);}
+function flexiRenderSyllabus($full,$exam,$meta){
+ $data=isset($full['syllabus'])&&is_array($full['syllabus'])?$full['syllabus']:$full;
+ $html='<div class="subject-title-card"><span class="badge-exam">'.($exam==='jamb'?'JAMB / UTME':'WAEC / WASSCE').'</span><h2>'.flexiEsc($data['subject']??$data['document_title']??$meta['name']??'Subject').' Syllabus</h2>';
+ if(!empty($meta['desc']))$html.='<p class="subject-desc">'.flexiEsc($meta['desc']).'</p>';
+ if(!empty($data['preamble']))$html.='<p style="margin-top:.4rem"><strong>Preamble:</strong> '.flexiEsc($data['preamble']).'</p>';
+ $html.='</div>';
+ $objectives=$data['general_objectives']??$data['objectives']??$data['aims']??[];
+ if(is_array($objectives)&&$objectives)$html.='<div class="section-card"><h3 class="section-title">'.($exam==='waec'?'Course Objectives & Aims':'General Objectives').'</h3>'.flexiItems($objectives).'</div>';
+ if(!empty($data['assessment_objectives'])&&is_array($data['assessment_objectives'])){$html.='<div class="section-card"><h3 class="section-title">Assessment Objectives</h3>';foreach($data['assessment_objectives'] as $key=>$items){$html.='<h4 class="text-capitalize">'.flexiEsc(str_replace('_',' ',$key)).'</h4>'.flexiItems($items);}$html.='</div>';}
+ $scheme=$data['examination_scheme']??$data['structure_of_the_examination']??null;
+ if($scheme){$html.='<div class="section-card"><h3 class="section-title">Examination Scheme</h3>';if(is_string($scheme))$html.='<p>'.flexiEsc($scheme).'</p>';elseif(is_array($scheme)){if(!empty($scheme['summary']))$html.='<p>'.flexiEsc($scheme['summary']).'</p>';if(!empty($scheme['papers'])&&is_array($scheme['papers'])){$html.='<div style="overflow-x:auto"><table><thead><tr><th>Paper</th><th>Title</th><th>Duration</th><th>Marks</th><th>Details</th></tr></thead><tbody>';foreach($scheme['papers'] as $paper)$html.='<tr><td><strong>'.flexiEsc($paper['paper']??'').'</strong></td><td>'.flexiEsc($paper['title']??'').'</td><td>'.flexiEsc($paper['duration']??'').'</td><td>'.flexiEsc($paper['marks']??'').'</td><td>'.flexiEsc($paper['details']??'').'</td></tr>';$html.='</tbody></table></div>';}else{foreach($scheme as $key=>$value){if($key==='summary')continue;$html.='<h4>'.flexiEsc(strtoupper(str_replace('_',' ',$key))).'</h4>';if(is_scalar($value))$html.='<p>'.flexiEsc($value).'</p>';elseif(is_array($value)){foreach($value as $k=>$v){if(is_scalar($v))$html.='<p><strong>'.flexiEsc(ucfirst((string)$k)).':</strong> '.flexiEsc($v).'</p>';}}}}}$html.='</div>';}
+ $structure=$data['structure']??$data['topics']??$data['sections']??$data['syllabus_content']??null;
+ $detailed=$data['detailed_syllabus']??null;
+ if($structure&&is_array($structure)){$html.='<div class="section-card"><h3 class="section-title">'.($exam==='jamb'?'Syllabus Structure & Topics':'Syllabus Topics').'</h3>';foreach($structure as $section){if(!is_array($section))continue;$title=$section['section']??$section['topic']??$section['title']??'Section';$notes=$section['contents_notes']??$section['notes']??$section['content']??$section['details']??null;$html.='<div style="margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)"><h4 style="color:var(--flexi-blue);margin-bottom:.4rem">'.flexiEsc($title).'</h4>';if($notes)$html.='<p style="margin:.4rem 0;color:#334155;font-size:.95rem"><strong>Contents & Notes:</strong> '.flexiValueText($notes).'</p>';$sub=$section['objectives']??$section['learning_objectives']??[];if($sub)$html.='<div style="margin-top:.6rem"><strong>Learning Objectives:</strong>'.flexiItems($sub).'</div>';$html.='</div>';}$html.='</div>';}
+ if($detailed&&is_array($detailed)){$html.='<div class="section-card"><h3 class="section-title">Detailed Syllabus Content</h3>';foreach($detailed as $section){if(!is_array($section))continue;$title=$section['section_name']??$section['section_title']??$section['title']??$section['topic']??'Section';$html.='<h4 style="color:var(--flexi-blue);margin-top:1rem">'.flexiEsc($title).'</h4>';if(!empty($section['contents']))$html.=flexiItems($section['contents']);if(!empty($section['topics'])&&is_array($section['topics']))foreach($section['topics'] as $topic){if(!is_array($topic))continue;$html.='<details class="topic-block" open><summary class="topic-header">'.flexiEsc($topic['title']??$topic['topics']??'Topic').'</summary><div class="topic-body">'.(!empty($topic['notes'])?'<p>'.flexiEsc($topic['notes']).'</p>':'').(!empty($topic['details'])?flexiItems($topic['details']):'').'</div></details>';}}$html.='</div>';}
+ $texts=$data['selected_texts']??$data['prescribed_texts']??$data['literature_texts']??null;
+ if(is_array($texts)){$html.='<div class="section-card"><h3 class="section-title">Prescribed / Selected Texts</h3>';foreach($texts as $genre=>$groups){$html.='<h4 class="text-capitalize">'.flexiEsc(str_replace('_',' ',$genre)).'</h4>';if(is_array($groups)){if(array_is_list($groups))$html.=flexiItems($groups);else foreach($groups as $cat=>$books){$html.='<strong>'.flexiEsc(str_replace('_',' ',$cat)).':</strong>'.flexiItems($books);}}}$html.='</div>';}
+ $reading=$data['recommended_texts']??$data['reading_list']??$data['recommended_books']??null;
+ if(is_array($reading)){$html.='<div class="section-card"><h3 class="section-title">Recommended Reading List</h3><ol class="styled-list">';foreach($reading as $book){if(is_scalar($book))$html.='<li>'.flexiEsc($book).'</li>';elseif(is_array($book))foreach($book as $entry)if(is_scalar($entry))$html.='<li>'.flexiEsc($entry).'</li>';}$html.='</ol></div>';}
+ return $html;
+}
+$registryFile=__DIR__.'/data/syllabus-subject-registry.json';
+$subjectRegistry=is_file($registryFile)?json_decode(file_get_contents($registryFile),true):[];
+if(!is_array($subjectRegistry))$subjectRegistry=[];
+$examType=isset($_GET['exam'])&&in_array(strtolower($_GET['exam']),['jamb','waec'],true)?strtolower($_GET['exam']):'jamb';
+$subjectList=$subjectRegistry[$examType]??[];
+$subjectId=isset($_GET['subject'])?(string)$_GET['subject']:'';
+$selectedMeta=null;foreach($subjectList as $entry){if(($entry['id']??'')===$subjectId){$selectedMeta=$entry;break;}}
+if(!$selectedMeta&&$subjectList){$selectedMeta=$subjectList[0];$subjectId=$selectedMeta['id'];}
+$serverSyllabusHtml='<div class="section-card"><p>No syllabus data is currently available for this subject.</p></div>';
+if($selectedMeta&&isset($selectedMeta['path'])){
+ $relativePath=$selectedMeta['path'];
+ if(strpos($relativePath,'data/')===0&&strpos($relativePath,'..')===false){
+  $filePath=__DIR__.'/'.$relativePath;
+  if(is_file($filePath)){$decoded=json_decode(file_get_contents($filePath),true);if(is_array($decoded))$serverSyllabusHtml=flexiRenderSyllabus($decoded,$examType,$selectedMeta);}
+ }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,33 +70,7 @@
       padding: 0;
     }
 
-    /* Brand Header - Reduced to ~0.8cm height */
-    .brand-header {
-      background: linear-gradient(135deg, var(--flexi-blue) 0%, var(--flexi-blue-light) 100%);
-      color: white;
-      padding: 0.8cm 1.5rem; /* Exactly 0.8cm high padding */
-      text-align: center;
-      border-bottom: 3px solid var(--flexi-green);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .brand-header h1 {
-      margin: 0;
-      font-size: 1.4rem;
-      letter-spacing: -0.3px;
-      line-height: 1.2;
-    }
-
-    .brand-header p {
-      margin: 0.2rem 0 0;
-      opacity: 0.9;
-      font-size: 0.85rem;
-      line-height: 1;
-    }
+    
 
     .container {
       max-width: 950px;
@@ -374,41 +390,465 @@ code {
         gap: 28px;
     }
     }
+/* Homepage header and navigation */
+    header {
+        background: var(--blue);
+        color: white;
+
+        height: 52px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 20px;
+
+        border-bottom: 3px solid var(--green);
+
+        position: sticky;
+        top: 0;
+
+        z-index: 1000;
+    }
+
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+
+    .logo-img {
+        height: 34px;
+        width: 34px;
+
+        object-fit: contain;
+
+        border-radius: 4px;
+    }
+
+
+    .brand-name {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+    }
+
+
+    /* ========================================================
+       MENU
+       ======================================================== */
+
+    .menu-container {
+        position: relative;
+    }
+
+
+    .menu-btn {
+        width: 38px;
+        height: 38px;
+
+        cursor: pointer;
+
+        background: rgba(255,255,255,.06);
+
+        border: 1px solid rgba(255,255,255,.32);
+
+        border-radius: 8px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: white;
+
+        transition: background .2s ease, transform .2s ease;
+    }
+
+
+    .menu-btn:hover {
+        background: rgba(255,255,255,.14);
+        transform: translateY(-1px);
+    }
+
+
+    .menu-svg {
+        width: 21px;
+        height: 21px;
+        display: block;
+    }
+
+
+    .square-menu {
+        display: none;
+
+        position: absolute;
+
+        top: 48px;
+        right: 0;
+
+        width: 300px;
+
+        background: linear-gradient(145deg, #003366 0%, #075a55 52%, #2E8B57 100%);
+
+        border: 2px solid var(--green);
+
+        border-radius: 10px;
+
+        z-index: 2000;
+
+        box-shadow:
+            0 12px 32px rgba(0,0,0,.35);
+
+        overflow: hidden;
+    }
+
+
+    .square-menu.menu-open {
+        display: block;
+        animation: menuDrop .18s ease-out;
+        transform-origin: top right;
+    }
+
+
+    @keyframes menuDrop {
+        from {
+            opacity: 0;
+            transform: translateY(-6px) scale(.98);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+
+    .square-menu a {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 13px 15px;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+        border-bottom:
+            1px solid rgba(255,255,255,.1);
+
+        transition: background 0.15s, padding-left 0.15s;
+    }
+
+
+    .square-menu a:hover {
+        background: rgba(255,255,255,0.12);
+        padding-left: 19px;
+    }
+
+
+    .square-menu a:last-child {
+        border-bottom: none;
+    }
+
+
+    .menu-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,.96);
+    }
+
+
+    .menu-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+
+    .menu-label {
+        min-width: 0;
+        line-height: 1.35;
+    }
+
+
+    .study-menu-toggle {
+        width: 100%;
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 15px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        border: 0;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        background: transparent;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: left;
+        transition: background .15s ease, padding-left .15s ease;
+    }
+
+    .study-menu-toggle:hover {
+        background: rgba(255,255,255,0.12);
+        padding-left: 19px;
+    }
+
+    .study-menu-toggle .menu-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,.96);
+    }
+
+    .study-menu-toggle .menu-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+    .study-chevron {
+        margin-left: auto;
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+        transition: transform .2s ease;
+    }
+
+    .study-menu-toggle[aria-expanded="true"] .study-chevron {
+        transform: rotate(180deg);
+    }
+
+    .study-submenu {
+        display: none;
+        margin: 0 8px 5px 34px;
+        padding: 4px;
+        border-left: 1px solid rgba(255,255,255,.20);
+        background: rgba(0,0,0,.10);
+        border-radius: 0 8px 8px 0;
+    }
+
+    .study-submenu.open {
+        display: block;
+    }
+
+    .study-submenu a {
+        min-height: 40px;
+        padding: 9px 10px;
+        font-size: 13px;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .study-submenu a:last-child {
+        border-bottom: none;
+    }
+
+    .study-submenu .menu-icon {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+    }
+
+    .study-submenu .menu-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+
+
+        
 </style>
 </head>
 <body>
 
   <!-- Flexi Brand Header (~0.8cm Height) -->
-  <header class="brand-header">
-    <h1>Flexi Educational Consult</h1>
-    <p>Official Examination Syllabus Portal</p>
-  </header>
+  <header>
 
-  <div class="container">
-    <!-- Portal Controls -->
-    <div class="portal-controls">
-      <div class="btn-group">
-        <button id="btn-jamb" class="btn-toggle active" onclick="switchPortal('jamb')">
-          Check JAMB Syllabus
-        </button>
-        <button id="btn-waec" class="btn-toggle" onclick="switchPortal('waec')">
-          Check WAEC Syllabus
-        </button>
-      </div>
+    <div class="header-left">
 
-      <div class="subject-select-wrap">
-        <label for="subjectSelect"><strong>Select Subject:</strong></label>
-        <select id="subjectSelect" onchange="onSubjectChanged(this.value)">
-          <!-- Options populated dynamically -->
-        </select>
-      </div>
+        <img
+            src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg"
+            alt="Flexi Educational Consult Official Logo"
+            class="logo-img">
+
+        <span class="brand-name">
+            Flexi Educational Consult
+        </span>
+
     </div>
 
-    <!-- Main Syllabus View -->
-    <div id="syllabus-app"></div>
-  </div>
 
-  <footer class="footer">
+    <div class="menu-container">
+
+        <button
+            class="menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Toggle Navigation Menu">
+
+            <svg class="menu-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+
+        </button>
+
+
+        <div
+            class="square-menu"
+            id="squareMenu">
+
+            <a href="/index.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+                <span class="menu-label">Home</span>
+            </a>
+
+            <a href="/videos.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 7l5 3-5 3V7z" fill="currentColor"/></svg></span>
+                <span class="menu-label">Watch Video Lessons</span>
+            </a>
+
+            <button
+                type="button"
+                class="study-menu-toggle"
+                id="study-menu-toggle"
+                onclick="toggleStudyMenu(event)"
+                aria-expanded="false"
+                aria-controls="study-submenu">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M4 5.5V19M8 7h8M8 11h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span class="menu-label">Study</span>
+                <svg class="study-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <div class="study-submenu" id="study-submenu">
+                <a href="/study.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M4 5.5V19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Past Questions</span>
+                </a>
+                <a href="/novel.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v18H7.5A2.5 2.5 0 0 0 5 22V4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M5 4.5V19M9 7h6M9 11h7M9 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Novels</span>
+                </a>
+                <a href="/scholarship.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 8.5 12 4l9 4.5-9 4.5-9-4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M6 11.5V16c2.8 2.2 9.2 2.2 12 0v-4.5M21 9v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Scholarships</span>
+                </a>
+            </div>
+
+            <a href="/download-app.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.5 10.5L12 15l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 20h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Download Flexi</span>
+            </a>
+
+            <a href="/syllabus.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22V4.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 7h8M8 11h8M8 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Access the JAMB and WAEC syllabus here</span>
+            </a>
+
+            <a href="/brochure.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 12h8M8 16h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Access JAMB Brochure</span>
+            </a>
+
+            <a href="/cbt.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">CBT Simulator</span>
+            </a>
+
+            <a href="/groups.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M15 14.5a4.5 4.5 0 0 1 5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Classroom (Groups and chats)</span>
+            </a>
+
+            <a href="/purchase.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Purchase Scratch Cards</span>
+            </a>
+
+            <a href="/pdf.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 14h8M8 17h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Get your PDFs from here</span>
+            </a>
+
+            <a href="/location.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12A7 7 0 0 0 5 9c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+                <span class="menu-label">Tutorial Centers Near You</span>
+            </a>
+
+            <a href="/profile.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">User Profile</span>
+            </a>
+
+            <a
+                href="#"
+                id="auth-menu-btn">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 12h10M10 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="menu-label">Login</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+  <div class="container">
+  <form method="get" action="syllabus.php" class="portal-controls">
+    <div class="btn-group">
+      <button id="btn-jamb" class="btn-toggle <?= $examType==='jamb'?'active':'' ?>" type="submit" name="exam" value="jamb">Check JAMB Syllabus</button>
+      <button id="btn-waec" class="btn-toggle <?= $examType==='waec'?'active':'' ?>" type="submit" name="exam" value="waec">Check WAEC Syllabus</button>
+    </div>
+    <div class="subject-select-wrap">
+      <label for="subjectSelect"><strong>Select Subject:</strong></label>
+      <input type="hidden" name="exam" value="<?= flexiEsc($examType) ?>">
+      <select id="subjectSelect" name="subject" onchange="this.form.submit()">
+        <?php foreach($subjectList as $item): ?><option value="<?= flexiEsc($item['id']) ?>" <?= $item['id']===$subjectId?'selected':'' ?>><?= flexiEsc($item['name']) ?></option><?php endforeach; ?>
+      </select>
+    </div>
+  </form>
+  <div id="syllabus-app"><?= $serverSyllabusHtml ?></div>
+</div>
+
+<footer class="footer">
     <div class="footer-grid">
         <!-- Column 1: About -->
         <div class="footer-col">
@@ -471,442 +911,13 @@ code {
     </div>
 
     <div class="footer-bottom">
-        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
+        &copy; <?= date("Y") ?> Flexi Educational Consult. All Rights Reserved.
     </div>
   </footer>
-  <script>
-  let currentExam = 'jamb';
-  let activeSubjectMeta = null;
-
-  // Registry for JAMB and WAEC Subjects
-  const subjectRegistry = {
-    jamb: [
-      { id: "accounts", name: "Principles of Accounts", desc: "Bookkeeping, financial statements, and auditing basics.", path: "data/account.json" },
-      { id: "arabic", name: "Arabic", desc: "Language studies and literary texts.", path: "data/arabic.json" },
-      { id: "biology", name: "Biology", desc: "Diversity of organisms, Ecology, Genetics, and Physiology.", path: "data/biology.json" },
-      { id: "chemistry", name: "Chemistry", desc: "Physical, Inorganic, and Organic Chemistry.", path: "data/chemistry.json" },
-      { id: "commerce", name: "Commerce", desc: "Trade, business organizations, and financial systems.", path: "data/commerce.json" },
-      { id: "computer", name: "Computer Studies", desc: "Computing systems, software development, and information networks.", path: "data/computer.json" },
-      { id: "crk", name: "CRK", desc: "Christian Religious Knowledge: Study of the Bible and Christian ethics.", path: "data/crk.json" },
-      { id: "economics", name: "Economics", desc: "Basic principles, consumer behavior, and national income.", path: "data/economics.json" },
-      { id: "english", name: "Use of English", desc: "Compulsory for all candidates. Covers comprehension and structure.", path: "data/english.json" },
-      { id: "art", name: "Art", desc: "History and theory of art, and design principles.", path: "data/art.json" },
-      { id: "french", name: "French", desc: "Language structure, comprehension, and expression.", path: "data/french.json" },
-      { id: "geography", name: "Geography", desc: "Physical geography, map reading, and economic geography.", path: "data/geography.json" },
-      { id: "government", name: "Government", desc: "Political concepts, systems, and Nigerian government history.", path: "data/government.json" },
-      { id: "hausa", name: "Hausa", desc: "Language study, literature, and culture.", path: "data/hausa.json" },
-      { id: "history", name: "History", desc: "World history and key events in Nigerian history.", path: "data/history.json" },
-      { id: "igbo", name: "Igbo", desc: "Language study, literature, and culture.", path: "data/igbo.json" },
-      { id: "home-economics", name: "Home Economics", desc: "Family ecology, nutrition, food science, and consumer resource management.", path: "data/home-economics.json" },
-      { id: "irk", name: "IRS", desc: "Islamic Religious Studies: Study of the Quran, Hadith, and jurisprudence.", path: "data/irk.json" },
-      { id: "lit", name: "Literature in English", desc: "Analysis of African and non-African prose, drama, and poetry.", path: "data/lit.json" },
-      { id: "math", name: "Mathematics", desc: "Algebra, Calculus, Geometry, Trigonometry, and Statistics.", path: "data/math.json" },
-      { id: "music", name: "Music", desc: "Theory, history, and practice of music.", path: "data/music.json" },
-      { id: "phe", name: "Physical and Health Education", desc: "Kinesiology, sports science, human anatomy, wellness, and community health systems.", path: "data/phe.json" },
-      { id: "physics", name: "Physics", desc: "Mechanics, Heat, Optics, Waves, and Electromagnetism.", path: "data/physics.json" },
-      { id: "yoruba", name: "Yoruba", desc: "Language study, literature, and culture.", path: "data/yoruba.json" }
-    ],
-    waec: [
-      { id: "agric", name: "Agricultural Science", path: "data/waec/agric.json" },
-      { id: "animal_husbandry", name: "Animal Husbandry", path: "data/waec/animal_husbandry.json" },
-      { id: "arabic", name: "Arabic", path: "data/waec/arabic.json" },
-      { id: "biology", name: "Biology", path: "data/waec/biology.json" },
-      { id: "book_keeping", name: "Book Keeping", path: "data/waec/book_keeping.json" },
-      { id: "building", name: "Building Construction", path: "data/waec/building.json" },
-      { id: "business", name: "Business Management", path: "data/waec/business.json" },
-      { id: "catering", name: "Catering Craft Practice", path: "data/waec/catering.json" },
-      { id: "chemistry", name: "Chemistry", path: "data/waec/chemistry.json" },
-      { id: "civic", name: "Civic Education", path: "data/waec/civic.json" },
-      { id: "clerical", name: "Clerical Office Duties", path: "data/waec/clerical.json" },
-      { id: "commerce", name: "Commerce", path: "data/waec/commerce.json" },
-      { id: "computer", name: "Computer Studies", path: "data/waec/computer.json" },
-      { id: "crk", name: "Christian Religious Studies (CRS)", path: "data/waec/crk.json" },
-      { id: "data_processing", name: "Data Processing", path: "data/waec/data_processing.json" },
-      { id: "economics", name: "Economics", path: "data/waec/economics.json" },
-      { id: "edo", name: "Edo", path: "data/waec/edo.json" },
-      { id: "english", name: "English Language", path: "data/waec/english.json" },
-      { id: "financial_accounting", name: "Financial Accounting", path: "data/waec/financial_accounting.json" },
-      { id: "fishery", name: "Fisheries", path: "data/waec/fishery.json" },
-      { id: "food_and_nut", name: "Foods and Nutrition", path: "data/waec/food_and_nut.json" },
-      { id: "forestry", name: "Forestry", path: "data/waec/forestry.json" },
-      { id: "french", name: "French", path: "data/waec/french.json" },
-      { id: "further_maths", name: "Further Mathematics", path: "data/waec/further_maths.json" },
-      { id: "geography", name: "Geography", path: "data/waec/geography.json" },
-      { id: "government", name: "Government", path: "data/waec/government.json" },
-      { id: "hausa", name: "Hausa", path: "data/waec/hausa.json" },
-      { id: "health_education", name: "Health Education", path: "data/waec/health_education.json" },
-      { id: "history", name: "History", path: "data/waec/history.json" },
-      { id: "home_management", name: "Home Management", path: "data/waec/home_management.json" },
-      { id: "ict", name: "ICT", path: "data/waec/ict.json" },
-      { id: "igbo", name: "Igbo", path: "data/waec/igbo.json" },
-      { id: "insurance", name: "Insurance", path: "data/waec/insurance.json" },
-      { id: "islam", name: "Islamic Studies (IRS)", path: "data/waec/islam.json" },
-      { id: "literature", name: "Literature in English", path: "data/waec/literature.json" },
-      { id: "marketing", name: "Marketing", path: "data/waec/marketing.json" },
-      { id: "maths", name: "Mathematics", path: "data/waec/maths.json" },
-      { id: "music", name: "Music", path: "data/waec/music.json" },
-      { id: "office_practice", name: "Office Practice", path: "data/waec/office_practice.json" },
-      { id: "physical_education", name: "Physical Education", path: "data/waec/physical_education.json" },
-      { id: "physics", name: "Physics", path: "data/waec/physics.json" },
-      { id: "technical_drawing", name: "Technical Drawing", path: "data/waec/technical_drawing.json" },
-      { id: "visual_art", name: "Visual Arts", path: "data/waec/visual_art.json" },
-      { id: "yoruba", name: "Yoruba", path: "data/waec/yoruba.json" }
-    ]
-  };
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlSubject = urlParams.get('subject');
-  const urlExam = (urlParams.get('exam') || 'jamb').toLowerCase();
-
-  function switchPortal(examType) {
-    currentExam = examType;
-    document.getElementById('btn-jamb').classList.toggle('active', examType === 'jamb');
-    document.getElementById('btn-waec').classList.toggle('active', examType === 'waec');
-
-    const select = document.getElementById('subjectSelect');
-    select.innerHTML = '';
-
-    const fileList = subjectRegistry[examType] || [];
-    fileList.forEach(item => {
-      const option = document.createElement('option');
-      option.value = item.path;
-      option.textContent = item.name;
-      select.appendChild(option);
-    });
-
-    if (fileList.length > 0) {
-      const match = fileList.find(f => f.id === urlSubject);
-      const targetItem = match || fileList[0];
-      select.value = targetItem.path;
-      activeSubjectMeta = targetItem;
-      loadSyllabus(targetItem.path);
-    } else {
-      document.getElementById('syllabus-app').innerHTML = `<p>No ${examType.toUpperCase()} syllabus files configured.</p>`;
-    }
-  }
-
-  function onSubjectChanged(filePath) {
-    const fileList = subjectRegistry[currentExam] || [];
-    activeSubjectMeta = fileList.find(f => f.path === filePath) || null;
-    loadSyllabus(filePath);
-  }
-
-  async function loadSyllabus(filePath) {
-    const app = document.getElementById('syllabus-app');
-    app.innerHTML = '<p>Loading syllabus data...</p>';
-
-    try {
-      const response = await fetch(filePath);
-      if (!response.ok) throw new Error("File not found");
-      
-      const rawData = await response.json();
-
-      if (currentExam === 'jamb') {
-        renderJAMBSyllabus(rawData);
-      } else {
-        renderWAECSyllabus(rawData);
-      }
-    } catch (err) {
-      console.error("Renderer Error:", err);
-      app.innerHTML = `
-        <div class="section-card" style="border-left: 4px solid #dc2626;">
-          <p style="color:#dc2626; font-weight:bold; margin:0;">Error: Could not load syllabus file (<code>${filePath}</code>).</p>
-          <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: #475569;">If opening locally, ensure you are running through a local web server (e.g., Live Server) rather than opening the file directly from disk.</p>
-        </div>
-      `;
-    }
-  }
-
-  // ============================================================
-  // 1. ADAPTIVE JAMB RENDERER
-  // ============================================================
-  function renderJAMBSyllabus(fullData) {
-    const data = fullData.syllabus ? fullData.syllabus : fullData;
-    const app = document.getElementById('syllabus-app');
-
-    let descHTML = activeSubjectMeta && activeSubjectMeta.desc 
-      ? `<p class="subject-desc">${activeSubjectMeta.desc}</p>` 
-      : '';
-
-    let html = `
-      <div class="subject-title-card">
-        <span class="badge-exam">JAMB / UTME</span>
-        <h2>${data.subject || (activeSubjectMeta ? activeSubjectMeta.name : 'Subject')} Syllabus</h2>
-        ${descHTML}
-      </div>
-    `;
-
-    // 1. Objectives (Handles general_objectives, objectives, or aims)
-    const objectives = data.general_objectives || data.objectives || data.aims;
-    if (Array.isArray(objectives) && objectives.length) {
-      html += `
-        <div class="section-card">
-          <h3 class="section-title">General Objectives</h3>
-          <ul class="styled-list">
-            ${objectives.map(o => `<li>${o}</li>`).join('')}
-          </ul>
-        </div>
-      `;
-    }
-
-    // 2. Syllabus Content / Topics (Handles structure, topics, contents, or sections)
-    const structureData = data.structure || data.topics || data.sections || data.syllabus_content;
-    if (Array.isArray(structureData) && structureData.length) {
-      html += `<div class="section-card"><h3 class="section-title">Syllabus Structure & Topics</h3>`;
-      structureData.forEach(s => {
-        const title = s.section || s.topic || s.title || "Section";
-        const notes = s.contents_notes || s.notes || s.content || s.details;
-        const subObjs = s.objectives || s.learning_objectives;
-
-        html += `
-          <div style="margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border);">
-            <h4 style="color:var(--flexi-blue); margin-bottom:0.4rem; font-size:1.05rem;">${title}</h4>
-            ${notes ? `<p style="margin:0.4rem 0; color:#334155; font-size:0.95rem;"><strong>Contents & Notes:</strong> ${Array.isArray(notes) ? notes.join(', ') : notes}</p>` : ''}
-            ${Array.isArray(subObjs) && subObjs.length ? `
-              <div style="margin-top:0.6rem;">
-                <strong style="font-size:0.85rem; color:#475569;">Learning Objectives:</strong>
-                <ul class="styled-list">
-                  ${subObjs.map(o => `<li>${o}</li>`).join('')}
-                </ul>
-              </div>
-            ` : ''}
-          </div>
-        `;
-      });
-      html += `</div>`;
-    }
-
-    // 3. Selected / Prescribed Texts (Language & Literature subjects like Arabic)
-    const selectedTexts = data.selected_texts || data.prescribed_texts || data.literature_texts;
-    if (selectedTexts && typeof selectedTexts === 'object') {
-      html += `<div class="section-card"><h3 class="section-title">Prescribed / Selected Texts</h3>`;
-      Object.keys(selectedTexts).forEach(genre => {
-        html += `<h4 class="text-capitalize" style="color:var(--flexi-blue); margin-bottom:0.25rem;">${genre.replace(/_/g, ' ')}</h4>`;
-        const categories = selectedTexts[genre];
-        if (Array.isArray(categories)) {
-          html += `<ul class="styled-list">${categories.map(b => `<li>${b}</li>`).join('')}</ul>`;
-        } else if (typeof categories === 'object' && categories !== null) {
-          Object.keys(categories).forEach(cat => {
-            const books = categories[cat];
-            if (Array.isArray(books) && books.length) {
-              html += `
-                <strong class="text-capitalize" style="font-size:0.85rem; color:#64748B;">${cat.replace(/_/g, ' ')}:</strong>
-                <ul class="styled-list">
-                  ${books.map(b => `<li>${b}</li>`).join('')}
-                </ul>
-              `;
-            }
-          });
-        }
-      });
-      html += `</div>`;
-    }
-
-    // 4. Recommended Reading List
-    const readingList = data.recommended_texts || data.reading_list || data.recommended_books;
-    if (readingList) {
-      html += `
-        <div class="section-card">
-          <h3 class="section-title">Recommended Reading List</h3>
-          <ol class="styled-list">
-      `;
-
-      if (Array.isArray(readingList)) {
-        html += readingList.map(text => `<li>${text}</li>`).join('');
-      } else if (typeof readingList === 'object') {
-        Object.values(readingList).forEach(val => {
-          if (Array.isArray(val)) {
-            val.forEach(v => { html += `<li>${v}</li>`; });
-          } else if (typeof val === 'object' && val !== null) {
-            Object.values(val).forEach(v => { html += `<li>${v}</li>`; });
-          } else {
-            html += `<li>${val}</li>`;
-          }
-        });
-      }
-
-      html += `</ol></div>`;
-    }
-
-    app.innerHTML = html;
-  }
-
-  // ============================================================
-  // 2. ADAPTIVE WAEC RENDERER
-  // ============================================================
-  function renderWAECSyllabus(fullData) {
-  // Ensure data resolves properly even if there's no wrapper
-  const data = (fullData && fullData.syllabus) ? fullData.syllabus : fullData;
-    const app = document.getElementById('syllabus-app');
-
-    let html = `
-      <div class="subject-title-card">
-        <span class="badge-exam">WAEC / WASSCE</span>
-        <h2>${data.subject || (data.document_title || (activeSubjectMeta ? activeSubjectMeta.name : 'Subject Syllabus'))}</h2>
-        ${data.preamble ? `<p style="margin-top:0.4rem;"><strong>Preamble:</strong> ${data.preamble}</p>` : ''}
-      </div>
-    `;
-
-    // Objectives or Aims
-    const objectives = data.objectives || data.aims;
-    if (Array.isArray(objectives) && objectives.length) {
-      html += `
-        <div class="section-card">
-          <h3 class="section-title">Course Objectives & Aims</h3>
-          <ul class="styled-list">
-            ${objectives.map(obj => `<li>${obj}</li>`).join('')}
-          </ul>
-        </div>
-      `;
-    }
-
-    // Assessment Objectives
-    if (data.assessment_objectives && typeof data.assessment_objectives === 'object') {
-      html += `<div class="section-card"><h3 class="section-title">Assessment Objectives</h3>`;
-      Object.keys(data.assessment_objectives).forEach(key => {
-        const formattedTitle = key.replace(/_/g, ' ');
-        const items = data.assessment_objectives[key];
-        html += `<h4 class="text-capitalize" style="color:var(--flexi-blue); margin-bottom:0.25rem;">${formattedTitle}</h4>`;
-        if (Array.isArray(items)) {
-          html += `<ul class="styled-list">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
-        }
-      });
-      html += `</div>`;
-    }
-
-    // Adaptive Examination Scheme
-    if (data.examination_scheme || data.structure_of_the_examination) {
-      const scheme = data.examination_scheme || data.structure_of_the_examination;
-      html += `<div class="section-card"><h3 class="section-title">Examination Scheme</h3>`;
-
-      if (typeof scheme === 'string') {
-        html += `<p>${scheme}</p>`;
-      } else if (typeof scheme === 'object') {
-        if (scheme.summary) html += `<p>${scheme.summary}</p>`;
-        
-        if (Array.isArray(scheme.papers) && scheme.papers.length) {
-          html += `
-            <div style="overflow-x:auto;">
-              <table>
-                <thead>
-                  <tr><th>Paper</th><th>Title</th><th>Duration</th><th>Marks</th><th>Details</th></tr>
-                </thead>
-                <tbody>
-                  ${scheme.papers.map(p => `
-                    <tr>
-                      <td><strong>${p.paper || ''}</strong></td>
-                      <td>${p.title || ''}</td>
-                      <td>${p.duration || ''}</td>
-                      <td>${p.marks || ''}</td>
-                      <td>${p.details || ''}</td>
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-            </div>
-          `;
-        } else {
-          Object.keys(scheme).forEach(key => {
-            if (key === 'summary') return;
-            const paper = scheme[key];
-            const paperTitle = key.replace(/_/g, ' ').toUpperCase();
-
-            if (typeof paper === 'string') {
-              html += `<div style="margin-bottom:1rem;"><strong>${paperTitle}:</strong> ${paper}</div>`;
-            } else if (typeof paper === 'object') {
-              html += `
-                <div class="topic-block" style="padding: 0.85rem; margin-bottom: 0.85rem;">
-                  <h4 style="margin: 0 0 0.5rem 0; color: var(--flexi-blue);">${paperTitle}</h4>
-                  ${paper.duration ? `<p style="margin: 0.2rem 0;"><strong>Duration:</strong> ${paper.duration}</p>` : ''}
-                  ${paper.marks ? `<p style="margin: 0.2rem 0;"><strong>Marks:</strong> ${paper.marks}</p>` : ''}
-                  ${paper.description ? `<p style="margin: 0.2rem 0;"><strong>Description:</strong> ${paper.description}</p>` : ''}
-                  ${paper.sections && Array.isArray(paper.sections) ? `
-                    <ul class="styled-list">
-                      ${paper.sections.map(sec => `<li>${sec}</li>`).join('')}
-                    </ul>
-                  ` : ''}
-                </div>
-              `;
-            }
-          });
-        }
-      }
-      html += `</div>`;
-    }
-
-    // Adaptive Detailed Syllabus Content
-    const detailed = data.detailed_syllabus || data.syllabus_content || data.topics;
-    if (detailed) {
-      html += `<div class="section-card"><h3 class="section-title">Detailed Syllabus Content</h3>`;
-
-      if (Array.isArray(detailed)) {
-        detailed.forEach(sec => {
-          const secTitle = sec.section_name || sec.section_title || sec.title || sec.topic || 'Section';
-          html += `<h4 style="color:var(--flexi-blue); margin-top: 1rem;">${secTitle}</h4>`;
-
-          if (Array.isArray(sec.contents)) {
-            html += `<ul class="styled-list">${sec.contents.map(c => `<li>${c}</li>`).join('')}</ul>`;
-          }
-
-          if (Array.isArray(sec.topics)) {
-            sec.topics.forEach(top => {
-              html += `
-                <details class="topic-block" open>
-                  <summary class="topic-header">${top.title || top.topics || 'Topic'}</summary>
-                  <div class="topic-body">
-                    ${top.notes ? `<p>${top.notes}</p>` : ''}
-                    ${top.details && top.details.length ? `<ul class="styled-list">${top.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
-                  </div>
-                </details>
-              `;
-            });
-          }
-        });
-      } else if (typeof detailed === 'object') {
-        Object.keys(detailed).forEach(partKey => {
-          const partTitle = partKey.replace(/_/g, ' ').toUpperCase();
-          html += `<h4 style="color:var(--flexi-blue); margin-top: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem;">${partTitle}</h4>`;
-
-          const topicList = detailed[partKey];
-          if (Array.isArray(topicList)) {
-            topicList.forEach(item => {
-              html += `
-                <div class="topic-block" style="padding: 0.75rem;">
-                  <div style="font-weight: bold; color: var(--flexi-blue);">${item.topics || item.content || item.title || ''}</div>
-                  ${item.notes ? `<div style="font-size: 0.9rem; color: #475569; margin-top: 0.25rem;"><strong>Notes:</strong> ${item.notes}</div>` : ''}
-                </div>
-              `;
-            });
-          }
-        });
-      }
-
-      html += `</div>`;
-    }
-
-    // Reading List
-    const reading = data.reading_list || data.recommended_texts || data.prescribed_texts;
-    if (Array.isArray(reading) && reading.length) {
-      html += `
-        <div class="section-card">
-          <h3 class="section-title">Recommended Reading List</h3>
-          <ol class="styled-list">
-            ${reading.map(book => `<li>${book}</li>`).join('')}
-          </ol>
-        </div>
-      `;
-    }
-
-    app.innerHTML = html;
-  }
-
-  // Boot system
-  document.addEventListener('DOMContentLoaded', () => {
-    switchPortal(urlExam);
-  });
-
-  document.getElementById('current-year').textContent = new Date().getFullYear();
-    
+<script>
+function toggleMenu(){document.getElementById('squareMenu')?.classList.toggle('menu-open');}
+function toggleStudyMenu(event){if(event)event.preventDefault();const btn=document.getElementById('study-menu-toggle');const sub=document.getElementById('study-submenu');if(!btn||!sub)return;const open=btn.getAttribute('aria-expanded')!=='true';btn.setAttribute('aria-expanded',open?'true':'false');sub.classList.toggle('open',open);}
+document.addEventListener('click',function(event){const menu=document.getElementById('squareMenu');const wrap=document.querySelector('.menu-container');if(menu&&wrap&&!wrap.contains(event.target))menu.classList.remove('menu-open');});
 </script>
 </body>
 </html>
