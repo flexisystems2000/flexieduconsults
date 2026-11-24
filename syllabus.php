@@ -46,6 +46,8 @@ if($selectedMeta&&isset($selectedMeta['path'])){
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flexi Educational Consult - Syllabus Portal</title>
+  <meta name="description" content="Browse JAMB UTME and WAEC WASSCE subject syllabuses, examination objectives, topics, assessment structures and recommended reading resources for Nigerian students.">
+  <link rel="canonical" href="https://www.flexieduconsult.com.ng/syllabus.php">
   <style>
     :root {
       --blue: #003366;
