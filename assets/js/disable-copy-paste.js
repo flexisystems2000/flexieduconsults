@@ -13,9 +13,6 @@
   ['copy', 'cut', 'paste'].forEach(function (eventName) {
     document.addEventListener(eventName, blockClipboard, true);
   });
-
-  document.addEventListener('contextmenu', blockClipboard, true);
-
   document.addEventListener('keydown', function (event) {
     var key = String(event.key || '').toLowerCase();
     var modifier = event.ctrlKey || event.metaKey;
