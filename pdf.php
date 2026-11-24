@@ -397,6 +397,8 @@ try {
             gap: 25px;
         }
 
+        .resource-card[hidden], #noFilteredResources[hidden] { display: none !important; }
+
         /* Resource Card Styling */
         .resource-card {
             background: #ffffff;
