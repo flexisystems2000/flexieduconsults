@@ -4,8 +4,8 @@ declare(strict_types=1);
 /**
  * Server-only Firebase/Firestore and Paystack helpers.
  * Required server environment variables:
- * FIREBASE_SERVICE_ACCOUNT_JSON = complete Firebase service-account JSON
  * PAYSTACK_SECRET_KEY = Paystack secret key (never expose to browser)
+ * Firestore uses the existing browser-side Firebase Web API key and Security Rules.
  */
 final class FlexiFirestore
 {
