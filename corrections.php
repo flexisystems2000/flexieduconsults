@@ -418,7 +418,7 @@
                 <button class="btn-pill btn-prev" onclick="prevQuestion()">PREVIOUS</button>
                 <button class="btn-pill btn-next" onclick="nextQuestion()">NEXT</button>
             </div>
-            <button class="btn-pill btn-back" onclick="location.href='result.html'">BACK TO RESULTS</button>
+            <button class="btn-pill btn-back" onclick="location.href='results.php'">BACK TO RESULTS</button>
         </div>
 
         <div class="grid-container">
