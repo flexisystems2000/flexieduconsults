@@ -591,5 +591,6 @@ $currentPage = 'about';
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
 
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>

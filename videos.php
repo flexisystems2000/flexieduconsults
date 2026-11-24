@@ -763,5 +763,6 @@ window.__FLEXI_SERVER_VIDEOS = <?= json_encode($serverVideoPayload, JSON_HEX_TAG
 
   document.getElementById('current-year').textContent = new Date().getFullYear();
 </script>
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>

@@ -555,5 +555,6 @@
 
         document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>

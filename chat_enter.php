@@ -819,5 +819,6 @@
             });
         }
     </script>
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>

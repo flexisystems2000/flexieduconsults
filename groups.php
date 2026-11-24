@@ -427,5 +427,6 @@
             window.location.href = `entergroup.php?id=${id}&name=${encodedName}`;
         };
     </script>
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>

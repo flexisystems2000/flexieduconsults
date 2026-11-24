@@ -923,5 +923,6 @@ function toggleMenu(){document.getElementById('squareMenu')?.classList.toggle('m
 function toggleStudyMenu(event){if(event)event.preventDefault();const btn=document.getElementById('study-menu-toggle');const sub=document.getElementById('study-submenu');if(!btn||!sub)return;const open=btn.getAttribute('aria-expanded')!=='true';btn.setAttribute('aria-expanded',open?'true':'false');sub.classList.toggle('open',open);}
 document.addEventListener('click',function(event){const menu=document.getElementById('squareMenu');const wrap=document.querySelector('.menu-container');if(menu&&wrap&&!wrap.contains(event.target))menu.classList.remove('menu-open');});
 </script>
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>

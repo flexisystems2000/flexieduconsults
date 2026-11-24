@@ -945,5 +945,6 @@ async function startCardPayment(event, type) {
     } catch (error) { button.disabled = false; alert("Unable to open Paystack checkout. Please try again."); }
 }
 </script>
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>

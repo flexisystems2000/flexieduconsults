@@ -438,5 +438,6 @@ document.getElementById("subject-purchase-form")?.addEventListener("submit", fun
     } catch (error) { button.disabled = false; alert("Unable to open Paystack checkout. Please try again."); }
 });
 </script>
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>

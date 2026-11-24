@@ -888,5 +888,6 @@ const searchInput=document.getElementById('searchInput'),list=document.getElemen
 function filterCourses(){const term=searchInput.value.toLowerCase().trim();let visible=0;list.querySelectorAll('.course-card').forEach(card=>{const match=card.textContent.toLowerCase().includes(term);card.style.display=match?'flex':'none';if(match)visible++;});noResults.style.display=visible===0?'block':'none';}
 searchInput.addEventListener('input',filterCourses);document.getElementById('current-year').textContent=new Date().getFullYear();
 </script>
+    <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>
