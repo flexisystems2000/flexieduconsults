@@ -17,7 +17,7 @@ $lastUpdated = '22 October 2026';
     <meta name="description"
           content="Read the Privacy Policy of Flexi Educational Consult to understand how we handle personal information when you use our educational website and services.">
 
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow">\n\n    <link rel="canonical" href="https://www.flexieduconsult.com.ng/policy.php">
 
     <link rel="icon"
           type="image/png"
