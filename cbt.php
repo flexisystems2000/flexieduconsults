@@ -7,6 +7,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Flexi CBT | Select Exam</title>
+    <meta name="description" content="Choose an examination and practise with the Flexi Educational Consult computer-based test learning portal for JAMB, WAEC and other supported examinations.">
+    <link rel="canonical" href="https://www.flexieduconsult.com.ng/cbt.php">
 
     <style>
         :root {
