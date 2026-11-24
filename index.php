@@ -984,11 +984,11 @@ $appDownloadTargetUrl = '/download-app.php';
 
     * {
         box-sizing: border-box;
-
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+        -webkit-touch-callout: default;
     }
 
 
