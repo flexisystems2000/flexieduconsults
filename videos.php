@@ -39,7 +39,7 @@ if ($requestedVideoId !== '') {
 }
 $serverCurrentFields = $serverCurrentVideo['fields'] ?? [];
 $serverCurrentYoutubeId = video_youtube_id((string)($serverCurrentFields['link'] ?? ''));
-$videoCanonical = 'https://flexieduconsult.com.ng/videos.php';
+$videoCanonical = 'https://www.flexieduconsult.com.ng/videos.php';
 $serverVideoPayload = array_map(static function (array $video): array {
     return ['id' => (string)$video['id'], 'data' => $video['fields']];
 }, $serverVideos);
