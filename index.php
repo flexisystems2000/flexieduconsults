@@ -892,7 +892,7 @@ $appDownloadTargetUrl = '/download-app.php';
 
     <meta
         property="og:url"
-        content="https://flexieduconsult.com.ng/">
+        content="https://www.flexieduconsult.com.ng/">
 
     <meta
         property="og:type"
@@ -918,7 +918,7 @@ $appDownloadTargetUrl = '/download-app.php';
 
     <link
         rel="canonical"
-        href="https://flexieduconsult.com.ng/<?php
+        href="https://www.flexieduconsult.com.ng/<?php
             echo $currentPage > 1
                 ? '?page=' . $currentPage
                 : '';
@@ -944,10 +944,10 @@ $appDownloadTargetUrl = '/download-app.php';
     {
       "@context": "https://schema.org",
       "@type": "EducationalOrganization",
-      "@id": "https://flexieduconsult.com.ng/#organization",
+      "@id": "https://www.flexieduconsult.com.ng/#organization",
       "name": "Flexi Educational Consult",
       "alternateName": "Flexi Tutors",
-      "url": "https://flexieduconsult.com.ng",
+      "url": "https://www.flexieduconsult.com.ng",
       "logo": "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg",
       "image": "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg",
       "description": "Educational platform and tutoring provider in Nigeria offering UTME/JAMB CBT preparation, WAEC/NECO tutorials, and computer-based test assessments.",
