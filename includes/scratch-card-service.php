@@ -11,66 +11,6 @@ function flexi_json_response(array $data, int $status = 200): never
     exit;
 }
 
-function flexi_paystack_request(string $method, string $path, ?array $payload = null): array
-{
-    $secret = getenv('PAYSTACK_SECRET_KEY') ?: '';
-    if ($secret === '') throw new RuntimeException('Paystack server secret is not configured.');
-    $headers = "Authorization: Bearer {$secret}\r\nAccept: application/json\r\n";
-    $body = null;
-    if ($payload !== null) {
-        $headers .= "Content-Type: application/json\r\n";
-        $body = json_encode($payload, JSON_THROW_ON_ERROR);
-    }
-    $ctx = stream_context_create(['http' => [
-        'method' => $method, 'header' => $headers, 'content' => $body ?? '',
-        'timeout' => 25, 'ignore_errors' => true
-    ]]);
-    $raw = @file_get_contents('https://api.paystack.co' . $path, false, $ctx);
-    $status = $http_response_header[0] ?? '';
-    $data = $raw !== false ? json_decode($raw, true) : null;
-    if (!preg_match('/\s2\d\d\s/', $status) || !is_array($data) || empty($data['status'])) {
-        throw new RuntimeException('Paystack could not complete the requested operation.');
-    }
-    return $data['data'] ?? [];
-}
-
-function flexi_start_checkout(string $flow, string $item, string $email, int $amountKobo): never
-{
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        throw new InvalidArgumentException('Enter a valid email address.');
-    }
-    if ($amountKobo < 10000) throw new RuntimeException('Invalid checkout amount.');
-
-    $callback = $flow === 'stock'
-        ? 'https://flexieduconsult.com.ng/purchase.php'
-        : 'https://flexieduconsult.com.ng/prep.php';
-
-    $data = flexi_paystack_request('POST', '/transaction/initialize', [
-        'email' => $email,
-        'amount' => $amountKobo,
-        'currency' => 'NGN',
-        'callback_url' => $callback,
-        'metadata' => [
-            'flexi_flow' => $flow,
-            'flexi_item' => $item,
-            'flexi_amount_kobo' => $amountKobo,
-            'custom_fields' => [[
-                'display_name' => 'Flexi product',
-                'variable_name' => 'flexi_product',
-                'value' => $item
-            ]]
-        ]
-    ]);
-
-    $url = (string)($data['authorization_url'] ?? '');
-    if (!filter_var($url, FILTER_VALIDATE_URL) || !str_starts_with($url, 'https://checkout.paystack.com/')) {
-        throw new RuntimeException('Paystack did not return a valid checkout URL.');
-    }
-    header('Cache-Control: no-store, private');
-    header('Location: ' . $url, true, 303);
-    exit;
-}
-
 function flexi_verified_payment(string $reference, string $expectedFlow, string $expectedItem, int $expectedKobo): array
 {
     if ($reference === '' || strlen($reference) > 120 || !preg_match('/^[A-Za-z0-9._-]+$/', $reference)) {
