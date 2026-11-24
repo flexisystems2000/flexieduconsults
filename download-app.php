@@ -42,7 +42,7 @@ if (isset($_GET['download'])) {
 |--------------------------------------------------------------------------
 */
 
-$pageUrl = 'https://flexieduconsult.com.ng/download-app.php';
+$pageUrl = 'https://www.flexieduconsult.com.ng/download-app.php';
 
 $pageTitle =
     'Flexi JAMB CBT App & Lite | Download Flexi Educational Consult App';
@@ -139,12 +139,12 @@ $pageDescription =
         "author": {
             "@type": "Organization",
             "name": "Flexi Educational Consult",
-            "url": "https://flexieduconsult.com.ng/"
+            "url": "https://www.flexieduconsult.com.ng/"
         },
         "publisher": {
             "@type": "Organization",
             "name": "Flexi Educational Consult",
-            "url": "https://flexieduconsult.com.ng/"
+            "url": "https://www.flexieduconsult.com.ng/"
         },
         "offers": {
             "@type": "Offer",
@@ -637,7 +637,7 @@ $pageDescription =
         </div>
 
         <a
-            href="https://flexieduconsult.com.ng/"
+            href="https://www.flexieduconsult.com.ng/"
             class="home-link"
         >
             Visit Website
@@ -916,7 +916,7 @@ $pageDescription =
 
     <p style="margin-top:8px;">
 
-        <a href="https://flexieduconsult.com.ng/">
+        <a href="https://www.flexieduconsult.com.ng/">
             flexieduconsult.com.ng
         </a>
 
