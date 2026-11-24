@@ -129,10 +129,10 @@ $pageImage =
     "https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg";
 
 
-// Always emit the site's preferred HTTPS, non-www canonical host.
+// Always emit the site's preferred HTTPS, www canonical host.
 // Use the rewritten request path only; tracking/search query strings are excluded.
 $canonicalPath = $requestPath !== '' ? $requestPath : '/';
-$pageUrl = 'https://flexieduconsult.com.ng' . $canonicalPath;
+$pageUrl = 'https://www.flexieduconsult.com.ng' . $canonicalPath;
 
 
 // ============================================================
@@ -1380,6 +1380,12 @@ if (
 
 }
 
+$hasValidArticle = trim((string)($article['title'] ?? '')) !== '';
+$isMissingArticleRequest = ($newsId !== '' || $newsSlug !== '') && !$hasValidArticle;
+if ($isMissingArticleRequest) {
+    http_response_code(404);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -1389,11 +1395,13 @@ if (
     <meta charset="UTF-8">
 
 
+    <?php if ($hasValidArticle): ?>
     <script
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9836330764964180"
         crossorigin="anonymous">
     </script>
+    <?php endif; ?>
 
 
     <link
