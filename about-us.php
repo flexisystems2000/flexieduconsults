@@ -17,7 +17,7 @@ $currentPage = 'about';
     <meta name="theme-color" content="#003366">
     <title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
 
-    <link rel="canonical" href="https://flexieduconsult.com.ng/about-us.php">
+    <link rel="canonical" href="https://www.flexieduconsult.com.ng/about-us.php">
     <link rel="stylesheet" href="/assets/css/flexi-brand.css">
 
     <style>
