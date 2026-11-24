@@ -1381,6 +1381,7 @@ if (
 }
 
 $hasValidArticle = trim((string)($article['title'] ?? '')) !== '';
+$isIndexableArticle = $hasValidArticle && $newsSearch === '';
 $isMissingArticleRequest = ($newsId !== '' || $newsSlug !== '') && !$hasValidArticle;
 if ($isMissingArticleRequest) {
     http_response_code(404);
@@ -1395,7 +1396,7 @@ if ($isMissingArticleRequest) {
     <meta charset="UTF-8">
 
 
-    <?php if ($hasValidArticle): ?>
+    <?php if ($isIndexableArticle): ?>
     <script
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9836330764964180"
