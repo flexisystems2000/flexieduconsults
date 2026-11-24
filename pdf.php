@@ -20,6 +20,8 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resource Library | Flexi Educational Consult</title>
+    <meta name="description" content="Browse educational PDFs, revision materials and past-question resources for examination preparation with Flexi Educational Consult. Resource availability may vary.">
+    <link rel="canonical" href="https://www.flexieduconsult.com.ng/pdf.php">
     <!-- Paystack Inline JS SDK V2 -->
     <script src="https://js.paystack.co/v2/inline.js"></script>
     
