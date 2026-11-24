@@ -2,13 +2,13 @@
 /**
  * Flexi Educational Consult XML sitemap.
  *
- * Canonical host: https://flexieduconsult.com.ng
+ * Canonical host: https://www.flexieduconsult.com.ng
  * News URLs are sourced from the same Supabase table used by the homepage
  * and news article viewer, so newly published articles are discoverable.
  */
 header('Content-Type: application/xml; charset=utf-8');
 
-$baseUrl = 'https://flexieduconsult.com.ng';
+$baseUrl = 'https://www.flexieduconsult.com.ng';
 $urls = [];
 
 // Homepage.
