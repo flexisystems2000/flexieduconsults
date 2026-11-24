@@ -48,6 +48,8 @@ if($selectedMeta&&isset($selectedMeta['path'])){
   <title>Flexi Educational Consult - Syllabus Portal</title>
   <style>
     :root {
+      --blue: #003366;
+      --green: #2E8B57;
       /* Flexi Educational Consult Brand Colors */
       --flexi-blue: #0A2540;
       --flexi-blue-light: #1E3A8A;
@@ -834,8 +836,8 @@ code {
   <div class="container">
   <form method="get" action="syllabus.php" class="portal-controls">
     <div class="btn-group">
-      <button id="btn-jamb" class="btn-toggle <?= $examType==='jamb'?'active':'' ?>" type="submit" name="exam" value="jamb">Check JAMB Syllabus</button>
-      <button id="btn-waec" class="btn-toggle <?= $examType==='waec'?'active':'' ?>" type="submit" name="exam" value="waec">Check WAEC Syllabus</button>
+      <button id="btn-jamb" class="btn-toggle <?= $examType==='jamb'?'active':'' ?>" type="button" onclick="window.location.href='syllabus.php?exam=jamb'">Check JAMB Syllabus</button>
+      <button id="btn-waec" class="btn-toggle <?= $examType==='waec'?'active':'' ?>" type="button" onclick="window.location.href='syllabus.php?exam=waec'">Check WAEC Syllabus</button>
     </div>
     <div class="subject-select-wrap">
       <label for="subjectSelect"><strong>Select Subject:</strong></label>
