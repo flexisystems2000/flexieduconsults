@@ -17,6 +17,8 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
   <title>JAMB Brochure | Flexi Educational Consult</title>
   <style>
     :root {
+      --blue: #003366;
+      --green: #2E8B57;
       --bg-color: #f8f6f6;
       --card-bg: #ffffff;
       --text-main: #1f2937;
