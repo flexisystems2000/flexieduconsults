@@ -40,6 +40,15 @@ try {
             flex-direction: column;
         }
 
+        :root {
+            --blue: #003366;
+            --green: #2E8B57;
+            --yellow: #FFD700;
+            --bg: #f4f7f6;
+            --radius: 12px;
+            --shadow: 0 4px 18px rgba(0,0,0,0.06);
+        }
+
         /* Homepage header and navigation */
     header {
         background: var(--blue);
