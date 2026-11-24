@@ -23,8 +23,14 @@ final class FlexiFirestore
         if (!is_array($account) || empty($account['client_email']) || empty($account['private_key'])) {
             throw new RuntimeException('Firebase service-account configuration is invalid.');
         }
+        // Keep the exact Firebase project configured in the original website's Web SDK.
+        // A service account from another Firebase project must never redirect this site elsewhere.
+        $expectedProjectId = 'waec2026jamb2027';
+        if (($account['project_id'] ?? '') !== $expectedProjectId) {
+            throw new RuntimeException('Firebase credentials belong to a different project. Expected ' . $expectedProjectId . '.');
+        }
         $this->serviceAccount = $account;
-        $this->projectId = (string)($account['project_id'] ?? 'waec2026jamb2027');
+        $this->projectId = $expectedProjectId;
     }
 
     private function b64url(string $value): string
