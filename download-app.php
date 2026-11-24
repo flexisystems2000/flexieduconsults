@@ -50,7 +50,7 @@ $pageTitle =
 $pageDescription =
     'Download the official Flexi JAMB CBT App by Flexi Educational Consult. '
     . 'Prepare for JAMB UTME with CBT practice, examination simulation and '
-    . 'computer-based test preparation. Flexi JAMB CBT Lite is also coming soon.';
+    . 'computer-based test preparation. The Lite version is not currently available.';
 
 ?>
 <!DOCTYPE html>
