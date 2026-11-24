@@ -17,7 +17,7 @@ $lastUpdated = '22 October 2026';
     <meta name="description"
           content="Read the Terms and Conditions governing access to the website, educational resources, online services, and other offerings of Flexi Educational Consult.">
 
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow">\n\n    <link rel="canonical" href="https://www.flexieduconsult.com.ng/terms.php">
 
     <link rel="icon"
           type="image/png"
