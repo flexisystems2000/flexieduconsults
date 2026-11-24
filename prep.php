@@ -432,7 +432,7 @@ document.getElementById("subject-purchase-form")?.addEventListener("submit", fun
             amount: 100000,
             currency: "NGN",
             metadata: { flexi_flow: "subject", flexi_item: subject, flexi_amount_kobo: 100000 },
-            onSuccess: (transaction) => { window.location.href = "/prep.php?reference=" + encodeURIComponent(transaction.reference); },
+            onSuccess: (transaction) => { window.location.href = "/prep?reference=" + encodeURIComponent(transaction.reference); },
             onCancel: () => { button.disabled = false; }
         });
     } catch (error) { button.disabled = false; alert("Unable to open Paystack checkout. Please try again."); }

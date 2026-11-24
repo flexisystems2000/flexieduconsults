@@ -550,7 +550,7 @@ function bookUrl(
 ): string {
 
     return
-        'novel.php?book=' .
+        '/novel?book=' .
         rawurlencode($slug) .
         '&view=' .
         rawurlencode($view);
@@ -600,7 +600,7 @@ $pageDescription = $isDetailPage && $overview !== ''
         . '. ' . $overview
     : 'Explore prescribed Literature texts, study summaries and practice questions for Nigerian examination preparation with Flexi Educational Consult.';
 
-$canonicalUrl = 'https://www.flexieduconsult.com.ng/novel.php';
+$canonicalUrl = 'https://www.flexieduconsult.com.ng/novel';
 if ($isDetailPage && $currentBook !== null) {
     $canonicalUrl .= '?book=' . rawurlencode($currentBook['slug'])
         . '&view=' . rawurlencode($requestedView);

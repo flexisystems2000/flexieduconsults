@@ -16,7 +16,7 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JAMB Brochure | Flexi Educational Consult</title>
   <meta name="description" content="Explore the JAMB brochure and course information for Nigerian universities, polytechnics, colleges of education and other institutions.">
-  <link rel="canonical" href="https://www.flexieduconsult.com.ng/brochure.php">
+  <link rel="canonical" href="https://www.flexieduconsult.com.ng/brochure">
   <style>
     :root {
       --blue: #003366;
@@ -810,7 +810,7 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
 
     <div class="section-title">Select a Course:</div>
     
-    <div class="course-list" id="courseListContainer"><?php foreach($courses as $course): ?><a class="course-card" href="requirements.php?institution=<?= rawurlencode($institution) ?>&amp;faculty=<?= rawurlencode($faculty) ?>&amp;course=<?= rawurlencode($course) ?>"><span class="course-name"><?= flexiEsc($course) ?></span><span class="arrow-icon">&#10095;</span></a><?php endforeach; ?></div>
+    <div class="course-list" id="courseListContainer"><?php foreach($courses as $course): ?><a class="course-card" href="/requirements?institution=<?= rawurlencode($institution) ?>&amp;faculty=<?= rawurlencode($faculty) ?>&amp;course=<?= rawurlencode($course) ?>"><span class="course-name"><?= flexiEsc($course) ?></span><span class="arrow-icon">&#10095;</span></a><?php endforeach; ?></div>
     <div class="no-results" id="noResultsMsg">No courses found matching your search.</div>
   </div>
 
@@ -883,7 +883,7 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
   
   
 <script>
-function updateBrochureSelection(){const i=document.getElementById('institutionSelect').value;const f=document.getElementById('facultySelect').value;window.location.href='brochure.php?institution='+encodeURIComponent(i)+'&faculty='+encodeURIComponent(f);}
+function updateBrochureSelection(){const i=document.getElementById('institutionSelect').value;const f=document.getElementById('facultySelect').value;window.location.href='/brochure?institution='+encodeURIComponent(i)+'&faculty='+encodeURIComponent(f);}
 const searchInput=document.getElementById('searchInput'),list=document.getElementById('courseListContainer'),noResults=document.getElementById('noResultsMsg');
 function filterCourses(){const term=searchInput.value.toLowerCase().trim();let visible=0;list.querySelectorAll('.course-card').forEach(card=>{const match=card.textContent.toLowerCase().includes(term);card.style.display=match?'flex':'none';if(match)visible++;});noResults.style.display=visible===0?'block':'none';}
 searchInput.addEventListener('input',filterCourses);document.getElementById('current-year').textContent=new Date().getFullYear();

@@ -1006,7 +1006,7 @@
     }
 
     function goToCourses(selectedInst) {
-      window.location.href = `brochure.php?institution=${encodeURIComponent(institutionParam)}&faculty=${encodeURIComponent(facultyParam)}&selectedInst=${selectedInst}`;
+      window.location.href = `/brochure?institution=${encodeURIComponent(institutionParam)}&faculty=${encodeURIComponent(facultyParam)}&selectedInst=${selectedInst}`;
     }
 
     instSearchInput.addEventListener('input', filterInstitutions);

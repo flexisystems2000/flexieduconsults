@@ -939,7 +939,7 @@ async function startCardPayment(event, type) {
             amount: Number(flexiCardPrices[type]) * 100,
             currency: "NGN",
             metadata: { flexi_flow: "stock", flexi_item: type, flexi_amount_kobo: Number(flexiCardPrices[type]) * 100 },
-            onSuccess: (transaction) => { window.location.href = "/purchase.php?reference=" + encodeURIComponent(transaction.reference); },
+            onSuccess: (transaction) => { window.location.href = "/purchase?reference=" + encodeURIComponent(transaction.reference); },
             onCancel: () => { button.disabled = false; }
         });
     } catch (error) { button.disabled = false; alert("Unable to open Paystack checkout. Please try again."); }

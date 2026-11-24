@@ -19,18 +19,18 @@ $urls[] = [
 
 // Public, index-worthy pages. Account, payment, and utility pages are excluded.
 $staticPages = [
-    '/about-us.php'    => '0.8',
-    '/syllabus.php'    => '0.8',
-    '/brochure.php'    => '0.7',
-    '/cbt.php'         => '0.7',
-    '/pdf.php'         => '0.6',
-    '/videos.php'      => '0.6',
-    '/novel.php'       => '0.8',
-    '/scholarship.php' => '0.8',
-    '/download-app.php'=> '0.6',
-    '/policy.php'      => '0.3',
-    '/terms.php'       => '0.3',
-    '/corrections.php'=> '0.3'
+    '/about-us'    => '0.8',
+    '/syllabus'    => '0.8',
+    '/brochure'    => '0.7',
+    '/cbt'         => '0.7',
+    '/pdf'         => '0.6',
+    '/videos'      => '0.6',
+    '/novel'       => '0.8',
+    '/scholarship' => '0.8',
+    '/download-app'=> '0.6',
+    '/policy'      => '0.3',
+    '/terms'       => '0.3',
+    '/corrections'=> '0.3'
 ];
 
 foreach ($staticPages as $path => $priority) {
@@ -56,7 +56,7 @@ $literatureBooks = [
 
 foreach ($literatureBooks as $slug) {
     $urls[] = [
-        'loc' => $baseUrl . '/novel.php?book=' . rawurlencode($slug) . '&view=summary',
+        'loc' => $baseUrl . '/novel?book=' . rawurlencode($slug) . '&view=summary',
         'priority' => '0.7'
     ];
 }

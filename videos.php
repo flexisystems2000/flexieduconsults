@@ -39,7 +39,10 @@ if ($requestedVideoId !== '') {
 }
 $serverCurrentFields = $serverCurrentVideo['fields'] ?? [];
 $serverCurrentYoutubeId = video_youtube_id((string)($serverCurrentFields['link'] ?? ''));
-$videoCanonical = 'https://www.flexieduconsult.com.ng/videos.php';
+$videoCanonical = 'https://www.flexieduconsult.com.ng/videos';
+if ($requestedVideoId !== '' && $serverCurrentVideo !== null && hash_equals((string)$serverCurrentVideo['id'], $requestedVideoId)) {
+    $videoCanonical .= '?video=' . rawurlencode($requestedVideoId);
+}
 $serverVideoPayload = array_map(static function (array $video): array {
     return ['id' => (string)$video['id'], 'data' => $video['fields']];
 }, $serverVideos);
@@ -275,11 +278,11 @@ if ($videoDescription === '') {
     <p><?= nl2br(video_e($serverCurrentFields['desc'] ?? '')) ?></p>
     <p class="muted">This lesson was loaded by Flexi Educational Consult. Sign in to use the available discussion and reaction features.</p>
     <div id="comments-list" style="margin-top:20px;"></div>
-    <p><a href="/login.php?redirect=%2Fvideos.php">Sign in to comment or react</a></p>
+    <p><a href="/login?redirect=%2Fvideos">Sign in to comment or react</a></p>
     <div class="separator"></div>
     <h2>More Video Lessons</h2>
     <?php foreach (array_slice($serverVideos, 1) as $video): $vf = $video['fields']; $vid = video_youtube_id((string)($vf['link'] ?? '')); if ($vid === '') continue; ?>
-      <a href="/videos.php?video=<?= video_e($video['id']) ?>" style="display:flex;gap:12px;align-items:center;margin:12px 0;color:#1e293b;text-decoration:none;">
+      <a href="/videos?video=<?= video_e($video['id']) ?>" style="display:flex;gap:12px;align-items:center;margin:12px 0;color:#1e293b;text-decoration:none;">
         <img src="https://img.youtube.com/vi/<?= video_e($vid) ?>/mqdefault.jpg" alt="" width="120" height="80" loading="lazy" style="object-fit:cover;border-radius:6px">
         <strong><?= video_e($vf['title'] ?? 'Video lesson') ?></strong>
       </a>
