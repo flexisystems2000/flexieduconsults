@@ -237,8 +237,8 @@
         </table>
 
         <div class="btn-grid">
-            <button class="btn-primary" onclick="location.href='corrections.html'">VIEW CORRECTIONS</button>
-            <button class="btn-outline" onclick="location.href='cbt.html'">NEW EXAM</button>
+            <button class="btn-primary" onclick="location.href='corrections.php'">VIEW CORRECTIONS</button>
+            <button class="btn-outline" onclick="location.href='cbt.php'">NEW EXAM</button>
         </div>
     </div>
 
@@ -272,8 +272,8 @@
                 <li><a href="videos.php">Video Lessons</a></li>
                 <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 
@@ -344,7 +344,7 @@ if (result) {
 
 loadLeaderboard();
     } else {
-        window.location.href = "login.html";
+        window.location.href = "login.php";
     }
 });
 
@@ -353,7 +353,7 @@ loadLeaderboard();
     const result = JSON.parse(sessionStorage.getItem("examResult"));
 
 if (!result) {
-    window.location.replace("cbt.html");
+    window.location.replace("cbt.php");
     return null;
 }
 

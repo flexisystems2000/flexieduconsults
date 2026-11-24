@@ -668,7 +668,7 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
                 <span class="menu-label">Home</span>
             </a>
 
-            <a href="/videos.html">
+            <a href="/videos.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 7l5 3-5 3V7z" fill="currentColor"/></svg></span>
                 <span class="menu-label">Watch Video Lessons</span>
             </a>
@@ -727,22 +727,22 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
                 <span class="menu-label">Download Flexi</span>
             </a>
 
-            <a href="/syllabus.html">
+            <a href="/syllabus.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22V4.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 7h8M8 11h8M8 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="menu-label">Access the JAMB and WAEC syllabus here</span>
             </a>
 
-            <a href="/brochure.html">
+            <a href="/brochure.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 12h8M8 16h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="menu-label">Access JAMB Brochure</span>
             </a>
 
-            <a href="/cbt.html">
+            <a href="/cbt.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="menu-label">CBT Simulator</span>
             </a>
 
-            <a href="/groups.html">
+            <a href="/groups.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M15 14.5a4.5 4.5 0 0 1 5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="menu-label">Classroom (Groups and chats)</span>
             </a>
@@ -752,17 +752,17 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
                 <span class="menu-label">Purchase Scratch Cards</span>
             </a>
 
-            <a href="/pdf.html">
+            <a href="/pdf.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 14h8M8 17h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="menu-label">Get your PDFs from here</span>
             </a>
 
-            <a href="/location.html">
+            <a href="/location.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12A7 7 0 0 0 5 9c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
                 <span class="menu-label">Tutorial Centers Near You</span>
             </a>
 
-            <a href="/profile.html">
+            <a href="/profile.php">
                 <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="menu-label">User Profile</span>
             </a>
@@ -810,7 +810,7 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
 
     <div class="section-title">Select a Course:</div>
     
-    <div class="course-list" id="courseListContainer"><?php foreach($courses as $course): ?><a class="course-card" href="requirements.html?institution=<?= rawurlencode($institution) ?>&amp;faculty=<?= rawurlencode($faculty) ?>&amp;course=<?= rawurlencode($course) ?>"><span class="course-name"><?= flexiEsc($course) ?></span><span class="arrow-icon">&#10095;</span></a><?php endforeach; ?></div>
+    <div class="course-list" id="courseListContainer"><?php foreach($courses as $course): ?><a class="course-card" href="requirements.php?institution=<?= rawurlencode($institution) ?>&amp;faculty=<?= rawurlencode($faculty) ?>&amp;course=<?= rawurlencode($course) ?>"><span class="course-name"><?= flexiEsc($course) ?></span><span class="arrow-icon">&#10095;</span></a><?php endforeach; ?></div>
     <div class="no-results" id="noResultsMsg">No courses found matching your search.</div>
   </div>
 
@@ -833,10 +833,10 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
                 <li><a href="syllabus.php">Access the JAMB/WAEC syllabus</a></li>
                 <li><a href="brochure.php">Access JAMB Brochure</a></li>
                 <li><a href="videos.php">Video Lessons</a></li>
-                <li><a href="pdf.html">Past Questions & PDFs</a></li>
+                <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 

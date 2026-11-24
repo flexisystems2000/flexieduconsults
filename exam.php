@@ -373,8 +373,8 @@
                 <li><a href="videos.php">Video Lessons</a></li>
                 <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 
@@ -537,7 +537,7 @@ onAuthStateChanged(auth, (user) => {
         startEngine().catch(err => console.error("🔴 Error starting exam engine:", err));
     } else { 
         console.warn("⚠️ No user session found. Redirecting to login...");
-        window.location.href = "login.html"; 
+        window.location.href = "login.php"; 
     }
 });
 
@@ -1023,13 +1023,13 @@ window.submitExam = async (auto = false) => {
             questions: examData
         };
 
-        // Save everything for results.html
+        // Save everything for results.php
         sessionStorage.setItem(
             "examResult",
             JSON.stringify(scoreData)
         );
 
-        // Keep these if corrections.html still uses them
+        // Keep these if corrections.php still uses them
         sessionStorage.setItem(
             "finalAnswers",
             JSON.stringify(userAnswers)
@@ -1040,7 +1040,7 @@ window.submitExam = async (auto = false) => {
             JSON.stringify(examData)
         );
 
-        window.location.href = "results.html";
+        window.location.href = "results.php";
     }
 };
 

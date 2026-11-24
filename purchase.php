@@ -650,7 +650,7 @@ try {
 </head>
 <body>
 <header>
-    <a href="index.html" class="back-btn">❮</a>
+    <a href="index.php" class="back-btn">❮</a>
     <span style="font-weight: bold; font-size: 16px;">Secure Checkout</span>
 </header>
 
@@ -666,7 +666,7 @@ try {
             <?php else: ?><b>TOKEN:</b> <?= e($sale['token'] ?? '') ?><?php endif; ?>
         </div>
         <p style="font-size:12px;color:red;font-weight:bold;">Save these details securely. They may not be shown again.</p>
-        <button type="button" onclick="window.location.href='index.html'" class="buy-btn" style="background:var(--green);margin-top:15px;">Return Home</button>
+        <button type="button" onclick="window.location.href='index.php'" class="buy-btn" style="background:var(--green);margin-top:15px;">Return Home</button>
     </div>
     <?php else: ?>
     <div class="product-card">
@@ -740,42 +740,42 @@ try {
 
 
                 <li>
-                    <a href="/syllabus.html">
+                    <a href="/syllabus.php">
                         Access the JAMB/WAEC syllabus
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/brochure.html">
+                    <a href="/brochure.php">
                         Access JAMB Brochure
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/videos.html">
+                    <a href="/videos.php">
                         Video Lessons
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/pdf.html">
+                    <a href="/pdf.php">
                         Past Questions & PDFs
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/cbt.html">
+                    <a href="/cbt.php">
                         CBT Simulator
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/groups.html">
+                    <a href="/groups.php">
                         Classroom Groups and chats
                     </a>
                 </li>
@@ -793,7 +793,7 @@ try {
 </li>
 
                 <li>
-                    <a href="/location.html">
+                    <a href="/location.php">
                         Tutorial Centres
                     </a>
                 </li>

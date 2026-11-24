@@ -577,7 +577,7 @@ $currentPage = 'about';
             </p>
             <div class="about-hero-actions">
                 <a class="about-btn" href="/index.php">Visit Our Homepage</a>
-                <a class="about-btn about-btn-outline" href="/contactsupport.html">Contact Support</a>
+                <a class="about-btn about-btn-outline" href="/contactsupport.php">Contact Support</a>
             </div>
             <div class="about-contact-links">
                 <a href="tel:+2349034159839">+234 903 415 9839</a>

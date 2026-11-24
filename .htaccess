@@ -4,86 +4,52 @@
     RewriteEngine On
     RewriteBase /
 
-    # ============================================================
     # TEMPORARY WEBSITE MAINTENANCE MODE — OFF
-    # ============================================================
-    # To activate maintenance mode in the future, uncomment:
-    #
     # RewriteRule ^ - [R=503,L]
-    #
-    # No custom 503.html page is required.
 
-    # ============================================================
     # SITEMAP
-    # ============================================================
     RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
-    # ============================================================
     # LEGACY .html → .php
-    # ONLY pages that already exist as .php
-    # ============================================================
-    RewriteRule ^index\.html$        /index.php [R=301,L]
-    RewriteRule ^login\.html$        /login.php [R=301,L]
-    RewriteRule ^profile\.html$      /profile.php [R=301,L]
-    RewriteRule ^videos\.html$       /videos.php [R=301,L]
-    RewriteRule ^video\.php$        /videos.php [R=301,L]
-    RewriteRule ^brochure\.html$     /brochure.php [R=301,L]
-    RewriteRule ^syllabus\.html$     /syllabus.php [R=301,L]
-    RewriteRule ^cbt\.html$          /cbt.php [R=301,L]
-    RewriteRule ^pdf\.html$          /pdf.php [R=301,L]
-    # Server-rendered purchase and PIN access routes replace browser-only flows
-    RewriteRule ^purchase\.html$      /purchase.php [R=301,L]
-    RewriteRule ^prep\.html$          /prep.php [R=301,L]
+    # Keep old bookmarks and search-engine URLs working after the PHP migration.
+    RewriteRule ^index\.html$             /index.php [R=301,L]
+    RewriteRule ^login\.html$             /login.php [R=301,L]
+    RewriteRule ^profile\.html$           /profile.php [R=301,L]
+    RewriteRule ^videos\.html$            /videos.php [R=301,L]
+    RewriteRule ^brochure\.html$          /brochure.php [R=301,L]
+    RewriteRule ^syllabus\.html$          /syllabus.php [R=301,L]
+    RewriteRule ^cbt\.html$               /cbt.php [R=301,L]
+    RewriteRule ^pdf\.html$               /pdf.php [R=301,L]
+    RewriteRule ^purchase\.html$          /purchase.php [R=301,L]
+    RewriteRule ^prep\.html$              /prep.php [R=301,L]
+    RewriteRule ^news-view\.html$         /news-view.php [R=301,L,QSA]
+    RewriteRule ^classroom\.html$         /groups.php [R=301,L]
+    RewriteRule ^groups\.html$            /groups.php [R=301,L]
+    RewriteRule ^location\.html$          /location.php [R=301,L]
+    RewriteRule ^exam\.html$              /exam.php [R=301,L]
+    RewriteRule ^results\.html$           /results.php [R=301,L]
+    RewriteRule ^corrections\.html$       /corrections.php [R=301,L]
+    RewriteRule ^requirements\.html$      /requirements.php [R=301,L]
+    RewriteRule ^page2\.html$             /page2.php [R=301,L]
+    RewriteRule ^page2_putme\.html$       /page2_putme.php [R=301,L]
+    RewriteRule ^page2_waec\.html$        /page2_waec.php [R=301,L]
+    RewriteRule ^page3\.html$             /page3.php [R=301,L]
+    RewriteRule ^chat\.html$              /chat.php [R=301,L]
+    RewriteRule ^chat_enter\.html$        /chat_enter.php [R=301,L]
+    RewriteRule ^chat_info\.html$         /chat_info.php [R=301,L]
+    RewriteRule ^entergroup\.html$        /entergroup.php [R=301,L]
+    RewriteRule ^ginfo\.html$             /ginfo.php [R=301,L]
+    RewriteRule ^contactsupport\.html$    /contactsupport.php [R=301,L]
 
-    # Keep the ?id= query string so old Google links still work
-    RewriteRule ^news-view\.html$    /news-view.php [R=301,L,QSA]
-
-    # classroom.html was never a real file — send to groups
-    RewriteRule ^classroom\.html$    /groups.html [R=301,L]
-
-    # ============================================================
-    # NOT REDIRECTED YET
-    # Uncomment each line AFTER you rename that file to .php
-    # ============================================================
-
-    # RewriteRule ^groups\.html$           /groups.php [R=301,L]
-    # RewriteRule ^location\.html$         /location.php [R=301,L]
-    # RewriteRule ^purchase\.html$         /purchase.php [R=301,L]
-    # RewriteRule ^exam\.html$             /exam.php [R=301,L]
-    # RewriteRule ^results\.html$          /results.php [R=301,L]
-    # RewriteRule ^corrections\.html$      /corrections.php [R=301,L]
-    # RewriteRule ^requirements\.html$     /requirements.php [R=301,L]
-    # RewriteRule ^page2\.html$            /page2.php [R=301,L]
-    # RewriteRule ^page2_putme\.html$      /page2_putme.php [R=301,L]
-    # RewriteRule ^page2_waec\.html$       /page2_waec.php [R=301,L]
-    # RewriteRule ^page3\.html$            /page3.php [R=301,L]
-    # RewriteRule ^chat\.html$             /chat.php [R=301,L]
-    # RewriteRule ^chat_enter\.html$       /chat_enter.php [R=301,L]
-    # RewriteRule ^chat_info\.html$        /chat_info.php [R=301,L]
-    # RewriteRule ^entergroup\.html$       /entergroup.php [R=301,L]
-    # RewriteRule ^ginfo\.html$            /ginfo.php [R=301,L]
-    # RewriteRule ^contactsupport\.html$   /contactsupport.php [R=301,L]
-    # RewriteRule ^prep\.html$             /prep.php [R=301,L]
-
-    # ============================================================
-    # DON'T REWRITE REAL FILES OR DIRECTORIES
-    # ============================================================
+    # DO NOT REWRITE EXISTING FILES OR DIRECTORIES
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # ============================================================
-    # CLEAN NEWS URLs
-    # ============================================================
+    # CLEAN NEWS URLS
     RewriteRule ^news/([a-zA-Z0-9][a-zA-Z0-9_-]*)/?$ news-view.php?slug=$1 [L,QSA]
-
     RewriteRule ^news/id/([a-zA-Z0-9_-]+)/?$ news-view.php?id=$1 [L,QSA]
-
 </IfModule>
-
-# ============================================================
-# DIRECTORY SETTINGS
-# ============================================================
 
 DirectoryIndex index.php index.html
 Options -Indexes

@@ -3,48 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Group Chat</title>
+    <title>Chat Page</title>
     <style>
         :root { --blue: #003366; --green: #2E8B57; }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #fff; padding-bottom: 90px; }
+        header { height: 60px; background: var(--blue); color: #fff; display: flex; align-items: center; padding: 0 15px; gap: 15px; border-bottom: 4px solid var(--green); position: sticky; top:0; z-index: 100; }
+        .back-btn { font-size: 1.4rem; cursor: pointer; text-decoration: none; color: #fff; background: none; border: none; }
         
-        /* HEADER & BLUE BAR NAVIGATION */
-        header { 
-            height: 60px; 
-            background: var(--blue); 
-            color: #fff; 
-            display: flex; 
-            align-items: center; 
-            padding: 0 15px; 
-            gap: 12px; 
-            border-bottom: 4px solid var(--green); 
-            position: sticky; 
-            top:0; 
-            z-index: 100; 
-            cursor: pointer;
-            user-select: none;
-        }
-        .back-btn { font-size: 1.4rem; cursor: pointer; text-decoration: none; color: #fff; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
-        
-        .header-info { flex: 1; display: flex; align-items: center; gap: 10px; overflow: hidden; }
-        .header-avatar-small {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.95rem;
-            flex-shrink: 0;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.4);
-        }
-        .header-avatar-small img { width: 100%; height: 100%; object-fit: cover; }
-        
+        #chat-title.profile-link { cursor: pointer; }
+        #chat-title.profile-link:hover { text-decoration: underline; }
+
         #comment-feed { padding: 15px; display: flex; flex-direction: column; gap: 12px; }
         .msg-row { display: flex; gap: 8px; width: 100%; align-items: flex-start; position: relative; }
         .msg-row.sent { justify-content: flex-end; }
@@ -57,65 +26,17 @@
         .received .msg-bubble { background: #f1f3f5; color: #222; border-bottom-left-radius: 2px; }
         .msg-name { font-size: 0.75rem; font-weight: bold; color: var(--blue); margin-bottom: 4px; cursor: pointer; }
         .msg-name:hover { text-decoration: underline; }
+        .edited-tag { font-size: 0.7rem; opacity: 0.7; font-style: italic; margin-left: 5px; }
+        .deleted-msg { font-style: italic; opacity: 0.8; }
 
-        .msg-deleted { font-style: italic; opacity: 0.75; font-size: 0.88rem; }
-        .edited-tag { font-size: 0.7rem; opacity: 0.7; margin-left: 5px; font-style: italic; }
-
-        /* MESSAGE OPTIONS MENU */
-        .msg-menu-btn {
-            background: transparent;
-            border: none;
-            color: rgba(255,255,255,0.7);
-            font-size: 1.1rem;
-            cursor: pointer;
-            padding: 0 4px;
-            line-height: 1;
-            margin-left: 6px;
-            vertical-align: middle;
-            display: inline-block;
-        }
-        .msg-menu-btn:hover { color: #fff; }
-
-        .msg-dropdown {
-            display: none;
-            position: absolute;
-            right: 10px;
-            top: 100%;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 50;
-            min-width: 160px;
-            overflow: hidden;
-        }
-        .msg-dropdown.active { display: block; animation: popUp 0.15s ease-out; }
-        .msg-dropdown-item {
-            padding: 10px 14px;
-            font-size: 0.88rem;
-            color: #333;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.15s;
-        }
-        .msg-dropdown-item:hover { background: #f5f5f5; }
-        .msg-dropdown-item.danger { color: #d9534f; }
-
-        /* EDIT BANNER */
-        .edit-banner {
-            display: none;
-            background: #eef4f8;
-            border-left: 4px solid var(--blue);
-            padding: 8px 12px;
-            font-size: 0.85rem;
-            color: #333;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .edit-banner.active { display: flex; }
-        .edit-cancel-btn { background: none; border: none; color: #d9534f; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        /* SENDER ACTIONS MENU */
+        .msg-actions-btn { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 1.1rem; padding: 0 4px; margin-left: 6px; float: right; line-height: 1; }
+        .msg-actions-btn:hover { color: #fff; }
+        .msg-menu { display: none; position: absolute; top: 100%; right: 0; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 50; min-width: 110px; overflow: hidden; }
+        .msg-menu.active { display: block; }
+        .msg-menu-item { padding: 8px 14px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .msg-menu-item:hover { background: #f5f5f5; }
+        .msg-menu-item.danger { color: #dc3545; }
 
         /* IMAGE GRID LAYOUTS */
         .img-grid { display: grid; gap: 4px; margin-top: 6px; border-radius: 8px; overflow: hidden; cursor: pointer; }
@@ -137,15 +58,18 @@
         .preview-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .remove-thumb { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
 
+        /* EDIT BANNER */
+        .edit-banner { display: none; background: #eef4f8; padding: 6px 12px; font-size: 0.85rem; color: var(--blue); align-items: center; justify-content: space-between; border-bottom: 1px solid #d0dce5; }
+        .edit-banner.active { display: flex; }
+        .cancel-edit-btn { background: none; border: none; color: #888; font-size: 1.1rem; cursor: pointer; }
+
         /* INPUT BAR & ATTACHMENT POPUP MENU */
         .input-container { position: relative; width: 100%; }
         .input-bar { display: flex; gap: 8px; padding: 10px; align-items: center; }
         .input-bar input[type="text"] { flex: 1; border: 1px solid #ccc; border-radius: 25px; padding: 10px 15px; outline: none; }
-        
-        .btn-post, .btn-attach { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; user-select: none; -webkit-tap-highlight-color: transparent; flex-shrink: 0; transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-        .btn-attach { background: #f0f2f5; color: var(--blue); }
-        .btn-attach.active { transform: rotate(45deg); background: #e4e6eb; }
-        .btn-attach svg { width: 22px; height: 22px; stroke: var(--blue); stroke-width: 2.5; stroke-linecap: round; fill: none; }
+        .btn-post, .btn-attach { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; user-select: none; -webkit-tap-highlight-color: transparent; flex-shrink: 0; transition: transform 0.2s ease; }
+        .btn-attach { background: #eee; color: var(--blue); font-weight: bold; font-size: 1.5rem; }
+        .btn-attach.active { transform: rotate(45deg); background: #ddd; }
 
         /* POPUP ATTACHMENT MENU */
         .attach-menu { display: none; position: absolute; bottom: 65px; left: 10px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); padding: 8px 0; z-index: 20; min-width: 150px; }
@@ -154,7 +78,7 @@
         
         .attach-option { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; font-size: 0.95rem; color: #333; transition: background 0.2s; user-select: none; }
         .attach-option:hover { background: #f5f5f5; }
-        .attach-option svg { width: 22px; height: 22px; fill: none; stroke: var(--blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .attach-option svg { width: 20px; height: 20px; fill: var(--blue); flex-shrink: 0; }
 
         /* LIGHTBOX OVERLAY */
         .lightbox-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; overflow: hidden; touch-action: none; }
@@ -166,20 +90,23 @@
         .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: #fff; font-size: 2.5rem; background: rgba(255,255,255,0.15); border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; z-index: 1001; }
         .lightbox-nav.prev { left: 15px; }
         .lightbox-nav.next { right: 15px; }
+
+        /* DELETE OPTIONS MODAL */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #fff; border-radius: 12px; width: 85%; max-width: 320px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .modal-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 12px; color: #222; }
+        .modal-btn { width: 100%; padding: 12px; border: none; background: #f1f3f5; border-radius: 8px; font-size: 0.95rem; margin-bottom: 8px; cursor: pointer; text-align: left; transition: background 0.2s; }
+        .modal-btn:hover { background: #e4e7eb; }
+        .modal-btn.danger { color: #dc3545; }
+        .modal-cancel { width: 100%; padding: 10px; border: none; background: none; color: #666; font-size: 0.9rem; cursor: pointer; text-align: center; margin-top: 4px; }
     </style>
 </head>
 <body>
 
-    <!-- BLUE HEADER BAR (CLICK TO OPEN GINFO.HTML) -->
-    <header id="group-header">
-        <a href="groups.html" class="back-btn" id="btn-back">❮</a>
-        <div class="header-info">
-            <div id="header-avatar" class="header-avatar-small">G</div>
-            <div style="overflow: hidden;">
-                <h3 id="group-title" style="margin: 0; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Group Chat</h3>
-                <span style="font-size: 0.72rem; opacity: 0.85; display: block;">Tap for group info</span>
-            </div>
-        </div>
+    <header>
+        <button class="back-btn" onclick="history.back()">❮</button>
+        <h3 id="chat-title">Chat</h3>
     </header>
 
     <div id="comment-feed"></div>
@@ -188,10 +115,10 @@
         <!-- Live Image Previews -->
         <div id="preview-bar" class="preview-bar"></div>
 
-        <!-- Live Editing Banner -->
+        <!-- Edit Indicator Banner -->
         <div id="edit-banner" class="edit-banner">
             <span>Editing message...</span>
-            <button id="cancel-edit-btn" class="edit-cancel-btn">✕</button>
+            <button id="cancel-edit-btn" class="cancel-edit-btn">✕</button>
         </div>
 
         <div class="input-container">
@@ -199,16 +126,13 @@
             <div id="attach-menu" class="attach-menu">
                 <label for="camera-upload" class="attach-option">
                     <svg viewBox="0 0 24 24">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                        <circle cx="12" cy="13" r="4"></circle>
+                        <path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
                     </svg>
                     <span>Camera</span>
                 </label>
                 <label for="file-upload" class="attach-option">
                     <svg viewBox="0 0 24 24">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                        <polyline points="21 15 16 10 5 21"></polyline>
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
                     </svg>
                     <span>Gallery</span>
                 </label>
@@ -216,12 +140,7 @@
 
             <!-- INPUT BAR -->
             <div class="input-bar">
-                <button type="button" id="btn-attach-toggle" class="btn-attach" title="Attach media">
-                    <svg viewBox="0 0 24 24">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </button>
+                <button type="button" id="btn-attach-toggle" class="btn-attach" title="Attach media">+</button>
                 <input id="chat-msg-input" type="text" placeholder="Type your message...">
                 <button id="send-btn" type="button" class="btn-post">➤</button>
             </div>
@@ -243,6 +162,16 @@
         <button class="lightbox-nav next" id="lightbox-next">&#10095;</button>
     </div>
 
+    <!-- DELETE MODAL -->
+    <div id="delete-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-title">Delete Message</div>
+            <button id="btn-delete-me" class="modal-btn">Delete for me</button>
+            <button id="btn-delete-everyone" class="modal-btn danger">Delete for everyone</button>
+            <button id="btn-delete-cancel" class="modal-cancel">Cancel</button>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, arrayUnion, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -259,8 +188,9 @@
         const auth = getAuth(app);
 
         const params = new URLSearchParams(window.location.search);
-        const groupId = params.get('id');
-        const groupName = params.get('name');
+        const chatId = params.get('id') || params.get('chatId');
+        const chatName = params.get('name') || params.get('chatName');
+        const receiverUid = params.get('receiverUid') || params.get('uid');
 
         const MAX_FILE_SIZE_MB = 10;
         const CLOUDINARY_CLOUD_NAME = "dwmbgd9jy";
@@ -271,18 +201,15 @@
         const profileCache = new Map();
         let currentAuthUser = null;
 
-        // Edit state
-        let editingMsgId = null;
+        // Edit/Delete state
+        let editingMessageId = null;
+        let deletingMessageId = null;
 
         // Lightbox state
         let currentGalleryImages = [];
         let currentGalleryIndex = 0;
 
-        const groupHeaderEl = document.getElementById('group-header');
-        const backBtnEl = document.getElementById('btn-back');
-        const groupTitleEl = document.getElementById('group-title');
-        const headerAvatarEl = document.getElementById('header-avatar');
-        
+        const chatTitleEl = document.getElementById('chat-title');
         const attachToggleBtn = document.getElementById('btn-attach-toggle');
         const attachMenu = document.getElementById('attach-menu');
         const fileInput = document.getElementById('file-upload');
@@ -294,6 +221,12 @@
         const editBanner = document.getElementById("edit-banner");
         const cancelEditBtn = document.getElementById("cancel-edit-btn");
 
+        // Delete Modal Elements
+        const deleteModal = document.getElementById('delete-modal');
+        const btnDeleteMe = document.getElementById('btn-delete-me');
+        const btnDeleteEveryone = document.getElementById('btn-delete-everyone');
+        const btnDeleteCancel = document.getElementById('btn-delete-cancel');
+
         // Lightbox Elements
         const lightbox = document.getElementById('lightbox');
         const lightboxWrapper = document.getElementById('lightbox-wrapper');
@@ -303,46 +236,12 @@
         const lightboxPrev = document.getElementById('lightbox-prev');
         const lightboxNext = document.getElementById('lightbox-next');
 
-        if (groupTitleEl) {
-            groupTitleEl.textContent = groupName || "Group Discussion";
-        }
-
-        /* 0. HEADER CLICK -> NAVIGATE TO GINFO.HTML */
-        if (groupHeaderEl) {
-            groupHeaderEl.addEventListener('click', (e) => {
-                // Ignore if back button was clicked specifically
-                if (e.target.closest('#btn-back')) return;
-
-                if (groupId) {
-                    window.location.href = `ginfo.html?id=${groupId}`;
-                }
-            });
-        }
-
-        if (backBtnEl) {
-            backBtnEl.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevents triggering header redirect
-            });
-        }
-
-        // Fetch live group metadata for the header icon/title
-        async function loadGroupHeaderDetails() {
-            if (!groupId) return;
-            try {
-                const groupSnap = await getDoc(doc(db, "groups", groupId));
-                if (groupSnap.exists()) {
-                    const data = groupSnap.data();
-                    if (data.name && groupTitleEl) {
-                        groupTitleEl.textContent = data.name;
-                    }
-                    if (data.icon && headerAvatarEl) {
-                        headerAvatarEl.innerHTML = `<img src="${escapeHTML(data.icon)}" alt="Icon">`;
-                    } else if (data.name && headerAvatarEl) {
-                        headerAvatarEl.textContent = data.name.charAt(0).toUpperCase();
-                    }
-                }
-            } catch (err) {
-                console.error("Header group fetch error:", err);
+        // SETUP HEADER TITLE WITH PROFILE NAV
+        if (chatTitleEl) {
+            chatTitleEl.textContent = chatName || "Chat";
+            if (receiverUid) {
+                chatTitleEl.classList.add('profile-link');
+                chatTitleEl.setAttribute('data-uid', receiverUid);
             }
         }
 
@@ -363,25 +262,28 @@
         });
 
         document.addEventListener('click', (e) => {
-            if (!attachMenu.contains(e.target) && !attachToggleBtn.contains(e.target)) {
+            if (!attachMenu.contains(e.target) && e.target !== attachToggleBtn) {
                 closeAttachMenu();
             }
-            // Close open message dropdown menus when clicking elsewhere
-            if (!e.target.classList.contains('msg-menu-btn')) {
-                document.querySelectorAll('.msg-dropdown.active').forEach(d => d.classList.remove('active'));
+            // Close open message option dropdowns when clicking outside
+            if (!e.target.closest('.msg-actions-btn')) {
+                document.querySelectorAll('.msg-menu.active').forEach(m => m.classList.remove('active'));
             }
         });
 
         const getUsername = () => {
-            if (!currentAuthUser) return "Student";
-            return currentAuthUser.displayName || (currentAuthUser.email ? currentAuthUser.email.split("@")[0] : "Student");
+            if (!currentAuthUser) return "User";
+            return currentAuthUser.displayName || (currentAuthUser.email ? currentAuthUser.email.split("@")[0] : "User");
         };
 
         async function getUserProfile(uid) {
             if (!uid) return null;
             if (profileCache.has(uid)) return profileCache.get(uid);
             try {
-                const pSnap = await getDoc(doc(db, "profiles", uid));
+                let pSnap = await getDoc(doc(db, "profiles", uid));
+                if (!pSnap.exists()) {
+                    pSnap = await getDoc(doc(db, "users", uid));
+                }
                 if (pSnap.exists()) {
                     const data = pSnap.data();
                     profileCache.set(uid, data);
@@ -396,11 +298,10 @@
         /* 1. AUTHENTICATION */
         onAuthStateChanged(auth, (user) => {
             currentAuthUser = user;
-            if (groupId) {
-                loadGroupHeaderDetails();
+            if (chatId) {
                 initMessageListener();
             } else {
-                console.error("Missing group ID in URL parameters.");
+                console.error("Missing chat ID in URL parameters.");
             }
         });
 
@@ -409,7 +310,7 @@
         function initMessageListener() {
             if (unsubscribeListener) return;
 
-            const q = query(collection(db, "groups", groupId, "messages"), orderBy("timestamp", "asc"));
+            const q = query(collection(db, "chats", chatId, "messages"), orderBy("timestamp", "asc"));
 
             unsubscribeListener = onSnapshot(q, async (snapshot) => {
                 if (!feed) return;
@@ -428,19 +329,20 @@
                         const msgId = docSnap.id;
                         const msg = docSnap.data();
 
-                        // SKIP IF "DELETED FOR ME"
-                        if (currentAuthUser && msg.deletedFor && msg.deletedFor.includes(currentAuthUser.uid)) {
+                        // Skip message if deleted for current user
+                        if (msg.deletedFor && currentAuthUser && msg.deletedFor.includes(currentAuthUser.uid)) {
                             continue;
                         }
 
                         const isSent = currentAuthUser && msg.senderUid === currentAuthUser.uid;
-                        const images = msg.imageUrls || (msg.imageUrl ? [msg.imageUrl] : []);
+                        const images = msg.isDeleted ? [] : (msg.imageUrls || (msg.imageUrl ? [msg.imageUrl] : []));
                         
                         let avatarHTML = "";
                         if (!isSent) {
                             const profile = profileCache.get(msg.senderUid);
-                            if (profile && profile.photoURL) {
-                                avatarHTML = `<div class="avatar profile-link" data-uid="${escapeHTML(msg.senderUid)}"><img src="${escapeHTML(profile.photoURL)}"></div>`;
+                            if (profile && (profile.photoURL || profile.photoUrl || profile.avatarUrl)) {
+                                const photo = profile.photoURL || profile.photoUrl || profile.avatarUrl;
+                                avatarHTML = `<div class="avatar profile-link" data-uid="${escapeHTML(msg.senderUid)}"><img src="${escapeHTML(photo)}"></div>`;
                             } else {
                                 const initial = msg.sender ? msg.sender.charAt(0).toUpperCase() : "U";
                                 avatarHTML = `<div class="avatar profile-link" data-uid="${escapeHTML(msg.senderUid)}">${initial}</div>`;
@@ -449,37 +351,33 @@
 
                         const serializedImages = encodeURIComponent(JSON.stringify(images));
 
-                        // Check if message was deleted for everyone
-                        if (msg.isDeleted) {
-                            completeFeedHTML += `
-                                <div class="msg-row ${isSent ? 'sent' : 'received'}">
-                                    ${avatarHTML}
-                                    <div class="msg-bubble">
-                                        <div class="msg-text msg-deleted">🚫 This message was deleted</div>
-                                    </div>
+                        // Build Message Menu Options for Sender
+                        let actionsHTML = "";
+                        if (isSent && !msg.isDeleted) {
+                            const canEdit = msg.text ? 'true' : 'false';
+                            actionsHTML = `
+                                <button class="msg-actions-btn" data-msg-id="${msgId}">⋮</button>
+                                <div class="msg-menu" id="msg-menu-${msgId}">
+                                    ${msg.text ? `<div class="msg-menu-item btn-action-edit" data-msg-id="${msgId}" data-text="${escapeHTML(msg.text)}">✏️ Edit</div>` : ''}
+                                    <div class="msg-menu-item danger btn-action-delete" data-msg-id="${msgId}">🗑️ Delete</div>
                                 </div>
                             `;
-                            continue;
                         }
 
-                        // Options dropdown for sent messages
-                        const menuBtnHTML = isSent ? `
-                            <button class="msg-menu-btn" data-msg-id="${msgId}">⋮</button>
-                            <div class="msg-dropdown" id="dropdown-${msgId}">
-                                <div class="msg-dropdown-item btn-edit-msg" data-msg-id="${msgId}" data-text="${escapeHTML(msg.text || '')}">✏️ Edit</div>
-                                <div class="msg-dropdown-item btn-delete-me" data-msg-id="${msgId}">🗑️ Delete for me</div>
-                                <div class="msg-dropdown-item danger btn-delete-everyone" data-msg-id="${msgId}">🗑️ Delete for everyone</div>
-                            </div>
-                        ` : '';
-
-                        const editedTagHTML = msg.isEdited ? `<span class="edited-tag">(edited)</span>` : '';
+                        let textHTML = "";
+                        if (msg.isDeleted) {
+                            textHTML = `<div class="msg-text deleted-msg">🚫 This message was deleted</div>`;
+                        } else if (msg.text) {
+                            textHTML = `<div class="msg-text">${escapeHTML(msg.text)}${msg.isEdited ? '<span class="edited-tag">(edited)</span>' : ''}</div>`;
+                        }
 
                         completeFeedHTML += `
-                            <div class="msg-row ${isSent ? 'sent' : 'received'}">
+                            <div class="msg-row ${isSent ? 'sent' : 'received'}" id="msg-row-${msgId}">
                                 ${avatarHTML}
                                 <div class="msg-bubble">
+                                    ${actionsHTML}
                                     ${!isSent ? `<div class="msg-name profile-link" data-uid="${escapeHTML(msg.senderUid)}">${escapeHTML(msg.sender || 'Anonymous')}</div>` : ''}
-                                    ${msg.text ? `<div class="msg-text">${escapeHTML(msg.text)}${editedTagHTML}${menuBtnHTML}</div>` : `${menuBtnHTML}`}
+                                    ${textHTML}
                                     ${renderImageGrid(images, serializedImages)}
                                 </div>
                             </div>
@@ -489,7 +387,7 @@
                     feed.innerHTML = completeFeedHTML;
                     attachImageClickEvents();
                     attachProfileClickEvents();
-                    attachMessageActionEvents();
+                    attachMessageMenuEvents();
                     window.scrollTo(0, document.body.scrollHeight);
                 } catch (err) {
                     console.error("Snapshot render error:", err);
@@ -525,103 +423,112 @@
         }
 
         /* 3. MESSAGE EDIT & DELETE ACTIONS */
-        function attachMessageActionEvents() {
-            // Toggle dropdown
-            document.querySelectorAll('.msg-menu-btn').forEach(btn => {
+        function attachMessageMenuEvents() {
+            // Toggle dropdown menu
+            document.querySelectorAll('.msg-actions-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const msgId = btn.getAttribute('data-msg-id');
-                    const dropdown = document.getElementById(`dropdown-${msgId}`);
+                    const menu = document.getElementById(`msg-menu-${msgId}`);
                     
-                    document.querySelectorAll('.msg-dropdown.active').forEach(d => {
-                        if (d !== dropdown) d.classList.remove('active');
+                    document.querySelectorAll('.msg-menu.active').forEach(m => {
+                        if (m !== menu) m.classList.remove('active');
                     });
-
-                    if (dropdown) dropdown.classList.toggle('active');
+                    if (menu) menu.classList.toggle('active');
                 });
             });
 
-            // Edit message click
-            document.querySelectorAll('.btn-edit-msg').forEach(item => {
-                item.addEventListener('click', (e) => {
-                    const msgId = item.getAttribute('data-msg-id');
-                    const text = item.getAttribute('data-text');
-                    startEditingMessage(msgId, text);
+            // Edit Action
+            document.querySelectorAll('.btn-action-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const msgId = btn.getAttribute('data-msg-id');
+                    const text = btn.getAttribute('data-text');
+                    
+                    editingMessageId = msgId;
+                    chatInput.value = text;
+                    chatInput.focus();
+                    editBanner.classList.add('active');
+                    
+                    document.querySelectorAll('.msg-menu.active').forEach(m => m.classList.remove('active'));
                 });
             });
 
-            // Delete for me
-            document.querySelectorAll('.btn-delete-me').forEach(item => {
-                item.addEventListener('click', async (e) => {
-                    const msgId = item.getAttribute('data-msg-id');
-                    await deleteForMe(msgId);
-                });
-            });
-
-            // Delete for everyone
-            document.querySelectorAll('.btn-delete-everyone').forEach(item => {
-                item.addEventListener('click', async (e) => {
-                    const msgId = item.getAttribute('data-msg-id');
-                    await deleteForEveryone(msgId);
+            // Delete Action
+            document.querySelectorAll('.btn-action-delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deletingMessageId = btn.getAttribute('data-msg-id');
+                    deleteModal.classList.add('active');
+                    document.querySelectorAll('.msg-menu.active').forEach(m => m.classList.remove('active'));
                 });
             });
         }
 
-        function startEditingMessage(msgId, currentText) {
-            editingMsgId = msgId;
-            chatInput.value = currentText;
-            chatInput.focus();
-            editBanner.classList.add("active");
-        }
+        cancelEditBtn.addEventListener('click', clearEditState);
 
-        function cancelEditing() {
-            editingMsgId = null;
+        function clearEditState() {
+            editingMessageId = null;
             chatInput.value = "";
-            editBanner.classList.remove("active");
+            editBanner.classList.remove('active');
         }
 
-        cancelEditBtn.addEventListener("click", cancelEditing);
+        // Modal Handlers
+        btnDeleteCancel.addEventListener('click', () => {
+            deleteModal.classList.remove('active');
+            deletingMessageId = null;
+        });
 
-        async function deleteForMe(msgId) {
-            if (!currentAuthUser || !groupId || !msgId) return;
+        btnDeleteMe.addEventListener('click', async () => {
+            if (!deletingMessageId || !currentAuthUser) return;
             try {
-                const msgRef = doc(db, "groups", groupId, "messages", msgId);
+                const msgRef = doc(db, "chats", chatId, "messages", deletingMessageId);
                 await updateDoc(msgRef, {
                     deletedFor: arrayUnion(currentAuthUser.uid)
                 });
             } catch (err) {
-                console.error("Error deleting for me:", err);
+                console.error("Delete for me error:", err);
+            } finally {
+                deleteModal.classList.remove('active');
+                deletingMessageId = null;
             }
-        }
+        });
 
-        async function deleteForEveryone(msgId) {
-            if (!currentAuthUser || !groupId || !msgId) return;
-            if (!confirm("Delete this message for everyone in the group?")) return;
+        btnDeleteEveryone.addEventListener('click', async () => {
+            if (!deletingMessageId) return;
             try {
-                const msgRef = doc(db, "groups", groupId, "messages", msgId);
+                const msgRef = doc(db, "chats", chatId, "messages", deletingMessageId);
                 await updateDoc(msgRef, {
                     isDeleted: true,
                     text: "",
                     imageUrls: []
                 });
             } catch (err) {
-                console.error("Error deleting for everyone:", err);
+                console.error("Delete for everyone error:", err);
+            } finally {
+                deleteModal.classList.remove('active');
+                deletingMessageId = null;
             }
-        }
+        });
 
         /* 4. PROFILE NAVIGATION */
         function attachProfileClickEvents() {
             document.querySelectorAll('.profile-link').forEach(el => {
+                if (el.dataset.hasProfileListener) return;
+                el.dataset.hasProfileListener = "true";
+
                 el.addEventListener('click', (e) => {
                     const uid = el.getAttribute('data-uid');
                     if (uid) {
-                        window.location.href = `chat_info.html?uid=${encodeURIComponent(uid)}`;
+                        window.location.href = `chat_info.php?uid=${encodeURIComponent(uid)}`;
                     }
                 });
             });
         }
 
-        /* 5. LIGHTBOX & TOUCH GESTURES (SWIPE + PINCH-ZOOM) */
+        attachProfileClickEvents();
+
+        /* 5. LIGHTBOX & TOUCH GESTURES */
         let scale = 1;
         let startDist = 0;
         let startScale = 1;
@@ -816,35 +723,31 @@
             });
         }
 
-        /* 7. POST & EDIT LOGIC */
+        /* 7. POST / UPDATE LOGIC */
         async function sendChatMessage() {
             if (isPosting) return;
 
             try {
-                if (!groupId || !currentAuthUser) return;
+                if (!chatId || !currentAuthUser) return;
 
                 const message = chatInput ? chatInput.value.trim() : "";
 
-                // IF IN EDIT MODE
-                if (editingMsgId) {
+                // EDIT MODE
+                if (editingMessageId) {
                     if (!message) return;
                     isPosting = true;
-                    if (sendBtn) {
-                        sendBtn.disabled = true;
-                        sendBtn.textContent = "...";
-                    }
-
-                    const msgRef = doc(db, "groups", groupId, "messages", editingMsgId);
+                    
+                    const msgRef = doc(db, "chats", chatId, "messages", editingMessageId);
                     await updateDoc(msgRef, {
                         text: message,
                         isEdited: true
                     });
 
-                    cancelEditing();
+                    clearEditState();
                     return;
                 }
 
-                // NORMAL NEW MESSAGE
+                // NEW MESSAGE MODE
                 if (!message && selectedFiles.length === 0) return;
 
                 isPosting = true;
@@ -875,7 +778,7 @@
                     }
                 }
 
-                await addDoc(collection(db, "groups", groupId, "messages"), {
+                await addDoc(collection(db, "chats", chatId, "messages"), {
                     sender: getUsername(),
                     senderUid: currentAuthUser.uid,
                     text: message,
@@ -888,7 +791,7 @@
                 renderPreviews();
 
             } catch (e) {
-                console.error("Message send/edit error:", e);
+                console.error("Message send/update error:", e);
             } finally {
                 isPosting = false; 
                 if (sendBtn) {

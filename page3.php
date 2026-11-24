@@ -425,8 +425,8 @@
                 <li><a href="videos.php">Video Lessons</a></li>
                 <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 
@@ -491,7 +491,7 @@
                 document.body.style.display = "block";
                 loadSelectionData();
             } else {
-                window.location.href = "login.html";
+                window.location.href = "login.php";
             }
         });
 
@@ -550,7 +550,7 @@
         }
 
         window.startExam = function () {
-            window.location.href = "exam.html";
+            window.location.href = "exam.php";
         };
 
         document.getElementById('current-year').textContent = new Date().getFullYear();

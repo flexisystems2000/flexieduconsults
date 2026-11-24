@@ -306,15 +306,15 @@ if ($videoDescription === '') {
                 <li><a href="index.php">Home</a></li>
                 <li><a href="/about-us.php">About Us</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
-                <li><a href="syllabus.html">Access the JAMB/WAEC syllabus</a></li>
-                <li><a href="brochure.html">Access JAMB Brochure</a></li>
+                <li><a href="syllabus.php">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="brochure.php">Access JAMB Brochure</a></li>
                 <li><a href="videos.php">Video Lessons</a></li>
-                <li><a href="pdf.html">Past Questions & PDFs</a></li>
-                <li><a href="cbt.html">CBT Simulator</a></li>
-                <li><a href="groups.html">Classroom</a></li>
+                <li><a href="pdf.php">Past Questions & PDFs</a></li>
+                <li><a href="cbt.php">CBT Simulator</a></li>
+                <li><a href="groups.php">Classroom</a></li>
                 <li><a href="/terms.php"> Terms and Conditions</a></li>
                 <li><a href="/policy.php"> Privacy Policy</a></li>   
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 

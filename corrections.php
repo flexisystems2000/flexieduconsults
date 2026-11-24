@@ -454,8 +454,8 @@
                 <li><a href="videos.php">Video Lessons</a></li>
                 <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
                 <li><a href="/terms.php"> Terms and Conditions</a></li>
                 <li><a href="/policy.php"> Privacy Policy</a></li>   
             </ul>
@@ -545,7 +545,7 @@ function loadReviewData() {
         const subjects = Object.keys(examData);
         if (subjects.length === 0) {
             alert("No stored exam questions found to review.");
-            window.location.href = "results.html"; // Graceful redirect back to results
+            window.location.href = "results.php"; // Graceful redirect back to results
             return;
         }
 

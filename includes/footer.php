@@ -83,13 +83,13 @@
                 </li>
 
                 <li>
-                    <a href="/groups.html">
+                    <a href="/groups.php">
                         Classroom
                     </a>
                 </li>
 
                 <li>
-                    <a href="/location.html">
+                    <a href="/location.php">
                         Tutorial Centres
                     </a>
                 </li>

@@ -30,7 +30,7 @@ $staticPages = [
     '/download-app.php'=> '0.6',
     '/policy.php'      => '0.3',
     '/terms.php'       => '0.3',
-    '/corrections.html'=> '0.3'
+    '/corrections.php'=> '0.3'
 ];
 
 foreach ($staticPages as $path => $priority) {

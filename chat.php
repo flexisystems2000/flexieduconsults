@@ -180,8 +180,8 @@
 <div class="container">
 
     <div class="nav-tabs">
-        <a href="groups.html" class="tab-btn">GROUPS</a>
-        <a href="chat.html" class="tab-btn active">CHATS</a>
+        <a href="groups.php" class="tab-btn">GROUPS</a>
+        <a href="chat.php" class="tab-btn active">CHATS</a>
     </div>
 
     <div id="user-list-container" class="user-list">
@@ -434,7 +434,7 @@
 
         if (!user) {
 
-            window.location.href = "login.html";
+            window.location.href = "login.php";
             return;
         }
 
@@ -668,7 +668,7 @@
 
 
         window.location.href =
-            `chat_enter.html?${params.toString()}`;
+            `chat_enter.php?${params.toString()}`;
     }
 
 </script>

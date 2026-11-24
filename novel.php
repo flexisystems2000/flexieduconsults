@@ -2238,7 +2238,7 @@ header {
             </a>
 
 
-            <a href="/videos.html">
+            <a href="/videos.php">
 
                 <span class="menu-icon">
 
@@ -2405,7 +2405,7 @@ header {
             </a>
 
 
-            <a href="/syllabus.html">
+            <a href="/syllabus.php">
 
                 <span class="menu-icon">
 
@@ -2428,7 +2428,7 @@ header {
             </a>
 
 
-            <a href="/brochure.html">
+            <a href="/brochure.php">
 
                 <span class="menu-icon">
 
@@ -2451,7 +2451,7 @@ header {
             </a>
 
 
-            <a href="/cbt.html">
+            <a href="/cbt.php">
 
                 <span class="menu-icon">
 
@@ -2478,7 +2478,7 @@ header {
             </a>
 
 
-            <a href="/groups.html">
+            <a href="/groups.php">
 
                 <span class="menu-icon">
 
@@ -2530,7 +2530,7 @@ header {
             </a>
 
 
-            <a href="/pdf.html">
+            <a href="/pdf.php">
 
                 <span class="menu-icon">
 
@@ -2553,7 +2553,7 @@ header {
             </a>
 
 
-            <a href="/location.html">
+            <a href="/location.php">
 
                 <span class="menu-icon">
 
@@ -2576,7 +2576,7 @@ header {
             </a>
 
 
-            <a href="/profile.html">
+            <a href="/profile.php">
 
                 <span class="menu-icon">
 
@@ -2602,7 +2602,7 @@ header {
 
 
             <a
-                href="/login.html"
+                href="/login.php"
                 id="auth-menu-btn">
 
                 <span class="menu-icon">
@@ -3207,49 +3207,49 @@ header {
 
 
                 <li>
-                    <a href="/syllabus.html">
+                    <a href="/syllabus.php">
                         Access the JAMB/WAEC syllabus
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/brochure.html">
+                    <a href="/brochure.php">
                         Access JAMB Brochure
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/videos.html">
+                    <a href="/videos.php">
                         Video Lessons
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/pdf.html">
+                    <a href="/pdf.php">
                         Past Questions & PDFs
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/cbt.html">
+                    <a href="/cbt.php">
                         CBT Simulator
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/groups.html">
+                    <a href="/groups.php">
                         Classroom Groups and chats
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/location.html">
+                    <a href="/location.php">
                         Tutorial Centres
                     </a>
                 </li>

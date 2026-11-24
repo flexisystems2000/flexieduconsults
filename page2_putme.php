@@ -378,7 +378,7 @@
 
     <!-- BUTTONS -->
     <div class="btn-group">
-        <button type="button" class="btn-change" onclick="window.location.href='cbt.html'">
+        <button type="button" class="btn-change" onclick="window.location.href='cbt.php'">
             Change Simulator
         </button>
 
@@ -407,8 +407,8 @@
                 <li><a href="videos.php">Video Lessons</a></li>
                 <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 
@@ -471,7 +471,7 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById("exam-title").innerText = currentExamType + " Subject Selection";
         document.getElementById("exam-subtitle").innerText = "Pick your mode and up to 4 subjects";
     } else {
-        window.location.href = "login.html";
+        window.location.href = "login.php";
     }
 });
 
@@ -509,7 +509,7 @@ window.saveAndMove = () => {
     localStorage.setItem("userSubjectLabels", JSON.stringify(subjectLabels));
     localStorage.setItem("examMode", mode);
 
-    window.location.href = "page3.html";
+    window.location.href = "page3.php";
 };
 
 document.getElementById('current-year').textContent = new Date().getFullYear();

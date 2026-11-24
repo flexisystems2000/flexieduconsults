@@ -240,8 +240,8 @@
             <button id="btn-submit" class="btn-create" onclick="handleCreateGroup()">CREATE GROUP</button>
             
             <div class="nav-tabs">
-                <a href="groups.html" class="tab-btn active">GROUPS</a>
-                <a href="chat.html" class="tab-btn">CHATS</a>
+                <a href="groups.php" class="tab-btn active">GROUPS</a>
+                <a href="chat.php" class="tab-btn">CHATS</a>
             </div>
         </div>
 
@@ -268,7 +268,7 @@
         let joinedGroupIds = new Set();
 
         onAuthStateChanged(auth, async (user) => {
-            if (!user) { window.location.href = "login.html"; return; }
+            if (!user) { window.location.href = "login.php"; return; }
             await loadJoinedGroups(user.uid);
             loadGroups();
         });
@@ -424,7 +424,7 @@
                     joinedAt: serverTimestamp()
                 });
             }
-            window.location.href = `entergroup.html?id=${id}&name=${encodedName}`;
+            window.location.href = `entergroup.php?id=${id}&name=${encodedName}`;
         };
     </script>
 </body>

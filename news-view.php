@@ -4128,49 +4128,49 @@ if ($isMissingArticleRequest) {
 
 
                 <li>
-                    <a href="/syllabus.html">
+                    <a href="/syllabus.php">
                         Access the JAMB/WAEC syllabus
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/brochure.html">
+                    <a href="/brochure.php">
                         Access JAMB Brochure
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/videos.html">
+                    <a href="/videos.php">
                         Video Lessons
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/pdf.html">
+                    <a href="/pdf.php">
                         Past Questions & PDFs
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/cbt.html">
+                    <a href="/cbt.php">
                         CBT Simulator
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/classroom.html">
+                    <a href="/groups.php">
                         Classroom
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="/location.html">
+                    <a href="/location.php">
                         Tutorial Centres
                     </a>
                 </li>

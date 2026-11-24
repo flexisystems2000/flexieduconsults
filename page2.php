@@ -366,7 +366,7 @@
     </form>
 
     <div class="btn-group">
-        <button type="button" class="btn-change" onclick="window.location.href='cbt.html'">
+        <button type="button" class="btn-change" onclick="window.location.href='cbt.php'">
             Change Simulator
         </button>
 
@@ -388,7 +388,7 @@
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul class="footer-links-list">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="/about-us.php">About Us</a></li>
                 <li><a href="https://elearning.flexieduconsult.com.ng" target="_blank" rel="noopener">WhatsApp Masterclass (E-Learning)</a></li>
                 <li><a href="syllabus.php">Access the JAMB/WAEC syllabus</a></li>
@@ -396,8 +396,8 @@
                 <li><a href="videos.php">Video Lessons</a></li>
                 <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 
@@ -460,7 +460,7 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById("exam-title").innerText = currentExamType + " Selection";
         validateSelection(); // Initial check on auth load
     } else {
-        window.location.href = "login.html";
+        window.location.href = "login.php";
     }
 });
 
@@ -500,7 +500,7 @@ window.saveAndMove = () => {
     // Use subjectKeys directly since "Use of English" is already included in checked checkboxes
     localStorage.setItem("userSubjectKeys", JSON.stringify(subjectKeys));
     localStorage.setItem("examMode", mode);
-    window.location.href = "page3.html";
+    window.location.href = "page3.php";
 };
 
 document.getElementById('current-year').textContent = new Date().getFullYear();

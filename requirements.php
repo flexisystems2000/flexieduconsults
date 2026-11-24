@@ -658,8 +658,8 @@
                 <li><a href="videos.php">Video Lessons</a></li>
                 <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="classroom.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 
@@ -1006,7 +1006,7 @@
     }
 
     function goToCourses(selectedInst) {
-      window.location.href = `brochure.html?institution=${encodeURIComponent(institutionParam)}&faculty=${encodeURIComponent(facultyParam)}&selectedInst=${selectedInst}`;
+      window.location.href = `brochure.php?institution=${encodeURIComponent(institutionParam)}&faculty=${encodeURIComponent(facultyParam)}&selectedInst=${selectedInst}`;
     }
 
     instSearchInput.addEventListener('input', filterInstitutions);
@@ -1015,7 +1015,7 @@
       if (document.referrer && document.referrer.includes(window.location.hostname)) {
         window.history.back();
       } else {
-        window.location.href = `brochure.html?institution=${encodeURIComponent(institutionParam)}&faculty=${encodeURIComponent(facultyParam)}`;
+        window.location.href = `brochure.php?institution=${encodeURIComponent(institutionParam)}&faculty=${encodeURIComponent(facultyParam)}`;
       }
     }
 

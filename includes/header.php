@@ -124,7 +124,7 @@ if (!function_exists('flexiHeaderIsActive')) {
                 </a>
 
                 <a
-                    href="/groups.html"
+                    href="/groups.php"
                     class="flexi-menu-link<?php echo flexiHeaderIsActive('groups', $currentPage); ?>"
                 >
                     Classroom

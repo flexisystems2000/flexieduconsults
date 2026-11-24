@@ -382,10 +382,10 @@
                 <li><a href="syllabus.php">Access the JAMB/WAEC syllabus</a></li>
                 <li><a href="brochure.php">Access JAMB Brochure</a></li>
                 <li><a href="videos.php">Video Lessons</a></li>
-                <li><a href="pdf.html">Past Questions & PDFs</a></li>
+                <li><a href="pdf.php">Past Questions & PDFs</a></li>
                 <li><a href="cbt.php">CBT Simulator</a></li>
-                <li><a href="groups.html">Classroom</a></li>
-                <li><a href="location.html">Tutorial Centres</a></li>
+                <li><a href="groups.php">Classroom</a></li>
+                <li><a href="location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 
@@ -454,11 +454,11 @@
         localStorage.setItem("displayExamName", type);
 
         if (type === 'JAMB') {
-            window.location.href = "page2.html";
+            window.location.href = "page2.php";
         } else if (type === 'POST_UTME') {
-            window.location.href = "page2_putme.html";
+            window.location.href = "page2_putme.php";
         } else {
-            window.location.href = "page2_waec.html";
+            window.location.href = "page2_waec.php";
         }
     };
 

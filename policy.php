@@ -667,7 +667,7 @@ main a.button {
                 <span class="menu-label">Home</span>
             </a>
 
-            <a href="/videos.html">
+            <a href="/videos.php">
                 <span class="menu-icon" aria-hidden="true">▤</span>
                 <span class="menu-label">Watch Video Lessons</span>
             </a>
@@ -707,22 +707,22 @@ main a.button {
                 <span class="menu-label">Download Flexi</span>
             </a>
 
-            <a href="/syllabus.html">
+            <a href="/syllabus.php">
                 <span class="menu-icon" aria-hidden="true">▤</span>
                 <span class="menu-label">Access the JAMB and WAEC syllabus here</span>
             </a>
 
-            <a href="/brochure.html">
+            <a href="/brochure.php">
                 <span class="menu-icon" aria-hidden="true">▧</span>
                 <span class="menu-label">Access JAMB Brochure</span>
             </a>
 
-            <a href="/cbt.html">
+            <a href="/cbt.php">
                 <span class="menu-icon" aria-hidden="true">▣</span>
                 <span class="menu-label">CBT Simulator</span>
             </a>
 
-            <a href="/groups.html">
+            <a href="/groups.php">
                 <span class="menu-icon" aria-hidden="true">♧</span>
                 <span class="menu-label">Classroom (Groups and chats)</span>
             </a>
@@ -732,22 +732,22 @@ main a.button {
                 <span class="menu-label">Purchase Scratch Cards</span>
             </a>
 
-            <a href="/pdf.html">
+            <a href="/pdf.php">
                 <span class="menu-icon" aria-hidden="true">▧</span>
                 <span class="menu-label">Get your PDFs from here</span>
             </a>
 
-            <a href="/location.html">
+            <a href="/location.php">
                 <span class="menu-icon" aria-hidden="true">⌖</span>
                 <span class="menu-label">Tutorial Centers Near You</span>
             </a>
 
-            <a href="/profile.html">
+            <a href="/profile.php">
                 <span class="menu-icon" aria-hidden="true">♙</span>
                 <span class="menu-label">User Profile</span>
             </a>
 
-            <a href="/login.html" id="auth-menu-btn">
+            <a href="/login.php" id="auth-menu-btn">
                 <span class="menu-icon" aria-hidden="true">⇥</span>
                 <span class="menu-label">Login</span>
             </a>
@@ -1261,13 +1261,13 @@ main a.button {
                     </a>
                 </li>
 
-                <li><a href="/syllabus.html">Access the JAMB/WAEC syllabus</a></li>
-                <li><a href="/brochure.html">Access JAMB Brochure</a></li>
-                <li><a href="/videos.html">Video Lessons</a></li>
-                <li><a href="/pdf.html">Past Questions &amp; PDFs</a></li>
-                <li><a href="/cbt.html">CBT Simulator</a></li>
-                <li><a href="/groups.html">Classroom Groups and chats</a></li>
-                <li><a href="/location.html">Tutorial Centres</a></li>
+                <li><a href="/syllabus.php">Access the JAMB/WAEC syllabus</a></li>
+                <li><a href="/brochure.php">Access JAMB Brochure</a></li>
+                <li><a href="/videos.php">Video Lessons</a></li>
+                <li><a href="/pdf.php">Past Questions &amp; PDFs</a></li>
+                <li><a href="/cbt.php">CBT Simulator</a></li>
+                <li><a href="/groups.php">Classroom Groups and chats</a></li>
+                <li><a href="/location.php">Tutorial Centres</a></li>
             </ul>
         </div>
 
