@@ -12,11 +12,11 @@
 
     # CANONICAL CLEAN PHP URLS
     # Redirect direct PHP page requests to extensionless URLs.
-    RewriteRule ^index\\.php$ / [R=301,L]
-    RewriteRule ^sitemap\\.php$ /sitemap.xml [R=301,L]
-    RewriteCond %{THE_REQUEST} \\s/+(.+?)\\.php[?\\s] [NC]
+    RewriteRule ^index\.php$ / [R=301,L]
+    RewriteRule ^sitemap\.php$ /sitemap.xml [R=301,L]
+    RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[?\s] [NC]
     RewriteCond %1 !^(health|news-view)$ [NC]
-    RewriteRule ^(.+)\\.php$ /$1 [R=301,L,NE]
+    RewriteRule ^(.+)\.php$ /$1 [R=301,L,NE]
 
     # CLEAN EXTENSIONLESS PHP PAGE ROUTING
     # Only route to a PHP file that actually exists.
