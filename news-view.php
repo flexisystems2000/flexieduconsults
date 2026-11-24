@@ -508,10 +508,7 @@ if ($newsId || $newsSlug) {
             if (!empty($article['slug'])) {
 
                 $pageUrl =
-                    $scheme .
-                    '://' .
-                    $host .
-                    '/news/' .
+                    'https://www.flexieduconsult.com.ng/news/' .
                     rawurlencode(
                         $article['slug']
                     );
@@ -519,10 +516,7 @@ if ($newsId || $newsSlug) {
             } elseif (!empty($article['id'])) {
 
                 $pageUrl =
-                    $scheme .
-                    '://' .
-                    $host .
-                    '/news/id/' .
+                    'https://www.flexieduconsult.com.ng/news/id/' .
                     rawurlencode(
                         $article['id']
                     );
