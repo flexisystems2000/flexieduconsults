@@ -101,7 +101,7 @@ function flexi_existing_sale(FlexiFirestore $db, string $collection, string $ref
 
 function flexi_record_payment_issue(FlexiFirestore $db, string $type, string $reference, string $email, string $reason): void
 {
-    $now = gmdate('Y-m-d\\TH:i:s\\Z');
+    $now = gmdate('Y-m-d\TH:i:s\Z');
     $id = 'issue_' . hash('sha256', $reference);
     $document = $db->encodedDocument('payment_issues/' . $id, [
         'paymentReference' => $reference,
@@ -144,7 +144,7 @@ function flexi_claim_stock_pin(FlexiFirestore $db, string $type, string $referen
 
         $pin = $available[0];
         $fields = $pin['fields'];
-        $now = gmdate('Y-m-d\\TH:i:s\\Z');
+        $now = gmdate('Y-m-d\TH:i:s\Z');
         $sale = [
             'paymentReference' => $reference,
             'email' => $email,
