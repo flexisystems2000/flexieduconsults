@@ -29,13 +29,6 @@ try {
         ], 1)) > 0;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $type = strtoupper(trim((string)($_POST['product'] ?? '')));
-        $email = trim((string)($_POST['email'] ?? 'billing@flexitutors.com'));
-        if (!isset($prices[$type])) throw new InvalidArgumentException('Choose a valid card type.');
-        if (!$stock[$type]) throw new RuntimeException('This card type is currently out of stock.');
-        flexi_start_checkout('stock', $type, $email, $prices[$type] * 100);
-    }
 
     $reference = trim((string)($_GET['reference'] ?? ''));
     if ($reference !== '') {
@@ -68,6 +61,7 @@ try {
 <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
+<script src="https://js.paystack.co/v2/inline.js"></script>
 <title>Flexi Tutors | Purchase Cards</title>
 <style>
         :root { --blue: #003366; --green: #2E8B57; --yellow: #FFD700; --bg: #f4f7f6; }
@@ -140,9 +134,7 @@ try {
         <div class="product-name">WAEC Scratch Card</div>
         <div class="product-desc">Instant Result Checker & Registration PIN</div>
         <div class="product-price">₦<span id="price-waec"><?= e(naira($prices['WAEC'])) ?></span></div>
-        <form method="post" action="/purchase.php">
-            <input type="hidden" name="product" value="WAEC">
-            <input type="hidden" name="email" value="billing@flexitutors.com">
+        <form onsubmit="startCardPayment(event, 'WAEC')">
             <button id="btn-WAEC" type="submit" class="buy-btn" <?= !$stock['WAEC'] ? 'disabled' : '' ?>><?= $stock['WAEC'] ? 'Purchase WAEC Card' : 'OUT OF STOCK' ?></button>
         </form>
     </div>
@@ -152,9 +144,7 @@ try {
         <div class="product-name">NECO Token</div>
         <div class="product-desc">Official NECO Result Checker Token</div>
         <div class="product-price">₦<span id="price-neco"><?= e(naira($prices['NECO'])) ?></span></div>
-        <form method="post" action="/purchase.php">
-            <input type="hidden" name="product" value="NECO">
-            <input type="hidden" name="email" value="billing@flexitutors.com">
+        <form onsubmit="startCardPayment(event, 'NECO')">
             <button id="btn-NECO" type="submit" class="buy-btn" <?= !$stock['NECO'] ? 'disabled' : '' ?>><?= $stock['NECO'] ? 'Purchase NECO Token' : 'OUT OF STOCK' ?></button>
         </form>
     </div>
@@ -165,5 +155,27 @@ try {
     <div>&copy; <?= date('Y') ?> flexieduconsult</div>
     <p><a href="/about-us.php" style="color:white;">About Us</a></p>
 </footer>
+<script>
+const flexiCardPrices = <?= json_encode($prices, JSON_UNESCAPED_SLASHES) ?>;
+async function startCardPayment(event, type) {
+    event.preventDefault();
+    const button = document.getElementById("btn-" + type);
+    if (!button || button.disabled) return;
+    if (typeof window.PaystackPop !== "function") { alert("Payment service is unavailable. Please refresh and try again."); return; }
+    button.disabled = true;
+    try {
+        const popup = new PaystackPop();
+        popup.newTransaction({
+            key: "pk_live_bb0c7b83bfdbd0c9990e2c7f7fd73a86d4821a00",
+            email: "billing@flexitutors.com",
+            amount: Number(flexiCardPrices[type]) * 100,
+            currency: "NGN",
+            metadata: { flexi_flow: "stock", flexi_item: type, flexi_amount_kobo: Number(flexiCardPrices[type]) * 100 },
+            onSuccess: (transaction) => { window.location.href = "/purchase.php?reference=" + encodeURIComponent(transaction.reference); },
+            onCancel: () => { button.disabled = false; }
+        });
+    } catch (error) { button.disabled = false; alert("Unable to open Paystack checkout. Please try again."); }
+}
+</script>
 </body>
 </html>
