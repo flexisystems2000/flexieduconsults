@@ -15,6 +15,8 @@ $selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JAMB Brochure | Flexi Educational Consult</title>
+  <meta name="description" content="Explore the JAMB brochure and course information for Nigerian universities, polytechnics, colleges of education and other institutions.">
+  <link rel="canonical" href="https://www.flexieduconsult.com.ng/brochure.php">
   <style>
     :root {
       --blue: #003366;
