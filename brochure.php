@@ -1,3 +1,14 @@
+<?php
+function flexiEsc($v){return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');}
+$brochureDataFile=__DIR__.'/data/brochure-courses.json';
+$brochureData=is_file($brochureDataFile)?json_decode(file_get_contents($brochureDataFile),true):[];
+if(!is_array($brochureData))$brochureData=[];
+$institutionOptions=['Universities'=>'Degree (Universities)','Polytechnics'=>'ND / HND (Polytechnics & Monotechnics)','Colleges'=>'NCE (Colleges of Education)','IEIs'=>'Innovation Enterprise Institutions (IEIs)'];
+$facultyOptions=['Administration'=>'Administration','Agriculture'=>'Agriculture','Engineering'=>'Engineering, Environment & Technology','Education'=>'Education','Law'=>'Law','Medical'=>'Medical, Pharmaceutical & Health Services','Sciences'=>'Sciences','SocialSciences'=>'Social Sciences'];
+$institution=isset($_GET['institution'],$institutionOptions[$_GET['institution']])?$_GET['institution']:'Universities';
+$faculty=isset($_GET['faculty'],$brochureData[$_GET['faculty']])?$_GET['faculty']:'Administration';
+$selectedInstitutionText=$institutionOptions[$institution];$selectedFacultyText=$facultyOptions[$faculty]??$faculty;$courses=$brochureData[$faculty]??[];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,34 +39,7 @@
       color: var(--text-main);
     }
 
-    /* Full-width header */
-    .header-wrapper {
-      width: 100%;
-      background-color: var(--flexi-navy);
-      border-bottom: 5px solid var(--flexi-green);
-      margin-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-
-    .header-content {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 28px 20px;
-      text-align: center;
-      color: #ffffff;
-    }
-
-    .header-content h1 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      letter-spacing: 0.3px;
-    }
-
-    .header-content p {
-      font-size: 0.85rem;
-      color: #94a3b8;
-    }
+    
 
     .container {
       max-width: 600px;
@@ -351,17 +335,446 @@
     }
       }
         
-  </style>
+  /* Homepage header and navigation */
+    header {
+        background: var(--blue);
+        color: white;
+
+        height: 52px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 20px;
+
+        border-bottom: 3px solid var(--green);
+
+        position: sticky;
+        top: 0;
+
+        z-index: 1000;
+    }
+
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+
+    .logo-img {
+        height: 34px;
+        width: 34px;
+
+        object-fit: contain;
+
+        border-radius: 4px;
+    }
+
+
+    .brand-name {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+    }
+
+
+    /* ========================================================
+       MENU
+       ======================================================== */
+
+    .menu-container {
+        position: relative;
+    }
+
+
+    .menu-btn {
+        width: 38px;
+        height: 38px;
+
+        cursor: pointer;
+
+        background: rgba(255,255,255,.06);
+
+        border: 1px solid rgba(255,255,255,.32);
+
+        border-radius: 8px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: white;
+
+        transition: background .2s ease, transform .2s ease;
+    }
+
+
+    .menu-btn:hover {
+        background: rgba(255,255,255,.14);
+        transform: translateY(-1px);
+    }
+
+
+    .menu-svg {
+        width: 21px;
+        height: 21px;
+        display: block;
+    }
+
+
+    .square-menu {
+        display: none;
+
+        position: absolute;
+
+        top: 48px;
+        right: 0;
+
+        width: 300px;
+
+        background: linear-gradient(145deg, #003366 0%, #075a55 52%, #2E8B57 100%);
+
+        border: 2px solid var(--green);
+
+        border-radius: 10px;
+
+        z-index: 2000;
+
+        box-shadow:
+            0 12px 32px rgba(0,0,0,.35);
+
+        overflow: hidden;
+    }
+
+
+    .square-menu.menu-open {
+        display: block;
+        animation: menuDrop .18s ease-out;
+        transform-origin: top right;
+    }
+
+
+    @keyframes menuDrop {
+        from {
+            opacity: 0;
+            transform: translateY(-6px) scale(.98);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+
+    .square-menu a {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 13px 15px;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+        border-bottom:
+            1px solid rgba(255,255,255,.1);
+
+        transition: background 0.15s, padding-left 0.15s;
+    }
+
+
+    .square-menu a:hover {
+        background: rgba(255,255,255,0.12);
+        padding-left: 19px;
+    }
+
+
+    .square-menu a:last-child {
+        border-bottom: none;
+    }
+
+
+    .menu-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,.96);
+    }
+
+
+    .menu-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+
+    .menu-label {
+        min-width: 0;
+        line-height: 1.35;
+    }
+
+
+    .study-menu-toggle {
+        width: 100%;
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 15px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        border: 0;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        background: transparent;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: left;
+        transition: background .15s ease, padding-left .15s ease;
+    }
+
+    .study-menu-toggle:hover {
+        background: rgba(255,255,255,0.12);
+        padding-left: 19px;
+    }
+
+    .study-menu-toggle .menu-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,.96);
+    }
+
+    .study-menu-toggle .menu-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+    .study-chevron {
+        margin-left: auto;
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+        transition: transform .2s ease;
+    }
+
+    .study-menu-toggle[aria-expanded="true"] .study-chevron {
+        transform: rotate(180deg);
+    }
+
+    .study-submenu {
+        display: none;
+        margin: 0 8px 5px 34px;
+        padding: 4px;
+        border-left: 1px solid rgba(255,255,255,.20);
+        background: rgba(0,0,0,.10);
+        border-radius: 0 8px 8px 0;
+    }
+
+    .study-submenu.open {
+        display: block;
+    }
+
+    .study-submenu a {
+        min-height: 40px;
+        padding: 9px 10px;
+        font-size: 13px;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .study-submenu a:last-child {
+        border-bottom: none;
+    }
+
+    .study-submenu .menu-icon {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+    }
+
+    .study-submenu .menu-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+
+
+        
+</style>
 </head>
 <body>
 
   <!-- Flexi Navy Header -->
-  <div class="header-wrapper">
-    <div class="header-content">
-      <h1>Flexi Educational Consult</h1>
-      <p id="facultyHeaderTitle">Degree (Universities) - Faculty Courses</p>
+  <header>
+
+    <div class="header-left">
+
+        <img
+            src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg"
+            alt="Flexi Educational Consult Official Logo"
+            class="logo-img">
+
+        <span class="brand-name">
+            Flexi Educational Consult
+        </span>
+
     </div>
-  </div>
+
+
+    <div class="menu-container">
+
+        <button
+            class="menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Toggle Navigation Menu">
+
+            <svg class="menu-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+
+        </button>
+
+
+        <div
+            class="square-menu"
+            id="squareMenu">
+
+            <a href="/index.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+                <span class="menu-label">Home</span>
+            </a>
+
+            <a href="/videos.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 7l5 3-5 3V7z" fill="currentColor"/></svg></span>
+                <span class="menu-label">Watch Video Lessons</span>
+            </a>
+
+            <button
+                type="button"
+                class="study-menu-toggle"
+                id="study-menu-toggle"
+                onclick="toggleStudyMenu(event)"
+                aria-expanded="false"
+                aria-controls="study-submenu">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M4 5.5V19M8 7h8M8 11h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span class="menu-label">Study</span>
+                <svg class="study-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <div class="study-submenu" id="study-submenu">
+                <a href="/study.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M4 5.5V19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Past Questions</span>
+                </a>
+                <a href="/novel.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v18H7.5A2.5 2.5 0 0 0 5 22V4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M5 4.5V19M9 7h6M9 11h7M9 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Novels</span>
+                </a>
+                <a href="/scholarship.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 8.5 12 4l9 4.5-9 4.5-9-4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M6 11.5V16c2.8 2.2 9.2 2.2 12 0v-4.5M21 9v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Scholarships</span>
+                </a>
+            </div>
+
+            <a href="/download-app.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.5 10.5L12 15l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 20h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Download Flexi</span>
+            </a>
+
+            <a href="/syllabus.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22V4.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 7h8M8 11h8M8 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Access the JAMB and WAEC syllabus here</span>
+            </a>
+
+            <a href="/brochure.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 12h8M8 16h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Access JAMB Brochure</span>
+            </a>
+
+            <a href="/cbt.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">CBT Simulator</span>
+            </a>
+
+            <a href="/groups.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M15 14.5a4.5 4.5 0 0 1 5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Classroom (Groups and chats)</span>
+            </a>
+
+            <a href="/purchase.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Purchase Scratch Cards</span>
+            </a>
+
+            <a href="/pdf.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 14h8M8 17h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Get your PDFs from here</span>
+            </a>
+
+            <a href="/location.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12A7 7 0 0 0 5 9c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+                <span class="menu-label">Tutorial Centers Near You</span>
+            </a>
+
+            <a href="/profile.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">User Profile</span>
+            </a>
+
+            <a
+                href="#"
+                id="auth-menu-btn">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 12h10M10 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="menu-label">Login</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
 
   <div class="container">
     <!-- Back Button -->
@@ -375,27 +788,13 @@
       <!-- Institution Category Switcher -->
       <div class="select-box">
         <label for="institutionSelect">Select Institution Type</label>
-        <select id="institutionSelect">
-          <option value="Universities">Degree (Universities)</option>
-          <option value="Polytechnics">ND / HND (Polytechnics & Monotechnics)</option>
-          <option value="Colleges">NCE (Colleges of Education)</option>
-          <option value="IEIs">Innovation Enterprise Institutions (IEIs)</option>
-        </select>
+        <select id="institutionSelect" name="institution" onchange="updateBrochureSelection()"><?php foreach ($institutionOptions as $value=>$label): ?><option value="<?= flexiEsc($value) ?>" <?= $institution===$value?'selected':'' ?>><?= flexiEsc($label) ?></option><?php endforeach; ?></select>
       </div>
 
       <!-- Faculty Switcher -->
       <div class="select-box">
         <label for="facultySelect">Select Faculty / Category</label>
-        <select id="facultySelect">
-          <option value="Administration">Administration</option>
-          <option value="Agriculture">Agriculture</option>
-          <option value="Engineering">Engineering, Environment & Technology</option>
-          <option value="Education">Education</option>
-          <option value="Law">Law</option>
-          <option value="Medical">Medical, Pharmaceutical & Health Services</option>
-          <option value="Sciences">Sciences</option>
-          <option value="SocialSciences">Social Sciences</option>
-        </select>
+        <select id="facultySelect" name="faculty" onchange="updateBrochureSelection()"><?php foreach ($facultyOptions as $value=>$label): ?><option value="<?= flexiEsc($value) ?>" <?= $faculty===$value?'selected':'' ?>><?= flexiEsc($label) ?></option><?php endforeach; ?></select>
       </div>
     </div>
 
@@ -407,7 +806,7 @@
 
     <div class="section-title">Select a Course:</div>
     
-    <div class="course-list" id="courseListContainer"></div>
+    <div class="course-list" id="courseListContainer"><?php foreach($courses as $course): ?><a class="course-card" href="requirements.html?institution=<?= rawurlencode($institution) ?>&amp;faculty=<?= rawurlencode($faculty) ?>&amp;course=<?= rawurlencode($course) ?>"><span class="course-name"><?= flexiEsc($course) ?></span><span class="arrow-icon">&#10095;</span></a><?php endforeach; ?></div>
     <div class="no-results" id="noResultsMsg">No courses found matching your search.</div>
   </div>
 
@@ -478,168 +877,12 @@
     </div>
   </footer>
   
-  <script>
-    // Master Dataset for all 8 Faculties
-    const brochureData = {
-      "Administration": [
-        "Accounting", "Actuarial Science", "Banking and Finance", "Business Administration",
-        "Business Management", "Cooperative and Rural Development", "Entrepreneurship", "Finance",
-        "Human Resource Management", "Industrial Relations and Personnel Management", "Insurance",
-        "International Relations", "Local Government and Development Studies", "Management",
-        "Marketing", "Office and Information Management", "Public Administration",
-        "Purchasing and Supply", "Secretarial Administration", "Taxation", "Transport Management"
-      ],
-      "Agriculture": [
-        "Agricultural Economics", "Agricultural Economics and Extension", "Agricultural Extension",
-        "Agricultural Extension and Rural Development", "Agronomy", "Animal Science", "Crop Science",
-        "Crop Science and Horticulture", "Crop Protection", "Crop Protection and Environmental Biology",
-        "Soil Science", "Soil Resources Management", "Food Science and Technology", "Fisheries",
-        "Fisheries and Aquaculture", "Forestry", "Forestry and Wildlife Management",
-        "Forestry and Environmental Management", "Home Science and Management", "Horticulture",
-        "Water Resources and Agro-Meteorology", "Agricultural Engineering", "Agricultural Biochemistry",
-        "Agricultural Technology", "Plant Science", "Plant Breeding and Seed Science"
-      ],
-      "Engineering": [
-        "Agricultural Engineering", "Architecture", "Building", "Chemical Engineering",
-        "Civil Engineering", "Computer Engineering", "Electrical Engineering",
-        "Electrical and Electronics Engineering", "Electronics Engineering", "Environmental Management",
-        "Estate Management", "Geomatics", "Industrial and Production Engineering", "Industrial Design",
-        "Information and Communication Engineering", "Mechanical Engineering", "Mechatronics Engineering",
-        "Metallurgical and Materials Engineering", "Mining Engineering", "Petroleum Engineering",
-        "Polymer and Textile Engineering", "Quantity Surveying", "Surveying and Geoinformatics",
-        "Telecommunication Engineering", "Urban and Regional Planning", "Water Resources Engineering",
-        "Wood Products Engineering"
-      ],
-      "Education": [
-        "Adult Education", "Adult and Continuing Education", "Arts Education", "Business Education",
-        "Curriculum and Instruction", "Early Childhood Education", "Educational Administration",
-        "Educational Foundations", "Educational Management", "Educational Psychology",
-        "Educational Technology", "Guidance and Counselling", "Health Education", "Human Kinetics",
-        "Library and Information Science", "Primary Education Studies", "Science Education",
-        "Social Science Education", "Special Education", "Teacher Education", "Technical Education",
-        "Vocational Education", "Agricultural Education", "Biology Education", "Chemistry Education",
-        "Christian Religious Studies Education", "Computer Education", "Economics Education",
-        "English Education", "French Education", "Geography Education", "History Education",
-        "Integrated Science Education", "Islamic Studies Education", "Mathematics Education",
-        "Music Education", "Physical and Health Education", "Physics Education",
-        "Political Science Education", "Social Studies Education", "Yoruba Education", "Igbo Education",
-        "Hausa Education", "Fine and Applied Arts Education"
-      ],
-      "Law": [
-        "Common Law", "Civil Law", "Commercial and Industrial Law", "International Law and Jurisprudence",
-        "Private and Property Law", "Public Law", "Islamic Law", "Customary Law",
-        "Jurisprudence and International Law", "Business Law", "Constitutional Law", "Criminal Law", "Law"
-      ],
-      "Medical": [
-        "Anatomy", "Audiology", "Dentistry", "Dental Surgery", "Dental Technology", "Dental Therapy",
-        "Environmental Health Science", "Epidemiology", "Human Anatomy", "Human Nutrition and Dietetics",
-        "Medical Biochemistry", "Medical Laboratory Science", "Medical Rehabilitation",
-        "Medicine and Surgery", "Microbiology and Parasitology", "Nursing", "Nursing Science",
-        "Nutrition and Dietetics", "Occupational Therapy", "Optometry", "Pharmaceutical Chemistry",
-        "Pharmaceutical Technology", "Pharmacognosy", "Pharmacology", "Pharmacy", "Physiology",
-        "Physiotherapy", "Prosthetics and Orthotics", "Public Health", "Radiography",
-        "Radiography and Radiation Science", "Speech and Language Therapy", "Veterinary Anatomy",
-        "Veterinary Medicine", "Veterinary Physiology", "Veterinary Public Health", "Veterinary Surgery"
-      ],
-      "Sciences": [
-        "Actuarial Science", "Applied Biology", "Applied Biophysics", "Applied Geology",
-        "Applied Geophysics", "Biochemistry", "Biological Science", "Biology", "Biotechnology",
-        "Botany", "Cell Biology and Genetics", "Chemistry", "Computer Science", "Cyber Security",
-        "Data Science", "Ecology", "Environmental Biology", "Environmental Science", "Forensic Science",
-        "Geography", "Geology", "Geophysics", "Industrial Chemistry", "Industrial Mathematics",
-        "Industrial Physics", "Information Technology", "Marine Biology", "Mathematics",
-        "Microbiology", "Physics", "Plant Science", "Pure and Applied Biology",
-        "Pure and Applied Chemistry", "Pure and Applied Mathematics", "Statistics", "Zoology"
-      ],
-      "SocialSciences": [
-        "Anthropology", "Criminology and Security Studies", "Demography and Social Statistics",
-        "Economics", "Geography", "Geography and Environmental Management", "International Relations",
-        "Mass Communication", "Peace and Conflict Studies", "Political Science", "Psychology",
-        "Public Administration", "Sociology", "Sociology and Anthropology", "Social Work",
-        "Urban and Regional Planning", "Development Studies", "Intelligence and Security Studies",
-        "Population Studies", "Gender Studies"
-      ]
-    };
-
-    const institutionSelect = document.getElementById('institutionSelect');
-    const facultySelect = document.getElementById('facultySelect');
-    const courseListContainer = document.getElementById('courseListContainer');
-    const searchInput = document.getElementById('searchInput');
-    const facultyHeaderTitle = document.getElementById('facultyHeaderTitle');
-    const noResultsMsg = document.getElementById('noResultsMsg');
-
-    // Render courses based on selected institution and faculty
-    function renderCourses() {
-      const facultyKey = facultySelect.value;
-      const institutionKey = institutionSelect.value;
-      const courses = brochureData[facultyKey] || [];
-      
-      courseListContainer.innerHTML = '';
-      
-      // Update sub-header title text dynamically
-      const selectedInstitutionText = institutionSelect.options[institutionSelect.selectedIndex].text;
-      const selectedFacultyText = facultySelect.options[facultySelect.selectedIndex].text;
-      facultyHeaderTitle.textContent = `${selectedInstitutionText} - Faculty of ${selectedFacultyText}`;
-
-      courses.forEach(course => {
-        const a = document.createElement('a');
-        a.className = 'course-card';
-        a.href = `requirements.html?institution=${encodeURIComponent(institutionKey)}&faculty=${encodeURIComponent(facultyKey)}&course=${encodeURIComponent(course)}`;
-        
-        a.innerHTML = `
-          <span class="course-name">${course}</span>
-          <span class="arrow-icon">&#10095;</span>
-        `;
-        courseListContainer.appendChild(a);
-      });
-
-      // Re-apply search filter
-      filterCourses();
-    }
-
-    // Live search function
-    function filterCourses() {
-      const term = searchInput.value.toLowerCase().trim();
-      const cards = courseListContainer.getElementsByClassName('course-card');
-      let visibleCount = 0;
-
-      Array.from(cards).forEach(card => {
-        const text = card.textContent.toLowerCase();
-        if (text.includes(term)) {
-          card.style.display = 'flex';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      noResultsMsg.style.display = visibleCount === 0 ? 'block' : 'none';
-    }
-
-    // Read URL query parameters if present (e.g., page.html?institution=Polytechnics&faculty=Engineering)
-    const urlParams = new URLSearchParams(window.location.search);
-    const institutionParam = urlParams.get('institution');
-    const facultyParam = urlParams.get('faculty');
-
-    if (institutionParam) {
-      const matchingOption = Array.from(institutionSelect.options).find(opt => opt.value.toLowerCase() === institutionParam.toLowerCase());
-      if (matchingOption) institutionSelect.value = matchingOption.value;
-    }
-
-    if (facultyParam && brochureData[facultyParam]) {
-      facultySelect.value = facultyParam;
-    }
-
-    // Event Listeners
-    institutionSelect.addEventListener('change', renderCourses);
-    facultySelect.addEventListener('change', renderCourses);
-    searchInput.addEventListener('input', filterCourses);
-
-  document.getElementById('current-year').textContent = new Date().getFullYear();
-    
-    // Initial Render
-    renderCourses();
-
-  </script>
+  
+<script>
+function updateBrochureSelection(){const i=document.getElementById('institutionSelect').value;const f=document.getElementById('facultySelect').value;window.location.href='brochure.php?institution='+encodeURIComponent(i)+'&faculty='+encodeURIComponent(f);}
+const searchInput=document.getElementById('searchInput'),list=document.getElementById('courseListContainer'),noResults=document.getElementById('noResultsMsg');
+function filterCourses(){const term=searchInput.value.toLowerCase().trim();let visible=0;list.querySelectorAll('.course-card').forEach(card=>{const match=card.textContent.toLowerCase().includes(term);card.style.display=match?'flex':'none';if(match)visible++;});noResults.style.display=visible===0?'block':'none';}
+searchInput.addEventListener('input',filterCourses);document.getElementById('current-year').textContent=new Date().getFullYear();
+</script>
 </body>
 </html>
