@@ -10,65 +10,14 @@ declare(strict_types=1);
 final class FlexiFirestore
 {
     private string $projectId;
-    private array $serviceAccount;
-    private ?string $accessToken = null;
+    private string $apiKey;
 
     public function __construct()
     {
-        $raw = getenv('FIREBASE_SERVICE_ACCOUNT_JSON') ?: '';
-        if ($raw === '') {
-            throw new RuntimeException('Firebase server credentials are not configured.');
-        }
-        $account = json_decode($raw, true);
-        if (!is_array($account) || empty($account['client_email']) || empty($account['private_key'])) {
-            throw new RuntimeException('Firebase service-account configuration is invalid.');
-        }
-        // Keep the exact Firebase project configured in the original website's Web SDK.
-        // A service account from another Firebase project must never redirect this site elsewhere.
-        $expectedProjectId = 'waec2026jamb2027';
-        if (($account['project_id'] ?? '') !== $expectedProjectId) {
-            throw new RuntimeException('Firebase credentials belong to a different project. Expected ' . $expectedProjectId . '.');
-        }
-        $this->serviceAccount = $account;
-        $this->projectId = $expectedProjectId;
-    }
-
-    private function b64url(string $value): string
-    {
-        return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
-    }
-
-    private function token(): string
-    {
-        if ($this->accessToken !== null) return $this->accessToken;
-
-        $now = time();
-        $header = $this->b64url(json_encode(['alg' => 'RS256', 'typ' => 'JWT'], JSON_THROW_ON_ERROR));
-        $claims = $this->b64url(json_encode([
-            'iss' => $this->serviceAccount['client_email'],
-            'scope' => 'https://www.googleapis.com/auth/datastore',
-            'aud' => $this->serviceAccount['token_uri'] ?? 'https://oauth2.googleapis.com/token',
-            'iat' => $now,
-            'exp' => $now + 3500
-        ], JSON_THROW_ON_ERROR));
-        $unsigned = $header . '.' . $claims;
-        $key = openssl_pkey_get_private((string)$this->serviceAccount['private_key']);
-        if (!$key || !openssl_sign($unsigned, $signature, $key, OPENSSL_ALGO_SHA256)) {
-            throw new RuntimeException('Unable to sign Firebase server token.');
-        }
-        $jwt = $unsigned . '.' . $this->b64url($signature);
-        $tokenUrl = $this->serviceAccount['token_uri'] ?? 'https://oauth2.googleapis.com/token';
-        $response = $this->http('POST', $tokenUrl, [
-            'Content-Type: application/x-www-form-urlencoded'
-        ], http_build_query([
-            'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-            'assertion' => $jwt
-        ]));
-        $data = json_decode($response, true);
-        if (!is_array($data) || empty($data['access_token'])) {
-            throw new RuntimeException('Firebase OAuth token exchange failed.');
-        }
-        return $this->accessToken = (string)$data['access_token'];
+        // Use the same public Firebase Web API key and project already used by
+        // the website's browser-side Firebase SDK configuration.
+        $this->projectId = 'waec2026jamb2027';
+        $this->apiKey = 'AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM';
     }
 
     private function http(string $method, string $url, array $headers = [], ?string $body = null): string
@@ -96,8 +45,11 @@ final class FlexiFirestore
         $url = str_starts_with($path, ':')
             ? $base . $path
             : $base . '/' . $path;
-        if ($query) $url .= '?' . http_build_query($query);
-        $headers = ['Authorization: Bearer ' . $this->token(), 'Accept: application/json'];
+        $query['key'] = $this->apiKey;
+        $url .= '?' . http_build_query($query);
+        // No service-account token is used: Firestore applies the project's
+        // normal Firebase Security Rules to requests made with this Web API key.
+        $headers = ['Accept: application/json'];
         $body = null;
         if ($payload !== null) {
             $headers[] = 'Content-Type: application/json';
