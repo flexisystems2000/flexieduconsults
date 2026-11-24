@@ -1,3 +1,19 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/includes/firestore-server.php';
+function flexi_pdf_e(mixed $value): string {
+    return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+$resources = [];
+$resourceLoadError = '';
+try {
+    $resourceDb = new FlexiFirestore();
+    $resources = $resourceDb->listCollection('resources', 1000);
+} catch (Throwable $exception) {
+    error_log('[Flexi resource library] ' . $exception->getMessage());
+    $resourceLoadError = 'The resource library is temporarily unavailable. Please refresh shortly.';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,40 +40,289 @@
             flex-direction: column;
         }
 
-        /* Dynamic Sticky Header Configuration */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            width: 100%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
+        /* Homepage header and navigation */
+    header {
+        background: var(--blue);
+        color: white;
 
-        /* Top Blue Bar */
-        .header-blue-bar {
-            height: 38px;
-            background-color: #0B1B3D;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 20px;
-        }
+        height: 52px;
 
-        .header-title {
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            text-align: center;
-        }
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-        /* Accent Green Stripe */
-        .header-green-stripe {
-            height: 4px;
-            background-color: #00A859;
-            width: 100%;
+        padding: 0 20px;
+
+        border-bottom: 3px solid var(--green);
+
+        position: sticky;
+        top: 0;
+
+        z-index: 1000;
+    }
+
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+
+    .logo-img {
+        height: 34px;
+        width: 34px;
+
+        object-fit: contain;
+
+        border-radius: 4px;
+    }
+
+
+    .brand-name {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+    }
+
+
+    /* ========================================================
+       MENU
+       ======================================================== */
+
+    .menu-container {
+        position: relative;
+    }
+
+
+    .menu-btn {
+        width: 38px;
+        height: 38px;
+
+        cursor: pointer;
+
+        background: rgba(255,255,255,.06);
+
+        border: 1px solid rgba(255,255,255,.32);
+
+        border-radius: 8px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: white;
+
+        transition: background .2s ease, transform .2s ease;
+    }
+
+
+    .menu-btn:hover {
+        background: rgba(255,255,255,.14);
+        transform: translateY(-1px);
+    }
+
+
+    .menu-svg {
+        width: 21px;
+        height: 21px;
+        display: block;
+    }
+
+
+    .square-menu {
+        display: none;
+
+        position: absolute;
+
+        top: 48px;
+        right: 0;
+
+        width: 300px;
+
+        background: linear-gradient(145deg, #003366 0%, #075a55 52%, #2E8B57 100%);
+
+        border: 2px solid var(--green);
+
+        border-radius: 10px;
+
+        z-index: 2000;
+
+        box-shadow:
+            0 12px 32px rgba(0,0,0,.35);
+
+        overflow: hidden;
+    }
+
+
+    .square-menu.menu-open {
+        display: block;
+        animation: menuDrop .18s ease-out;
+        transform-origin: top right;
+    }
+
+
+    @keyframes menuDrop {
+        from {
+            opacity: 0;
+            transform: translateY(-6px) scale(.98);
         }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+
+    .square-menu a {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 13px 15px;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+        border-bottom:
+            1px solid rgba(255,255,255,.1);
+
+        transition: background 0.15s, padding-left 0.15s;
+    }
+
+
+    .square-menu a:hover {
+        background: rgba(255,255,255,0.12);
+        padding-left: 19px;
+    }
+
+
+    .square-menu a:last-child {
+        border-bottom: none;
+    }
+
+
+    .menu-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,.96);
+    }
+
+
+    .menu-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+
+    .menu-label {
+        min-width: 0;
+        line-height: 1.35;
+    }
+
+
+    .study-menu-toggle {
+        width: 100%;
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 15px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        border: 0;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        background: transparent;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: left;
+        transition: background .15s ease, padding-left .15s ease;
+    }
+
+    .study-menu-toggle:hover {
+        background: rgba(255,255,255,0.12);
+        padding-left: 19px;
+    }
+
+    .study-menu-toggle .menu-icon {
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,.96);
+    }
+
+    .study-menu-toggle .menu-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+    .study-chevron {
+        margin-left: auto;
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+        transition: transform .2s ease;
+    }
+
+    .study-menu-toggle[aria-expanded="true"] .study-chevron {
+        transform: rotate(180deg);
+    }
+
+    .study-submenu {
+        display: none;
+        margin: 0 8px 5px 34px;
+        padding: 4px;
+        border-left: 1px solid rgba(255,255,255,.20);
+        background: rgba(0,0,0,.10);
+        border-radius: 0 8px 8px 0;
+    }
+
+    .study-submenu.open {
+        display: block;
+    }
+
+    .study-submenu a {
+        min-height: 40px;
+        padding: 9px 10px;
+        font-size: 13px;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .study-submenu a:last-child {
+        border-bottom: none;
+    }
+
+    .study-submenu .menu-icon {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+    }
+
+    .study-submenu .menu-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+
 
         /* Workspace & Filter Layout */
         .container {
@@ -430,12 +695,156 @@
 </head>
 <body>
 
-    <header>
-        <div class="header-blue-bar">
-            <h1 class="header-title">Flexi Educational Consult Resource Library</h1>
+<header>
+
+    <div class="header-left">
+
+        <img
+            src="https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg"
+            alt="Flexi Educational Consult Official Logo"
+            class="logo-img">
+
+        <span class="brand-name">
+            Flexi Educational Consult
+        </span>
+
+    </div>
+
+
+    <div class="menu-container">
+
+        <button
+            class="menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Toggle Navigation Menu">
+
+            <svg class="menu-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+
+        </button>
+
+
+        <div
+            class="square-menu"
+            id="squareMenu">
+
+            <a href="/index.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+                <span class="menu-label">Home</span>
+            </a>
+
+            <a href="/videos.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 7l5 3-5 3V7z" fill="currentColor"/></svg></span>
+                <span class="menu-label">Watch Video Lessons</span>
+            </a>
+
+            <button
+                type="button"
+                class="study-menu-toggle"
+                id="study-menu-toggle"
+                onclick="toggleStudyMenu(event)"
+                aria-expanded="false"
+                aria-controls="study-submenu">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M4 5.5V19M8 7h8M8 11h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span class="menu-label">Study</span>
+                <svg class="study-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <div class="study-submenu" id="study-submenu">
+                <a href="/study.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M4 5.5V19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Past Questions</span>
+                </a>
+                <a href="/novel.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v18H7.5A2.5 2.5 0 0 0 5 22V4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M5 4.5V19M9 7h6M9 11h7M9 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Novels</span>
+                </a>
+                <a href="/scholarship.php">
+                    <span class="menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 8.5 12 4l9 4.5-9 4.5-9-4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M6 11.5V16c2.8 2.2 9.2 2.2 12 0v-4.5M21 9v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="menu-label">Scholarships</span>
+                </a>
+            </div>
+
+            <a href="/download-app.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.5 10.5L12 15l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 20h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Download Flexi</span>
+            </a>
+
+            <a href="/syllabus.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22V4.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 7h8M8 11h8M8 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Access the JAMB and WAEC syllabus here</span>
+            </a>
+
+            <a href="/brochure.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 12h8M8 16h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Access JAMB Brochure</span>
+            </a>
+
+            <a href="/cbt.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">CBT Simulator</span>
+            </a>
+
+            <a href="/groups.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M15 14.5a4.5 4.5 0 0 1 5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Classroom (Groups and chats)</span>
+            </a>
+
+            <a href="/purchase.php">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Purchase Scratch Cards</span>
+            </a>
+
+            <a href="/pdf.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M8 14h8M8 17h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">Get your PDFs from here</span>
+            </a>
+
+            <a href="/location.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12A7 7 0 0 0 5 9c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+                <span class="menu-label">Tutorial Centers Near You</span>
+            </a>
+
+            <a href="/profile.html">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                <span class="menu-label">User Profile</span>
+            </a>
+
+            <a
+                href="#"
+                id="auth-menu-btn">
+                <span class="menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 12h10M10 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="menu-label">Login</span>
+            </a>
+
         </div>
-        <div class="header-green-stripe"></div>
-    </header>
+
+    </div>
+
+</header>
 
     <div class="container">
         <div class="filter-ribbon">
@@ -462,7 +871,41 @@
             </select>
         </div>
 
-        <div class="resource-grid" id="resourceGrid"></div>
+        <div class="resource-grid" id="resourceGrid">
+<?php if ($resourceLoadError !== ''): ?>
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:#909399;"><?= flexi_pdf_e($resourceLoadError) ?></div>
+<?php elseif (!$resources): ?>
+    <div id="emptyCatalogMessage" style="grid-column:1/-1;text-align:center;padding:40px;color:#909399;">No educational resources are available at the moment.</div>
+<?php else: foreach ($resources as $resource):
+    $data = $resource['fields'] ?? [];
+    $id = (string)($resource['id'] ?? '');
+    $title = (string)($data['title'] ?? 'Untitled Resource');
+    $subject = (string)($data['subject'] ?? 'General Studies');
+    $description = (string)($data['description'] ?? '');
+    $category = (string)($data['category'] ?? '');
+    $examType = (string)($data['examType'] ?? 'Exam');
+    $year = (string)($data['year'] ?? 'General');
+    $thumbnail = (string)($data['thumbnailUrl'] ?? '');
+    $premium = (bool)($data['isPremium'] ?? false);
+    $price = (int)($data['priceNGN'] ?? 0);
+    $search = strtolower($title . ' ' . $subject . ' ' . $description);
+?>
+<article class="resource-card" data-id="<?= flexi_pdf_e($id) ?>" data-title="<?= flexi_pdf_e($title) ?>" data-subject="<?= flexi_pdf_e($subject) ?>" data-description="<?= flexi_pdf_e($description) ?>" data-category="<?= flexi_pdf_e($category) ?>" data-exam="<?= flexi_pdf_e($examType) ?>" data-premium="<?= $premium ? '1' : '0' ?>" data-price="<?= $price ?>" data-search="<?= flexi_pdf_e($search) ?>">
+    <div class="card-thumbnail-box">
+        <?php if ($thumbnail !== ''): ?><img src="<?= flexi_pdf_e($thumbnail) ?>" alt="<?= flexi_pdf_e($title) ?>" loading="lazy"><?php else: ?><div class="card-thumbnail-placeholder">PDF</div><?php endif; ?>
+        <div class="badge-container"><span class="badge-exam"><?= flexi_pdf_e($examType) ?></span><span class="badge-year"><?= flexi_pdf_e($year) ?></span></div>
+    </div>
+    <div class="card-body">
+        <span class="card-subject"><?= flexi_pdf_e($subject) ?></span>
+        <h3 class="card-title"><?= flexi_pdf_e($title) ?></h3>
+        <div class="card-footer">
+            <span class="resource-status <?= $premium ? 'price-tag' : 'status-free' ?>"><?= $premium ? '₦' . number_format($price) : 'Free' ?></span>
+            <button class="btn-action resource-action <?= $premium ? 'btn-unlock' : 'btn-download' ?>" type="button" data-id="<?= flexi_pdf_e($id) ?>" data-owned="<?= $premium ? '0' : '1' ?>"><?= $premium ? 'Unlock' : 'Download' ?></button>
+        </div>
+    </div>
+</article>
+<?php endforeach; endif; ?>
+</div>
     </div>
 
     <footer class="footer">
@@ -528,242 +971,101 @@
     </div>
 
     <div class="footer-bottom">
-        &copy; <span id="current-year"></span> Flexi Educational Consult. All Rights Reserved.
+        &copy; <?= date("Y") ?> Flexi Educational Consult. All Rights Reserved.
     </div>
     </footer>
-    <!-- Firebase Integration Logic Core -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+const firebaseConfig = {apiKey:"AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",authDomain:"waec2026jamb2027.firebaseapp.com",projectId:"waec2026jamb2027"};
+const app=initializeApp(firebaseConfig), db=getFirestore(app), auth=getAuth(app);
+const ownedResources=new Set(); let activeUser=null;
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyA0bM6pk1T1peGSS7quvFPEMOMuplnNRNM",
-            authDomain: "waec2026jamb2027.firebaseapp.com",
-            projectId: "waec2026jamb2027",
-        };
+onAuthStateChanged(auth,async user=>{
+ activeUser=user; ownedResources.clear();
+ if(user){
+  try{
+   const purchases=await getDocs(collection(db,"purchases"));
+   purchases.forEach(item=>{if(item.id.startsWith(user.uid+"_")) ownedResources.add(item.id.slice(user.uid.length+1));});
+  }catch(error){console.error("Error mapping resource ownership:",error);}
+ }
+ refreshOwnership(); applyFilters();
+});
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        let masterResources = [];
-        let clearUserPurchases = new Set();
-        let activeUser = null;
-
-        onAuthStateChanged(auth, async (user) => {
-            activeUser = user;
-            if (user) {
-                await syncUserPurchases(user.uid);
-            }
-            fetchResourceMetadataCollection();
-        });
-
-        async function syncUserPurchases(uid) {
-            try {
-                const querySnapshot = await getDocs(collection(db, "purchases"));
-                querySnapshot.forEach((doc) => {
-                    if (doc.id.startsWith(uid + "_")) {
-                        const targetResourceId = doc.id.replace(uid + "_", "");
-                        clearUserPurchases.add(targetResourceId);
-                    }
-                });
-            } catch (error) {
-                console.error("Error mapping ownership details:", error);
-            }
-        }
-
-        async function fetchResourceMetadataCollection() {
-            try {
-                const querySnapshot = await getDocs(collection(db, "resources"));
-                masterResources = [];
-                querySnapshot.forEach((doc) => {
-                    masterResources.push({ id: doc.id, ...doc.data() });
-                });
-                applyActiveFiltersFilterPipeline();
-            } catch (error) {
-                console.error("Error collecting system catalog structures:", error);
-            }
-        }
-
-        function applyActiveFiltersFilterPipeline() {
-            const searchVal = document.getElementById('searchInput').value.toLowerCase();
-            const catVal = document.getElementById('categoryFilter').value;
-            const examVal = document.getElementById('examFilter').value;
-            const typeVal = document.getElementById('typeFilter').value;
-
-            const trackingResults = masterResources.filter(res => {
-                const matchText = res.title?.toLowerCase().includes(searchVal) || 
-                                  res.subject?.toLowerCase().includes(searchVal) ||
-                                  res.description?.toLowerCase().includes(searchVal);
-                const matchCat = !catVal || res.category === catVal;
-                const matchExam = !examVal || res.examType === examVal;
-                const matchType = !typeVal || (typeVal === 'free' ? !res.isPremium : res.isPremium);
-
-                return matchText && matchCat && matchExam && matchType;
-            });
-
-            renderInterfaceGrid(trackingResults);
-        }
-
-        function renderInterfaceGrid(items) {
-            const grid = document.getElementById('resourceGrid');
-            grid.innerHTML = '';
-
-            if (items.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#909399;">No educational resources found matching your adjustments.</div>`;
-                return;
-            }
-
-            items.forEach(res => {
-                const isOwned = !res.isPremium || clearUserPurchases.has(res.id);
-                
-                const card = document.createElement('div');
-                card.className = 'resource-card';
-
-                const thumbnailElement = res.thumbnailUrl 
-                    ? `<img src="${res.thumbnailUrl}" alt="${res.title}">`
-                    : `<div class="card-thumbnail-placeholder">PDF</div>`;
-
-                const pricingDisplayHTML = res.isPremium && !isOwned
-                    ? `<span class="price-tag">₦${parseInt(res.priceNGN).toLocaleString()}</span>`
-                    : `<span class="status-free">${res.isPremium ? 'Unlocked' : 'Free'}</span>`;
-
-                const executionBtnHTML = isOwned
-                    ? `<button class="btn-action btn-download" data-id="${res.id}" id="btn-${res.id}">Download</button>`
-                    : `<button class="btn-action btn-unlock" data-id="${res.id}" id="btn-${res.id}">Unlock</button>`;
-
-                card.innerHTML = `
-                    <div class="card-thumbnail-box">
-                        ${thumbnailElement}
-                        <div class="badge-container">
-                            <span class="badge-exam">${res.examType || 'Exam'}</span>
-                            <span class="badge-year">${res.year || 'General'}</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <span class="card-subject">${res.subject || 'General Studies'}</span>
-                        <h3 class="card-title">${res.title}</h3>
-                        <div class="card-footer">
-                            ${pricingDisplayHTML}
-                            ${executionBtnHTML}
-                        </div>
-                    </div>
-                `;
-
-                grid.appendChild(card);
-
-                const actionBtn = card.querySelector(`#btn-${res.id}`);
-                actionBtn.addEventListener('click', () => {
-                    if (isOwned) {
-                        executeBackgroundDropboxFetchStream(res.id, res.title);
-                    } else {
-                        triggerPaystackInlineGateway(res);
-                    }
-                });
-            });
-        }
-
-        function normalizeDropboxStreamMapping(url) {
-            if (!url) return '';
-            if (url.includes('dl=0')) return url.replace('dl=0', 'dl=1');
-            if (url.includes('dl=1')) return url;
-            return url.includes('?') ? `${url}&dl=1` : `${url}?dl=1`;
-        }
-
-        async function executeBackgroundDropboxFetchStream(id, title) {
-            const targetBtn = document.getElementById(`btn-${id}`);
-            targetBtn.disabled = true;
-            targetBtn.innerText = "Streaming...";
-
-            try {
-                const targetRef = doc(db, "resource_links", id);
-                const querySnap = await getDoc(targetRef);
-
-                if (querySnap.exists()) {
-                    const rawUrl = querySnap.data().dropboxSecureUrl;
-                    const clearUrl = normalizeDropboxStreamMapping(rawUrl);
-
-                    const hiddenAnchor = document.createElement('a');
-                    hiddenAnchor.href = clearUrl;
-                    hiddenAnchor.setAttribute('download', `${title}.pdf`);
-                    document.body.appendChild(hiddenAnchor);
-                    hiddenAnchor.click();
-                    document.body.removeChild(hiddenAnchor);
-                } else {
-                    alert("Unauthorized or dynamic asset reference path dropped.");
-                }
-            } catch (err) {
-                console.error("Link translation failure encountered:", err);
-                alert("Could not initialize dynamic system stream engine.");
-            } finally {
-                targetBtn.disabled = false;
-                targetBtn.innerText = "Download";
-            }
-        }
-
-        // Paystack V2 Processing Configuration Workflow
-        function triggerPaystackInlineGateway(resource) {
-            if (!activeUser) {
-                alert("Please authenticate inside the Flexi student account dashboard to purchase items.");
-                return;
-            }
-
-            const targetBtn = document.getElementById(`btn-${resource.id}`);
-            targetBtn.disabled = true;
-            targetBtn.innerText = "Loading...";
-
-            // Check for modern V2 PaystackPop constructor
-            if (typeof window.PaystackPop !== 'function') {
-                alert("Paystack payment gateway is still loading. Please check your internet connection and try again.");
-                targetBtn.disabled = false;
-                targetBtn.innerText = "Unlock";
-                return;
-            }
-
-            // Instantiate modern V2 popup handler
-            const popup = new window.PaystackPop();
-
-            popup.newTransaction({
-                key: 'pk_live_bb0c7b83bfdbd0c9990e2c7f7fd73a86d4821a00',
-                email: activeUser.email,
-                amount: parseInt(resource.priceNGN) * 100, // In kobo
-                currency: 'NGN',
-                reference: `flexi_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
-                onSuccess: async (transaction) => {
-                    try {
-                        const transactionTrackingKey = `${activeUser.uid}_${resource.id}`;
-                        
-                        await setDoc(doc(db, "purchases", transactionTrackingKey), {
-                            userId: activeUser.uid,
-                            resourceId: resource.id,
-                            referenceCode: transaction.reference,
-                            settledAt: new Date().toISOString()
-                        });
-
-                        clearUserPurchases.add(resource.id);
-                        alert("Resource catalog status authorized successfully!");
-                        applyActiveFiltersFilterPipeline();
-                    } catch (err) {
-                        console.error("Internal processing fault engine record:", err);
-                        alert("Error generating direct database ledger state adjustments.");
-                    } finally {
-                        targetBtn.disabled = false;
-                    }
-                },
-                onCancel: () => {
-                    targetBtn.disabled = false;
-                    targetBtn.innerText = "Unlock";
-                    alert("Checkout process suspended by context request.");
-                }
-            });
-        }
-
-        document.getElementById('searchInput').addEventListener('input', applyActiveFiltersFilterPipeline);
-        document.getElementById('categoryFilter').addEventListener('change', applyActiveFiltersFilterPipeline);
-        document.getElementById('examFilter').addEventListener('change', applyActiveFiltersFilterPipeline);
-        document.getElementById('typeFilter').addEventListener('change', applyActiveFiltersFilterPipeline);
-        document.getElementById('current-year').textContent = new Date().getFullYear();     
+function refreshOwnership(){
+ document.querySelectorAll(".resource-card").forEach(card=>{
+  const premium=card.dataset.premium==="1", owned=!premium||ownedResources.has(card.dataset.id);
+  const button=card.querySelector(".resource-action"), status=card.querySelector(".resource-status");
+  button.dataset.owned=owned?"1":"0"; button.textContent=owned?"Download":"Unlock";
+  button.classList.toggle("btn-download",owned); button.classList.toggle("btn-unlock",!owned);
+  status.className="resource-status "+(owned?"status-free":"price-tag");
+  status.textContent=owned?(premium?"Unlocked":"Free"):"₦"+Number(card.dataset.price||0).toLocaleString("en-NG");
+ });
+}
+function applyFilters(){
+ const q=document.getElementById("searchInput").value.trim().toLowerCase();
+ const category=document.getElementById("categoryFilter").value, exam=document.getElementById("examFilter").value, type=document.getElementById("typeFilter").value;
+ let count=0;
+ document.querySelectorAll(".resource-card").forEach(card=>{
+  const premium=card.dataset.premium==="1";
+  const show=(!q||card.dataset.search.includes(q))&&(!category||card.dataset.category===category)&&(!exam||card.dataset.exam===exam)&&(!type||(type==="free"?!premium:premium));
+  card.hidden=!show;if(show)count++;
+ });
+ let empty=document.getElementById("noFilteredResources");
+ if(!empty){empty=document.createElement("div");empty.id="noFilteredResources";empty.style.cssText="grid-column:1/-1;text-align:center;padding:40px;color:#909399";empty.textContent="No educational resources found matching your adjustments.";document.getElementById("resourceGrid").appendChild(empty);}
+ empty.hidden=count!==0;
+}
+function normalizeDropboxUrl(url){
+ if(!url)return ""; if(url.includes("dl=0"))return url.replace("dl=0","dl=1"); if(url.includes("dl=1"))return url;
+ return url.includes("?")?url+"&dl=1":url+"?dl=1";
+}
+async function downloadResource(id,title,button){
+ button.disabled=true;button.textContent="Streaming...";
+ try{
+  const snap=await getDoc(doc(db,"resource_links",id));
+  if(!snap.exists())throw new Error("Resource link not found.");
+  const url=normalizeDropboxUrl(snap.data().dropboxSecureUrl);if(!url)throw new Error("Resource link unavailable.");
+  const a=document.createElement("a");a.href=url;a.download=title+".pdf";a.rel="noopener";document.body.appendChild(a);a.click();a.remove();
+ }catch(error){console.error("Resource download failed:",error);alert("Could not start this resource download. Please try again.");}
+ finally{button.disabled=false;button.textContent="Download";}
+}
+function purchaseResource(card,button){
+ if(!activeUser){alert("Please log in to your Flexi student account before purchasing this resource.");window.location.href="/login.html";return;}
+ button.disabled=true;button.textContent="Loading...";
+ if(typeof window.PaystackPop!=="function"){alert("Paystack is still loading. Please try again.");button.disabled=false;button.textContent="Unlock";return;}
+ const popup=new window.PaystackPop();
+ popup.newTransaction({
+  key:"pk_live_bb0c7b83bfdbd0c9990e2c7f7fd73a86d4821a00",email:activeUser.email,
+  amount:Number(card.dataset.price)*100,currency:"NGN",
+  reference:"flexi_"+Date.now()+"_"+Math.floor(Math.random()*1000),
+  onSuccess:async transaction=>{
+   try{
+    await setDoc(doc(db,"purchases",activeUser.uid+"_"+card.dataset.id),{userId:activeUser.uid,resourceId:card.dataset.id,referenceCode:transaction.reference,settledAt:new Date().toISOString()});
+    ownedResources.add(card.dataset.id);refreshOwnership();alert("Resource unlocked successfully!");
+   }catch(error){console.error("Could not record resource ownership:",error);alert("Payment was received, but the ownership record could not be updated. Contact support with reference: "+transaction.reference);}
+   finally{button.disabled=false;}
+  },
+  onCancel:()=>{button.disabled=false;button.textContent="Unlock";}
+ });
+}
+document.getElementById("resourceGrid").addEventListener("click",event=>{
+ const button=event.target.closest(".resource-action");if(!button||button.disabled)return;
+ const card=button.closest(".resource-card");
+ if(button.dataset.owned==="1")downloadResource(card.dataset.id,card.dataset.title,button);else purchaseResource(card,button);
+});
+["searchInput","categoryFilter","examFilter","typeFilter"].forEach(id=>document.getElementById(id).addEventListener(id==="searchInput"?"input":"change",applyFilters));
+window.toggleMenu=()=>document.getElementById("squareMenu")?.classList.toggle("menu-open");
+window.toggleStudyMenu=event=>{
+ event?.stopPropagation();const submenu=document.getElementById("study-submenu"),button=document.getElementById("study-menu-toggle");if(!submenu||!button)return;
+ const open=!submenu.classList.contains("open");submenu.classList.toggle("open",open);button.setAttribute("aria-expanded",String(open));
+};
+document.addEventListener("click",event=>{
+ const menu=document.getElementById("squareMenu"),trigger=document.querySelector(".menu-btn");
+ if(menu?.classList.contains("menu-open")&&!menu.contains(event.target)&&!trigger?.contains(event.target)){
+  menu.classList.remove("menu-open");document.getElementById("study-submenu")?.classList.remove("open");document.getElementById("study-menu-toggle")?.setAttribute("aria-expanded","false");
+ }
+});
 </script>
 </body>
 </html>
