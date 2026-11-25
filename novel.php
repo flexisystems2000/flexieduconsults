@@ -564,7 +564,7 @@ function bookUrl(
 function coverUrl(array $book): string
 {
     return
-        'literature/assets/' .
+        '/literature/assets/' .
         rawurlencode(
             (string)($book['cover'] ?? '')
         );
