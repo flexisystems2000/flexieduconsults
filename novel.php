@@ -4360,7 +4360,7 @@ document.addEventListener(
         const originalLabel = shareButton.innerHTML;
 
         async function copyNovelLink() {
-            const link = window.location.origin + <?= json_encode($canonicalUrl, JSON_UNESCAPED_SLASHES) ?>;
+            const link = <?= json_encode($canonicalUrl, JSON_UNESCAPED_SLASHES) ?>;
             try {
                 if (navigator.clipboard && window.isSecureContext) {
                     await navigator.clipboard.writeText(link);
@@ -4385,7 +4385,7 @@ document.addEventListener(
         }
 
         shareButton.addEventListener('click', async function () {
-            const link = window.location.origin + <?= json_encode($canonicalUrl, JSON_UNESCAPED_SLASHES) ?>;
+            const link = <?= json_encode($canonicalUrl, JSON_UNESCAPED_SLASHES) ?>;
             const title = shareButton.dataset.shareTitle || document.title;
 
             if (navigator.share) {
