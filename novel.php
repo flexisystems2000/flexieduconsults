@@ -610,6 +610,16 @@ if ($isDetailPage && $currentBook !== null) {
         . '/' . rawurlencode($requestedView);
 }
 
+$ogImageUrl = $isDetailPage && $currentBook !== null
+    ? 'https://www.flexieduconsult.com.ng' . coverUrl($currentBook)
+    : 'https://i.postimg.cc/0Qm3PLw5/1771700279759-2.jpg';
+
+$ogImageType = 'image/jpeg';
+if ($isDetailPage && $currentBook !== null) {
+    $coverExtension = strtolower(pathinfo((string)$currentBook['cover'], PATHINFO_EXTENSION));
+    $ogImageType = $coverExtension === 'webp' ? 'image/webp' : ($coverExtension === 'png' ? 'image/png' : 'image/jpeg');
+}
+
 $currentYear =
     date('Y');
 
@@ -636,6 +646,20 @@ $currentYear =
     <link
         rel="canonical"
         href="<?= esc($canonicalUrl) ?>">
+
+    <meta property="og:type" content="<?= $isDetailPage ? 'article' : 'website' ?>">
+    <meta property="og:site_name" content="Flexi Educational Consult">
+    <meta property="og:title" content="<?= esc($pageTitle) ?>">
+    <meta property="og:description" content="<?= esc($pageDescription) ?>">
+    <meta property="og:url" content="<?= esc($canonicalUrl) ?>">
+    <meta property="og:image" content="<?= esc($ogImageUrl) ?>">
+    <meta property="og:image:secure_url" content="<?= esc($ogImageUrl) ?>">
+    <meta property="og:image:type" content="<?= esc($ogImageType) ?>">
+    <meta property="og:image:alt" content="<?= esc($isDetailPage ? $title . ' book cover' : 'Flexi Educational Consult') ?>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= esc($pageTitle) ?>">
+    <meta name="twitter:description" content="<?= esc($pageDescription) ?>">
+    <meta name="twitter:image" content="<?= esc($ogImageUrl) ?>">
 
     <link
         rel="icon"
@@ -1361,6 +1385,23 @@ header {
 
     color:
         var(--blue);
+}
+
+.detail-share-btn {
+    background: #edf7f1;
+    color: #17633c;
+    border: 1px solid #b9dfc9;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.detail-share-btn:hover {
+    background: #dff1e6;
+}
+
+.detail-share-btn:focus-visible {
+    outline: 3px solid rgba(46,139,87,.3);
+    outline-offset: 2px;
 }
 
 
@@ -2935,11 +2976,26 @@ header {
 
                     <a
                         class="detail-pill secondary"
-                        href="/novel.php">
+                        href="/novel">
 
                         All Novels
 
                     </a>
+
+
+                    <button
+                        type="button"
+                        class="detail-pill detail-share-btn"
+                        id="shareNovelBtn"
+                        data-share-title="<?= esc($title) ?>"
+                        aria-label="Share or copy link to <?= esc($title) ?>">
+
+                        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="margin-right:7px">
+                            <path d="M12 16V3m0 0L7 8m5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Share / Copy Link
+
+                    </button>
 
 
                 </div>
@@ -4296,6 +4352,55 @@ document.addEventListener(
 );
 
 </script>
+    <script>
+    (function () {
+        const shareButton = document.getElementById('shareNovelBtn');
+        if (!shareButton) return;
+
+        const originalLabel = shareButton.innerHTML;
+
+        async function copyNovelLink() {
+            const link = window.location.origin + <?= json_encode($canonicalUrl, JSON_UNESCAPED_SLASHES) ?>;
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(link);
+                } else {
+                    const field = document.createElement('textarea');
+                    field.value = link;
+                    field.setAttribute('readonly', '');
+                    field.style.position = 'fixed';
+                    field.style.opacity = '0';
+                    document.body.appendChild(field);
+                    field.select();
+                    const copied = document.execCommand('copy');
+                    field.remove();
+                    if (!copied) throw new Error('Copy unavailable');
+                }
+                shareButton.textContent = 'Link copied!';
+                window.setTimeout(() => { shareButton.innerHTML = originalLabel; }, 2200);
+            } catch (error) {
+                shareButton.textContent = 'Unable to copy link';
+                window.setTimeout(() => { shareButton.innerHTML = originalLabel; }, 2200);
+            }
+        }
+
+        shareButton.addEventListener('click', async function () {
+            const link = window.location.origin + <?= json_encode($canonicalUrl, JSON_UNESCAPED_SLASHES) ?>;
+            const title = shareButton.dataset.shareTitle || document.title;
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: title, text: 'Read ' + title + ' on Flexi Educational Consult.', url: link });
+                    return;
+                } catch (error) {
+                    if (error && error.name === 'AbortError') return;
+                }
+            }
+
+            await copyNovelLink();
+        });
+    })();
+    </script>
     <script src="/assets/js/disable-copy-paste.js" defer></script>
 </body>
 </html>
