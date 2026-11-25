@@ -1,9 +1,30 @@
+<?php
+// Redirect legacy query-string course URLs to their path-based equivalent.
+$requirementsPath = trim((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/'), '/');
+if ($requirementsPath === 'requirements') {
+    $institution = trim((string)($_GET['institution'] ?? ''));
+    $faculty = trim((string)($_GET['faculty'] ?? ''));
+    $course = trim((string)($_GET['course'] ?? ''));
+    if ($institution !== '' && $faculty !== '' && $course !== '') {
+        $target = '/requirements/' . rawurlencode($institution) . '/' . rawurlencode($faculty) . '/' . rawurlencode($course);
+        header('Location: ' . $target, true, 301);
+        exit;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Course Requirements & Brochure | Flexi Educational Consult</title>
+  <?php
+    $canonicalInstitution = trim((string)($_GET['institution'] ?? 'Universities'));
+    $canonicalFaculty = trim((string)($_GET['faculty'] ?? 'General'));
+    $canonicalCourse = trim((string)($_GET['course'] ?? 'Selected Course'));
+    $requirementsCanonical = 'https://www.flexieduconsult.com.ng/requirements/' . rawurlencode($canonicalInstitution) . '/' . rawurlencode($canonicalFaculty) . '/' . rawurlencode($canonicalCourse);
+  ?>
+  <link rel="canonical" href="<?= htmlspecialchars($requirementsCanonical, ENT_QUOTES, 'UTF-8') ?>">
   <style>
     :root {
       --bg-color: #f8f6f6;
