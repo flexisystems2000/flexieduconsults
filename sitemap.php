@@ -56,7 +56,7 @@ $literatureBooks = [
 
 foreach ($literatureBooks as $slug) {
     $urls[] = [
-        'loc' => $baseUrl . '/novel?book=' . rawurlencode($slug) . '&view=summary',
+        'loc' => $baseUrl . '/novel/' . rawurlencode($slug) . '/summary',
         'priority' => '0.7'
     ];
 }

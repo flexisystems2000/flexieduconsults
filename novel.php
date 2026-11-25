@@ -304,6 +304,7 @@ $books = [
 // ============================================================
 // REQUEST
 // ============================================================
+$requestPath = trim((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/'), '/');
 $requestedSlug =
     isset($_GET['book'])
         ? trim((string)$_GET['book'])
@@ -319,6 +320,13 @@ $questionNumber =
         ? max(1, (int)$_GET['q'])
         : 1;
 
+
+if ($requestPath === 'novel' && $requestedSlug !== '' && in_array($requestedView, ['summary', 'practice'], true)) {
+    $target = '/novel/' . rawurlencode($requestedSlug) . '/' . rawurlencode($requestedView);
+    if (isset($_GET['q'])) $target .= '?q=' . max(1, (int)$_GET['q']);
+    header('Location: ' . $target, true, 301);
+    exit;
+}
 
 // ============================================================
 // FIND CURRENT BOOK
@@ -549,11 +557,7 @@ function bookUrl(
     string $view = 'summary'
 ): string {
 
-    return
-        '/novel?book=' .
-        rawurlencode($slug) .
-        '&view=' .
-        rawurlencode($view);
+    return '/novel/' . rawurlencode($slug) . '/' . rawurlencode($view);
 }
 
 
@@ -602,8 +606,8 @@ $pageDescription = $isDetailPage && $overview !== ''
 
 $canonicalUrl = 'https://www.flexieduconsult.com.ng/novel';
 if ($isDetailPage && $currentBook !== null) {
-    $canonicalUrl .= '?book=' . rawurlencode($currentBook['slug'])
-        . '&view=' . rawurlencode($requestedView);
+    $canonicalUrl .= '/' . rawurlencode($currentBook['slug'])
+        . '/' . rawurlencode($requestedView);
 }
 
 $currentYear =
@@ -2334,7 +2338,7 @@ header {
                 </a>
 
 
-                <a href="/novel.php">
+                <a href="/novel">
 
                     <span class="menu-icon">
 

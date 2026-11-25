@@ -18,6 +18,12 @@
     RewriteCond %1 !^(health|news-view)$ [NC]
     RewriteRule ^(.+)\.php$ /$1 [R=301,L,NE]
 
+    # PATH-BASED ROUTES FOR DYNAMIC CONTENT
+    RewriteRule ^novel/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/?$ novel.php?book=$1&view=$2 [END,QSA]
+    RewriteRule ^videos/([A-Za-z0-9_-]+)/?$ videos.php?video=$1 [END,QSA]
+    RewriteRule ^brochure/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/?$ brochure.php?institution=$1&faculty=$2 [END,QSA]
+    RewriteRule ^requirements/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/(.+?)/?$ requirements.php?institution=$1&faculty=$2&course=$3 [B,END,QSA]
+
     # CLEAN EXTENSIONLESS PHP PAGE ROUTING
     # Only route to a PHP file that actually exists.
     RewriteCond %{REQUEST_FILENAME} !-f

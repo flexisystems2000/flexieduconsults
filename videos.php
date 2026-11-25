@@ -28,6 +28,11 @@ try {
     error_log('[Flexi videos SSR] ' . $exception->getMessage());
 }
 $requestedVideoId = trim((string)($_GET['video'] ?? ''));
+$requestPath = trim((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/'), '/');
+if ($requestPath === 'videos' && $requestedVideoId !== '' && preg_match('/^[A-Za-z0-9_-]+$/', $requestedVideoId)) {
+    header('Location: /videos/' . rawurlencode($requestedVideoId), true, 301);
+    exit;
+}
 $serverCurrentVideo = $serverVideos[0] ?? null;
 if ($requestedVideoId !== '') {
     foreach ($serverVideos as $candidateVideo) {
@@ -41,7 +46,7 @@ $serverCurrentFields = $serverCurrentVideo['fields'] ?? [];
 $serverCurrentYoutubeId = video_youtube_id((string)($serverCurrentFields['link'] ?? ''));
 $videoCanonical = 'https://www.flexieduconsult.com.ng/videos';
 if ($requestedVideoId !== '' && $serverCurrentVideo !== null && hash_equals((string)$serverCurrentVideo['id'], $requestedVideoId)) {
-    $videoCanonical .= '?video=' . rawurlencode($requestedVideoId);
+    $videoCanonical .= '/' . rawurlencode($requestedVideoId);
 }
 $serverVideoPayload = array_map(static function (array $video): array {
     return ['id' => (string)$video['id'], 'data' => $video['fields']];
@@ -282,7 +287,7 @@ if ($videoDescription === '') {
     <div class="separator"></div>
     <h2>More Video Lessons</h2>
     <?php foreach (array_slice($serverVideos, 1) as $video): $vf = $video['fields']; $vid = video_youtube_id((string)($vf['link'] ?? '')); if ($vid === '') continue; ?>
-      <a href="/videos?video=<?= video_e($video['id']) ?>" style="display:flex;gap:12px;align-items:center;margin:12px 0;color:#1e293b;text-decoration:none;">
+      <a href="/videos/<?= rawurlencode((string)$video['id']) ?>" style="display:flex;gap:12px;align-items:center;margin:12px 0;color:#1e293b;text-decoration:none;">
         <img src="https://img.youtube.com/vi/<?= video_e($vid) ?>/mqdefault.jpg" alt="" width="120" height="80" loading="lazy" style="object-fit:cover;border-radius:6px">
         <strong><?= video_e($vf['title'] ?? 'Video lesson') ?></strong>
       </a>

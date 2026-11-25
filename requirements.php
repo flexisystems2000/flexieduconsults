@@ -813,10 +813,11 @@
     };
 
     // Read Query Parameters
+    const routeParts = window.location.pathname.split('/').filter(Boolean).map(part => decodeURIComponent(part));
     const urlParams = new URLSearchParams(window.location.search);
-    const institutionParam = urlParams.get('institution') || 'Universities';
-    const facultyParam = urlParams.get('faculty') || 'General';
-    const courseParam = urlParams.get('course') || 'Selected Course';
+    const institutionParam = routeParts[0] === 'requirements' ? (routeParts[1] || 'Universities') : (urlParams.get('institution') || 'Universities');
+    const facultyParam = routeParts[0] === 'requirements' ? (routeParts[2] || 'General') : (urlParams.get('faculty') || 'Selected Course');
+    const courseParam = routeParts[0] === 'requirements' ? (routeParts.slice(3).join('/') || 'Selected Course') : (urlParams.get('course') || 'Selected Course');
 
     // DOM Elements
     const courseTitleDisplay = document.getElementById('courseTitleDisplay');
@@ -1006,7 +1007,7 @@
     }
 
     function goToCourses(selectedInst) {
-      window.location.href = `/brochure?institution=${encodeURIComponent(institutionParam)}&faculty=${encodeURIComponent(facultyParam)}&selectedInst=${selectedInst}`;
+      window.location.href = `/brochure/${encodeURIComponent(institutionParam)}/${encodeURIComponent(facultyParam)}?selectedInst=${selectedInst}`;
     }
 
     instSearchInput.addEventListener('input', filterInstitutions);
@@ -1015,7 +1016,7 @@
       if (document.referrer && document.referrer.includes(window.location.hostname)) {
         window.history.back();
       } else {
-        window.location.href = `brochure.php?institution=${encodeURIComponent(institutionParam)}&faculty=${encodeURIComponent(facultyParam)}`;
+        window.location.href = `/brochure/${encodeURIComponent(institutionParam)}/${encodeURIComponent(facultyParam)}`;
       }
     }
 
